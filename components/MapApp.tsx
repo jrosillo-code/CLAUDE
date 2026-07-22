@@ -4,6 +4,7 @@ import { useState } from "react";
 import MapCanvas from "./MapCanvas";
 import TopBar from "./TopBar";
 import LayerRail from "./LayerRail";
+import BasemapToggle from "./BasemapToggle";
 import PinSheet from "./PinSheet";
 import AddPinSheet from "./AddPinSheet";
 import EmptyHint from "./EmptyHint";
@@ -38,6 +39,7 @@ export default function MapApp() {
 
       <TopBar />
       <LayerRail />
+      <BasemapToggle />
 
       {/* Add-pin FAB */}
       <button

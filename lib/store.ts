@@ -28,6 +28,12 @@ interface WaypointState {
   viewerId: string;
   setViewer: (id: string) => void;
 
+  // Basemap mode (Apple-style Map / Satellite toggle) + 3D terrain.
+  basemap: "map" | "satellite";
+  setBasemap: (b: "map" | "satellite") => void;
+  terrain3d: boolean;
+  setTerrain3d: (v: boolean) => void;
+
   // Map layer state. `activeUserIds === null` => Everyone.
   activeUserIds: Set<string> | null;
   explore: boolean;
@@ -75,6 +81,11 @@ export const useStore = create<WaypointState>((set, get) => ({
 
   viewerId: CURRENT_USER_ID,
   setViewer: (id) => set({ viewerId: id, selectedPinId: null }),
+
+  basemap: "map",
+  setBasemap: (b) => set({ basemap: b }),
+  terrain3d: true,
+  setTerrain3d: (v) => set({ terrain3d: v }),
 
   activeUserIds: null, // Everyone by default — "a map should never feel empty"
   explore: false,

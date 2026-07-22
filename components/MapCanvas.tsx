@@ -5,7 +5,14 @@ import maplibregl from "maplibre-gl";
 import Supercluster from "supercluster";
 import { useStore } from "@/lib/store";
 import { useVisiblePins } from "@/lib/hooks";
-import { FALLBACK_STYLE, MAP_STYLE_URL } from "@/lib/mapStyle";
+import {
+  FALLBACK_STYLE,
+  MAP_STYLE_URL,
+  SKY,
+  TERRAIN_ATTRIBUTION,
+  TERRAIN_TILES,
+  satelliteStyle,
+} from "@/lib/mapStyle";
 import type { PinWithOwner } from "@/lib/types";
 
 interface Props {
@@ -23,6 +30,8 @@ type ClusterProps = {
   photo?: string;
 };
 
+const DEM_SOURCE = "waypoint-dem";
+
 export default function MapCanvas({ placing, onPick }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -35,19 +44,62 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const selectedPinId = useStore((s) => s.selectedPinId);
   const selectPin = useStore((s) => s.selectPin);
   const flyTo = useStore((s) => s.flyTo);
+  const basemap = useStore((s) => s.basemap);
+  const terrain3d = useStore((s) => s.terrain3d);
 
-  // Keep latest callbacks/data in refs so the map's event handlers (bound once)
-  // always see current values without re-binding.
   const placingRef = useRef(placing);
   const onPickRef = useRef(onPick);
   const pinsRef = useRef<PinWithOwner[]>(visiblePins);
   const selectRef = useRef(selectPin);
   const selectedRef = useRef<string | null>(selectedPinId);
+  const terrainRef = useRef(terrain3d);
   placingRef.current = placing;
   onPickRef.current = onPick;
   pinsRef.current = visiblePins;
   selectRef.current = selectPin;
   selectedRef.current = selectedPinId;
+  terrainRef.current = terrain3d;
+
+  // Apply the "planet" chrome — globe projection, atmosphere, and 3D terrain —
+  // after any style (re)load, since setStyle wipes sources/terrain.
+  function applyGlobeChrome(map: maplibregl.Map) {
+    try {
+      map.setProjection({ type: "globe" });
+    } catch {
+      /* older maplibre → mercator */
+    }
+    try {
+      map.setSky(SKY);
+    } catch {
+      /* sky unsupported */
+    }
+    try {
+      if (!map.getSource(DEM_SOURCE)) {
+        map.addSource(DEM_SOURCE, {
+          type: "raster-dem",
+          tiles: [TERRAIN_TILES],
+          encoding: "terrarium",
+          tileSize: 256,
+          maxzoom: 14,
+          attribution: TERRAIN_ATTRIBUTION,
+        });
+      }
+      if (!map.getLayer("waypoint-hillshade")) {
+        map.addLayer({
+          id: "waypoint-hillshade",
+          type: "hillshade",
+          source: DEM_SOURCE,
+          paint: {
+            "hillshade-exaggeration": 0.35,
+            "hillshade-shadow-color": "#5a4a3a",
+          },
+        });
+      }
+      map.setTerrain(terrainRef.current ? { source: DEM_SOURCE, exaggeration: 1.25 } : null);
+    } catch {
+      /* terrain source blocked — map still works flat */
+    }
+  }
 
   // ---- Map init (once) ----
   useEffect(() => {
@@ -58,66 +110,90 @@ export default function MapCanvas({ placing, onPick }: Props) {
       style: MAP_STYLE_URL,
       center: [10, 25],
       zoom: 1.5,
+      pitch: 0,
+      maxPitch: 75,
       attributionControl: false,
-      dragRotate: false,
-      maxPitch: 0,
     });
     mapRef.current = map;
 
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+    map.addControl(
+      new maplibregl.NavigationControl({ showCompass: true, visualizePitch: true }),
+      "bottom-right"
+    );
 
-    const enableGlobe = () => {
-      try {
-        map.setProjection({ type: "globe" });
-      } catch {
-        /* older maplibre without globe — mercator is fine */
-      }
-    };
-
-    map.on("style.load", enableGlobe);
-    map.on("load", () => {
+    // Run marker/camera init exactly once, off whichever "ready" signal lands
+    // first (load, or style.load for the fallback path).
+    const initOnce = () => {
+      applyGlobeChrome(map);
+      if (readyRef.current) return;
       readyRef.current = true;
-      enableGlobe();
       rebuildIndex();
       render();
       fitToViewer();
-    });
+    };
+    map.on("style.load", initOnce);
+    map.on("load", initOnce);
 
-    // Graceful fallback if the remote basemap can't load.
+    // Graceful fallback if the base style can't load (offline / blocked host).
+    let fellBack = false;
+    const toFallback = () => {
+      if (fellBack || readyRef.current) return;
+      fellBack = true;
+      try {
+        map.setStyle(FALLBACK_STYLE);
+      } catch {
+        /* ignore */
+      }
+    };
     map.on("error", (e) => {
       const msg = String(e?.error?.message ?? "");
-      if (!readyRef.current && /style|fetch|load|network/i.test(msg)) {
-        try {
-          map.setStyle(FALLBACK_STYLE);
-        } catch {
-          /* ignore */
-        }
-      }
+      if (/style|sprite|glyphs|fetch|network|load/i.test(msg)) toFallback();
     });
+    // Last-resort safety net: if the real style never became ready, show the
+    // fallback globe. Generous so a slow-but-fine connection isn't preempted.
+    setTimeout(toFallback, 8000);
 
     map.on("moveend", render);
     map.on("zoomend", render);
     map.on("move", renderThrottled);
 
     map.on("click", (e) => {
-      if (placingRef.current) {
-        onPickRef.current(e.lngLat.lng, e.lngLat.lat);
-      }
+      if (placingRef.current) onPickRef.current(e.lngLat.lng, e.lngLat.lat);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Keep cursor in sync with placing mode.
+  // ---- React to Map/Satellite toggle ----
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !readyRef.current) return;
+    const next = basemap === "satellite" ? satelliteStyle() : MAP_STYLE_URL;
+    map.setStyle(next as maplibregl.StyleSpecification | string);
+    // applyGlobeChrome re-runs on the resulting style.load. Markers are DOM
+    // overlays and survive the style swap.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [basemap]);
+
+  // ---- Toggle terrain relief ----
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !readyRef.current) return;
+    try {
+      map.setTerrain(terrain3d ? { source: DEM_SOURCE, exaggeration: 1.25 } : null);
+    } catch {
+      /* ignore */
+    }
+  }, [terrain3d]);
+
+  // Cursor for placing mode.
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
-    const canvas = map.getCanvas();
-    canvas.style.cursor = placing ? "crosshair" : "";
+    map.getCanvas().style.cursor = placing ? "crosshair" : "";
   }, [placing]);
 
-  // ---- Rebuild cluster index when visible pins change ----
   function rebuildIndex() {
     const index = new Supercluster({ radius: 54, maxZoom: 16 });
     index.load(
@@ -142,7 +218,6 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visiblePins]);
 
-  // Re-render marker styles when selection changes.
   useEffect(() => {
     if (readyRef.current) render();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -155,6 +230,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
     map.flyTo({
       center: [flyTo.lng, flyTo.lat],
       zoom: flyTo.zoom ?? 9,
+      pitch: (flyTo.zoom ?? 9) >= 6 ? 45 : 0, // tilt into a 3D view up close
       duration: 1600,
       essential: true,
     });
@@ -171,8 +247,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
     pts.forEach((p) => b.extend([p.lng, p.lat]));
     mapRef.current?.fitBounds(b, {
       padding: { top: 120, bottom: 140, left: 80, right: 80 },
-      maxZoom: 6,
-      duration: 2600,
+      maxZoom: 5.5,
+      duration: 2800,
     });
     didInitialFit.current = true;
   }
@@ -235,12 +311,16 @@ export default function MapCanvas({ placing, onPick }: Props) {
           map.flyTo({ center: [lng, lat], zoom: expZoom, duration: 700 });
         } else if (props.pinId) {
           selectRef.current(props.pinId);
-          map.flyTo({ center: [lng, lat], zoom: Math.max(map.getZoom(), 6), duration: 800 });
+          map.flyTo({
+            center: [lng, lat],
+            zoom: Math.max(map.getZoom(), 6),
+            pitch: 45,
+            duration: 800,
+          });
         }
       };
     }
 
-    // Remove markers no longer present.
     for (const [key, marker] of markersRef.current) {
       if (!next.has(key)) {
         marker.remove();
@@ -252,7 +332,6 @@ export default function MapCanvas({ placing, onPick }: Props) {
   return <div ref={containerRef} className="absolute inset-0" />;
 }
 
-// Distinct owner colors within a cluster, for the fanned look.
 function leafColors(index: Supercluster, clusterId: number): string[] {
   try {
     const leaves = index.getLeaves(clusterId, 6);
@@ -270,7 +349,6 @@ function clusterEl(count: number, colors: string[]): HTMLDivElement {
   wrap.style.width = `${size}px`;
   wrap.style.height = `${size}px`;
 
-  // Fanned stack of color rings behind a paper disc.
   const stack = colors.slice(0, 3);
   stack.forEach((color, i) => {
     const ring = document.createElement("div");

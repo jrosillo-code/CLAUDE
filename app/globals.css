@@ -50,15 +50,30 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Hide MapLibre's default attribution chrome bulk; keep a compact, styled one. */
-.maplibregl-ctrl-bottom-right,
-.maplibregl-ctrl-bottom-left {
-  opacity: 0.55;
-  font-size: 10px;
+/* Lift the map's bottom-right controls (zoom + compass + attribution) above the
+   add-pin FAB so nothing overlaps. */
+.maplibregl-ctrl-bottom-right {
+  bottom: 88px;
 }
 .maplibregl-ctrl-attrib {
-  background: rgba(246, 243, 238, 0.7) !important;
+  background: rgba(246, 243, 238, 0.75) !important;
   border-radius: 8px 0 0 0;
+  font-size: 10px;
+}
+.maplibregl-ctrl-attrib-button {
+  opacity: 0.6;
+}
+/* Round the zoom/compass control to match the app's soft chrome. */
+.maplibregl-ctrl-group {
+  border-radius: 14px !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-float) !important;
+  background: rgba(246, 243, 238, 0.92) !important;
+  backdrop-filter: blur(6px);
+}
+.maplibregl-ctrl-group button {
+  width: 34px;
+  height: 34px;
 }
 
 /* Sheet slide-up */
