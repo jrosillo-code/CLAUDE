@@ -3,6 +3,7 @@
 import Sheet from "./Sheet";
 import { useStore } from "@/lib/store";
 import { visibleTrips } from "@/lib/data";
+import { appleMapsRouteUrl, googleMapsRouteUrl } from "@/lib/directions";
 
 // Trips: planned routes — ordered stops stitched by a thread on the map.
 // Yours plus friends' shared ones. Never public: friends-only or private.
@@ -122,6 +123,25 @@ export default function TripsPanel({ onClose }: { onClose: () => void }) {
                     Delete
                   </button>
                 )}
+              </div>
+              {/* Turn-by-turn hand-off: current location through every stop in order */}
+              <div className="mt-2 flex gap-2">
+                <a
+                  href={googleMapsRouteUrl(t.stops)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 rounded-full bg-paper py-2 text-center text-xs font-semibold text-ink-2 ring-1 ring-line transition-colors hover:bg-paper-2"
+                >
+                  Google Maps ↗
+                </a>
+                <a
+                  href={appleMapsRouteUrl(t.stops)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 rounded-full bg-paper py-2 text-center text-xs font-semibold text-ink-2 ring-1 ring-line transition-colors hover:bg-paper-2"
+                >
+                  Apple Maps ↗
+                </a>
               </div>
             </div>
           );
