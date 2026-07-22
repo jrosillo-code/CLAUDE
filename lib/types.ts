@@ -1,0 +1,62 @@
+// Domain types for Waypoint. These mirror the v1 data model in the build plan
+// (users, friendships, pins, pin_photos, top_places) so that the in-memory demo
+// store and a future Supabase/PostGIS implementation share one shape.
+
+export type Visibility = "public" | "friends" | "private";
+
+export type FriendshipStatus = "pending" | "accepted";
+
+export interface User {
+  id: string;
+  handle: string; // unique, no @
+  displayName: string;
+  avatarUrl: string;
+  bio: string;
+  homeCity: string;
+  /** Stable per-friend color used across the map + rails. */
+  color: string;
+  defaultPinVisibility: Visibility;
+  isCreator?: boolean; // v2 hook
+}
+
+export interface PinPhoto {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+}
+
+export interface Pin {
+  id: string;
+  userId: string;
+  lng: number;
+  lat: number;
+  placeName: string;
+  countryCode: string;
+  title: string;
+  note: string;
+  startedOn?: string; // ISO date
+  endedOn?: string;
+  visibility: Visibility;
+  photos: PinPhoto[];
+  createdAt: string;
+}
+
+export interface Friendship {
+  userA: string;
+  userB: string;
+  status: FriendshipStatus;
+  requestedBy: string;
+}
+
+export interface TopPlace {
+  userId: string;
+  rank: number; // 1..5
+  pinId: string;
+  blurb: string; // one-line "why"
+}
+
+/** A pin joined with its owner — the shape most UI actually renders. */
+export interface PinWithOwner extends Pin {
+  owner: User;
+}

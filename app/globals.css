@@ -1,0 +1,121 @@
+@import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+/*
+  Waypoint design system.
+  Editorial, photography-forward: the photos are the product, chrome stays minimal.
+  Warm off-white paper, near-black ink, a single travel-ink accent.
+*/
+@theme {
+  --color-paper: #f6f3ee;
+  --color-paper-2: #efeae1;
+  --color-ink: #1a1714;
+  --color-ink-2: #4a443d;
+  --color-ink-3: #8a8177;
+  --color-line: #e0d9cd;
+  --color-accent: #c65d3b; /* terracotta / travel ink */
+  --color-accent-2: #2f6b6b; /* teal */
+
+  --font-display: ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+
+  --radius-sheet: 22px;
+
+  --shadow-float: 0 1px 2px rgba(26, 23, 20, 0.06),
+    0 8px 30px -8px rgba(26, 23, 20, 0.22);
+  --shadow-marker: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* Hide MapLibre's default attribution chrome bulk; keep a compact, styled one. */
+.maplibregl-ctrl-bottom-right,
+.maplibregl-ctrl-bottom-left {
+  opacity: 0.55;
+  font-size: 10px;
+}
+.maplibregl-ctrl-attrib {
+  background: rgba(246, 243, 238, 0.7) !important;
+  border-radius: 8px 0 0 0;
+}
+
+/* Sheet slide-up */
+@keyframes sheet-up {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.animate-sheet {
+  animation: sheet-up 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fade {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* Thin, tasteful scrollbars inside sheets */
+.scroll-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
+
+/* Marker + cluster styling lives in the map component, but the pulse is shared. */
+@keyframes marker-in {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.marker-in {
+  animation: marker-in 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
