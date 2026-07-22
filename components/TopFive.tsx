@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useStore } from "@/lib/store";
-import { topPlacesFor } from "@/lib/data";
+import { coverUrl, topPlacesFor } from "@/lib/data";
 
 // Rated Top 5 — the profile's centerpiece (plan §1.4, Letterboxd-style).
 // Drag-to-rank when it's your own profile.
@@ -75,9 +75,9 @@ export default function TopFive({
             onClick={() => onOpen(r.pin.id, r.pin.lng, r.pin.lat)}
             className="relative h-20 w-24 shrink-0 overflow-hidden rounded-xl bg-line"
           >
-            {r.pin.photos[0] && (
+            {coverUrl(r.pin) && (
               <img
-                src={r.pin.photos[0].url}
+                src={coverUrl(r.pin)}
                 alt=""
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />

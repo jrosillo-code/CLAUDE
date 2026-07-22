@@ -105,7 +105,7 @@ interface WaypointState {
     title: string;
     note: string;
     visibility: Visibility;
-    photoUrls: string[];
+    media: { kind: "photo" | "video"; url: string }[];
     dates?: [string, string];
   }) => Pin;
 }
@@ -281,11 +281,10 @@ export const useStore = create<WaypointState>((set, get) => ({
       visibility: input.visibility,
       startedOn: input.dates?.[0],
       endedOn: input.dates?.[1],
-      photos: input.photoUrls.map((url, i) => ({
-        id: `${id}-p${i + 1}`,
-        url,
-        width: 1200,
-        height: 800,
+      media: input.media.map((m, i) => ({
+        id: `${id}-m${i + 1}`,
+        kind: m.kind,
+        url: m.url,
       })),
       createdAt: new Date().toISOString(),
     };

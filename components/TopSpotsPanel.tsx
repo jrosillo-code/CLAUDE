@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Sheet from "./Sheet";
 import { useStore } from "@/lib/store";
-import { acceptedFriendIds, canView, distanceKm } from "@/lib/data";
+import { acceptedFriendIds, canView, coverUrl, distanceKm } from "@/lib/data";
 import { googleMapsDirectionsUrl } from "@/lib/directions";
 import { reverseGeocode, searchPlaces, type GeoResult } from "@/lib/geocode";
 import type { Pin, User } from "@/lib/types";
@@ -244,8 +244,8 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
           >
             <span className="w-6 shrink-0 text-center font-display text-xl text-ink-3">{i + 1}</span>
             <button onClick={() => open(r.pin)} className="h-14 w-16 shrink-0 overflow-hidden rounded-xl bg-line">
-              {r.pin.photos[0] && (
-                <img src={r.pin.photos[0].url} alt="" className="h-full w-full object-cover" />
+              {coverUrl(r.pin) && (
+                <img src={coverUrl(r.pin)} alt="" className="h-full w-full object-cover" />
               )}
             </button>
             <button onClick={() => open(r.pin)} className="min-w-0 flex-1 text-left">

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Supercluster from "supercluster";
 import { pins, users, friendships, seedFollows, CURRENT_USER_ID } from "@/lib/seed";
-import { visiblePins } from "@/lib/data";
+import { coverUrl, visiblePins } from "@/lib/data";
 
 // GET /api/pins?bbox=w,s,e,n&zoom=3&viewer=<id>&explore=0
 //
@@ -39,7 +39,7 @@ export function GET(req: Request) {
       ownerId: p.userId,
       placeName: p.placeName,
       color: p.owner.color,
-      photo: p.photos[0]?.url ?? p.owner.avatarUrl,
+      photo: coverUrl(p) ?? p.owner.avatarUrl,
       visibility: p.visibility,
     },
     geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },

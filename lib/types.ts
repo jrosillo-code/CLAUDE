@@ -45,11 +45,14 @@ export const ACTIVITY_LABELS: Record<ActivitySlug, string> = {
   photography: "Photography",
 };
 
-export interface PinPhoto {
+export type MediaKind = "photo" | "video";
+
+export interface PinMedia {
   id: string;
+  kind: MediaKind;
   url: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 export interface Pin {
@@ -64,7 +67,8 @@ export interface Pin {
   startedOn?: string; // ISO date
   endedOn?: string;
   visibility: Visibility;
-  photos: PinPhoto[];
+  /** Photos and videos, in display order. */
+  media: PinMedia[];
   /** Activity verticals this pin belongs to (mostly creator pins). */
   activities?: ActivitySlug[];
   createdAt: string;

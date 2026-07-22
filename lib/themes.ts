@@ -19,6 +19,8 @@ export interface MapTheme {
   border: string;
   labelColor: string;
   labelHalo: string;
+  /** Map-marker (teardrop pin) color for this theme. */
+  pinColor: string;
   sky: SkySpecification;
   /** Two-stop gradient for the theme picker swatch. */
   swatch: [string, string];
@@ -38,6 +40,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     border: "#d8cfbf",
     labelColor: "#9a8f7d",
     labelHalo: "#f4efe6",
+    pinColor: "#c65d3b",
     sky: {
       "sky-color": "#8ec2ee",
       "sky-horizon-blend": 0.4,
@@ -59,6 +62,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     border: "#d9c8a6",
     labelColor: "#a08c66",
     labelHalo: "#efe6d2",
+    pinColor: "#a5772e",
     sky: {
       "sky-color": "#d9c9a0",
       "sky-horizon-blend": 0.35,
@@ -80,6 +84,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     border: "#c8ddcd",
     labelColor: "#6f9484",
     labelHalo: "#f4f8ef",
+    pinColor: "#2e8f74",
     sky: {
       "sky-color": "#a8ded2",
       "sky-horizon-blend": 0.35,
@@ -103,6 +108,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     border: "#e08a7a",
     labelColor: "#b04a3c",
     labelHalo: "#faf3e6",
+    pinColor: "#d3402f",
     sky: {
       "sky-color": "#e8a598",
       "sky-horizon-blend": 0.35,
@@ -128,6 +134,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     border: "#3d4f68",
     labelColor: "#9db4d0",
     labelHalo: "#101827",
+    pinColor: "#e0714b",
     sky: {
       "sky-color": "#27486e",
       "sky-horizon-blend": 0.4,

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useStore } from "@/lib/store";
 import {
   countryCount,
+  coverUrl,
   pinsForUser,
   topPlacesFor,
   acceptedFriendIds,
@@ -55,7 +56,8 @@ export default function ProfileView({ handle }: { handle: string }) {
   const isFriend = acceptedFriendIds(friendships, viewerId).has(user.id);
   const isFollowing = follows.has(user.id);
   const savedPins = pins.filter((p) => savedPinIds.has(p.id));
-  const cover = top[0]?.pin.photos[0]?.url ?? myPins[0]?.photos[0]?.url;
+  const cover =
+    (top[0] && coverUrl(top[0].pin)) ?? (myPins[0] && coverUrl(myPins[0])) ?? undefined;
 
   function viewOnMap() {
     showOnly(user!.id);
@@ -243,9 +245,9 @@ function PinGrid({
           onClick={() => onOpen(p.id, p.lng, p.lat)}
           className="group relative aspect-square overflow-hidden rounded-2xl bg-paper-2 text-left"
         >
-          {p.photos[0] && (
+          {coverUrl(p) && (
             <img
-              src={p.photos[0].url}
+              src={coverUrl(p)}
               alt=""
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />

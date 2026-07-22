@@ -150,6 +150,11 @@ export function friendsWhoVisited(
   return out;
 }
 
+/** First photo of a pin (marker thumbs, covers). Videos don't qualify. */
+export function coverUrl(pin: Pin): string | undefined {
+  return pin.media.find((m) => m.kind === "photo")?.url;
+}
+
 export const visibilityLabel: Record<Visibility, string> = {
   public: "Public",
   friends: "Friends",

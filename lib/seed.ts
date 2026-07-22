@@ -2,7 +2,7 @@ import type {
   ActivitySlug,
   Friendship,
   Pin,
-  PinPhoto,
+  PinMedia,
   TopPlace,
   User,
 } from "./types";
@@ -14,9 +14,20 @@ export function photo(seed: string, w = 1200, h = 800): string {
   return `https://picsum.photos/seed/${encodeURIComponent(seed)}/${w}/${h}`;
 }
 
-function photos(pinId: string, n: number): PinPhoto[] {
+// Public sample clips (Google's open test bucket) stand in for user videos
+// until Supabase Storage uploads are wired.
+export const SAMPLE_VIDEOS = [
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+];
+
+function photos(pinId: string, n: number): PinMedia[] {
   return Array.from({ length: n }, (_, i) => ({
     id: `${pinId}-p${i + 1}`,
+    kind: "photo" as const,
     url: photo(`${pinId}-${i + 1}`, 1200, 800),
     width: 1200,
     height: 800,
@@ -226,6 +237,15 @@ const rows: Seed[] = [
 export const pins: Pin[] = rows.map((r, i) => {
   const id = `pin-${i + 1}`;
   const [userId, lng, lat, place, cc, title, note, n, vis, dates, activities] = r;
+  const media = photos(id, n);
+  // Roughly a third of pins also carry a video clip (deterministic pick).
+  if (hashCode(id) % 3 === 0) {
+    media.push({
+      id: `${id}-v1`,
+      kind: "video",
+      url: SAMPLE_VIDEOS[hashCode(`${id}-vid`) % SAMPLE_VIDEOS.length],
+    });
+  }
   return {
     id,
     userId,
@@ -238,7 +258,7 @@ export const pins: Pin[] = rows.map((r, i) => {
     visibility: vis ?? "friends",
     startedOn: dates?.[0],
     endedOn: dates?.[1],
-    photos: photos(id, n),
+    media,
     activities,
     createdAt: new Date(2025, 0, 1 + i).toISOString(),
   };

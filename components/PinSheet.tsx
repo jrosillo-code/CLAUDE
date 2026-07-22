@@ -6,7 +6,7 @@ import { useStore } from "@/lib/store";
 import { friendsWhoVisited, visibilityLabel } from "@/lib/data";
 import { formatDates } from "@/lib/format";
 import { ACTIVITY_LABELS } from "@/lib/types";
-import type { PinPhoto } from "@/lib/types";
+import type { PinMedia } from "@/lib/types";
 import { appleMapsDirectionsUrl, googleMapsDirectionsUrl } from "@/lib/directions";
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 
@@ -37,9 +37,9 @@ export default function PinSheet() {
         else close();
       }
       if (lightbox !== null && pin) {
-        if (e.key === "ArrowRight") setLightbox((i) => ((i ?? 0) + 1) % pin.photos.length);
+        if (e.key === "ArrowRight") setLightbox((i) => ((i ?? 0) + 1) % pin.media.length);
         if (e.key === "ArrowLeft")
-          setLightbox((i) => ((i ?? 0) - 1 + pin.photos.length) % pin.photos.length);
+          setLightbox((i) => ((i ?? 0) - 1 + pin.media.length) % pin.media.length);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -69,7 +69,7 @@ export default function PinSheet() {
           <div className="scroll-thin overflow-y-auto">
             {/* Collage */}
             <div className="relative">
-              <Collage photos={pin.photos} onOpen={(i) => setLightbox(i)} />
+              <Collage media={pin.media} onOpen={(i) => setLightbox(i)} />
               <button
                 onClick={close}
                 aria-label="Close"
@@ -211,17 +211,28 @@ export default function PinSheet() {
       </div>
 
       {/* Lightbox */}
-      {lightbox !== null && pin.photos[lightbox] && (
+      {lightbox !== null && pin.media[lightbox] && (
         <div
           className="fixed inset-0 z-[60] flex animate-fade items-center justify-center bg-ink/95"
           onClick={() => setLightbox(null)}
         >
-          <img
-            src={pin.photos[lightbox].url}
-            alt=""
-            className="max-h-[88vh] max-w-[92vw] rounded-lg object-contain shadow-float"
-            onClick={(e) => e.stopPropagation()}
-          />
+          {pin.media[lightbox].kind === "video" ? (
+            <video
+              src={pin.media[lightbox].url}
+              controls
+              autoPlay
+              playsInline
+              className="max-h-[88vh] max-w-[92vw] rounded-lg shadow-float"
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <img
+              src={pin.media[lightbox].url}
+              alt=""
+              className="max-h-[88vh] max-w-[92vw] rounded-lg object-contain shadow-float"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
           <button
             onClick={() => setLightbox(null)}
             aria-label="Close photo"
@@ -229,12 +240,12 @@ export default function PinSheet() {
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
           </button>
-          {pin.photos.length > 1 && (
+          {pin.media.length > 1 && (
             <>
-              <LightboxArrow dir="left" onClick={(e) => { e.stopPropagation(); setLightbox((i) => ((i ?? 0) - 1 + pin.photos.length) % pin.photos.length); }} />
-              <LightboxArrow dir="right" onClick={(e) => { e.stopPropagation(); setLightbox((i) => ((i ?? 0) + 1) % pin.photos.length); }} />
+              <LightboxArrow dir="left" onClick={(e) => { e.stopPropagation(); setLightbox((i) => ((i ?? 0) - 1 + pin.media.length) % pin.media.length); }} />
+              <LightboxArrow dir="right" onClick={(e) => { e.stopPropagation(); setLightbox((i) => ((i ?? 0) + 1) % pin.media.length); }} />
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-paper/15 px-3 py-1 text-xs text-paper backdrop-blur">
-                {lightbox + 1} / {pin.photos.length}
+                {lightbox + 1} / {pin.media.length}
               </div>
             </>
           )}
@@ -244,21 +255,39 @@ export default function PinSheet() {
   );
 }
 
-// Airbnb-style collage: one hero photo plus a grid, "+N" overlay when there are
-// more than fit. Every tile opens the lightbox.
-function Collage({ photos, onOpen }: { photos: PinPhoto[]; onOpen: (i: number) => void }) {
-  const n = photos.length;
+// Airbnb-style collage: one hero tile plus a grid, "+N" overlay when there are
+// more than fit. Photos and videos mix freely; video tiles preview muted and
+// carry a play badge. Every tile opens the lightbox.
+function Collage({ media, onOpen }: { media: PinMedia[]; onOpen: (i: number) => void }) {
+  const n = media.length;
   const visible = Math.min(n, 5);
   if (n === 0) return <div className="h-40 bg-paper-2" />;
 
   const Tile = ({ i, className }: { i: number; className?: string }) => (
     <button onClick={() => onOpen(i)} className={`group relative overflow-hidden ${className ?? ""}`}>
-      <img
-        src={photos[i].url}
-        alt=""
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-        draggable={false}
-      />
+      {media[i].kind === "video" ? (
+        <>
+          <video
+            src={media[i].url}
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="metadata"
+            className="h-full w-full object-cover"
+          />
+          <span className="pointer-events-none absolute bottom-2 left-2 grid h-7 w-7 place-items-center rounded-full bg-ink/60 text-paper backdrop-blur">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z" /></svg>
+          </span>
+        </>
+      ) : (
+        <img
+          src={media[i].url}
+          alt=""
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          draggable={false}
+        />
+      )}
       {/* "+N more" overlay on the last visible tile */}
       {i === visible - 1 && n > visible && (
         <span className="absolute inset-0 grid place-items-center bg-ink/50 font-display text-2xl text-paper">

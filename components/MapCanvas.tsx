@@ -12,6 +12,7 @@ import {
   satelliteStyle,
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
+import { coverUrl } from "@/lib/data";
 import type { PinWithOwner } from "@/lib/types";
 
 interface Props {
@@ -340,6 +341,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
     if (modeKeyRef.current === key) return;
     modeKeyRef.current = key;
     applyBasemap(map, basemap);
+    render(); // recolor markers to the new theme immediately
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basemap, themeId]);
 
@@ -370,7 +372,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           pinId: p.id,
           ownerId: p.userId,
           color: p.owner.color,
-          photo: p.photos[0]?.url ?? p.owner.avatarUrl,
+          photo: coverUrl(p) ?? p.owner.avatarUrl,
         },
         geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },
       }))
@@ -514,27 +516,35 @@ export default function MapCanvas({ placing, onPick }: Props) {
       next.add(key);
 
       let marker = markersRef.current.get(key);
-      const el = props.cluster
-        ? clusterEl(props.point_count ?? 0, leafColors(index, props.cluster_id!))
-        : pinEl(props, props.pinId === selectedRef.current);
+      // Teardrop pin, colored by the active theme. Clusters render as a
+      // stacked pair of pins — no count badge.
+      const pinColor = themeRef.current.pinColor;
+      const content = props.cluster
+        ? teardropEl({ photo: props.photo, color: pinColor, height: 46, stacked: true, selected: false })
+        : teardropEl({
+            photo: props.photo,
+            color: pinColor,
+            height: props.pinId === selectedRef.current ? 50 : 38,
+            stacked: false,
+            selected: props.pinId === selectedRef.current,
+          });
 
       if (marker) {
-        const existing = marker.getElement();
-        existing.replaceChildren(...Array.from(el.childNodes));
-        // Preserve MapLibre's own marker classes; ours follow.
-        const keep = existing.className
-          .split(" ")
-          .filter((c) => c.startsWith("maplibregl"));
-        existing.className = [...keep, ...el.className.split(" ")].join(" ");
+        // The marker's outer element belongs to MapLibre (it carries the
+        // positioning transform); we only ever swap our content inside it.
+        marker.getElement().replaceChildren(content);
         marker.setLngLat([lng, lat]);
       } else {
-        marker = new maplibregl.Marker({ element: el, anchor: "center" })
+        const container = document.createElement("div");
+        container.appendChild(content);
+        marker = new maplibregl.Marker({ element: container, anchor: "bottom" })
           .setLngLat([lng, lat])
           .addTo(map);
         markersRef.current.set(key, marker);
       }
 
       const element = marker.getElement();
+      element.style.zIndex = !props.cluster && props.pinId === selectedRef.current ? "5" : "1";
 
       // Visibility gate. Hide a marker whenever its projection is garbage for
       // this frame (NaN or a wild off-screen point — the source of "random pins
@@ -593,74 +603,38 @@ export default function MapCanvas({ placing, onPick }: Props) {
   );
 }
 
-/** Great-circle angular distance between two lng/lat points, in degrees. */
-function angularDistanceDeg(lng1: number, lat1: number, lng2: number, lat2: number): number {
-  const rad = Math.PI / 180;
-  const φ1 = lat1 * rad;
-  const φ2 = lat2 * rad;
-  const Δλ = (lng2 - lng1) * rad;
-  const cosΔ =
-    Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ);
-  return Math.acos(Math.max(-1, Math.min(1, cosΔ))) / rad;
-}
-
-function leafColors(index: Supercluster, clusterId: number): string[] {
-  try {
-    const leaves = index.getLeaves(clusterId, 6);
-    const colors = leaves.map((l) => (l.properties as ClusterProps).color ?? "#c65d3b");
-    return [...new Set(colors)];
-  } catch {
-    return ["#c65d3b"];
-  }
-}
-
-function clusterEl(count: number, colors: string[]): HTMLDivElement {
+// A classic teardrop map pin in the theme's color, with a small circular
+// photo/avatar set into its head. Clusters draw a second pin peeking out
+// behind — multiplicity without a number badge.
+function teardropEl(opts: {
+  photo?: string;
+  color: string;
+  height: number;
+  stacked: boolean;
+  selected: boolean;
+}): HTMLDivElement {
+  const { photo, color, height, stacked, selected } = opts;
+  const width = Math.round(height * (24 / 34));
   const wrap = document.createElement("div");
-  wrap.className = "marker-in relative cursor-pointer select-none";
-  const size = count > 25 ? 58 : count > 8 ? 50 : 44;
-  wrap.style.width = `${size}px`;
-  wrap.style.height = `${size}px`;
+  wrap.className = "marker-in cursor-pointer select-none";
+  wrap.style.cssText = `position:relative;width:${width}px;height:${height}px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));`;
 
-  const stack = colors.slice(0, 3);
-  stack.forEach((color, i) => {
-    const ring = document.createElement("div");
-    ring.className = "absolute rounded-full";
-    ring.style.inset = "0";
-    ring.style.background = color;
-    ring.style.transform = `translate(${(i - 1) * 5}px, ${-i * 4}px)`;
-    ring.style.opacity = `${0.85 - i * 0.2}`;
-    ring.style.boxShadow = "0 2px 8px rgba(0,0,0,.3)";
-    wrap.appendChild(ring);
-  });
+  const teardrop = (dx: number, dy: number, opacity: string) => {
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 34");
+    svg.style.cssText = `position:absolute;inset:0;transform:translate(${dx}px,${dy}px);opacity:${opacity};overflow:visible;`;
+    svg.innerHTML = `<path d="M12 33C12 33 23 20.6 23 11.8 23 5.8 18.1 1 12 1 5.9 1 1 5.8 1 11.8 1 20.6 12 33 12 33Z" fill="${color}" stroke="${selected ? "#ffffff" : "rgba(255,255,255,.92)"}" stroke-width="${selected ? 2.2 : 1.6}"/>`;
+    return svg;
+  };
 
-  const disc = document.createElement("div");
-  disc.className =
-    "absolute inset-[3px] rounded-full bg-[#f6f3ee] flex items-center justify-center font-semibold text-[#1a1714]";
-  disc.style.boxShadow = "inset 0 0 0 2px rgba(255,255,255,.6)";
-  disc.style.fontSize = size > 50 ? "16px" : "14px";
-  disc.textContent = String(count);
-  wrap.appendChild(disc);
-  return wrap;
-}
+  if (stacked) wrap.appendChild(teardrop(Math.round(width * 0.22), -Math.round(height * 0.08), "0.55"));
+  wrap.appendChild(teardrop(0, 0, "1"));
 
-function pinEl(props: ClusterProps, selected: boolean): HTMLDivElement {
-  const wrap = document.createElement("div");
-  const size = selected ? 46 : 34;
-  wrap.className = "marker-in cursor-pointer select-none rounded-full";
-  wrap.style.width = `${size}px`;
-  wrap.style.height = `${size}px`;
-  wrap.style.padding = "2px";
-  wrap.style.background = props.color ?? "#c65d3b";
-  wrap.style.boxShadow = selected
-    ? `0 0 0 3px #f6f3ee, 0 6px 16px rgba(0,0,0,.35)`
-    : `0 2px 8px rgba(0,0,0,.35)`;
-  wrap.style.transition = "width .15s, height .15s";
-  wrap.style.zIndex = selected ? "5" : "1";
-
-  const img = document.createElement("div");
-  img.className = "w-full h-full rounded-full bg-cover bg-center";
-  img.style.backgroundImage = `url("${props.photo}")`;
-  img.style.boxShadow = "inset 0 0 0 2px rgba(255,255,255,.85)";
-  wrap.appendChild(img);
+  // Small photo icon set into the pin's head, deliberately scaled down.
+  const iconSize = Math.round(width * 0.6);
+  const icon = document.createElement("div");
+  icon.style.cssText = `position:absolute;left:50%;top:${Math.round(height * 0.11)}px;width:${iconSize}px;height:${iconSize}px;transform:translateX(-50%);border-radius:9999px;background-size:cover;background-position:center;background-color:rgba(255,255,255,.4);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9);`;
+  if (photo) icon.style.backgroundImage = `url("${photo}")`;
+  wrap.appendChild(icon);
   return wrap;
 }

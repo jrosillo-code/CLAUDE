@@ -4,7 +4,8 @@ import { useState } from "react";
 import Sheet from "./Sheet";
 import { useStore } from "@/lib/store";
 import { useViewer } from "@/lib/hooks";
-import { photo } from "@/lib/seed";
+import { SAMPLE_VIDEOS, photo } from "@/lib/seed";
+import type { MediaKind } from "@/lib/types";
 import type { Visibility } from "@/lib/types";
 import { visibilityLabel } from "@/lib/data";
 
@@ -21,14 +22,23 @@ export default function AddPinSheet() {
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [visibility, setVisibility] = useState<Visibility>(viewer.defaultPinVisibility);
-  const [photoUrls, setPhotoUrls] = useState<string[]>([]);
+  const [mediaItems, setMediaItems] = useState<{ kind: MediaKind; url: string }[]>([]);
 
+  // Uploads are mocked until Supabase Storage is wired: "add photos" attaches
+  // seeded demo shots; "add video" attaches a public sample clip.
   function addDemoPhotos() {
-    const base = photoUrls.length;
-    const more = Array.from({ length: 3 }, (_, i) =>
-      photo(`new-${Date.now()}-${base + i}`, 1200, 800)
+    const base = mediaItems.length;
+    const more = Array.from({ length: 3 }, (_, i) => ({
+      kind: "photo" as const,
+      url: photo(`new-${Date.now()}-${base + i}`, 1200, 800),
+    }));
+    setMediaItems((p) => [...p, ...more].slice(0, 8));
+  }
+
+  function addDemoVideo() {
+    setMediaItems((p) =>
+      [...p, { kind: "video" as const, url: SAMPLE_VIDEOS[p.length % SAMPLE_VIDEOS.length] }].slice(0, 8)
     );
-    setPhotoUrls((p) => [...p, ...more].slice(0, 8));
   }
 
   function submit() {
@@ -40,7 +50,7 @@ export default function AddPinSheet() {
       title: title.trim() || draft.placeName,
       note: note.trim(),
       visibility,
-      photoUrls,
+      media: mediaItems,
     });
     requestFlyTo(pin.lng, pin.lat, 7);
   }
@@ -67,18 +77,38 @@ export default function AddPinSheet() {
           </div>
         </div>
 
-        {/* Photos */}
+        {/* Photos & videos */}
         <div className="mt-4">
-          <label className="text-xs font-medium uppercase tracking-wide text-ink-3">Photos</label>
+          <label className="text-xs font-medium uppercase tracking-wide text-ink-3">Photos & videos</label>
           <div className="mt-2 flex gap-2 overflow-x-auto no-scrollbar">
-            {photoUrls.map((u) => (
-              <img key={u} src={u} alt="" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
-            ))}
+            {mediaItems.map((m, i) =>
+              m.kind === "video" ? (
+                <div key={`${m.url}-${i}`} className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-ink">
+                  <video src={m.url} muted playsInline preload="metadata" className="h-full w-full object-cover opacity-80" />
+                  <span className="absolute inset-0 grid place-items-center text-paper">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z" /></svg>
+                  </span>
+                </div>
+              ) : (
+                <img key={`${m.url}-${i}`} src={m.url} alt="" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
+              )
+            )}
             <button
               onClick={addDemoPhotos}
+              title="Add photos"
               className="grid h-20 w-20 shrink-0 place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+            </button>
+            <button
+              onClick={addDemoVideo}
+              title="Add a video"
+              className="grid h-20 w-20 shrink-0 place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="6" width="13" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+                <path d="m16 10 5-2.5v9L16 14" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+              </svg>
             </button>
           </div>
         </div>
