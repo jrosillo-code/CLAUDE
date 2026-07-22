@@ -50,6 +50,8 @@ interface VisibleArgs {
   users: User[];
   friendships: Friendship[];
   viewerId: string;
+  /** Creators the viewer follows — their public pins overlay the map. */
+  follows: Set<string>;
   /** userIds whose layer is toggled on. `null` means "everyone visible". */
   activeUserIds: Set<string> | null;
   explore: boolean;
@@ -60,6 +62,7 @@ export function visiblePins({
   users,
   friendships,
   viewerId,
+  follows,
   activeUserIds,
   explore,
 }: VisibleArgs): PinWithOwner[] {
@@ -68,6 +71,11 @@ export function visiblePins({
   const out: PinWithOwner[] = [];
   for (const pin of pins) {
     if (activeUserIds && !activeUserIds.has(pin.userId)) continue;
+    // Owner gating: your own map shows you, accepted friends, and creators you
+    // follow. Strangers' pins only surface in explore mode (public ones).
+    const isOwnLayer =
+      pin.userId === viewerId || friendIds.has(pin.userId) || follows.has(pin.userId);
+    if (!isOwnLayer && !explore) continue;
     if (!canView(pin, viewerId, friendIds, explore)) continue;
     const owner = usersById.get(pin.userId);
     if (!owner) continue;

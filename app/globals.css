@@ -27,6 +27,20 @@
   --shadow-marker: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
+/* Midnight (dark) chrome — flipped via data-theme on <html>. Utilities read
+   these vars, so the whole UI follows. */
+:root[data-theme="dark"] {
+  --color-paper: #14171c;
+  --color-paper-2: #1d2129;
+  --color-ink: #eef0f4;
+  --color-ink-2: #b6bcc8;
+  --color-ink-3: #7c8494;
+  --color-line: #2a3038;
+  --color-accent: #e0714b;
+  --color-accent-2: #46a3a3;
+  --shadow-float: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 30px -8px rgba(0, 0, 0, 0.6);
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
 }
@@ -74,6 +88,20 @@ body {
 .maplibregl-ctrl-group button {
   width: 34px;
   height: 34px;
+}
+/* Map controls in Midnight. */
+:root[data-theme="dark"] .maplibregl-ctrl-attrib {
+  background: rgba(20, 23, 28, 0.8) !important;
+  color: #7c8494;
+}
+:root[data-theme="dark"] .maplibregl-ctrl-attrib a {
+  color: #b6bcc8;
+}
+:root[data-theme="dark"] .maplibregl-ctrl-group {
+  background: rgba(29, 33, 41, 0.92) !important;
+}
+:root[data-theme="dark"] .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: invert(0.9) hue-rotate(180deg);
 }
 
 /* Sheet slide-up */

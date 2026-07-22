@@ -1,4 +1,11 @@
-import type { Friendship, Pin, PinPhoto, TopPlace, User } from "./types";
+import type {
+  ActivitySlug,
+  Friendship,
+  Pin,
+  PinPhoto,
+  TopPlace,
+  User,
+} from "./types";
 
 // Deterministic demo photography. picsum serves real photographs from a stable
 // seed, so the demo never shows a broken image. In production these become
@@ -49,6 +56,8 @@ export const users: User[] = [
     color: "#3b5bc6",
     defaultPinVisibility: "friends",
     isCreator: true,
+    followerCount: 24800,
+    activities: ["photography", "ski"],
   },
   {
     id: "u-amara",
@@ -70,6 +79,61 @@ export const users: User[] = [
     color: "#8a4fc6",
     defaultPinVisibility: "friends",
   },
+
+  // ── Creators: public accounts anyone can follow; their pins overlay your
+  //    map as layers, organized by activity verticals (plan §v2, built now). ──
+  {
+    id: "u-kai",
+    handle: "kaialana",
+    displayName: "Kai Alana",
+    avatarUrl: photo("avatar-kai", 200, 200),
+    bio: "Pro surfer mapping every break worth the paddle. Hawai'i roots, world waters.",
+    homeCity: "Haleʻiwa, Hawaiʻi",
+    color: "#d99a2b",
+    defaultPinVisibility: "public",
+    isCreator: true,
+    followerCount: 132400,
+    activities: ["surf"],
+  },
+  {
+    id: "u-lena",
+    handle: "lenasends",
+    displayName: "Lena Ortiz",
+    avatarUrl: photo("avatar-lena", 200, 200),
+    bio: "Enduro racer. Loam, alpine ridgelines, and the occasional broken derailleur.",
+    homeCity: "Innsbruck, Austria",
+    color: "#7a9a3a",
+    defaultPinVisibility: "public",
+    isCreator: true,
+    followerCount: 58100,
+    activities: ["mtb", "climb"],
+  },
+  {
+    id: "u-marco",
+    handle: "marcofutebol",
+    displayName: "Marco Silva",
+    avatarUrl: photo("avatar-marco", 200, 200),
+    bio: "Street football culture worldwide — courts, cages, and beach pitches.",
+    homeCity: "Rio de Janeiro, Brazil",
+    color: "#2e7d5b",
+    defaultPinVisibility: "public",
+    isCreator: true,
+    followerCount: 210500,
+    activities: ["soccer", "basketball"],
+  },
+  {
+    id: "u-aiko",
+    handle: "aikopowday",
+    displayName: "Aiko Tanaka",
+    avatarUrl: photo("avatar-aiko", 200, 200),
+    bio: "Chasing winter both hemispheres. Splitboard + camera.",
+    homeCity: "Hakuba, Japan",
+    color: "#c64f7e",
+    defaultPinVisibility: "public",
+    isCreator: true,
+    followerCount: 47200,
+    activities: ["ski", "photography"],
+  },
 ];
 
 type Seed = [
@@ -82,7 +146,8 @@ type Seed = [
   note: string,
   nPhotos: number,
   visibility?: Pin["visibility"],
-  dates?: [string, string]
+  dates?: [string, string],
+  activities?: ActivitySlug[]
 ];
 
 // prettier-ignore
@@ -137,11 +202,30 @@ const rows: Seed[] = [
   ["u-leo", -17.1094, 28.0916, "El Hierro", "ES", "The edge of Europe", "Smallest Canary, zero crowds. Dove with turtles daily.", 3, "public"],
   ["u-leo", 174.7633, -36.8485, "Piha", "NZ", "Black sand", "Flew across the world for a wave. It delivered.", 3, "public"],
   ["u-leo", -70.9083, -53.1638, "Punta Arenas", "CL", "Patagonia surf mission", "Coldest water I've ever paddled. Icebergs on the horizon.", 4, "public"],
+
+  // — Creators (all public, tagged with activity verticals) —
+  ["u-kai", -158.1044, 21.5906, "Banzai Pipeline, Oʻahu", "US", "Pipe, firing", "Second reef sets all morning. The wave of waves.", 6, "public", undefined, ["surf"]],
+  ["u-kai", 115.0864, -8.8135, "Uluwatu", "ID", "Racetrack section", "Low tide, shoulder-high, nobody out at dawn.", 5, "public", undefined, ["surf"]],
+  ["u-kai", -9.4175, 38.9636, "Ericeira", "PT", "World Surf Reserve", "Cold European gold. Coxos on its day beats anything.", 4, "public", undefined, ["surf"]],
+  ["u-kai", 153.4310, -28.1620, "Snapper Rocks", "AU", "Superbank run", "Kirra to Greenmount on one wave. Legs gave out first.", 4, "public", undefined, ["surf"]],
+  ["u-kai", -77.0364, -12.1211, "Punta Hermosa", "PE", "South swell season", "Long lefts and ceviche. Peru is criminally underrated.", 4, "public", undefined, ["surf"]],
+  ["u-lena", 11.3548, 47.2692, "Innsbruck", "AT", "Home trails", "Nordkette singletrack straight off the cable car.", 4, "public", undefined, ["mtb"]],
+  ["u-lena", -113.5684, 37.2982, "Hurricane, Utah", "US", "Desert season", "Slickrock and red dust. JEM trail at golden hour.", 5, "public", undefined, ["mtb"]],
+  ["u-lena", 7.6586, 46.0207, "Zermatt", "CH", "Matterhorn laps", "4000m of descending in a day. Brakes were toast.", 4, "public", undefined, ["mtb", "climb"]],
+  ["u-lena", 170.3654, -44.0069, "Twizel, NZ", "NZ", "Southern summer", "Chasing January in New Zealand. Tussock turns forever.", 4, "public", undefined, ["mtb"]],
+  ["u-marco", -43.1729, -22.9068, "Rio de Janeiro", "BR", "Copacabana courts", "Beach futevôlei until the lights come on. Church.", 5, "public", undefined, ["soccer"]],
+  ["u-marco", 2.3522, 48.8566, "Paris", "FR", "Duperré court", "The pink-and-blue cage in Pigalle. Small pitch, huge game.", 4, "public", undefined, ["soccer", "basketball"]],
+  ["u-marco", -73.9442, 40.6782, "Brooklyn", "US", "The Cage, W 4th", "Winners stay. I did not stay long.", 4, "public", undefined, ["basketball"]],
+  ["u-marco", -5.9845, 37.3891, "Seville", "ES", "Plaza pickup", "Cobblestone touch. Andalusia plays a different tempo.", 3, "public", undefined, ["soccer"]],
+  ["u-aiko", 137.8622, 36.6983, "Hakuba", "JP", "Home mountains", "Morning storm-ski laps before the lifts even spin.", 6, "public", undefined, ["ski", "photography"]],
+  ["u-aiko", -115.1745, 51.1784, "Banff", "AB", "Rockies deep", "Minus 20 and blower. Worth every frozen finger.", 4, "public", undefined, ["ski"]],
+  ["u-aiko", -72.9629, -41.1580, "Osorno Volcano", "CL", "August in Chile", "Corn snow on a volcano over a lake. Unreal light.", 5, "public", undefined, ["ski", "photography"]],
+  ["u-aiko", 6.8652, 45.9163, "Chamonix", "FR", "Vallée Blanche", "20km glacier run under the Aiguille du Midi.", 5, "public", undefined, ["ski", "photography"]],
 ];
 
 export const pins: Pin[] = rows.map((r, i) => {
   const id = `pin-${i + 1}`;
-  const [userId, lng, lat, place, cc, title, note, n, vis, dates] = r;
+  const [userId, lng, lat, place, cc, title, note, n, vis, dates, activities] = r;
   return {
     id,
     userId,
@@ -155,9 +239,32 @@ export const pins: Pin[] = rows.map((r, i) => {
     startedOn: dates?.[0],
     endedOn: dates?.[1],
     photos: photos(id, n),
+    activities,
     createdAt: new Date(2025, 0, 1 + i).toISOString(),
   };
 });
+
+// Who the demo viewer already follows (creators). Following a creator overlays
+// their public pins on your map as a toggleable layer.
+export const seedFollows: { followerId: string; creatorId: string }[] = [
+  { followerId: "u-you", creatorId: "u-kai" },
+];
+
+// Deterministic baseline like-counts (stable across SSR/client so hydration
+// matches). Creator pins trend higher.
+function hashCode(s: string): number {
+  let h = 0;
+  for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return h;
+}
+
+export const seedLikeCounts: Record<string, number> = Object.fromEntries(
+  pins.map((p) => {
+    const owner = users.find((u) => u.id === p.userId);
+    const base = owner?.isCreator ? 180 + (hashCode(p.id) % 2400) : 2 + (hashCode(p.id) % 46);
+    return [p.id, base];
+  })
+);
 
 function pinIdFor(userId: string, place: string): string {
   const p = pins.find((x) => x.userId === userId && x.placeName === place);

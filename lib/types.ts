@@ -16,8 +16,34 @@ export interface User {
   /** Stable per-friend color used across the map + rails. */
   color: string;
   defaultPinVisibility: Visibility;
-  isCreator?: boolean; // v2 hook
+  isCreator?: boolean;
+  /** Creator-only: public follower count and activity verticals (surf, mtb…). */
+  followerCount?: number;
+  activities?: ActivitySlug[];
 }
+
+export type ActivitySlug =
+  | "surf"
+  | "mtb"
+  | "ski"
+  | "climb"
+  | "dive"
+  | "run"
+  | "soccer"
+  | "basketball"
+  | "photography";
+
+export const ACTIVITY_LABELS: Record<ActivitySlug, string> = {
+  surf: "Surf",
+  mtb: "MTB",
+  ski: "Ski",
+  climb: "Climb",
+  dive: "Dive",
+  run: "Run",
+  soccer: "Soccer",
+  basketball: "Basketball",
+  photography: "Photography",
+};
 
 export interface PinPhoto {
   id: string;
@@ -39,6 +65,8 @@ export interface Pin {
   endedOn?: string;
   visibility: Visibility;
   photos: PinPhoto[];
+  /** Activity verticals this pin belongs to (mostly creator pins). */
+  activities?: ActivitySlug[];
   createdAt: string;
 }
 

@@ -6,13 +6,12 @@ import Supercluster from "supercluster";
 import { useStore } from "@/lib/store";
 import { useVisiblePins } from "@/lib/hooks";
 import {
-  MAP_STYLE_URL,
-  SKY,
   TERRAIN_ATTRIBUTION,
   TERRAIN_TILES,
-  brightWorldStyle,
+  bundledWorldStyle,
   satelliteStyle,
 } from "@/lib/mapStyle";
+import { THEMES } from "@/lib/themes";
 import type { PinWithOwner } from "@/lib/types";
 
 interface Props {
@@ -39,6 +38,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
   const readyRef = useRef(false);
   const didInitialFit = useRef(false);
+  const styleSeqRef = useRef(0);
 
   const visiblePins = useVisiblePins();
   const selectedPinId = useStore((s) => s.selectedPinId);
@@ -46,6 +46,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const flyTo = useStore((s) => s.flyTo);
   const basemap = useStore((s) => s.basemap);
   const terrain3d = useStore((s) => s.terrain3d);
+  const themeId = useStore((s) => s.theme);
 
   const placingRef = useRef(placing);
   const onPickRef = useRef(onPick);
@@ -53,18 +54,20 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const selectRef = useRef(selectPin);
   const selectedRef = useRef<string | null>(selectedPinId);
   const terrainRef = useRef(terrain3d);
-  // Set when the elevation source can't load (offline / blocked): terrain gets
-  // disabled so fills still render (draping onto a dead DEM mesh hides them).
-  const terrainBrokenRef = useRef(false);
+  const themeRef = useRef(THEMES[themeId]);
+  // Set when the elevation source can't load (offline / bundled basemap):
+  // terrain gets disabled so fills still render.
+  const terrainBrokenRef = useRef(true);
   placingRef.current = placing;
   onPickRef.current = onPick;
   pinsRef.current = visiblePins;
   selectRef.current = selectPin;
   selectedRef.current = selectedPinId;
   terrainRef.current = terrain3d;
+  themeRef.current = THEMES[themeId];
 
-  // Apply the "planet" chrome — globe projection, atmosphere, and 3D terrain —
-  // after any style (re)load, since setStyle wipes sources/terrain.
+  // Apply the "planet" chrome — globe projection, themed atmosphere, and 3D
+  // terrain — after any style (re)load, since setStyle wipes sources/terrain.
   function applyGlobeChrome(map: maplibregl.Map) {
     try {
       map.setProjection({ type: "globe" });
@@ -72,7 +75,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       /* older maplibre → mercator */
     }
     try {
-      map.setSky(SKY);
+      map.setSky(themeRef.current.sky);
     } catch {
       /* sky unsupported */
     }
@@ -112,25 +115,51 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
   }
 
+  // Swap the basemap for the current mode+theme: satellite directly; "map" mode
+  // shows the bundled themed globe instantly, then upgrades to the theme's
+  // online street style once that provider is confirmed reachable.
+  function applyBasemap(map: maplibregl.Map, mode: "map" | "satellite") {
+    const seq = ++styleSeqRef.current;
+    const theme = themeRef.current;
+    if (mode === "satellite") {
+      terrainBrokenRef.current = false; // DEM may load; error handler resets
+      map.setStyle(satelliteStyle());
+      return;
+    }
+    terrainBrokenRef.current = true; // bundled globe has no elevation data
+    map.setStyle(bundledWorldStyle(theme));
+    const remote = theme.remoteStyle;
+    if (!remote) return;
+    fetch(remote, { mode: "cors" })
+      .then((res) => {
+        if (!res.ok) throw new Error("style probe failed");
+        if (styleSeqRef.current !== seq) return; // user switched again
+        terrainBrokenRef.current = false;
+        map.setStyle(remote);
+      })
+      .catch(() => {
+        /* stay on the bundled globe */
+      });
+  }
+
   // ---- Map init (once) ----
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
-    // Start on the bundled bright globe: it's local, so it paints instantly and
-    // always works. We then upgrade to the detailed street map once we've
-    // confirmed that provider is actually reachable. No terrain on the bright
-    // base (its DEM would be remote); terrain comes with the upgrade.
-    terrainBrokenRef.current = true;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: brightWorldStyle(),
+      style: bundledWorldStyle(themeRef.current),
       center: [10, 25],
-      zoom: 1.5,
+      zoom: 1.6,
+      minZoom: 1.05, // never shrink the planet to a dot
       pitch: 0,
       maxPitch: 75,
       attributionControl: false,
     });
     mapRef.current = map;
+
+    // Snappier, more controllable wheel zoom (Apple-ish feel).
+    map.scrollZoom.setWheelZoomRate(1 / 240);
 
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
     map.addControl(
@@ -138,7 +167,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       "bottom-right"
     );
 
-    // Runs once, on the first style that loads (bright base or the upgrade).
+    // Runs once, on the first style that loads.
     const initOnce = () => {
       applyGlobeChrome(map);
       if (readyRef.current) return;
@@ -152,18 +181,20 @@ export default function MapCanvas({ placing, onPick }: Props) {
     map.on("load", initOnce);
     requestAnimationFrame(() => map.resize());
 
-    // Upgrade to the detailed street basemap if its provider is reachable.
-    // Probing with fetch avoids swapping to a style whose tiles will hang.
-    if (typeof MAP_STYLE_URL === "string" && /^https?:/.test(MAP_STYLE_URL)) {
-      fetch(MAP_STYLE_URL, { mode: "cors" })
-        .then((res) => {
-          if (!res.ok) throw new Error("style probe failed");
-          terrainBrokenRef.current = false; // real basemap → terrain available
-          map.setStyle(MAP_STYLE_URL); // applyGlobeChrome re-runs on style.load
-        })
-        .catch(() => {
-          /* stay on the bright globe */
-        });
+    // Kick the online-style upgrade probe for the initial theme.
+    {
+      const seq = ++styleSeqRef.current;
+      const remote = themeRef.current.remoteStyle;
+      if (remote) {
+        fetch(remote, { mode: "cors" })
+          .then((res) => {
+            if (!res.ok) throw new Error("style probe failed");
+            if (styleSeqRef.current !== seq) return;
+            terrainBrokenRef.current = false;
+            map.setStyle(remote);
+          })
+          .catch(() => {});
+      }
     }
 
     map.on("error", (e) => {
@@ -179,8 +210,32 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }
     });
 
+    // Keep the globe centered while zooming out: as zoom decreases, ease the
+    // camera's latitude back toward the equator (and flatten pitch) so the
+    // planet sits in the middle of the screen instead of sliding off-bottom.
+    const recenterGlobe = () => {
+      const z = map.getZoom();
+      if (z >= 3.2) return;
+      const t = Math.max(0, Math.min(1, (z - 1.05) / (3.2 - 1.05)));
+      const maxLat = 12 + t * 63; // 12° fully zoomed out → 75° near street level
+      const c = map.getCenter();
+      const clampedLat = Math.max(-maxLat, Math.min(maxLat, c.lat));
+      const needPitch = z < 2.4 && map.getPitch() > 4;
+      if (Math.abs(clampedLat - c.lat) > 0.4 || needPitch) {
+        map.easeTo({
+          center: [c.lng, clampedLat],
+          pitch: needPitch ? 0 : map.getPitch(),
+          duration: 420,
+          essential: true,
+        });
+      }
+    };
+
     map.on("moveend", render);
-    map.on("zoomend", render);
+    map.on("zoomend", () => {
+      render();
+      recenterGlobe();
+    });
     map.on("move", renderThrottled);
 
     map.on("click", (e) => {
@@ -190,16 +245,17 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ---- React to Map/Satellite toggle ----
+  // ---- React to Map/Satellite + theme switches ----
+  const modeKeyRef = useRef(`${basemap}:${themeId}`);
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !readyRef.current) return;
-    const next = basemap === "satellite" ? satelliteStyle() : MAP_STYLE_URL;
-    map.setStyle(next as maplibregl.StyleSpecification | string);
-    // applyGlobeChrome re-runs on the resulting style.load. Markers are DOM
-    // overlays and survive the style swap.
+    const key = `${basemap}:${themeId}`;
+    if (modeKeyRef.current === key) return;
+    modeKeyRef.current = key;
+    applyBasemap(map, basemap);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [basemap]);
+  }, [basemap, themeId]);
 
   // ---- Toggle terrain relief ----
   useEffect(() => {
@@ -294,15 +350,47 @@ export default function MapCanvas({ placing, onPick }: Props) {
     const index = clusterRef.current;
     if (!map || !index) return;
 
-    const bounds = map.getBounds();
-    const bbox: [number, number, number, number] = [
-      bounds.getWest(),
-      bounds.getSouth(),
-      bounds.getEast(),
-      bounds.getNorth(),
-    ];
-    const zoom = Math.round(map.getZoom());
+    // At planet scale, getBounds() is unreliable under the globe projection —
+    // it can go degenerate and report a sliver, dropping every cluster. Below
+    // that scale, query the whole world and let the horizon test decide what's
+    // actually visible on the sphere.
+    const zoomNow = map.getZoom();
+    const planetScale = zoomNow < 3.5;
+    let bbox: [number, number, number, number];
+    if (planetScale) {
+      bbox = [-180, -90, 180, 90];
+    } else {
+      const bounds = map.getBounds();
+      bbox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
+    }
+    const zoom = Math.round(zoomNow);
     const clusters = index.getClusters(bbox, zoom);
+
+    // Markers beyond the globe's horizon get projected OUTWARD past the
+    // sphere's silhouette and float detached beside the planet. Hide them with
+    // a screen-space test: the silhouette is a circle around the projected map
+    // center whose radius is the projected distance to a point 90° of arc
+    // away — anything projecting outside that circle is off-globe.
+    const checkHorizon = zoomNow < 5;
+    const center = map.getCenter();
+    let silhouette: { cx: number; cy: number; r: number } | null = null;
+    if (checkHorizon) {
+      try {
+        const cPx = map.project([center.lng, center.lat]);
+        // Great-circle point 90° due north of center (wraps over the pole).
+        const northLat = center.lat + 90;
+        const p90 =
+          northLat > 90
+            ? map.project([center.lng + 180, 180 - northLat])
+            : map.project([center.lng, northLat]);
+        const r = Math.hypot(p90.x - cPx.x, p90.y - cPx.y);
+        if (Number.isFinite(r) && r > 10) {
+          silhouette = { cx: cPx.x, cy: cPx.y, r: r * 0.995 };
+        }
+      } catch {
+        silhouette = null;
+      }
+    }
 
     const next = new Set<string>();
     for (const c of clusters) {
@@ -317,8 +405,13 @@ export default function MapCanvas({ placing, onPick }: Props) {
         : pinEl(props, props.pinId === selectedRef.current);
 
       if (marker) {
-        marker.getElement().replaceChildren(...Array.from(el.childNodes));
-        marker.getElement().className = el.className;
+        const existing = marker.getElement();
+        existing.replaceChildren(...Array.from(el.childNodes));
+        // Preserve MapLibre's own marker classes; ours follow.
+        const keep = existing.className
+          .split(" ")
+          .filter((c) => c.startsWith("maplibregl"));
+        existing.className = [...keep, ...el.className.split(" ")].join(" ");
         marker.setLngLat([lng, lat]);
       } else {
         marker = new maplibregl.Marker({ element: el, anchor: "center" })
@@ -328,6 +421,22 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }
 
       const element = marker.getElement();
+
+      // Horizon occlusion (screen-space silhouette test).
+      if (silhouette) {
+        let onGlobe = true;
+        try {
+          const mPx = map.project([lng, lat]);
+          const d = Math.hypot(mPx.x - silhouette.cx, mPx.y - silhouette.cy);
+          onGlobe = Number.isFinite(d) && d <= silhouette.r;
+        } catch {
+          onGlobe = false;
+        }
+        element.style.display = onGlobe ? "" : "none";
+      } else {
+        element.style.display = "";
+      }
+
       element.onclick = (ev) => {
         ev.stopPropagation();
         if (placingRef.current) return;
@@ -363,6 +472,17 @@ export default function MapCanvas({ placing, onPick }: Props) {
       style={{ width: "100%", height: "100%" }}
     />
   );
+}
+
+/** Great-circle angular distance between two lng/lat points, in degrees. */
+function angularDistanceDeg(lng1: number, lat1: number, lng2: number, lat2: number): number {
+  const rad = Math.PI / 180;
+  const φ1 = lat1 * rad;
+  const φ2 = lat2 * rad;
+  const Δλ = (lng2 - lng1) * rad;
+  const cosΔ =
+    Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+  return Math.acos(Math.max(-1, Math.min(1, cosΔ))) / rad;
 }
 
 function leafColors(index: Supercluster, clusterId: number): string[] {

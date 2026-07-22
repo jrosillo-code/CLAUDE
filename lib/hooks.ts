@@ -16,13 +16,38 @@ export function useVisiblePins(): PinWithOwner[] {
   const users = useStore((s) => s.users);
   const friendships = useStore((s) => s.friendships);
   const viewerId = useStore((s) => s.viewerId);
+  const follows = useStore((s) => s.follows);
   const activeUserIds = useStore((s) => s.activeUserIds);
   const explore = useStore((s) => s.explore);
 
   return useMemo(
     () =>
-      computeVisible({ pins, users, friendships, viewerId, activeUserIds, explore }),
-    [pins, users, friendships, viewerId, activeUserIds, explore]
+      computeVisible({
+        pins,
+        users,
+        friendships,
+        viewerId,
+        follows,
+        activeUserIds,
+        explore,
+      }),
+    [pins, users, friendships, viewerId, follows, activeUserIds, explore]
+  );
+}
+
+/** All creator accounts (for the Creators tab). */
+export function useCreators(): User[] {
+  const users = useStore((s) => s.users);
+  return useMemo(() => users.filter((u) => u.isCreator), [users]);
+}
+
+/** Creators the viewer currently follows (for the layer rail). */
+export function useFollowedCreators(): User[] {
+  const users = useStore((s) => s.users);
+  const follows = useStore((s) => s.follows);
+  return useMemo(
+    () => users.filter((u) => u.isCreator && follows.has(u.id)),
+    [users, follows]
   );
 }
 

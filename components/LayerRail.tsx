@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useStore } from "@/lib/store";
-import { useFriends, useViewer } from "@/lib/hooks";
+import { useFollowedCreators, useFriends, useViewer } from "@/lib/hooks";
 
 // Me / individual friends / Everyone toggles (plan §6). Collapses to a pill on
 // mobile; expands to a left rail of avatars.
@@ -10,6 +10,7 @@ export default function LayerRail() {
   const [open, setOpen] = useState(false);
   const viewer = useViewer();
   const friends = useFriends();
+  const creators = useFollowedCreators();
   const activeUserIds = useStore((s) => s.activeUserIds);
   const showOnlyMe = useStore((s) => s.showOnlyMe);
   const showEveryone = useStore((s) => s.showEveryone);
@@ -55,6 +56,25 @@ export default function LayerRail() {
               />
             ))}
           </ul>
+
+          {creators.length > 0 && (
+            <>
+              <div className="mt-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-ink-3">
+                Creators
+              </div>
+              <ul className="mt-0.5 space-y-0.5">
+                {creators.map((c) => (
+                  <Row
+                    key={c.id}
+                    user={c}
+                    label={c.displayName}
+                    on={isOn(c.id)}
+                    onToggle={() => toggleUser(c.id)}
+                  />
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </div>
     </div>

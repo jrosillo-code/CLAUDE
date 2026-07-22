@@ -2,13 +2,23 @@
 
 import { create } from "zustand";
 import type { Friendship, Pin, TopPlace, User, Visibility } from "./types";
+import type { ThemeId } from "./themes";
+import { THEMES } from "./themes";
 import {
   CURRENT_USER_ID,
   friendships as seedFriendships,
   pins as seedPins,
+  seedFollows,
+  seedLikeCounts,
   topPlaces as seedTopPlaces,
   users as seedUsers,
 } from "./seed";
+
+function followsFor(viewerId: string): Set<string> {
+  return new Set(
+    seedFollows.filter((f) => f.followerId === viewerId).map((f) => f.creatorId)
+  );
+}
 
 export interface AddPinDraft {
   lng: number;
@@ -33,6 +43,19 @@ interface WaypointState {
   setBasemap: (b: "map" | "satellite") => void;
   terrain3d: boolean;
   setTerrain3d: (v: boolean) => void;
+
+  // Theme (UI chrome + globe palette). Persisted to localStorage.
+  theme: ThemeId;
+  setTheme: (t: ThemeId) => void;
+
+  // Social: likes, saves ("favorite for later"), creator follows.
+  likeCounts: Record<string, number>;
+  likedPinIds: Set<string>;
+  toggleLike: (pinId: string) => void;
+  savedPinIds: Set<string>;
+  toggleSave: (pinId: string) => void;
+  follows: Set<string>;
+  toggleFollow: (creatorId: string) => void;
 
   // Map layer state. `activeUserIds === null` => Everyone.
   activeUserIds: Set<string> | null;
@@ -80,12 +103,72 @@ export const useStore = create<WaypointState>((set, get) => ({
   topPlaces: seedTopPlaces,
 
   viewerId: CURRENT_USER_ID,
-  setViewer: (id) => set({ viewerId: id, selectedPinId: null }),
+  setViewer: (id) =>
+    set({
+      viewerId: id,
+      selectedPinId: null,
+      follows: followsFor(id),
+      likedPinIds: new Set(),
+      savedPinIds: new Set(),
+    }),
 
   basemap: "map",
   setBasemap: (b) => set({ basemap: b }),
   terrain3d: true,
   setTerrain3d: (v) => set({ terrain3d: v }),
+
+  theme: "daylight",
+  setTheme: (t) => {
+    if (!THEMES[t]) return;
+    set({ theme: t });
+    try {
+      window.localStorage.setItem("wp-theme", t);
+    } catch {
+      /* SSR / private mode */
+    }
+  },
+
+  likeCounts: { ...seedLikeCounts },
+  likedPinIds: new Set<string>(),
+  toggleLike: (pinId) =>
+    set((s) => {
+      const liked = new Set(s.likedPinIds);
+      const counts = { ...s.likeCounts };
+      if (liked.has(pinId)) {
+        liked.delete(pinId);
+        counts[pinId] = Math.max(0, (counts[pinId] ?? 0) - 1);
+      } else {
+        liked.add(pinId);
+        counts[pinId] = (counts[pinId] ?? 0) + 1;
+      }
+      return { likedPinIds: liked, likeCounts: counts };
+    }),
+
+  savedPinIds: new Set<string>(),
+  toggleSave: (pinId) =>
+    set((s) => {
+      const saved = new Set(s.savedPinIds);
+      if (saved.has(pinId)) saved.delete(pinId);
+      else saved.add(pinId);
+      return { savedPinIds: saved };
+    }),
+
+  follows: followsFor(CURRENT_USER_ID),
+  toggleFollow: (creatorId) =>
+    set((s) => {
+      const follows = new Set(s.follows);
+      if (follows.has(creatorId)) follows.delete(creatorId);
+      else follows.add(creatorId);
+      // If layers were materialised into an explicit set, keep it in sync so a
+      // newly-followed creator appears immediately.
+      let activeUserIds = s.activeUserIds;
+      if (activeUserIds) {
+        activeUserIds = new Set(activeUserIds);
+        if (follows.has(creatorId)) activeUserIds.add(creatorId);
+        else activeUserIds.delete(creatorId);
+      }
+      return { follows, activeUserIds };
+    }),
 
   activeUserIds: null, // Everyone by default — "a map should never feel empty"
   explore: false,
@@ -97,7 +180,7 @@ export const useStore = create<WaypointState>((set, get) => ({
       // Materialise the current "everyone" set into an explicit set on first toggle.
       const base =
         s.activeUserIds ??
-        new Set<string>(visibleOwnerIds(s.users, s.friendships, s.viewerId));
+        new Set<string>(visibleOwnerIds(s.users, s.friendships, s.viewerId, s.follows));
       const next = new Set(base);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -158,13 +241,15 @@ export const useStore = create<WaypointState>((set, get) => ({
   },
 }));
 
-// The set of owner ids a viewer could see under "Everyone": self + accepted friends.
+// The set of owner ids a viewer could see under "Everyone": self + accepted
+// friends + followed creators.
 function visibleOwnerIds(
   users: User[],
   friendships: Friendship[],
-  viewerId: string
+  viewerId: string,
+  follows: Set<string>
 ): string[] {
-  const ids = new Set<string>([viewerId]);
+  const ids = new Set<string>([viewerId, ...follows]);
   for (const f of friendships) {
     if (f.status !== "accepted") continue;
     if (f.userA === viewerId) ids.add(f.userB);

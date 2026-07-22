@@ -1,93 +1,325 @@
 "use client";
 
 import Link from "next/link";
-import Sheet from "./Sheet";
-import PhotoCarousel from "./PhotoCarousel";
+import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
 import { friendsWhoVisited, visibilityLabel } from "@/lib/data";
 import { formatDates } from "@/lib/format";
+import { ACTIVITY_LABELS } from "@/lib/types";
+import type { PinPhoto } from "@/lib/types";
+import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 
+// Immersive pin view: a large modal with a photo collage (click any photo to
+// open it full-screen), the story of the place, likes/saves, and who else has
+// been there. Replaces the old arrow-carousel sheet.
 export default function PinSheet() {
   const selectedPinId = useStore((s) => s.selectedPinId);
   const selectPin = useStore((s) => s.selectPin);
   const pins = useStore((s) => s.pins);
   const users = useStore((s) => s.users);
   const viewerId = useStore((s) => s.viewerId);
+  const likeCounts = useStore((s) => s.likeCounts);
+  const likedPinIds = useStore((s) => s.likedPinIds);
+  const toggleLike = useStore((s) => s.toggleLike);
+  const savedPinIds = useStore((s) => s.savedPinIds);
+  const toggleSave = useStore((s) => s.toggleSave);
+
+  const [lightbox, setLightbox] = useState<number | null>(null);
 
   const pin = pins.find((p) => p.id === selectedPinId);
+  const close = () => selectPin(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (lightbox !== null) setLightbox(null);
+        else close();
+      }
+      if (lightbox !== null && pin) {
+        if (e.key === "ArrowRight") setLightbox((i) => ((i ?? 0) + 1) % pin.photos.length);
+        if (e.key === "ArrowLeft")
+          setLightbox((i) => ((i ?? 0) - 1 + pin.photos.length) % pin.photos.length);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lightbox, pin?.id]);
+
   if (!pin) return null;
   const owner = users.find((u) => u.id === pin.userId)!;
   const alsoHere = friendsWhoVisited(pins, users, pin);
   const isOwner = pin.userId === viewerId;
+  const liked = likedPinIds.has(pin.id);
+  const saved = savedPinIds.has(pin.id);
+  const likeCount = likeCounts[pin.id] ?? 0;
 
   return (
-    <Sheet onClose={() => selectPin(null)}>
-      <div className="relative">
-        <PhotoCarousel photos={pin.photos} />
-        <button
-          onClick={() => selectPin(null)}
-          aria-label="Close"
-          className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-ink/40 text-paper backdrop-blur hover:bg-ink/60"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-        </button>
-        <span
-          className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-medium text-paper backdrop-blur"
-          style={{ background: "rgba(26,23,20,.45)" }}
-        >
-          {visibilityLabel[pin.visibility]}
-        </span>
-      </div>
+    <>
+      {/* Scrim */}
+      <div
+        onClick={close}
+        className="fixed inset-0 z-40 animate-fade bg-ink/45 backdrop-blur-sm"
+      />
 
-      <div className="scroll-thin overflow-y-auto px-5 py-4">
-        <div className="flex items-center gap-1.5 text-sm text-ink-3">
-          <span>{pin.placeName}</span>
-          {pin.countryCode && <span>· {pin.countryCode}</span>}
-        </div>
-        <h2 className="mt-0.5 font-display text-2xl leading-tight">{pin.title}</h2>
-        {(pin.startedOn || pin.endedOn) && (
-          <p className="mt-1 text-sm text-ink-3">{formatDates(pin.startedOn, pin.endedOn)}</p>
-        )}
+      {/* Modal */}
+      <div className="pointer-events-none fixed inset-0 z-40 flex items-end justify-center sm:items-center sm:p-6">
+        <div className="animate-sheet pointer-events-auto flex max-h-[94vh] w-full flex-col overflow-hidden rounded-t-[22px] bg-paper shadow-float sm:max-h-[88vh] sm:max-w-4xl sm:rounded-[22px]">
+          <div className="scroll-thin overflow-y-auto">
+            {/* Collage */}
+            <div className="relative">
+              <Collage photos={pin.photos} onOpen={(i) => setLightbox(i)} />
+              <button
+                onClick={close}
+                aria-label="Close"
+                className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-ink/45 text-paper backdrop-blur transition-colors hover:bg-ink/65"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+              </button>
+              <span className="absolute left-3 top-3 rounded-full bg-ink/45 px-2.5 py-1 text-xs font-medium text-paper backdrop-blur">
+                {visibilityLabel[pin.visibility]}
+              </span>
+            </div>
 
-        {pin.note && <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{pin.note}</p>}
+            <div className="px-5 py-5 sm:px-8 sm:py-6">
+              {/* Header row */}
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 text-sm text-ink-3">
+                    <span>{pin.placeName}</span>
+                    {pin.countryCode && <span>· {pin.countryCode}</span>}
+                    {(pin.startedOn || pin.endedOn) && (
+                      <span>· {formatDates(pin.startedOn, pin.endedOn)}</span>
+                    )}
+                  </div>
+                  <h2 className="mt-0.5 font-display text-3xl leading-tight">{pin.title}</h2>
+                  {pin.activities && pin.activities.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {pin.activities.map((a) => (
+                        <span key={a} className="rounded-full bg-paper-2 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-ink-2">
+                          {ACTIVITY_LABELS[a]}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-        {/* Owner */}
-        <Link
-          href={`/u/${owner.handle}`}
-          className="mt-4 flex items-center gap-2.5 rounded-2xl bg-paper-2 px-3 py-2.5 transition-colors hover:bg-line"
-        >
-          <img src={owner.avatarUrl} alt="" className="h-9 w-9 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: owner.color }} />
-          <div className="min-w-0">
-            <div className="truncate text-sm font-medium">{owner.displayName}</div>
-            <div className="truncate text-xs text-ink-3">@{owner.handle}</div>
-          </div>
-          <span className="ml-auto text-ink-3">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </span>
-        </Link>
+                {/* Like + Save */}
+                <div className="flex shrink-0 items-center gap-2">
+                  <button
+                    onClick={() => toggleLike(pin.id)}
+                    className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                      liked ? "bg-accent text-paper" : "bg-paper-2 text-ink-2 hover:bg-line"
+                    }`}
+                    aria-pressed={liked}
+                  >
+                    <HeartIcon filled={liked} />
+                    {likeCount.toLocaleString()}
+                  </button>
+                  <button
+                    onClick={() => toggleSave(pin.id)}
+                    className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${
+                      saved ? "bg-ink text-paper" : "bg-paper-2 text-ink-2 hover:bg-line"
+                    }`}
+                    aria-pressed={saved}
+                    title="Save for later"
+                  >
+                    <BookmarkIcon filled={saved} />
+                    {saved ? "Saved" : "Save"}
+                  </button>
+                </div>
+              </div>
 
-        {/* Friends who've also been here */}
-        {alsoHere.length > 0 && (
-          <div className="mt-4">
-            <div className="text-xs font-medium uppercase tracking-wide text-ink-3">Also been here</div>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              {alsoHere.map((u) => (
-                <Link key={u.id} href={`/u/${u.handle}`} className="flex items-center gap-1.5 rounded-full bg-paper-2 py-1 pl-1 pr-2.5 hover:bg-line">
-                  <img src={u.avatarUrl} alt="" className="h-6 w-6 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: u.color }} />
-                  <span className="text-xs">{u.displayName.split(" ")[0]}</span>
-                </Link>
-              ))}
+              {pin.note && (
+                <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-2">{pin.note}</p>
+              )}
+
+              {/* Owner */}
+              <Link
+                href={`/u/${owner.handle}`}
+                onClick={close}
+                className="mt-5 flex items-center gap-3 rounded-2xl border border-line bg-paper-2/60 px-4 py-3 transition-colors hover:bg-paper-2"
+              >
+                <img src={owner.avatarUrl} alt="" className="h-11 w-11 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: owner.color }} />
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="truncate text-sm font-medium">{owner.displayName}</span>
+                    {owner.isCreator && <CreatorBadge />}
+                  </div>
+                  <div className="truncate text-xs text-ink-3">
+                    @{owner.handle}
+                    {owner.isCreator && owner.followerCount
+                      ? ` · ${formatFollowers(owner.followerCount)} followers`
+                      : ""}
+                  </div>
+                </div>
+                <span className="ml-auto text-ink-3">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                </span>
+              </Link>
+
+              {/* Friends who've also been here */}
+              {alsoHere.length > 0 && (
+                <div className="mt-5">
+                  <div className="text-xs font-medium uppercase tracking-wide text-ink-3">Also been here</div>
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    {alsoHere.map((u) => (
+                      <Link key={u.id} href={`/u/${u.handle}`} onClick={close} className="flex items-center gap-1.5 rounded-full bg-paper-2 py-1 pl-1 pr-2.5 hover:bg-line">
+                        <img src={u.avatarUrl} alt="" className="h-6 w-6 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: u.color }} />
+                        <span className="text-xs">{u.displayName.split(" ")[0]}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {isOwner && (
+                <div className="mt-6 flex gap-2">
+                  <button className="flex-1 rounded-full bg-paper-2 py-2.5 text-sm font-medium text-ink-2 hover:bg-line">Edit</button>
+                  <button className="flex-1 rounded-full bg-paper-2 py-2.5 text-sm font-medium text-accent hover:bg-line">Delete</button>
+                </div>
+              )}
             </div>
           </div>
-        )}
-
-        {isOwner && (
-          <div className="mt-5 flex gap-2">
-            <button className="flex-1 rounded-full bg-paper-2 py-2.5 text-sm font-medium text-ink-2 hover:bg-line">Edit</button>
-            <button className="flex-1 rounded-full bg-paper-2 py-2.5 text-sm font-medium text-accent hover:bg-line">Delete</button>
-          </div>
-        )}
+        </div>
       </div>
-    </Sheet>
+
+      {/* Lightbox */}
+      {lightbox !== null && pin.photos[lightbox] && (
+        <div
+          className="fixed inset-0 z-[60] flex animate-fade items-center justify-center bg-ink/95"
+          onClick={() => setLightbox(null)}
+        >
+          <img
+            src={pin.photos[lightbox].url}
+            alt=""
+            className="max-h-[88vh] max-w-[92vw] rounded-lg object-contain shadow-float"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={() => setLightbox(null)}
+            aria-label="Close photo"
+            className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-paper/15 text-paper backdrop-blur hover:bg-paper/25"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+          </button>
+          {pin.photos.length > 1 && (
+            <>
+              <LightboxArrow dir="left" onClick={(e) => { e.stopPropagation(); setLightbox((i) => ((i ?? 0) - 1 + pin.photos.length) % pin.photos.length); }} />
+              <LightboxArrow dir="right" onClick={(e) => { e.stopPropagation(); setLightbox((i) => ((i ?? 0) + 1) % pin.photos.length); }} />
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full bg-paper/15 px-3 py-1 text-xs text-paper backdrop-blur">
+                {lightbox + 1} / {pin.photos.length}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
+
+// Airbnb-style collage: one hero photo plus a grid, "+N" overlay when there are
+// more than fit. Every tile opens the lightbox.
+function Collage({ photos, onOpen }: { photos: PinPhoto[]; onOpen: (i: number) => void }) {
+  const n = photos.length;
+  const visible = Math.min(n, 5);
+  if (n === 0) return <div className="h-40 bg-paper-2" />;
+
+  const Tile = ({ i, className }: { i: number; className?: string }) => (
+    <button onClick={() => onOpen(i)} className={`group relative overflow-hidden ${className ?? ""}`}>
+      <img
+        src={photos[i].url}
+        alt=""
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        draggable={false}
+      />
+      {/* "+N more" overlay on the last visible tile */}
+      {i === visible - 1 && n > visible && (
+        <span className="absolute inset-0 grid place-items-center bg-ink/50 font-display text-2xl text-paper">
+          +{n - visible}
+        </span>
+      )}
+    </button>
+  );
+
+  if (n === 1) {
+    return (
+      <div className="h-[280px] sm:h-[380px]">
+        <Tile i={0} className="h-full w-full" />
+      </div>
+    );
+  }
+  if (n === 2) {
+    return (
+      <div className="grid h-[280px] grid-cols-2 gap-1 sm:h-[380px]">
+        <Tile i={0} /><Tile i={1} />
+      </div>
+    );
+  }
+  if (n === 3) {
+    return (
+      <div className="grid h-[280px] grid-cols-3 grid-rows-2 gap-1 sm:h-[380px]">
+        <Tile i={0} className="col-span-2 row-span-2" />
+        <Tile i={1} /><Tile i={2} />
+      </div>
+    );
+  }
+  if (n === 4) {
+    return (
+      <div className="grid h-[280px] grid-cols-4 grid-rows-2 gap-1 sm:h-[380px]">
+        <Tile i={0} className="col-span-2 row-span-2" />
+        <Tile i={1} /><Tile i={2} />
+        <Tile i={3} className="col-span-2" />
+      </div>
+    );
+  }
+  return (
+    <div className="grid h-[280px] grid-cols-4 grid-rows-2 gap-1 sm:h-[380px]">
+      <Tile i={0} className="col-span-2 row-span-2" />
+      <Tile i={1} /><Tile i={2} />
+      <Tile i={3} /><Tile i={4} />
+    </div>
+  );
+}
+
+function LightboxArrow({ dir, onClick }: { dir: "left" | "right"; onClick: (e: React.MouseEvent) => void }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={dir === "left" ? "Previous photo" : "Next photo"}
+      className={`absolute top-1/2 -translate-y-1/2 grid h-11 w-11 place-items-center rounded-full bg-paper/15 text-paper backdrop-blur transition-colors hover:bg-paper/25 ${
+        dir === "left" ? "left-4" : "right-4"
+      }`}
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className={dir === "left" ? "" : "rotate-180"}>
+        <path d="m15 6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
+  );
+}
+
+function HeartIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"}>
+      <path
+        d="M12 21s-7.5-4.7-10-9.3C.5 8.6 2.5 4.5 6.4 4.5c2.2 0 3.9 1.2 5.6 3.3 1.7-2.1 3.4-3.3 5.6-3.3 3.9 0 5.9 4.1 4.4 7.2C19.5 16.3 12 21 12 21z"
+        stroke="currentColor"
+        strokeWidth={filled ? 0 : 1.8}
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function BookmarkIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"}>
+      <path
+        d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1z"
+        stroke="currentColor"
+        strokeWidth={filled ? 0 : 1.8}
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

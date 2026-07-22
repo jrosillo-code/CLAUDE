@@ -1,19 +1,12 @@
-import type { StyleSpecification, SkySpecification } from "maplibre-gl";
-
-// ── Vector basemap (the "Map" mode) ──
-// Swappable via env (plan §3). Default is OpenFreeMap "liberty" — a soft,
-// detailed Apple/Google-streets-like style that reads well on a globe.
-export const MAP_STYLE_URL =
-  process.env.NEXT_PUBLIC_MAP_STYLE ??
-  "https://tiles.openfreemap.org/styles/liberty";
+import type { StyleSpecification } from "maplibre-gl";
+import type { MapTheme } from "./themes";
 
 // ── Keyless elevation for real 3D terrain ──
 // Terrarium-encoded DEM (AWS Open Data). Feeds both setTerrain (relief when you
 // tilt) and a subtle hillshade layer.
 export const TERRAIN_TILES =
   "https://elevation-tiles-prod.s3.amazonaws.com/terrarium/{z}/{x}/{y}.png";
-export const TERRAIN_ATTRIBUTION =
-  "Elevation: Mapzen / AWS Terrain Tiles";
+export const TERRAIN_ATTRIBUTION = "Elevation: Mapzen / AWS Terrain Tiles";
 
 // ── Satellite basemap (the "Satellite" mode) ──
 // ESRI World Imagery + a boundaries/places reference overlay = Apple-style
@@ -55,55 +48,31 @@ export function satelliteStyle(): StyleSpecification {
   };
 }
 
-// Bright daytime atmosphere: a soft blue halo around the planet, kept subtle so
-// the ocean and land read clearly (not fogged out). Fades away as you zoom in.
-export const SKY: SkySpecification = {
-  "sky-color": "#8ec2ee",
-  "sky-horizon-blend": 0.4,
-  "horizon-color": "#d6e8f8",
-  "horizon-fog-blend": 0.3,
-  "fog-color": "#e4f0fb",
-  "fog-ground-blend": 0.85,
-  "atmosphere-blend": [
-    "interpolate",
-    ["linear"],
-    ["zoom"],
-    0, 0.5,
-    4, 0.25,
-    7, 0,
-  ],
-};
-
-// Bright, daytime, fully-offline basemap built from bundled country geometry
-// (public/geo). Used when the online vector tiles can't load — so even with no
-// network the app shows a clean Apple-style globe with land, ocean, borders,
-// and country labels rather than a blank sphere. "A map should never feel empty."
-export function brightWorldStyle(): StyleSpecification {
+// Bundled basemap built from local country geometry (public/geo), themed. It is
+// local, so it paints instantly and always renders — even fully offline. The
+// app then upgrades to the theme's online street style when reachable.
+export function bundledWorldStyle(theme: MapTheme): StyleSpecification {
   return {
     version: 8,
-    name: "waypoint-bright",
+    name: `waypoint-${theme.id}`,
     glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
     sources: {
       countries: { type: "geojson", data: "/geo/countries-110m.json" },
     },
     layers: [
-      // Soft daytime ocean.
-      { id: "ocean", type: "background", paint: { "background-color": "#add3f0" } },
-      // Land fill — bright, warm off-white like Apple's daytime map.
+      { id: "ocean", type: "background", paint: { "background-color": theme.ocean } },
       {
         id: "land",
         type: "fill",
         source: "countries",
-        paint: { "fill-color": "#f4efe6", "fill-opacity": 1 },
+        paint: { "fill-color": theme.land, "fill-opacity": 1 },
       },
-      // Subtle country borders.
       {
         id: "borders",
         type: "line",
         source: "countries",
-        paint: { "line-color": "#d8cfbf", "line-width": 0.8 },
+        paint: { "line-color": theme.border, "line-width": 0.8 },
       },
-      // Country labels — muted, letter-spaced, placed at centroids.
       {
         id: "country-labels",
         type: "symbol",
@@ -116,25 +85,11 @@ export function brightWorldStyle(): StyleSpecification {
           "text-max-width": 8,
         },
         paint: {
-          "text-color": "#9a8f7d",
-          "text-halo-color": "#f4efe6",
+          "text-color": theme.labelColor,
+          "text-halo-color": theme.labelHalo,
           "text-halo-width": 1.2,
         },
       },
     ],
   };
 }
-
-// Absolute last resort if even the glyphs (labels) can't load: geometry only.
-export const FALLBACK_STYLE: StyleSpecification = {
-  version: 8,
-  name: "waypoint-fallback",
-  sources: {
-    countries: { type: "geojson", data: "/geo/countries-110m.json" },
-  },
-  layers: [
-    { id: "ocean", type: "background", paint: { "background-color": "#add3f0" } },
-    { id: "land", type: "fill", source: "countries", paint: { "fill-color": "#f4efe6" } },
-    { id: "borders", type: "line", source: "countries", paint: { "line-color": "#d8cfbf", "line-width": 0.8 } },
-  ],
-};

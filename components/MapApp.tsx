@@ -7,6 +7,7 @@ import LayerRail from "./LayerRail";
 import BasemapToggle from "./BasemapToggle";
 import PinSheet from "./PinSheet";
 import AddPinSheet from "./AddPinSheet";
+import CreatorsPanel from "./CreatorsPanel";
 import EmptyHint from "./EmptyHint";
 import { useStore } from "@/lib/store";
 import { useVisiblePins } from "@/lib/hooks";
@@ -15,6 +16,7 @@ import { reverseGeocode } from "@/lib/geocode";
 export default function MapApp() {
   const [placing, setPlacing] = useState(false);
   const [resolving, setResolving] = useState(false);
+  const [creatorsOpen, setCreatorsOpen] = useState(false);
   const startAddPin = useStore((s) => s.startAddPin);
   const addDraft = useStore((s) => s.addDraft);
   const selectedPinId = useStore((s) => s.selectedPinId);
@@ -40,7 +42,7 @@ export default function MapApp() {
     >
       <MapCanvas placing={placing} onPick={handlePick} />
 
-      <TopBar />
+      <TopBar onOpenCreators={() => setCreatorsOpen(true)} />
       <LayerRail />
       <BasemapToggle />
 
@@ -73,6 +75,7 @@ export default function MapApp() {
 
       {selectedPinId && <PinSheet />}
       {addDraft && <AddPinSheet />}
+      {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { useStore } from "@/lib/store";
 import { useViewer } from "@/lib/hooks";
 import { searchPlaces, type GeoResult } from "@/lib/geocode";
 
-export default function TopBar() {
+export default function TopBar({ onOpenCreators }: { onOpenCreators: () => void }) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
 
@@ -86,19 +86,36 @@ export default function TopBar() {
         )}
       </div>
 
-      {/* Viewer / profile */}
-      <Link
-        href={`/u/${viewer.handle}`}
-        className="flex shrink-0 items-center gap-2 rounded-full bg-paper/85 py-1.5 pl-1.5 pr-3 shadow-float backdrop-blur"
-      >
-        <img
-          src={viewer.avatarUrl}
-          alt=""
-          className="h-8 w-8 rounded-full object-cover ring-2"
-          style={{ ["--tw-ring-color" as string]: viewer.color }}
-        />
-        <span className="hidden text-sm font-medium sm:block">Me</span>
-      </Link>
+      <div className="flex shrink-0 items-center gap-2">
+        {/* Creators */}
+        <button
+          onClick={onOpenCreators}
+          className="flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-2 shadow-float backdrop-blur"
+          title="Creators"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent">
+            <path
+              d="M12 2.5 14.3 5l3.4-.3.6 3.3 3 1.6-1.4 3.1 1.4 3.1-3 1.6-.6 3.3-3.4-.3L12 22.7 9.7 20l-3.4.3-.6-3.3-3-1.6 1.4-3.1L2.7 9.2l3-1.6.6-3.3 3.4.3z"
+              fill="currentColor"
+            />
+          </svg>
+          <span className="hidden text-sm font-medium sm:block">Creators</span>
+        </button>
+
+        {/* Viewer / profile */}
+        <Link
+          href={`/u/${viewer.handle}`}
+          className="flex items-center gap-2 rounded-full bg-paper/85 py-1.5 pl-1.5 pr-3 shadow-float backdrop-blur"
+        >
+          <img
+            src={viewer.avatarUrl}
+            alt=""
+            className="h-8 w-8 rounded-full object-cover ring-2"
+            style={{ ["--tw-ring-color" as string]: viewer.color }}
+          />
+          <span className="hidden text-sm font-medium sm:block">Me</span>
+        </Link>
+      </div>
     </header>
   );
 }

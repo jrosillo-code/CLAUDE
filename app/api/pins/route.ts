@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Supercluster from "supercluster";
-import { pins, users, friendships, CURRENT_USER_ID } from "@/lib/seed";
+import { pins, users, friendships, seedFollows, CURRENT_USER_ID } from "@/lib/seed";
 import { visiblePins } from "@/lib/data";
 
 // GET /api/pins?bbox=w,s,e,n&zoom=3&viewer=<id>&explore=0
@@ -25,6 +25,9 @@ export function GET(req: Request) {
     users,
     friendships,
     viewerId: viewer,
+    follows: new Set(
+      seedFollows.filter((f) => f.followerId === viewer).map((f) => f.creatorId)
+    ),
     activeUserIds: null,
     explore,
   });
