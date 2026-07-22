@@ -86,9 +86,11 @@ interface WaypointState {
   startAddPin: (d: AddPinDraft) => void;
   cancelAddPin: () => void;
 
-  // Camera intent — components read this to fly the map somewhere.
+  // Camera intents — components read these to move the map.
   flyTo: { lng: number; lat: number; zoom?: number; nonce: number } | null;
   requestFlyTo: (lng: number, lat: number, zoom?: number) => void;
+  fitBoundsTo: { w: number; s: number; e: number; n: number; nonce: number } | null;
+  requestFitBounds: (b: { w: number; s: number; e: number; n: number }) => void;
 
   // Current viewport (updated by the map on move-end) — powers "Top spots in
   // this area". At planet scale it covers the whole world.
@@ -259,6 +261,8 @@ export const useStore = create<WaypointState>((set, get) => ({
   flyTo: null,
   requestFlyTo: (lng, lat, zoom) =>
     set({ flyTo: { lng, lat, zoom, nonce: ++flyNonce } }),
+  fitBoundsTo: null,
+  requestFitBounds: (b) => set({ fitBoundsTo: { ...b, nonce: ++flyNonce } }),
 
   viewBounds: null,
   setViewBounds: (b) => set({ viewBounds: b }),

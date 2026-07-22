@@ -48,6 +48,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const selectedPinId = useStore((s) => s.selectedPinId);
   const selectPin = useStore((s) => s.selectPin);
   const flyTo = useStore((s) => s.flyTo);
+  const fitBoundsTo = useStore((s) => s.fitBoundsTo);
   const basemap = useStore((s) => s.basemap);
   const terrain3d = useStore((s) => s.terrain3d);
   const themeId = useStore((s) => s.theme);
@@ -402,6 +403,31 @@ export default function MapCanvas({ placing, onPick }: Props) {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flyTo?.nonce]);
+
+  // ---- Fit-bounds intent (country Focus) ----
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !fitBoundsTo) return;
+    try {
+      map.fitBounds(
+        [
+          [fitBoundsTo.w, fitBoundsTo.s],
+          [fitBoundsTo.e, fitBoundsTo.n],
+        ],
+        {
+          padding: { top: 90, bottom: 110, left: 90, right: 90 },
+          maxZoom: 8,
+          bearing: 0,
+          pitch: 0,
+          duration: 1800,
+          essential: true,
+        }
+      );
+    } catch {
+      /* degenerate bounds — ignore */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fitBoundsTo?.nonce]);
 
   function fitToViewer() {
     if (didInitialFit.current) return;

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useFollowedCreators, useFriends, useViewer } from "@/lib/hooks";
+import { findCountryAt } from "@/lib/focus";
 
 // Me / individual friends / Everyone toggles (plan §6). Collapses to a pill on
 // mobile; expands to a left rail of avatars.
@@ -28,7 +29,7 @@ export default function LayerRail() {
     [...follows].every((id) => activeUserIds!.has(id));
 
   return (
-    <div className="fixed left-3 top-1/2 z-30 -translate-y-1/2">
+    <div className="fixed left-3 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-2">
       <div className="w-[220px] rounded-3xl bg-paper/90 p-2 shadow-float backdrop-blur">
         <button
           onClick={() => setOpen((o) => !o)}
@@ -85,7 +86,83 @@ export default function LayerRail() {
           )}
         </div>
       </div>
+
+      <FocusButton />
     </div>
+  );
+}
+
+// "Focus": frames the country you're standing in. Asks for location permission,
+// finds your country offline via the bundled geometry, and fits the map to it —
+// correct framing whether that's Afghanistan or Fiji.
+function FocusButton() {
+  const requestFitBounds = useStore((s) => s.requestFitBounds);
+  const requestFlyTo = useStore((s) => s.requestFlyTo);
+  const [state, setState] = useState<"idle" | "locating" | "off">("idle");
+  const [countryName, setCountryName] = useState<string | null>(null);
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function flash(next: "idle" | "off", name: string | null = null) {
+    setState(next === "off" ? "off" : "idle");
+    setCountryName(name);
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    resetTimer.current = setTimeout(() => {
+      setState("idle");
+      setCountryName(null);
+    }, 2600);
+  }
+
+  function focus() {
+    if (state === "locating") return;
+    if (!("geolocation" in navigator)) {
+      flash("off");
+      return;
+    }
+    setState("locating");
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const country = await findCountryAt(longitude, latitude);
+        if (country) {
+          requestFitBounds(country);
+          flash("idle", country.name);
+        } else {
+          // At sea / not in the dataset — just go to the location itself.
+          requestFlyTo(longitude, latitude, 5.5);
+          flash("idle");
+        }
+      },
+      () => flash("off"),
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 600000 }
+    );
+  }
+
+  const label =
+    state === "locating"
+      ? "Locating…"
+      : state === "off"
+        ? "Location off"
+        : countryName ?? "Focus";
+
+  return (
+    <button
+      onClick={focus}
+      title="Frame the country you're in"
+      className="flex w-[220px] items-center justify-center gap-2 rounded-full bg-paper/90 px-3 py-2.5 text-sm font-medium text-ink-2 shadow-float backdrop-blur transition-colors hover:text-ink"
+    >
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        className={state === "locating" ? "animate-pulse text-accent" : "text-accent"}
+      >
+        <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+      <span className="truncate">{label}</span>
+    </button>
   );
 }
 
