@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useStore } from "@/lib/store";
+import WaypointLogo from "./Logo";
 
 // Sign-in. Demo-mode: each provider button creates a local session for the
 // seeded account. When the Supabase backend is wired, these call
@@ -34,11 +35,8 @@ export default function LoginScreen() {
       <div className="w-full max-w-sm">
         {/* Brand */}
         <div className="flex flex-col items-center text-center">
-          <div className="grid h-16 w-16 place-items-center rounded-[22px] bg-ink shadow-float">
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="9" stroke="#f6f3ee" strokeWidth="1.6" />
-              <path d="m15.5 8.5-2.2 5.3-5.3 2.2 2.2-5.3z" fill="#c65d3b" />
-            </svg>
+          <div className="drop-shadow-lg">
+            <WaypointLogo size={72} />
           </div>
           <h1 className="mt-5 font-display text-4xl">Waypoint</h1>
           <p className="mt-2 max-w-[260px] text-sm leading-relaxed text-ink-3">

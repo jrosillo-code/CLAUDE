@@ -762,17 +762,37 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // World landmarks: small category-badged dots (UNESCO, monuments, parks,
     // cultural sites). They appear once zoomed past planet scale so the globe
     // stays clean, and sit under the travel pins.
-    if (!inTripsMode && landmarksRef.current.show && zoomNow >= 2.6) {
+    if (!inTripsMode && landmarksRef.current.show && zoomNow >= 2.1) {
       const [w, s, e, n] = bbox;
+      // The database is ~560 sites, so dense regions get screen-space thinning:
+      // one badge per 54-px grid cell (dataset order wins), capped per frame.
+      // Zoomed in past 6 the viewport is small enough to show everything.
+      const thin = zoomNow < 6;
+      const cells = new Set<string>();
+      let shown = 0;
       for (const lm of LANDMARKS) {
+        if (shown > 170) break;
         if (lm.lat < s || lm.lat > n) continue;
         if (!planetScale) {
           // handle antimeridian-crossing viewports
           const inLng = w <= e ? lm.lng >= w && lm.lng <= e : lm.lng >= w || lm.lng <= e;
           if (!inLng) continue;
         }
-        const meta = LANDMARK_CATEGORY_META[lm.category];
         const isSel = landmarksRef.current.selected === lm.id;
+        if (thin && !isSel) {
+          try {
+            const px = map.project([lm.lng, lm.lat]);
+            if (!Number.isFinite(px.x) || !Number.isFinite(px.y)) continue;
+            if (px.x < -40 || px.y < -40 || px.x > cw + 40 || px.y > ch + 40) continue;
+            const cell = `${Math.round(px.x / 54)}:${Math.round(px.y / 54)}`;
+            if (cells.has(cell)) continue;
+            cells.add(cell);
+          } catch {
+            continue;
+          }
+        }
+        shown++;
+        const meta = LANDMARK_CATEGORY_META[lm.category];
         upsert(
           `lm-${lm.id}`,
           lm.lng,

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useViewer } from "@/lib/hooks";
 import { searchPlaces, type GeoResult } from "@/lib/geocode";
+import WaypointLogo from "./Logo";
 
 export default function TopBar({
   onOpenCreators,
@@ -53,7 +54,7 @@ export default function TopBar({
           href="/"
           className="flex shrink-0 items-center gap-2 rounded-full bg-paper/85 px-3.5 py-2 shadow-float backdrop-blur"
         >
-          <Compass />
+          <WaypointLogo size={20} />
           <span className="hidden font-display text-lg leading-none min-[440px]:block">Waypoint</span>
         </Link>
       </div>
@@ -153,11 +154,3 @@ export default function TopBar({
   );
 }
 
-function Compass() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-accent">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-      <path d="m15.5 8.5-2.2 5.3-5.3 2.2 2.2-5.3z" fill="currentColor" />
-    </svg>
-  );
-}
