@@ -56,7 +56,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     id: "sandstone",
     label: "Sandstone",
     darkUI: false,
-    remoteStyle: "https://tiles.openfreemap.org/styles/positron",
+    remoteStyle: DAYLIGHT_REMOTE,
     ocean: "#b9cdd4",
     land: "#efe6d2",
     border: "#d9c8a6",
@@ -78,7 +78,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     id: "mint",
     label: "Mint",
     darkUI: false,
-    remoteStyle: "https://tiles.openfreemap.org/styles/bright",
+    remoteStyle: DAYLIGHT_REMOTE,
     ocean: "#a9dcd0",
     land: "#f4f8ef",
     border: "#c8ddcd",
@@ -100,7 +100,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     id: "vermilion",
     label: "Vermilion",
     darkUI: false,
-    remoteStyle: "https://tiles.openfreemap.org/styles/positron",
+    remoteStyle: DAYLIGHT_REMOTE,
     // Warm rice-paper land, soft blue-gray water, vermilion-red borders and
     // labels — styled after the Chinese edition of Apple Maps.
     ocean: "#c7dae4",
@@ -124,9 +124,7 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     id: "midnight",
     label: "Midnight",
     darkUI: true,
-    // OpenFreeMap has no official dark style; if this 404s the app simply stays
-    // on the bundled midnight globe, which is fully styled anyway.
-    remoteStyle: "https://tiles.openfreemap.org/styles/dark",
+    remoteStyle: DAYLIGHT_REMOTE,
     // A clearly-blue deep ocean against near-charcoal land, so water reads as
     // water instead of undifferentiated darkness.
     ocean: "#16324f",

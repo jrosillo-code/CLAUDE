@@ -56,6 +56,11 @@ interface WaypointState {
   viewerId: string;
   setViewer: (id: string) => void;
 
+  // What the map is showing: your world of pins, or trips only. Trips are
+  // their own thing — never overlaid on the pin map.
+  mapMode: "pins" | "trips";
+  setMapMode: (m: "pins" | "trips") => void;
+
   // Basemap mode (Apple-style Map / Satellite toggle) + 3D terrain.
   basemap: "map" | "satellite";
   setBasemap: (b: "map" | "satellite") => void;
@@ -183,6 +188,16 @@ export const useStore = create<WaypointState>((set, get) => ({
       savedPinIds: new Set(),
     }),
 
+  mapMode: "pins",
+  setMapMode: (m) =>
+    set((s) => ({
+      mapMode: m,
+      // Leaving trips mode abandons any in-progress draft; entering clears pin UI.
+      tripDraft: m === "trips" ? s.tripDraft : null,
+      selectedPinId: null,
+      addDraft: null,
+    })),
+
   basemap: "map",
   setBasemap: (b) => set({ basemap: b }),
   terrain3d: true,
@@ -293,6 +308,7 @@ export const useStore = create<WaypointState>((set, get) => ({
   startTripDraft: () =>
     set({
       tripDraft: { title: "", visibility: "friends", stops: [] },
+      mapMode: "trips",
       selectedPinId: null,
       addDraft: null,
     }),

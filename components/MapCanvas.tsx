@@ -55,6 +55,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const basemap = useStore((s) => s.basemap);
   const terrain3d = useStore((s) => s.terrain3d);
   const themeId = useStore((s) => s.theme);
+  const mapMode = useStore((s) => s.mapMode);
   const trips = useStore((s) => s.trips);
   const shownTripIds = useStore((s) => s.shownTripIds);
   const tripDraft = useStore((s) => s.tripDraft);
@@ -95,6 +96,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
   terrainRef.current = terrain3d;
   themeRef.current = THEMES[themeId];
   tripsRef.current = { trips: shownTrips, draft: tripDraft, avatars: avatarsById, viewerId };
+  const modeRef = useRef(mapMode);
+  modeRef.current = mapMode;
 
   // Apply the "planet" chrome — globe projection, themed atmosphere, and 3D
   // terrain — after any style (re)load, since setStyle wipes sources/terrain.
@@ -145,6 +148,56 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
   }
 
+  // Retint the loaded street style with the active theme's palette. This is
+  // what makes themes real at every zoom: all themes load ONE street base
+  // (liberty) and we override its paint — water, land, labels — live.
+  // Midnight additionally darkens buildings, greenery, and roads for a true
+  // dark street map. Bundled-globe and satellite styles are never tinted.
+  function applyThemeTint(map: maplibregl.Map) {
+    try {
+      if (map.getSource("countries") || map.getSource("esri-imagery")) return;
+      const theme = themeRef.current;
+      const dark = theme.darkUI;
+      const style = map.getStyle();
+      if (!style?.layers) return;
+      for (const layer of style.layers) {
+        const id = layer.id;
+        const ref = `${id} ${"source-layer" in layer ? layer["source-layer"] ?? "" : ""}`.toLowerCase();
+        try {
+          if (layer.type === "background") {
+            map.setPaintProperty(id, "background-color", theme.land);
+          } else if (layer.type === "fill") {
+            if (/water|ocean/.test(ref)) {
+              map.setPaintProperty(id, "fill-color", theme.ocean);
+              map.setPaintProperty(id, "fill-outline-color", theme.ocean);
+            } else if (/building/.test(ref)) {
+              if (dark) map.setPaintProperty(id, "fill-color", "#242e40");
+            } else if (/landcover|landuse|park|grass|wood|forest|sand|glacier|residential/.test(ref)) {
+              if (dark) map.setPaintProperty(id, "fill-color", "#1f2939");
+            } else if (dark) {
+              map.setPaintProperty(id, "fill-color", theme.land);
+            }
+          } else if (layer.type === "line") {
+            if (/water|river|stream|canal/.test(ref)) {
+              map.setPaintProperty(id, "line-color", theme.ocean);
+            } else if (dark && /road|highway|street|path|rail|bridge|tunnel|transit/.test(ref)) {
+              map.setPaintProperty(id, "line-color", /casing/.test(ref) ? "#161e2c" : "#4a5870");
+            } else if (dark && /boundary|border/.test(ref)) {
+              map.setPaintProperty(id, "line-color", theme.border);
+            }
+          } else if (layer.type === "symbol") {
+            map.setPaintProperty(id, "text-color", theme.labelColor);
+            map.setPaintProperty(id, "text-halo-color", theme.labelHalo);
+          }
+        } catch {
+          /* a property some layer doesn't support — skip it */
+        }
+      }
+    } catch {
+      /* style mid-swap */
+    }
+  }
+
   // The thread: one line source stitching each shown trip's stops in order.
   // Re-added after every style swap (setStyle wipes sources/layers).
   function syncTripThreads(map: maplibregl.Map) {
@@ -185,6 +238,13 @@ export default function MapCanvas({ placing, onPick }: Props) {
           },
         });
       }
+      // The thread only exists in trips mode — trips are never overlaid on
+      // the pin map.
+      map.setLayoutProperty(
+        "waypoint-trip-thread",
+        "visibility",
+        modeRef.current === "trips" ? "visible" : "none"
+      );
     } catch {
       /* style mid-swap — the next style.load re-syncs */
     }
@@ -279,6 +339,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // trip-thread layer re-apply on EVERY style.load — setStyle wipes them.)
     const initOnce = () => {
       applyGlobeChrome(map);
+      applyThemeTint(map);
       syncTripThreads(map);
       if (readyRef.current) return;
       readyRef.current = true;
@@ -463,14 +524,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPinId]);
 
-  // Trips or draft changed → refresh the thread and the needle markers.
+  // Trips, draft, or map mode changed → refresh the thread and the markers.
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !readyRef.current) return;
     syncTripThreads(map);
     render();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shownTrips, tripDraft]);
+  }, [shownTrips, tripDraft, mapMode]);
 
   // ---- Fly-to intent from the store ----
   useEffect(() => {
@@ -590,28 +651,35 @@ export default function MapCanvas({ placing, onPick }: Props) {
 
     const next = new Set<string>();
 
-    // Create-or-update a marker, then run the visibility gate: hide it when
-    // its projection is garbage for this frame (NaN / wild off-screen — the
-    // "random pins flickering in the corner" glitch) or, at globe scale, when
-    // it falls outside the sphere's silhouette (beyond the horizon).
+    // Create-or-update a marker, then run the visibility gate. Two anti-flicker
+    // rules: (1) content is only rebuilt when its contentKey changes — render()
+    // runs every animation frame while zooming, and rebuilding the DOM each
+    // frame replayed the pop-in animation ("pins flickering like crazy");
+    // (2) the entrance animation plays only when a marker is first created.
     const upsert = (
       key: string,
       lng: number,
       lat: number,
-      content: HTMLDivElement,
+      contentKey: string,
+      buildContent: () => HTMLDivElement,
       zIndex: string,
       onClick: ((ev: MouseEvent) => void) | null
     ) => {
       next.add(key);
       let marker = markersRef.current.get(key);
       if (marker) {
-        // The marker's outer element belongs to MapLibre (it carries the
-        // positioning transform); we only ever swap our content inside it.
-        marker.getElement().replaceChildren(content);
+        const el = marker.getElement();
+        if (el.dataset.ck !== contentKey) {
+          const content = buildContent();
+          content.classList.remove("marker-in"); // updates don't re-animate
+          el.replaceChildren(content);
+          el.dataset.ck = contentKey;
+        }
         marker.setLngLat([lng, lat]);
       } else {
         const el = document.createElement("div");
-        el.appendChild(content);
+        el.appendChild(buildContent());
+        el.dataset.ck = contentKey;
         marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
           .setLngLat([lng, lat])
           .addTo(map);
@@ -637,63 +705,83 @@ export default function MapCanvas({ placing, onPick }: Props) {
       element.onclick = onClick;
     };
 
-    // Teardrop pins, colored by the active theme. Clusters render as a
-    // stacked pair of pins — no count badge.
-    const pinColor = themeRef.current.pinColor;
-    for (const c of clusters) {
-      const props = c.properties as ClusterProps;
-      const [lng, lat] = c.geometry.coordinates as [number, number];
-      const key = props.cluster ? `c-${props.cluster_id}` : `p-${props.pinId}`;
-      const selected = !props.cluster && props.pinId === selectedRef.current;
-      const content = props.cluster
-        ? teardropEl({ photo: props.photo, color: pinColor, height: 46, stacked: true, selected: false })
-        : teardropEl({ photo: props.photo, color: pinColor, height: selected ? 50 : 38, stacked: false, selected });
-      upsert(key, lng, lat, content, selected ? "5" : "1", (ev) => {
-        ev.stopPropagation();
-        if (placingRef.current) return;
-        if (props.cluster && props.cluster_id != null) {
-          const expZoom = Math.min(index.getClusterExpansionZoom(props.cluster_id), 16);
-          map.flyTo({ center: [lng, lat], zoom: expZoom, duration: 700 });
-        } else if (props.pinId) {
-          selectRef.current(props.pinId);
-          map.flyTo({
-            center: [lng, lat],
-            zoom: Math.max(map.getZoom(), 6),
-            pitch: 45,
-            duration: 800,
-          });
-        }
-      });
-    }
+    const inTripsMode = modeRef.current === "trips";
+    const ringColor = themeRef.current.pinColor;
 
-    // Trip stops: needle pins (round avatar head on a thin stick), stitched
-    // together by the thread layer underneath.
-    const tripState = tripsRef.current;
-    for (const trip of tripState.trips) {
-      const avatar = tripState.avatars.get(trip.userId);
-      for (const stop of trip.stops) {
+    // Pin map: needle pins (photo ball head on a thin stick), theme-colored
+    // ring. Clusters render as a stacked pair of needles — no count badge.
+    if (!inTripsMode) {
+      for (const c of clusters) {
+        const props = c.properties as ClusterProps;
+        const [lng, lat] = c.geometry.coordinates as [number, number];
+        const key = props.cluster ? `c-${props.cluster_id}` : `p-${props.pinId}`;
+        const selected = !props.cluster && props.pinId === selectedRef.current;
+        const contentKey = `${props.photo}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
         upsert(
-          `ts-${trip.id}-${stop.id}`,
-          stop.lng,
-          stop.lat,
-          needleEl({ avatar, ghost: false }),
-          "2",
-          (ev) => ev.stopPropagation()
+          key,
+          lng,
+          lat,
+          contentKey,
+          () =>
+            needleEl({
+              photo: props.photo,
+              ring: ringColor,
+              scale: selected ? 1.25 : 1,
+              stacked: !!props.cluster,
+              ghost: false,
+            }),
+          selected ? "5" : "1",
+          (ev) => {
+            ev.stopPropagation();
+            if (placingRef.current) return;
+            if (props.cluster && props.cluster_id != null) {
+              const expZoom = Math.min(index.getClusterExpansionZoom(props.cluster_id), 16);
+              map.flyTo({ center: [lng, lat], zoom: expZoom, duration: 700 });
+            } else if (props.pinId) {
+              selectRef.current(props.pinId);
+              map.flyTo({
+                center: [lng, lat],
+                zoom: Math.max(map.getZoom(), 6),
+                pitch: 45,
+                duration: 800,
+              });
+            }
+          }
         );
       }
     }
-    if (tripState.draft) {
-      const avatar = tripState.avatars.get(tripState.viewerId);
-      tripState.draft.stops.forEach((stop, i) => {
-        upsert(
-          `td-${i}`,
-          stop.lng,
-          stop.lat,
-          needleEl({ avatar, ghost: true }),
-          "4",
-          (ev) => ev.stopPropagation()
-        );
-      });
+
+    // Trips mode: only the threads and their stops — no pin overlay.
+    if (inTripsMode) {
+      const tripState = tripsRef.current;
+      for (const trip of tripState.trips) {
+        const avatar = tripState.avatars.get(trip.userId);
+        for (const stop of trip.stops) {
+          upsert(
+            `ts-${trip.id}-${stop.id}`,
+            stop.lng,
+            stop.lat,
+            `${avatar}|trip`,
+            () => needleEl({ photo: avatar, ring: "#585d66", scale: 1, stacked: false, ghost: false }),
+            "2",
+            (ev) => ev.stopPropagation()
+          );
+        }
+      }
+      if (tripState.draft) {
+        const avatar = tripState.avatars.get(tripState.viewerId);
+        tripState.draft.stops.forEach((stop, i) => {
+          upsert(
+            `td-${i}`,
+            stop.lng,
+            stop.lat,
+            `${avatar}|draft`,
+            () => needleEl({ photo: avatar, ring: ringColor, scale: 1, stacked: false, ghost: true }),
+            "4",
+            (ev) => ev.stopPropagation()
+          );
+        });
+      }
     }
 
     for (const [key, marker] of markersRef.current) {
@@ -715,67 +803,48 @@ export default function MapCanvas({ placing, onPick }: Props) {
   );
 }
 
-// Trip-stop needle: a round head (the owner's profile picture) on a thin gray
-// stick, tip planted on the location — like a sewing pin. Draft stops render
-// slightly translucent until saved.
-function needleEl(opts: { avatar?: string; ghost: boolean }): HTMLDivElement {
-  const { avatar, ghost } = opts;
-  const headSize = 26;
-  const stickHeight = 20;
-  const width = headSize + 4;
+// THE Waypoint marker: a sewing-pin needle — round ball head (photo or avatar)
+// on a thin gray stick with a specular gleam, tip planted on the location.
+// Used for everything: pins, clusters (stacked pair, no count), trip stops.
+// The ring around the head carries the theme color.
+function needleEl(opts: {
+  photo?: string;
+  ring: string;
+  scale: number;
+  stacked: boolean;
+  ghost: boolean;
+}): HTMLDivElement {
+  const { photo, ring, scale, stacked, ghost } = opts;
+  const headSize = Math.round(26 * scale);
+  const stickHeight = Math.round(20 * scale);
+  const width = headSize + 14; // room for the stacked twin
   const height = headSize + stickHeight;
   const wrap = document.createElement("div");
   wrap.className = "marker-in cursor-pointer select-none";
   wrap.style.cssText = `position:relative;width:${width}px;height:${height}px;opacity:${ghost ? 0.8 : 1};filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));`;
 
-  const stick = document.createElement("div");
-  stick.style.cssText = `position:absolute;left:50%;bottom:0;width:2.5px;height:${stickHeight + headSize / 2}px;transform:translateX(-50%);background:#585d66;border-radius:2px;`;
-  wrap.appendChild(stick);
+  const needle = (dx: number, dy: number, opacity: number, small: boolean) => {
+    const h = small ? Math.round(headSize * 0.86) : headSize;
+    const group = document.createElement("div");
+    group.style.cssText = `position:absolute;left:0;right:0;bottom:0;top:0;transform:translate(${dx}px,${dy}px);opacity:${opacity};`;
 
-  const head = document.createElement("div");
-  head.style.cssText = `position:absolute;left:50%;top:0;width:${headSize}px;height:${headSize}px;transform:translateX(-50%);border-radius:9999px;background-size:cover;background-position:center;background-color:#c65d3b;box-shadow:0 0 0 2px rgba(255,255,255,.95);`;
-  if (avatar) head.style.backgroundImage = `url("${avatar}")`;
-  wrap.appendChild(head);
+    const stick = document.createElement("div");
+    stick.style.cssText = `position:absolute;left:50%;bottom:0;width:2.5px;height:${stickHeight + h / 2}px;transform:translateX(-50%);background:#585d66;border-radius:2px;`;
+    group.appendChild(stick);
 
-  // The little specular highlight from the reference pin.
-  const gleam = document.createElement("div");
-  gleam.style.cssText = `position:absolute;left:calc(50% + ${Math.round(headSize * 0.16)}px);top:${Math.round(headSize * 0.16)}px;width:${Math.round(headSize * 0.24)}px;height:${Math.round(headSize * 0.24)}px;border-radius:9999px;background:rgba(255,255,255,.55);`;
-  wrap.appendChild(gleam);
-  return wrap;
-}
+    const head = document.createElement("div");
+    head.style.cssText = `position:absolute;left:50%;top:${headSize - h}px;width:${h}px;height:${h}px;transform:translateX(-50%);border-radius:9999px;background-size:cover;background-position:center;background-color:${ring};box-shadow:0 0 0 1.5px rgba(255,255,255,.95),0 0 0 3.5px ${ring};`;
+    if (photo) head.style.backgroundImage = `url("${photo}")`;
+    group.appendChild(head);
 
-// A classic teardrop map pin in the theme's color, with a small circular
-// photo/avatar set into its head. Clusters draw a second pin peeking out
-// behind — multiplicity without a number badge.
-function teardropEl(opts: {
-  photo?: string;
-  color: string;
-  height: number;
-  stacked: boolean;
-  selected: boolean;
-}): HTMLDivElement {
-  const { photo, color, height, stacked, selected } = opts;
-  const width = Math.round(height * (24 / 34));
-  const wrap = document.createElement("div");
-  wrap.className = "marker-in cursor-pointer select-none";
-  wrap.style.cssText = `position:relative;width:${width}px;height:${height}px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));`;
-
-  const teardrop = (dx: number, dy: number, opacity: string) => {
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("viewBox", "0 0 24 34");
-    svg.style.cssText = `position:absolute;inset:0;transform:translate(${dx}px,${dy}px);opacity:${opacity};overflow:visible;`;
-    svg.innerHTML = `<path d="M12 33C12 33 23 20.6 23 11.8 23 5.8 18.1 1 12 1 5.9 1 1 5.8 1 11.8 1 20.6 12 33 12 33Z" fill="${color}" stroke="${selected ? "#ffffff" : "rgba(255,255,255,.92)"}" stroke-width="${selected ? 2.2 : 1.6}"/>`;
-    return svg;
+    // The little specular highlight from the reference pin.
+    const gleam = document.createElement("div");
+    gleam.style.cssText = `position:absolute;left:calc(50% + ${Math.round(h * 0.14)}px);top:${headSize - h + Math.round(h * 0.14)}px;width:${Math.round(h * 0.22)}px;height:${Math.round(h * 0.22)}px;border-radius:9999px;background:rgba(255,255,255,.55);pointer-events:none;`;
+    group.appendChild(gleam);
+    return group;
   };
 
-  if (stacked) wrap.appendChild(teardrop(Math.round(width * 0.22), -Math.round(height * 0.08), "0.55"));
-  wrap.appendChild(teardrop(0, 0, "1"));
-
-  // Small photo icon set into the pin's head, deliberately scaled down.
-  const iconSize = Math.round(width * 0.6);
-  const icon = document.createElement("div");
-  icon.style.cssText = `position:absolute;left:50%;top:${Math.round(height * 0.11)}px;width:${iconSize}px;height:${iconSize}px;transform:translateX(-50%);border-radius:9999px;background-size:cover;background-position:center;background-color:rgba(255,255,255,.4);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9);`;
-  if (photo) icon.style.backgroundImage = `url("${photo}")`;
-  wrap.appendChild(icon);
+  if (stacked) wrap.appendChild(needle(Math.round(headSize * 0.34), -2, 0.55, true));
+  wrap.appendChild(needle(0, 0, 1, false));
   return wrap;
 }

@@ -9,9 +9,11 @@ import { searchPlaces, type GeoResult } from "@/lib/geocode";
 export default function TopBar({
   onOpenCreators,
   onOpenTrips,
+  tripsActive,
 }: {
   onOpenCreators: () => void;
   onOpenTrips: () => void;
+  tripsActive: boolean;
 }) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
@@ -96,7 +98,9 @@ export default function TopBar({
         {/* Trips */}
         <button
           onClick={onOpenTrips}
-          className="flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-2 shadow-float backdrop-blur"
+          className={`flex items-center gap-1.5 rounded-full px-3 py-2 shadow-float backdrop-blur ${
+            tripsActive ? "bg-ink text-paper" : "bg-paper/85"
+          }`}
           title="Trips"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent-2">

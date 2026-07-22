@@ -24,6 +24,8 @@ export default function MapApp() {
   const [tripsOpen, setTripsOpen] = useState(false);
   const startAddPin = useStore((s) => s.startAddPin);
   const tripDraft = useStore((s) => s.tripDraft);
+  const mapMode = useStore((s) => s.mapMode);
+  const setMapMode = useStore((s) => s.setMapMode);
   const addTripStop = useStore((s) => s.addTripStop);
   const addDraft = useStore((s) => s.addDraft);
   const selectedPinId = useStore((s) => s.selectedPinId);
@@ -55,12 +57,33 @@ export default function MapApp() {
     >
       <MapCanvas placing={placing || !!tripDraft} onPick={handlePick} />
 
-      <TopBar onOpenCreators={() => setCreatorsOpen(true)} onOpenTrips={() => setTripsOpen(true)} />
-      <LayerRail />
+      <TopBar
+        onOpenCreators={() => setCreatorsOpen(true)}
+        tripsActive={mapMode === "trips"}
+        onOpenTrips={() => {
+          setMapMode("trips");
+          setTripsOpen(true);
+        }}
+      />
+      {mapMode === "pins" && <LayerRail />}
+
+      {/* Trips-mode banner: trips are their own map — exit back to pins */}
+      {mapMode === "trips" && (
+        <div className="fixed left-1/2 top-16 z-30 -translate-x-1/2 sm:top-20">
+          <button
+            onClick={() => setMapMode("pins")}
+            className="animate-fade flex items-center gap-2 rounded-full bg-ink/90 px-4 py-2 text-sm text-paper shadow-float backdrop-blur"
+          >
+            <span className="font-medium">Trips</span>
+            <span className="text-paper/60">— showing routes only</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+          </button>
+        </div>
+      )}
       <BasemapToggle />
 
       {/* Top spots in this area */}
-      {!tripDraft && (
+      {!tripDraft && mapMode === "pins" && (
       <button
         onClick={() => setTopSpotsOpen(true)}
         className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper"
@@ -76,7 +99,7 @@ export default function MapApp() {
       {tripDraft && <TripDraftBar />}
 
       {/* Add-pin FAB */}
-      {!tripDraft && (
+      {!tripDraft && mapMode === "pins" && (
       <button
         onClick={() => setPlacing((p) => !p)}
         aria-label={placing ? "Cancel placing pin" : "Add a pin"}
@@ -102,7 +125,7 @@ export default function MapApp() {
         </div>
       )}
 
-      {visible.length === 0 && !addDraft && <EmptyHint />}
+      {visible.length === 0 && !addDraft && mapMode === "pins" && <EmptyHint />}
 
       {selectedPinId && <PinSheet />}
       {addDraft && <AddPinSheet />}
