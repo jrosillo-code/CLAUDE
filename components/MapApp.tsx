@@ -12,6 +12,7 @@ import TripsPanel from "./TripsPanel";
 import TripGuidePanel from "./TripGuidePanel";
 import TripDraftBar from "./TripDraftBar";
 import TopSpotsPanel from "./TopSpotsPanel";
+import LandmarkCard from "./LandmarkCard";
 import EmptyHint from "./EmptyHint";
 import { useStore } from "@/lib/store";
 import { useVisiblePins } from "@/lib/hooks";
@@ -131,6 +132,7 @@ export default function MapApp() {
 
       {visible.length === 0 && !addDraft && mapMode === "pins" && <EmptyHint />}
 
+      {mapMode === "pins" && !selectedPinId && <LandmarkCard />}
       {selectedPinId && <PinSheet />}
       {addDraft && <AddPinSheet />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}

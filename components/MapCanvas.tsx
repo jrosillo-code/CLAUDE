@@ -12,6 +12,7 @@ import {
   satelliteStyle,
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
+import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
 import { coverUrl, visibleTrips } from "@/lib/data";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
@@ -62,6 +63,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const friendships = useStore((s) => s.friendships);
   const users = useStore((s) => s.users);
   const viewerId = useStore((s) => s.viewerId);
+  const showLandmarks = useStore((s) => s.showLandmarks);
+  const selectLandmark = useStore((s) => s.selectLandmark);
+  const selectedLandmarkId = useStore((s) => s.selectedLandmarkId);
 
   const shownTrips = useMemo(
     () => visibleTrips(trips, friendships, viewerId).filter((t) => shownTripIds.has(t.id)),
@@ -98,6 +102,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
   tripsRef.current = { trips: shownTrips, draft: tripDraft, avatars: avatarsById, viewerId };
   const modeRef = useRef(mapMode);
   modeRef.current = mapMode;
+  const landmarksRef = useRef({ show: showLandmarks, selected: selectedLandmarkId });
+  landmarksRef.current = { show: showLandmarks, selected: selectedLandmarkId };
+  const selectLandmarkRef = useRef(selectLandmark);
+  selectLandmarkRef.current = selectLandmark;
 
   // Apply the "planet" chrome — globe projection, themed atmosphere, and 3D
   // terrain — after any style (re)load, since setStyle wipes sources/terrain.
@@ -522,7 +530,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   useEffect(() => {
     if (readyRef.current) render();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPinId]);
+  }, [selectedPinId, showLandmarks, selectedLandmarkId]);
 
   // Trips, draft, or map mode changed → refresh the thread and the markers.
   useEffect(() => {
@@ -751,6 +759,37 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }
     }
 
+    // World landmarks: small category-badged dots (UNESCO, monuments, parks,
+    // cultural sites). They appear once zoomed past planet scale so the globe
+    // stays clean, and sit under the travel pins.
+    if (!inTripsMode && landmarksRef.current.show && zoomNow >= 2.6) {
+      const [w, s, e, n] = bbox;
+      for (const lm of LANDMARKS) {
+        if (lm.lat < s || lm.lat > n) continue;
+        if (!planetScale) {
+          // handle antimeridian-crossing viewports
+          const inLng = w <= e ? lm.lng >= w && lm.lng <= e : lm.lng >= w || lm.lng <= e;
+          if (!inLng) continue;
+        }
+        const meta = LANDMARK_CATEGORY_META[lm.category];
+        const isSel = landmarksRef.current.selected === lm.id;
+        upsert(
+          `lm-${lm.id}`,
+          lm.lng,
+          lm.lat,
+          `${lm.category}|${isSel ? "sel" : ""}`,
+          () => landmarkEl(meta.glyph, meta.color, isSel),
+          isSel ? "3" : "0",
+          (ev) => {
+            ev.stopPropagation();
+            if (placingRef.current) return;
+            selectLandmarkRef.current(lm.id);
+            map.flyTo({ center: [lm.lng, lm.lat], zoom: Math.max(map.getZoom(), 5.5), duration: 700 });
+          }
+        );
+      }
+    }
+
     // Trips mode: only the threads and their stops — no pin overlay.
     if (inTripsMode) {
       const tripState = tripsRef.current;
@@ -846,5 +885,24 @@ function needleEl(opts: {
 
   if (stacked) wrap.appendChild(needle(Math.round(headSize * 0.34), -2, 0.55, true));
   wrap.appendChild(needle(0, 0, 1, false));
+  return wrap;
+}
+
+// A world landmark: small round category badge with a tiny tail so it reads as
+// planted on the site. Deliberately more discreet than the travel needles.
+function landmarkEl(glyph: string, color: string, selected: boolean): HTMLDivElement {
+  const size = selected ? 26 : 21;
+  const wrap = document.createElement("div");
+  wrap.className = "marker-in cursor-pointer select-none";
+  wrap.style.cssText = `position:relative;width:${size}px;height:${size + 5}px;filter:drop-shadow(0 1.5px 2.5px rgba(0,0,0,.35));`;
+
+  const tail = document.createElement("div");
+  tail.style.cssText = `position:absolute;left:50%;bottom:0;width:2px;height:6px;transform:translateX(-50%);background:${color};border-radius:1px;`;
+  wrap.appendChild(tail);
+
+  const badge = document.createElement("div");
+  badge.style.cssText = `position:absolute;left:50%;top:0;width:${size}px;height:${size}px;transform:translateX(-50%);border-radius:9999px;background:#fffdf8;box-shadow:0 0 0 1.8px ${color};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size * 0.56)}px;line-height:1;`;
+  badge.textContent = glyph;
+  wrap.appendChild(badge);
   return wrap;
 }

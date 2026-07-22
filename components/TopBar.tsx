@@ -84,10 +84,17 @@ export default function TopBar({
               <li key={i}>
                 <button
                   onClick={() => pick(r)}
-                  className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm hover:bg-paper-2"
+                  className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm hover:bg-paper-2"
                 >
-                  <span className="text-ink-3">📍</span>
-                  <span className="truncate">{r.placeName}</span>
+                  <span className="text-ink-3">
+                    {r.kind === "place" ? "🏙" : r.kind === "address" ? "🛣" : "📍"}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate">{r.placeName}</span>
+                    {r.context && (
+                      <span className="block truncate text-xs text-ink-3">{r.context}</span>
+                    )}
+                  </span>
                   {r.countryCode && <span className="ml-auto text-xs text-ink-3">{r.countryCode}</span>}
                 </button>
               </li>

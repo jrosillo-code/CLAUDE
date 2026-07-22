@@ -10,6 +10,7 @@ import type { Trip } from "@/lib/types";
 interface GuideStop {
   placeName: string;
   overview: string;
+  facts?: string[];
   stay: { name: string; kind: "hotel" | "hostel"; note: string }[];
   activities: string[];
 }
@@ -17,7 +18,7 @@ interface GuideStop {
 type State =
   | { status: "loading" }
   | { status: "error" }
-  | { status: "ready"; source: "ai" | "demo"; stops: GuideStop[] };
+  | { status: "ready"; source: "ai" | "live" | "demo"; stops: GuideStop[] };
 
 export default function TripGuidePanel({
   trip,
@@ -76,10 +77,17 @@ export default function TripGuidePanel({
             </svg>
           </button>
         </div>
+        {state.status === "ready" && state.source === "live" && (
+          <p className="mt-2 rounded-xl bg-paper-2 px-3 py-2 text-xs text-ink-3">
+            Real places from Wikipedia &amp; OpenStreetMap. Add{" "}
+            <code className="font-mono">ANTHROPIC_API_KEY</code> to{" "}
+            <code className="font-mono">.env</code> for an AI-written narrative on top.
+          </p>
+        )}
         {state.status === "ready" && state.source === "demo" && (
           <p className="mt-2 rounded-xl bg-paper-2 px-3 py-2 text-xs text-ink-3">
-            Demo guide — add <code className="font-mono">ANTHROPIC_API_KEY</code> to{" "}
-            <code className="font-mono">.env</code> for real AI briefs on each stop.
+            Offline demo guide — couldn&apos;t reach Wikipedia/OpenStreetMap and no{" "}
+            <code className="font-mono">ANTHROPIC_API_KEY</code> is set.
           </p>
         )}
       </div>
@@ -126,6 +134,17 @@ export default function TripGuidePanel({
               </div>
 
               <p className="mt-2 text-sm leading-relaxed text-ink-2">{g.overview}</p>
+
+              {(g.facts?.length ?? 0) > 0 && (
+                <ul className="mt-2.5 space-y-1">
+                  {g.facts!.map((f, j) => (
+                    <li key={j} className="flex items-start gap-1.5 text-xs leading-snug text-ink-3">
+                      <span className="mt-px shrink-0 text-accent">✦</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              )}
 
               {g.stay.length > 0 && (
                 <div className="mt-3">

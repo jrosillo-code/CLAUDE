@@ -65,6 +65,11 @@ interface WaypointState {
   basemap: "map" | "satellite";
   setBasemap: (b: "map" | "satellite") => void;
   terrain3d: boolean;
+  /** World landmarks layer (UNESCO / monuments / parks / culture icons). */
+  showLandmarks: boolean;
+  setShowLandmarks: (v: boolean) => void;
+  selectedLandmarkId: string | null;
+  selectLandmark: (id: string | null) => void;
   setTerrain3d: (v: boolean) => void;
 
   // Theme (UI chrome + globe palette). Persisted to localStorage.
@@ -205,6 +210,10 @@ export const useStore = create<WaypointState>((set, get) => ({
   setBasemap: (b) => set({ basemap: b }),
   terrain3d: true,
   setTerrain3d: (v) => set({ terrain3d: v }),
+  showLandmarks: true,
+  setShowLandmarks: (v) => set({ showLandmarks: v, selectedLandmarkId: null }),
+  selectedLandmarkId: null,
+  selectLandmark: (id) => set({ selectedLandmarkId: id }),
 
   theme: "daylight",
   setTheme: (t) => {
