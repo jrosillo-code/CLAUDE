@@ -7,7 +7,13 @@ import { appleMapsRouteUrl, googleMapsRouteUrl } from "@/lib/directions";
 
 // Trips: planned routes — ordered stops stitched by a thread on the map.
 // Yours plus friends' shared ones. Never public: friends-only or private.
-export default function TripsPanel({ onClose }: { onClose: () => void }) {
+export default function TripsPanel({
+  onClose,
+  onOpenGuide,
+}: {
+  onClose: () => void;
+  onOpenGuide: (tripId: string) => void;
+}) {
   const trips = useStore((s) => s.trips);
   const users = useStore((s) => s.users);
   const friendships = useStore((s) => s.friendships);
@@ -33,6 +39,7 @@ export default function TripsPanel({ onClose }: { onClose: () => void }) {
       e: Math.max(...lngs) + 0.5,
       n: Math.max(...lats) + 0.5,
     });
+    onOpenGuide(id);
     onClose();
   }
 

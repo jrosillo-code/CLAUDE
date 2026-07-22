@@ -9,6 +9,7 @@ import PinSheet from "./PinSheet";
 import AddPinSheet from "./AddPinSheet";
 import CreatorsPanel from "./CreatorsPanel";
 import TripsPanel from "./TripsPanel";
+import TripGuidePanel from "./TripGuidePanel";
 import TripDraftBar from "./TripDraftBar";
 import TopSpotsPanel from "./TopSpotsPanel";
 import EmptyHint from "./EmptyHint";
@@ -22,6 +23,8 @@ export default function MapApp() {
   const [creatorsOpen, setCreatorsOpen] = useState(false);
   const [topSpotsOpen, setTopSpotsOpen] = useState(false);
   const [tripsOpen, setTripsOpen] = useState(false);
+  const [guideTripId, setGuideTripId] = useState<string | null>(null);
+  const trips = useStore((s) => s.trips);
   const startAddPin = useStore((s) => s.startAddPin);
   const tripDraft = useStore((s) => s.tripDraft);
   const mapMode = useStore((s) => s.mapMode);
@@ -30,6 +33,7 @@ export default function MapApp() {
   const addDraft = useStore((s) => s.addDraft);
   const selectedPinId = useStore((s) => s.selectedPinId);
   const visible = useVisiblePins();
+  const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
 
   async function handlePick(lng: number, lat: number) {
     // Trip-planning mode: every map tap is a new stop on the thread.
@@ -131,7 +135,12 @@ export default function MapApp() {
       {addDraft && <AddPinSheet />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}
       {topSpotsOpen && <TopSpotsPanel onClose={() => setTopSpotsOpen(false)} />}
-      {tripsOpen && <TripsPanel onClose={() => setTripsOpen(false)} />}
+      {tripsOpen && (
+        <TripsPanel onClose={() => setTripsOpen(false)} onOpenGuide={setGuideTripId} />
+      )}
+      {guideTrip && (
+        <TripGuidePanel trip={guideTrip} onClose={() => setGuideTripId(null)} />
+      )}
     </div>
   );
 }
