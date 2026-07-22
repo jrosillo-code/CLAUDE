@@ -8,6 +8,7 @@ import { SAMPLE_VIDEOS, photo } from "@/lib/seed";
 import type { MediaKind } from "@/lib/types";
 import type { Visibility } from "@/lib/types";
 import { visibilityLabel } from "@/lib/data";
+import { RatingScale } from "./RatingScale";
 
 // Add-pin flow (plan §6): crosshair drop → bottom-sheet form → optimistic render.
 // Photo upload is mocked here (Supabase Storage in production); tapping "Add
@@ -23,6 +24,7 @@ export default function AddPinSheet() {
   const [note, setNote] = useState("");
   const [visibility, setVisibility] = useState<Visibility>(viewer.defaultPinVisibility);
   const [mediaItems, setMediaItems] = useState<{ kind: MediaKind; url: string }[]>([]);
+  const [rating, setRating] = useState<number | null>(null);
 
   // Uploads are mocked until Supabase Storage is wired: "add photos" attaches
   // seeded demo shots; "add video" attaches a public sample clip.
@@ -51,6 +53,7 @@ export default function AddPinSheet() {
       note: note.trim(),
       visibility,
       media: mediaItems,
+      rating: rating ?? undefined,
     });
     requestFlyTo(pin.lng, pin.lat, 7);
   }
@@ -134,6 +137,16 @@ export default function AddPinSheet() {
             placeholder="What made this place worth pinning?"
             className="mt-1.5 w-full resize-none rounded-2xl bg-paper-2 px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ink/15"
           />
+        </div>
+
+        {/* Your rating */}
+        <div className="mt-3">
+          <label className="text-xs font-medium uppercase tracking-wide text-ink-3">
+            Your rating
+          </label>
+          <div className="mt-1.5">
+            <RatingScale value={rating} onChange={setRating} />
+          </div>
         </div>
 
         {/* Visibility */}

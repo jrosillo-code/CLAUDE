@@ -136,7 +136,10 @@ interface WaypointState {
     visibility: Visibility;
     media: { kind: "photo" | "video"; url: string }[];
     dates?: [string, string];
+    rating?: number;
   }) => Pin;
+  /** Set (or clear with null) your own 1–10 score on a pin you own. */
+  ratePin: (pinId: string, rating: number | null) => void;
 }
 
 let pinCounter = seedPins.length;
@@ -386,11 +389,21 @@ export const useStore = create<WaypointState>((set, get) => ({
         kind: m.kind,
         url: m.url,
       })),
+      rating: input.rating,
       createdAt: new Date().toISOString(),
     };
     set((s) => ({ pins: [...s.pins, pin], addDraft: null, selectedPinId: id }));
     return pin;
   },
+
+  ratePin: (pinId, rating) =>
+    set((s) => ({
+      pins: s.pins.map((p) =>
+        p.id === pinId && p.userId === s.viewerId
+          ? { ...p, rating: rating ?? undefined }
+          : p
+      ),
+    })),
 }));
 
 // The set of owner ids a viewer could see under "Everyone": self + accepted

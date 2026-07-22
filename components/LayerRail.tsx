@@ -35,7 +35,15 @@ export default function LayerRail() {
           onClick={() => setOpen((o) => !o)}
           className="flex w-full items-center justify-between rounded-2xl px-3 py-2 text-left"
         >
-          <span className="font-display text-base">Travelers</span>
+          <span className="flex items-center gap-2 font-display text-base">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="text-accent">
+              <circle cx="9" cy="7.2" r="3.2" stroke="currentColor" strokeWidth="1.8" />
+              <path d="M3.2 19.5c.6-3.4 2.9-5.3 5.8-5.3s5.2 1.9 5.8 5.3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <circle cx="17.5" cy="8.6" r="2.4" stroke="currentColor" strokeWidth="1.6" opacity=".55" />
+              <path d="M15.4 14.9c1.6-.8 3.9-.4 5.2 1.6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity=".55" />
+            </svg>
+            Travelers
+          </span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className={`text-ink-3 transition-transform ${open ? "rotate-180" : ""}`}>
             <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

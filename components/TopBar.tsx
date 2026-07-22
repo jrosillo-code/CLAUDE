@@ -46,18 +46,20 @@ export default function TopBar({
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 flex items-start justify-between gap-3 p-3 sm:p-4">
-      {/* Brand */}
-      <Link
-        href="/"
-        className="flex shrink-0 items-center gap-2 rounded-full bg-paper/85 px-3.5 py-2 shadow-float backdrop-blur"
-      >
-        <Compass />
-        <span className="font-display text-lg leading-none">Waypoint</span>
-      </Link>
+    <header className="fixed inset-x-0 top-0 z-30 flex items-start gap-3 p-3 sm:p-4">
+      {/* Brand — side groups share flex-1/basis-0 so the search stays truly centered */}
+      <div className="flex min-w-0 flex-1 basis-0 justify-start">
+        <Link
+          href="/"
+          className="flex shrink-0 items-center gap-2 rounded-full bg-paper/85 px-3.5 py-2 shadow-float backdrop-blur"
+        >
+          <Compass />
+          <span className="hidden font-display text-lg leading-none min-[440px]:block">Waypoint</span>
+        </Link>
+      </div>
 
       {/* Search */}
-      <div className="relative w-full max-w-sm">
+      <div className="relative w-full max-w-sm shrink">
         <div className="flex items-center gap-2 rounded-full bg-paper/85 px-4 py-2.5 shadow-float backdrop-blur">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0 text-ink-3">
             <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
@@ -94,7 +96,7 @@ export default function TopBar({
         )}
       </div>
 
-      <div className="flex shrink-0 items-center gap-2">
+      <div className="flex min-w-0 flex-1 basis-0 items-center justify-end gap-2">
         {/* Trips */}
         <button
           onClick={onOpenTrips}

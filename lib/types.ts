@@ -71,6 +71,8 @@ export interface Pin {
   media: PinMedia[];
   /** Activity verticals this pin belongs to (mostly creator pins). */
   activities?: ActivitySlug[];
+  /** The owner's own score for the place, 1–10. Only the owner sets it. */
+  rating?: number;
   createdAt: string;
 }
 

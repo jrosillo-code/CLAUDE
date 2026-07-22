@@ -9,6 +9,7 @@ import { ACTIVITY_LABELS } from "@/lib/types";
 import type { PinMedia } from "@/lib/types";
 import { appleMapsDirectionsUrl, googleMapsDirectionsUrl } from "@/lib/directions";
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
+import { RatingBadge, RatingScale } from "./RatingScale";
 
 // Immersive pin view: a large modal with a photo collage (click any photo to
 // open it full-screen), the story of the place, likes/saves, and who else has
@@ -24,6 +25,7 @@ export default function PinSheet() {
   const toggleLike = useStore((s) => s.toggleLike);
   const savedPinIds = useStore((s) => s.savedPinIds);
   const toggleSave = useStore((s) => s.toggleSave);
+  const ratePin = useStore((s) => s.ratePin);
 
   const [lightbox, setLightbox] = useState<number | null>(null);
 
@@ -93,7 +95,10 @@ export default function PinSheet() {
                       <span>· {formatDates(pin.startedOn, pin.endedOn)}</span>
                     )}
                   </div>
-                  <h2 className="mt-0.5 font-display text-3xl leading-tight">{pin.title}</h2>
+                  <div className="mt-0.5 flex flex-wrap items-center gap-2.5">
+                    <h2 className="font-display text-3xl leading-tight">{pin.title}</h2>
+                    {!isOwner && pin.rating != null && <RatingBadge value={pin.rating} />}
+                  </div>
                   {pin.activities && pin.activities.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {pin.activities.map((a) => (
@@ -133,6 +138,18 @@ export default function PinSheet() {
 
               {pin.note && (
                 <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-2">{pin.note}</p>
+              )}
+
+              {/* Your own score for the place — tap to set, tap again to clear */}
+              {isOwner && (
+                <div className="mt-5">
+                  <span className="text-xs font-medium uppercase tracking-wide text-ink-3">
+                    Your rating
+                  </span>
+                  <div className="mt-2">
+                    <RatingScale value={pin.rating ?? null} onChange={(v) => ratePin(pin.id, v)} />
+                  </div>
+                </div>
               )}
 
               {/* Directions hand-off */}

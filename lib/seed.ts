@@ -261,6 +261,8 @@ export const pins: Pin[] = rows.map((r, i) => {
     endedOn: dates?.[1],
     media,
     activities,
+    // Owners have rated most of their pins (1–10); a few are left unscored.
+    rating: hashCode(`${id}-rate`) % 5 === 0 ? undefined : 4 + (hashCode(`${id}-rating`) % 7),
     createdAt: new Date(2025, 0, 1 + i).toISOString(),
   };
 });
