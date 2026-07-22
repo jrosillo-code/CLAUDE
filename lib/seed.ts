@@ -256,11 +256,12 @@ function hashCode(s: string): number {
   let h = 0;
   for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   // Avalanche so near-identical ids ("pin-42"/"pin-43") don't produce
-  // near-identical counts.
+  // near-identical counts. Final >>>0 keeps the result unsigned — JS XOR
+  // operates on signed 32-bit ints and can otherwise go negative.
   h ^= h >>> 15;
   h = (h * 2654435761) >>> 0;
   h ^= h >>> 13;
-  return h;
+  return h >>> 0;
 }
 
 export const seedLikeCounts: Record<string, number> = Object.fromEntries(

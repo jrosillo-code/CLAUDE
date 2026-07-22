@@ -110,6 +110,18 @@ export function topPlacesFor(
     .sort((a, b) => a.rank - b.rank);
 }
 
+/** Great-circle distance between two points, in kilometres (haversine). */
+export function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const rad = Math.PI / 180;
+  const dLat = (lat2 - lat1) * rad;
+  const dLng = (lng2 - lng1) * rad;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
 const KM = 111; // rough degrees→km at the equator; fine for "same place" grouping
 
 /** Friends (and you) who have a pin within ~2km of the given pin. */

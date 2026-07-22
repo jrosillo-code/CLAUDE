@@ -29,7 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Apply the saved theme's chrome before first paint — prevents the
+            light-mode flash when the user prefers Midnight. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{document.documentElement.dataset.theme=localStorage.getItem("wp-theme")==="midnight"?"dark":"light"}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <ThemeManager />
         {children}

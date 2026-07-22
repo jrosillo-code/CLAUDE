@@ -31,6 +31,10 @@ type ClusterProps = {
 
 const DEM_SOURCE = "waypoint-dem";
 
+// Remembered across theme switches (module scope): which online style hosts
+// are reachable. Lets a repeat theme switch jump straight to its final style.
+const styleProbeCache = new Map<string, boolean>();
+
 export default function MapCanvas({ placing, onPick }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -117,15 +121,17 @@ export default function MapCanvas({ placing, onPick }: Props) {
 
   // Swapping styles while the previous one is still compiling corrupts
   // MapLibre's shader state ("Cannot read properties of undefined (reading
-  // 'shaderPreludeCode')"). Wait for the current style to settle first, with a
-  // timeout fallback in case `idle` never fires (e.g. tiles blocked offline).
+  // 'shaderPreludeCode')"). Two defenses: wait for the current style to settle,
+  // and pass diff:false so MapLibre rebuilds the style from scratch instead of
+  // diff-patching live shader programs (the diff path is what corrupts them
+  // under the globe projection).
   function safeSetStyle(map: maplibregl.Map, style: maplibregl.StyleSpecification | string) {
     let done = false;
     const run = () => {
       if (done) return;
       done = true;
       try {
-        map.setStyle(style);
+        map.setStyle(style, { diff: false });
       } catch {
         /* map busy or destroyed — skip */
       }
@@ -133,13 +139,15 @@ export default function MapCanvas({ placing, onPick }: Props) {
     if (map.isStyleLoaded()) run();
     else {
       map.once("idle", run);
-      setTimeout(run, 1500);
+      setTimeout(run, 600);
     }
   }
 
   // Swap the basemap for the current mode+theme: satellite directly; "map" mode
-  // shows the bundled themed globe instantly, then upgrades to the theme's
-  // online street style once that provider is confirmed reachable.
+  // goes STRAIGHT to the theme's online street style when we already know its
+  // host is reachable (single swap — no bundled-globe flash in between). The
+  // bundled themed globe is used only when the provider is unknown (first ever
+  // switch, with an upgrade once probed) or known-unreachable.
   function applyBasemap(map: maplibregl.Map, mode: "map" | "satellite") {
     const seq = ++styleSeqRef.current;
     const theme = themeRef.current;
@@ -148,19 +156,26 @@ export default function MapCanvas({ placing, onPick }: Props) {
       safeSetStyle(map, satelliteStyle());
       return;
     }
+    const remote = theme.remoteStyle;
+    const known = remote ? styleProbeCache.get(remote) : false;
+    if (remote && known === true) {
+      terrainBrokenRef.current = false;
+      safeSetStyle(map, remote);
+      return;
+    }
     terrainBrokenRef.current = true; // bundled globe has no elevation data
     safeSetStyle(map, bundledWorldStyle(theme));
-    const remote = theme.remoteStyle;
-    if (!remote) return;
+    if (!remote || known === false) return; // known unreachable — done
     fetch(remote, { mode: "cors" })
       .then((res) => {
-        if (!res.ok) throw new Error("style probe failed");
+        styleProbeCache.set(remote, res.ok);
+        if (!res.ok) return;
         if (styleSeqRef.current !== seq) return; // user switched again
         terrainBrokenRef.current = false;
         safeSetStyle(map, remote);
       })
       .catch(() => {
-        /* stay on the bundled globe */
+        styleProbeCache.set(remote, false);
       });
   }
 
@@ -210,12 +225,15 @@ export default function MapCanvas({ placing, onPick }: Props) {
       if (remote) {
         fetch(remote, { mode: "cors" })
           .then((res) => {
-            if (!res.ok) throw new Error("style probe failed");
+            styleProbeCache.set(remote, res.ok);
+            if (!res.ok) return;
             if (styleSeqRef.current !== seq) return;
             terrainBrokenRef.current = false;
             safeSetStyle(map, remote);
           })
-          .catch(() => {});
+          .catch(() => {
+            styleProbeCache.set(remote, false);
+          });
       }
     }
 
@@ -440,6 +458,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // away — anything projecting outside that circle is off-globe.
     const checkHorizon = zoomNow < 5;
     const center = map.getCenter();
+    const container = map.getContainer();
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
     let silhouette: { cx: number; cy: number; r: number } | null = null;
     if (checkHorizon) {
       try {
@@ -489,20 +510,25 @@ export default function MapCanvas({ placing, onPick }: Props) {
 
       const element = marker.getElement();
 
-      // Horizon occlusion (screen-space silhouette test).
-      if (silhouette) {
-        let onGlobe = true;
-        try {
-          const mPx = map.project([lng, lat]);
+      // Visibility gate. Hide a marker whenever its projection is garbage for
+      // this frame (NaN or a wild off-screen point — the source of "random pins
+      // flickering in the corner" during zoom animations), and, at globe scale,
+      // whenever it falls outside the sphere's silhouette (beyond the horizon).
+      let visible = true;
+      try {
+        const mPx = map.project([lng, lat]);
+        if (!Number.isFinite(mPx.x) || !Number.isFinite(mPx.y)) {
+          visible = false;
+        } else if (mPx.x < -150 || mPx.y < -150 || mPx.x > cw + 150 || mPx.y > ch + 150) {
+          visible = false; // far off-viewport (also catches origin-glitch frames)
+        } else if (silhouette) {
           const d = Math.hypot(mPx.x - silhouette.cx, mPx.y - silhouette.cy);
-          onGlobe = Number.isFinite(d) && d <= silhouette.r;
-        } catch {
-          onGlobe = false;
+          visible = Number.isFinite(d) && d <= silhouette.r;
         }
-        element.style.display = onGlobe ? "" : "none";
-      } else {
-        element.style.display = "";
+      } catch {
+        visible = false;
       }
+      element.style.display = visible ? "" : "none";
 
       element.onclick = (ev) => {
         ev.stopPropagation();
