@@ -34,6 +34,15 @@ interface WaypointState {
   friendships: Friendship[];
   topPlaces: TopPlace[];
 
+  // Auth session. Demo-mode: sign-in buttons create a local session for the
+  // seeded viewer; swap these for Supabase Auth (signInWithOAuth / magic link)
+  // when the live backend is wired.
+  session: { userId: string; method: "apple" | "google" | "email" } | null;
+  sessionReady: boolean;
+  hydrateSession: () => void;
+  signIn: (method: "apple" | "google" | "email") => void;
+  signOut: () => void;
+
   // Session / demo identity. Real app: derived from Supabase Auth.
   viewerId: string;
   setViewer: (id: string) => void;
@@ -62,6 +71,7 @@ interface WaypointState {
   explore: boolean;
   showOnlyMe: () => void;
   showEveryone: () => void;
+  showOnlyCreators: () => void;
   showOnly: (id: string) => void;
   toggleUser: (id: string) => void;
   setExplore: (v: boolean) => void;
@@ -106,6 +116,36 @@ export const useStore = create<WaypointState>((set, get) => ({
   pins: seedPins,
   friendships: seedFriendships,
   topPlaces: seedTopPlaces,
+
+  session: null,
+  sessionReady: false,
+  hydrateSession: () => {
+    let session: WaypointState["session"] = null;
+    try {
+      const raw = window.localStorage.getItem("wp-session");
+      if (raw) session = JSON.parse(raw) as WaypointState["session"];
+    } catch {
+      /* private mode / bad JSON */
+    }
+    set({ session, sessionReady: true });
+  },
+  signIn: (method) => {
+    const session = { userId: CURRENT_USER_ID, method };
+    try {
+      window.localStorage.setItem("wp-session", JSON.stringify(session));
+    } catch {
+      /* ignore */
+    }
+    set({ session, viewerId: CURRENT_USER_ID });
+  },
+  signOut: () => {
+    try {
+      window.localStorage.removeItem("wp-session");
+    } catch {
+      /* ignore */
+    }
+    set({ session: null });
+  },
 
   viewerId: CURRENT_USER_ID,
   setViewer: (id) =>
@@ -179,6 +219,7 @@ export const useStore = create<WaypointState>((set, get) => ({
   explore: false,
   showOnlyMe: () => set({ activeUserIds: new Set([get().viewerId]) }),
   showEveryone: () => set({ activeUserIds: null }),
+  showOnlyCreators: () => set({ activeUserIds: new Set(get().follows) }),
   showOnly: (id) => set({ activeUserIds: new Set([id]) }),
   toggleUser: (id) =>
     set((s) => {

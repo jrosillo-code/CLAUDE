@@ -12,13 +12,20 @@ export default function LayerRail() {
   const friends = useFriends();
   const creators = useFollowedCreators();
   const activeUserIds = useStore((s) => s.activeUserIds);
+  const follows = useStore((s) => s.follows);
   const showOnlyMe = useStore((s) => s.showOnlyMe);
   const showEveryone = useStore((s) => s.showEveryone);
+  const showOnlyCreators = useStore((s) => s.showOnlyCreators);
   const toggleUser = useStore((s) => s.toggleUser);
 
   const isEveryone = activeUserIds === null;
   const isOn = (id: string) => isEveryone || activeUserIds!.has(id);
   const onlyMe = !isEveryone && activeUserIds!.size === 1 && activeUserIds!.has(viewer.id);
+  const onlyCreators =
+    !isEveryone &&
+    follows.size > 0 &&
+    activeUserIds!.size === follows.size &&
+    [...follows].every((id) => activeUserIds!.has(id));
 
   return (
     <div className="fixed left-3 top-1/2 z-30 -translate-y-1/2">
@@ -34,8 +41,9 @@ export default function LayerRail() {
         </button>
 
         <div className={`${open ? "block" : "hidden"} px-1 pb-1`}>
-          <div className="mb-2 flex gap-1.5">
+          <div className="mb-2 flex gap-1">
             <Segment active={isEveryone} onClick={showEveryone}>Everyone</Segment>
+            <Segment active={onlyCreators} onClick={showOnlyCreators}>Creators</Segment>
             <Segment active={onlyMe} onClick={showOnlyMe}>Just me</Segment>
           </div>
 
@@ -85,7 +93,7 @@ function Segment({ active, onClick, children }: { active: boolean; onClick: () =
   return (
     <button
       onClick={onClick}
-      className={`flex-1 rounded-full px-2.5 py-1.5 text-xs font-medium transition-colors ${
+      className={`flex-1 whitespace-nowrap rounded-full px-1.5 py-1.5 text-[11px] font-medium transition-colors ${
         active ? "bg-ink text-paper" : "bg-paper-2 text-ink-2 hover:bg-line"
       }`}
     >

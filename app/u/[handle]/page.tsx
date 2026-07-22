@@ -1,3 +1,4 @@
+import AuthGate from "@/components/AuthGate";
 import ProfileView from "@/components/ProfileView";
 
 export default async function ProfilePage({
@@ -6,5 +7,9 @@ export default async function ProfilePage({
   params: Promise<{ handle: string }>;
 }) {
   const { handle } = await params;
-  return <ProfileView handle={handle} />;
+  return (
+    <AuthGate>
+      <ProfileView handle={handle} />
+    </AuthGate>
+  );
 }

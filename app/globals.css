@@ -16,7 +16,8 @@
   --color-accent: #c65d3b; /* terracotta / travel ink */
   --color-accent-2: #2f6b6b; /* teal */
 
-  --font-display: ui-serif, Georgia, "Times New Roman", serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino,
+    "Book Antiqua", ui-serif, Georgia, serif;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
 
@@ -61,7 +62,13 @@ body {
 
 .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  font-feature-settings: "liga", "kern";
+}
+
+/* Stats and counts line up cleanly. */
+.tnum {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Lift the map's bottom-right controls (zoom + compass + attribution) above the

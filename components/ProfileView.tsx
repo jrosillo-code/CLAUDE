@@ -27,6 +27,7 @@ export default function ProfileView({ handle }: { handle: string }) {
   const follows = useStore((s) => s.follows);
   const toggleFollow = useStore((s) => s.toggleFollow);
   const savedPinIds = useStore((s) => s.savedPinIds);
+  const signOut = useStore((s) => s.signOut);
   const showOnly = useStore((s) => s.showOnly);
   const requestFlyTo = useStore((s) => s.requestFlyTo);
   const selectPin = useStore((s) => s.selectPin);
@@ -88,41 +89,38 @@ export default function ProfileView({ handle }: { handle: string }) {
         </Link>
       </div>
 
-      <div className="mx-auto max-w-3xl px-5 sm:px-6">
-        {/* Identity — sits fully below the cover. */}
-        <div className="flex items-center gap-4 pt-6 sm:gap-5">
+      <div className="mx-auto max-w-2xl px-5 sm:px-6">
+        {/* Identity — centered and symmetric, fully below the cover. */}
+        <div className="flex flex-col items-center pt-7 text-center">
           <img
             src={user.avatarUrl}
             alt=""
-            className="h-20 w-20 shrink-0 rounded-full object-cover sm:h-24 sm:w-24"
+            className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28"
             style={{ boxShadow: `0 0 0 3px var(--color-paper), 0 0 0 6px ${user.color}` }}
           />
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <h1 className="truncate font-display text-3xl leading-none sm:text-4xl">
-                {user.displayName}
-              </h1>
-              {user.isCreator && <CreatorBadge />}
-            </div>
-            <p className="mt-1.5 text-sm text-ink-3">
-              @{user.handle} · {user.homeCity}
-            </p>
-            {user.isCreator && user.activities && (
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {user.activities.map((a) => (
-                  <span key={a} className="rounded-full bg-paper-2 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-ink-2">
-                    {ACTIVITY_LABELS[a]}
-                  </span>
-                ))}
-              </div>
-            )}
+          <div className="mt-4 flex items-center justify-center gap-2">
+            <h1 className="font-display text-4xl leading-none tracking-tight">
+              {user.displayName}
+            </h1>
+            {user.isCreator && <CreatorBadge />}
           </div>
+          <p className="mt-2.5 text-sm tracking-wide text-ink-3">
+            @{user.handle} <span className="mx-1 text-line">·</span> {user.homeCity}
+          </p>
+          {user.isCreator && user.activities && (
+            <div className="mt-3 flex flex-wrap justify-center gap-1.5">
+              {user.activities.map((a) => (
+                <span key={a} className="rounded-full bg-paper-2 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-ink-2">
+                  {ACTIVITY_LABELS[a]}
+                </span>
+              ))}
+            </div>
+          )}
+          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-2">{user.bio}</p>
         </div>
 
-        <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink-2">{user.bio}</p>
-
-        {/* Stats */}
-        <div className="mt-5 flex items-center gap-7 border-y border-line py-4">
+        {/* Stats — three equal, divided columns. */}
+        <div className="mt-6 grid grid-cols-3 divide-x divide-line border-y border-line py-5">
           <Stat n={myPins.length} label="pins" />
           <Stat n={countries} label="countries" />
           {user.isCreator ? (
@@ -132,11 +130,11 @@ export default function ProfileView({ handle }: { handle: string }) {
           )}
         </div>
 
-        {/* Actions */}
-        <div className="mt-5 flex flex-wrap gap-2">
+        {/* Actions — centered. */}
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={viewOnMap}
-            className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-paper"
+            className="rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-paper"
           >
             View {isMe ? "my" : "their"} map
           </button>
@@ -144,7 +142,7 @@ export default function ProfileView({ handle }: { handle: string }) {
             (user.isCreator ? (
               <button
                 onClick={() => toggleFollow(user.id)}
-                className={`rounded-full px-5 py-2.5 text-sm font-semibold ${
+                className={`rounded-full px-6 py-2.5 text-sm font-semibold ${
                   isFollowing ? "bg-paper-2 text-ink-2 ring-1 ring-line" : "bg-accent text-paper"
                 }`}
               >
@@ -152,7 +150,7 @@ export default function ProfileView({ handle }: { handle: string }) {
               </button>
             ) : (
               <button
-                className={`rounded-full px-5 py-2.5 text-sm font-semibold ${
+                className={`rounded-full px-6 py-2.5 text-sm font-semibold ${
                   isFriend ? "bg-paper-2 text-ink-2 ring-1 ring-line" : "bg-accent text-paper"
                 }`}
               >
@@ -160,6 +158,16 @@ export default function ProfileView({ handle }: { handle: string }) {
               </button>
             ))}
         </div>
+        {isMe && (
+          <div className="mt-3 text-center">
+            <button
+              onClick={() => signOut()}
+              className="text-xs text-ink-3 underline-offset-2 hover:text-ink-2 hover:underline"
+            >
+              Sign out
+            </button>
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="mt-8 flex gap-1.5 rounded-full bg-paper-2 p-1">
@@ -272,11 +280,11 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
 
 function Stat({ n, label, format }: { n: number; label: string; format?: boolean }) {
   return (
-    <div>
-      <div className="font-display text-2xl leading-none">
+    <div className="text-center">
+      <div className="tnum font-display text-[26px] leading-none">
         {format ? formatFollowers(n) : n}
       </div>
-      <div className="mt-1 text-xs uppercase tracking-wide text-ink-3">{label}</div>
+      <div className="mt-1.5 text-[11px] uppercase tracking-[0.14em] text-ink-3">{label}</div>
     </div>
   );
 }
