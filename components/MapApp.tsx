@@ -34,7 +34,10 @@ export default function MapApp() {
   }
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-paper">
+    <div
+      className="fixed inset-0 overflow-hidden bg-paper"
+      style={{ height: "100dvh", width: "100vw" }}
+    >
       <MapCanvas placing={placing} onPick={handlePick} />
 
       <TopBar />

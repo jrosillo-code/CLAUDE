@@ -6,11 +6,11 @@ import Supercluster from "supercluster";
 import { useStore } from "@/lib/store";
 import { useVisiblePins } from "@/lib/hooks";
 import {
-  FALLBACK_STYLE,
   MAP_STYLE_URL,
   SKY,
   TERRAIN_ATTRIBUTION,
   TERRAIN_TILES,
+  brightWorldStyle,
   satelliteStyle,
 } from "@/lib/mapStyle";
 import type { PinWithOwner } from "@/lib/types";
@@ -53,6 +53,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const selectRef = useRef(selectPin);
   const selectedRef = useRef<string | null>(selectedPinId);
   const terrainRef = useRef(terrain3d);
+  // Set when the elevation source can't load (offline / blocked): terrain gets
+  // disabled so fills still render (draping onto a dead DEM mesh hides them).
+  const terrainBrokenRef = useRef(false);
   placingRef.current = placing;
   onPickRef.current = onPick;
   pinsRef.current = visiblePins;
@@ -72,6 +75,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
       map.setSky(SKY);
     } catch {
       /* sky unsupported */
+    }
+    if (terrainBrokenRef.current) {
+      try {
+        map.setTerrain(null);
+      } catch {
+        /* ignore */
+      }
+      return;
     }
     try {
       if (!map.getSource(DEM_SOURCE)) {
@@ -105,9 +116,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
+    // Start on the bundled bright globe: it's local, so it paints instantly and
+    // always works. We then upgrade to the detailed street map once we've
+    // confirmed that provider is actually reachable. No terrain on the bright
+    // base (its DEM would be remote); terrain comes with the upgrade.
+    terrainBrokenRef.current = true;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: MAP_STYLE_URL,
+      style: brightWorldStyle(),
       center: [10, 25],
       zoom: 1.5,
       pitch: 0,
@@ -122,37 +138,46 @@ export default function MapCanvas({ placing, onPick }: Props) {
       "bottom-right"
     );
 
-    // Run marker/camera init exactly once, off whichever "ready" signal lands
-    // first (load, or style.load for the fallback path).
+    // Runs once, on the first style that loads (bright base or the upgrade).
     const initOnce = () => {
       applyGlobeChrome(map);
       if (readyRef.current) return;
       readyRef.current = true;
+      map.resize();
       rebuildIndex();
       render();
       fitToViewer();
     };
     map.on("style.load", initOnce);
     map.on("load", initOnce);
+    requestAnimationFrame(() => map.resize());
 
-    // Graceful fallback if the base style can't load (offline / blocked host).
-    let fellBack = false;
-    const toFallback = () => {
-      if (fellBack || readyRef.current) return;
-      fellBack = true;
-      try {
-        map.setStyle(FALLBACK_STYLE);
-      } catch {
-        /* ignore */
-      }
-    };
+    // Upgrade to the detailed street basemap if its provider is reachable.
+    // Probing with fetch avoids swapping to a style whose tiles will hang.
+    if (typeof MAP_STYLE_URL === "string" && /^https?:/.test(MAP_STYLE_URL)) {
+      fetch(MAP_STYLE_URL, { mode: "cors" })
+        .then((res) => {
+          if (!res.ok) throw new Error("style probe failed");
+          terrainBrokenRef.current = false; // real basemap → terrain available
+          map.setStyle(MAP_STYLE_URL); // applyGlobeChrome re-runs on style.load
+        })
+        .catch(() => {
+          /* stay on the bright globe */
+        });
+    }
+
     map.on("error", (e) => {
       const msg = String(e?.error?.message ?? "");
-      if (/style|sprite|glyphs|fetch|network|load/i.test(msg)) toFallback();
+      // Elevation source unreachable → drop terrain so fills keep rendering.
+      if (/elevation|terrarium|terrain|raster-dem/i.test(msg) && !terrainBrokenRef.current) {
+        terrainBrokenRef.current = true;
+        try {
+          map.setTerrain(null);
+        } catch {
+          /* ignore */
+        }
+      }
     });
-    // Last-resort safety net: if the real style never became ready, show the
-    // fallback globe. Generous so a slow-but-fine connection isn't preempted.
-    setTimeout(toFallback, 8000);
 
     map.on("moveend", render);
     map.on("zoomend", render);
@@ -179,7 +204,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   // ---- Toggle terrain relief ----
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !readyRef.current) return;
+    if (!map || !readyRef.current || terrainBrokenRef.current) return;
     try {
       map.setTerrain(terrain3d ? { source: DEM_SOURCE, exaggeration: 1.25 } : null);
     } catch {
@@ -329,7 +354,15 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
   }
 
-  return <div ref={containerRef} className="absolute inset-0" />;
+  // Inline width/height guarantee the map has real dimensions at init even if a
+  // utility class doesn't resolve — MapLibre renders nothing into a 0-height box.
+  return (
+    <div
+      ref={containerRef}
+      className="absolute inset-0"
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
 }
 
 function leafColors(index: Supercluster, clusterId: number): string[] {

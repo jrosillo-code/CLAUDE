@@ -55,32 +55,86 @@ export function satelliteStyle(): StyleSpecification {
   };
 }
 
-// Atmospheric halo + space, the signature "planet from orbit" look. Fades out
-// as you zoom into street level.
+// Bright daytime atmosphere: a soft blue halo around the planet, kept subtle so
+// the ocean and land read clearly (not fogged out). Fades away as you zoom in.
 export const SKY: SkySpecification = {
-  "sky-color": "#4a90d9",
-  "sky-horizon-blend": 0.6,
-  "horizon-color": "#dfeaf6",
-  "horizon-fog-blend": 0.6,
-  "fog-color": "#f6f3ee",
-  "fog-ground-blend": 0.2,
+  "sky-color": "#8ec2ee",
+  "sky-horizon-blend": 0.4,
+  "horizon-color": "#d6e8f8",
+  "horizon-fog-blend": 0.3,
+  "fog-color": "#e4f0fb",
+  "fog-ground-blend": 0.85,
   "atmosphere-blend": [
     "interpolate",
     ["linear"],
     ["zoom"],
-    0, 1,
-    6, 0.7,
-    10, 0,
+    0, 0.5,
+    4, 0.25,
+    7, 0,
   ],
 };
 
-// Bare globe fallback if the remote basemap can't load — markers still place
-// correctly on a paper-colored sphere. "A map should never feel empty."
+// Bright, daytime, fully-offline basemap built from bundled country geometry
+// (public/geo). Used when the online vector tiles can't load — so even with no
+// network the app shows a clean Apple-style globe with land, ocean, borders,
+// and country labels rather than a blank sphere. "A map should never feel empty."
+export function brightWorldStyle(): StyleSpecification {
+  return {
+    version: 8,
+    name: "waypoint-bright",
+    glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+    sources: {
+      countries: { type: "geojson", data: "/geo/countries-110m.json" },
+    },
+    layers: [
+      // Soft daytime ocean.
+      { id: "ocean", type: "background", paint: { "background-color": "#add3f0" } },
+      // Land fill — bright, warm off-white like Apple's daytime map.
+      {
+        id: "land",
+        type: "fill",
+        source: "countries",
+        paint: { "fill-color": "#f4efe6", "fill-opacity": 1 },
+      },
+      // Subtle country borders.
+      {
+        id: "borders",
+        type: "line",
+        source: "countries",
+        paint: { "line-color": "#d8cfbf", "line-width": 0.8 },
+      },
+      // Country labels — muted, letter-spaced, placed at centroids.
+      {
+        id: "country-labels",
+        type: "symbol",
+        source: "countries",
+        layout: {
+          "text-field": ["get", "name"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 1, 10, 4, 14],
+          "text-letter-spacing": 0.08,
+          "text-transform": "uppercase",
+          "text-max-width": 8,
+        },
+        paint: {
+          "text-color": "#9a8f7d",
+          "text-halo-color": "#f4efe6",
+          "text-halo-width": 1.2,
+        },
+      },
+    ],
+  };
+}
+
+// Absolute last resort if even the glyphs (labels) can't load: geometry only.
 export const FALLBACK_STYLE: StyleSpecification = {
   version: 8,
   name: "waypoint-fallback",
-  sources: {},
+  sources: {
+    countries: { type: "geojson", data: "/geo/countries-110m.json" },
+  },
   layers: [
-    { id: "bg-ocean", type: "background", paint: { "background-color": "#dfe6ea" } },
+    { id: "ocean", type: "background", paint: { "background-color": "#add3f0" } },
+    { id: "land", type: "fill", source: "countries", paint: { "fill-color": "#f4efe6" } },
+    { id: "borders", type: "line", source: "countries", paint: { "line-color": "#d8cfbf", "line-width": 0.8 } },
   ],
 };
