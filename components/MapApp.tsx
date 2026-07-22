@@ -8,6 +8,7 @@ import BasemapToggle from "./BasemapToggle";
 import PinSheet from "./PinSheet";
 import AddPinSheet from "./AddPinSheet";
 import CreatorsPanel from "./CreatorsPanel";
+import TopSpotsPanel from "./TopSpotsPanel";
 import EmptyHint from "./EmptyHint";
 import { useStore } from "@/lib/store";
 import { useVisiblePins } from "@/lib/hooks";
@@ -17,6 +18,7 @@ export default function MapApp() {
   const [placing, setPlacing] = useState(false);
   const [resolving, setResolving] = useState(false);
   const [creatorsOpen, setCreatorsOpen] = useState(false);
+  const [topSpotsOpen, setTopSpotsOpen] = useState(false);
   const startAddPin = useStore((s) => s.startAddPin);
   const addDraft = useStore((s) => s.addDraft);
   const selectedPinId = useStore((s) => s.selectedPinId);
@@ -45,6 +47,18 @@ export default function MapApp() {
       <TopBar onOpenCreators={() => setCreatorsOpen(true)} />
       <LayerRail />
       <BasemapToggle />
+
+      {/* Top spots in this area */}
+      <button
+        onClick={() => setTopSpotsOpen(true)}
+        className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper"
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="text-accent">
+          <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
+          <path d="M18.5 13c.6 2 1.3 2.9 3 3.2-1.7.3-2.4 1.2-3 3.2-.6-2-1.3-2.9-3-3.2 1.7-.3 2.4-1.2 3-3.2z" fill="currentColor" opacity=".7" />
+        </svg>
+        Top spots
+      </button>
 
       {/* Add-pin FAB */}
       <button
@@ -76,6 +90,7 @@ export default function MapApp() {
       {selectedPinId && <PinSheet />}
       {addDraft && <AddPinSheet />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}
+      {topSpotsOpen && <TopSpotsPanel onClose={() => setTopSpotsOpen(false)} />}
     </div>
   );
 }

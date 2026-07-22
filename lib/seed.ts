@@ -255,6 +255,11 @@ export const seedFollows: { followerId: string; creatorId: string }[] = [
 function hashCode(s: string): number {
   let h = 0;
   for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  // Avalanche so near-identical ids ("pin-42"/"pin-43") don't produce
+  // near-identical counts.
+  h ^= h >>> 15;
+  h = (h * 2654435761) >>> 0;
+  h ^= h >>> 13;
   return h;
 }
 

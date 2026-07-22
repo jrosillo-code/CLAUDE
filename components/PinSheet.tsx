@@ -7,6 +7,7 @@ import { friendsWhoVisited, visibilityLabel } from "@/lib/data";
 import { formatDates } from "@/lib/format";
 import { ACTIVITY_LABELS } from "@/lib/types";
 import type { PinPhoto } from "@/lib/types";
+import { appleMapsDirectionsUrl, googleMapsDirectionsUrl } from "@/lib/directions";
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 
 // Immersive pin view: a large modal with a photo collage (click any photo to
@@ -133,6 +134,31 @@ export default function PinSheet() {
               {pin.note && (
                 <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-2">{pin.note}</p>
               )}
+
+              {/* Directions hand-off */}
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+                <span className="text-xs font-medium uppercase tracking-wide text-ink-3">
+                  Get there
+                </span>
+                <a
+                  href={googleMapsDirectionsUrl(pin.lat, pin.lng)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 rounded-full bg-paper-2 px-3.5 py-2 text-sm font-medium text-ink-2 transition-colors hover:bg-line"
+                >
+                  <DirectionsIcon />
+                  Google Maps
+                </a>
+                <a
+                  href={appleMapsDirectionsUrl(pin.lat, pin.lng)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 rounded-full bg-paper-2 px-3.5 py-2 text-sm font-medium text-ink-2 transition-colors hover:bg-line"
+                >
+                  <DirectionsIcon />
+                  Apple Maps
+                </a>
+              </div>
 
               {/* Owner */}
               <Link
@@ -295,6 +321,20 @@ function LightboxArrow({ dir, onClick }: { dir: "left" | "right"; onClick: (e: R
         <path d="m15 6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </button>
+  );
+}
+
+function DirectionsIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M12 2.8 21.2 12 12 21.2 2.8 12z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+      <path d="M9 13.5v-2a1 1 0 0 1 1-1h4M12.5 8.5l2 2-2 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 

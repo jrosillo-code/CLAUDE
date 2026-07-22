@@ -80,6 +80,11 @@ interface WaypointState {
   flyTo: { lng: number; lat: number; zoom?: number; nonce: number } | null;
   requestFlyTo: (lng: number, lat: number, zoom?: number) => void;
 
+  // Current viewport (updated by the map on move-end) — powers "Top spots in
+  // this area". At planet scale it covers the whole world.
+  viewBounds: { w: number; s: number; e: number; n: number; zoom: number } | null;
+  setViewBounds: (b: { w: number; s: number; e: number; n: number; zoom: number }) => void;
+
   addPin: (input: {
     lng: number;
     lat: number;
@@ -213,6 +218,9 @@ export const useStore = create<WaypointState>((set, get) => ({
   flyTo: null,
   requestFlyTo: (lng, lat, zoom) =>
     set({ flyTo: { lng, lat, zoom, nonce: ++flyNonce } }),
+
+  viewBounds: null,
+  setViewBounds: (b) => set({ viewBounds: b }),
 
   addPin: (input) => {
     const id = `pin-${++pinCounter}`;

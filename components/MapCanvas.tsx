@@ -115,6 +115,28 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
   }
 
+  // Swapping styles while the previous one is still compiling corrupts
+  // MapLibre's shader state ("Cannot read properties of undefined (reading
+  // 'shaderPreludeCode')"). Wait for the current style to settle first, with a
+  // timeout fallback in case `idle` never fires (e.g. tiles blocked offline).
+  function safeSetStyle(map: maplibregl.Map, style: maplibregl.StyleSpecification | string) {
+    let done = false;
+    const run = () => {
+      if (done) return;
+      done = true;
+      try {
+        map.setStyle(style);
+      } catch {
+        /* map busy or destroyed — skip */
+      }
+    };
+    if (map.isStyleLoaded()) run();
+    else {
+      map.once("idle", run);
+      setTimeout(run, 1500);
+    }
+  }
+
   // Swap the basemap for the current mode+theme: satellite directly; "map" mode
   // shows the bundled themed globe instantly, then upgrades to the theme's
   // online street style once that provider is confirmed reachable.
@@ -123,11 +145,11 @@ export default function MapCanvas({ placing, onPick }: Props) {
     const theme = themeRef.current;
     if (mode === "satellite") {
       terrainBrokenRef.current = false; // DEM may load; error handler resets
-      map.setStyle(satelliteStyle());
+      safeSetStyle(map, satelliteStyle());
       return;
     }
     terrainBrokenRef.current = true; // bundled globe has no elevation data
-    map.setStyle(bundledWorldStyle(theme));
+    safeSetStyle(map, bundledWorldStyle(theme));
     const remote = theme.remoteStyle;
     if (!remote) return;
     fetch(remote, { mode: "cors" })
@@ -135,7 +157,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
         if (!res.ok) throw new Error("style probe failed");
         if (styleSeqRef.current !== seq) return; // user switched again
         terrainBrokenRef.current = false;
-        map.setStyle(remote);
+        safeSetStyle(map, remote);
       })
       .catch(() => {
         /* stay on the bundled globe */
@@ -191,7 +213,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
             if (!res.ok) throw new Error("style probe failed");
             if (styleSeqRef.current !== seq) return;
             terrainBrokenRef.current = false;
-            map.setStyle(remote);
+            safeSetStyle(map, remote);
           })
           .catch(() => {});
       }
@@ -250,11 +272,37 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }, 140);
     };
 
-    map.on("moveend", render);
+    // Publish the viewport so features like "Top spots in this area" can rank
+    // pins within what the user is actually looking at.
+    const publishBounds = () => {
+      const z = map.getZoom();
+      try {
+        if (z < 3.5) {
+          useStore.getState().setViewBounds({ w: -180, s: -90, e: 180, n: 90, zoom: z });
+        } else {
+          const b = map.getBounds();
+          useStore.getState().setViewBounds({
+            w: b.getWest(),
+            s: b.getSouth(),
+            e: b.getEast(),
+            n: b.getNorth(),
+            zoom: z,
+          });
+        }
+      } catch {
+        /* ignore */
+      }
+    };
+
+    map.on("moveend", () => {
+      render();
+      publishBounds();
+    });
     map.on("zoomend", () => {
       render();
       scheduleRecenter();
     });
+    map.once("load", publishBounds);
     map.on("move", renderThrottled);
 
     map.on("click", (e) => {

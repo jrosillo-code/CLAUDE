@@ -4,7 +4,7 @@ import type { SkySpecification } from "maplibre-gl";
 // variables in globals.css, switched via data-theme on <html>) and the globe
 // itself (ocean/land/label colors for the bundled basemap, an atmosphere, and
 // — when reachable — a matching online street style to upgrade to).
-export type ThemeId = "daylight" | "sandstone" | "mint" | "midnight";
+export type ThemeId = "daylight" | "sandstone" | "mint" | "vermilion" | "midnight";
 
 export interface MapTheme {
   id: ThemeId;
@@ -91,6 +91,29 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     },
     swatch: ["#a9dcd0", "#f4f8ef"],
   },
+  vermilion: {
+    id: "vermilion",
+    label: "Vermilion",
+    darkUI: false,
+    remoteStyle: "https://tiles.openfreemap.org/styles/positron",
+    // Warm rice-paper land, soft blue-gray water, vermilion-red borders and
+    // labels — styled after the Chinese edition of Apple Maps.
+    ocean: "#c7dae4",
+    land: "#faf3e6",
+    border: "#e08a7a",
+    labelColor: "#b04a3c",
+    labelHalo: "#faf3e6",
+    sky: {
+      "sky-color": "#e8a598",
+      "sky-horizon-blend": 0.35,
+      "horizon-color": "#f6ddd2",
+      "horizon-fog-blend": 0.3,
+      "fog-color": "#f9ece2",
+      "fog-ground-blend": 0.85,
+      "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.4, 4, 0.2, 7, 0],
+    },
+    swatch: ["#d84b40", "#faf3e6"],
+  },
   midnight: {
     id: "midnight",
     label: "Midnight",
@@ -98,22 +121,30 @@ export const THEMES: Record<ThemeId, MapTheme> = {
     // OpenFreeMap has no official dark style; if this 404s the app simply stays
     // on the bundled midnight globe, which is fully styled anyway.
     remoteStyle: "https://tiles.openfreemap.org/styles/dark",
-    ocean: "#0c1626",
-    land: "#1d2734",
-    border: "#33415a",
-    labelColor: "#8fa3bd",
-    labelHalo: "#111a29",
+    // A clearly-blue deep ocean against near-charcoal land, so water reads as
+    // water instead of undifferentiated darkness.
+    ocean: "#16324f",
+    land: "#1b2330",
+    border: "#3d4f68",
+    labelColor: "#9db4d0",
+    labelHalo: "#101827",
     sky: {
-      "sky-color": "#1e3a5f",
+      "sky-color": "#27486e",
       "sky-horizon-blend": 0.4,
-      "horizon-color": "#16233a",
+      "horizon-color": "#1a2c47",
       "horizon-fog-blend": 0.35,
-      "fog-color": "#0d1524",
+      "fog-color": "#0e1929",
       "fog-ground-blend": 0.9,
       "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.45, 4, 0.25, 7, 0],
     },
-    swatch: ["#0c1626", "#33415a"],
+    swatch: ["#16324f", "#3d4f68"],
   },
 };
 
-export const THEME_ORDER: ThemeId[] = ["daylight", "sandstone", "mint", "midnight"];
+export const THEME_ORDER: ThemeId[] = [
+  "daylight",
+  "sandstone",
+  "mint",
+  "vermilion",
+  "midnight",
+];
