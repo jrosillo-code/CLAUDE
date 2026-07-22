@@ -213,28 +213,47 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // Keep the globe centered while zooming out: as zoom decreases, ease the
     // camera's latitude back toward the equator (and flatten pitch) so the
     // planet sits in the middle of the screen instead of sliding off-bottom.
-    const recenterGlobe = () => {
-      const z = map.getZoom();
-      if (z >= 3.2) return;
-      const t = Math.max(0, Math.min(1, (z - 1.05) / (3.2 - 1.05)));
-      const maxLat = 12 + t * 63; // 12° fully zoomed out → 75° near street level
-      const c = map.getCenter();
-      const clampedLat = Math.max(-maxLat, Math.min(maxLat, c.lat));
-      const needPitch = z < 2.4 && map.getPitch() > 4;
-      if (Math.abs(clampedLat - c.lat) > 0.4 || needPitch) {
-        map.easeTo({
-          center: [c.lng, clampedLat],
-          pitch: needPitch ? 0 : map.getPitch(),
-          duration: 420,
-          essential: true,
-        });
-      }
+    //
+    // IMPORTANT: never call easeTo() synchronously from inside a camera event
+    // (zoomend fires mid-animation teardown) — re-entering the animation loop
+    // corrupts MapLibre's easing state ("this._onEaseFrame is not a function",
+    // "Attempting to run(), but is already running"). Instead, debounce and run
+    // only once the map is fully idle.
+    let recenterTimer: ReturnType<typeof setTimeout> | null = null;
+    const scheduleRecenter = () => {
+      if (recenterTimer !== null) clearTimeout(recenterTimer);
+      recenterTimer = setTimeout(() => {
+        recenterTimer = null;
+        if (map.isMoving() || map.isZooming() || map.isRotating()) {
+          scheduleRecenter(); // still animating — try again shortly
+          return;
+        }
+        const z = map.getZoom();
+        if (z >= 3.2) return;
+        const t = Math.max(0, Math.min(1, (z - 1.05) / (3.2 - 1.05)));
+        const maxLat = 12 + t * 63; // 12° fully zoomed out → 75° near street level
+        const c = map.getCenter();
+        const clampedLat = Math.max(-maxLat, Math.min(maxLat, c.lat));
+        const needPitch = z < 2.4 && map.getPitch() > 4;
+        if (Math.abs(clampedLat - c.lat) > 0.4 || needPitch) {
+          try {
+            map.easeTo({
+              center: [c.lng, clampedLat],
+              pitch: needPitch ? 0 : map.getPitch(),
+              duration: 420,
+              essential: true,
+            });
+          } catch {
+            /* camera busy — skip this round */
+          }
+        }
+      }, 140);
     };
 
     map.on("moveend", render);
     map.on("zoomend", () => {
       render();
-      recenterGlobe();
+      scheduleRecenter();
     });
     map.on("move", renderThrottled);
 
