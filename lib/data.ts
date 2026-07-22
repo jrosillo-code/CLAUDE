@@ -3,6 +3,7 @@ import type {
   Pin,
   PinWithOwner,
   TopPlace,
+  Trip,
   User,
   Visibility,
 } from "./types";
@@ -148,6 +149,20 @@ export function friendsWhoVisited(
     }
   }
   return out;
+}
+
+/** Trips the viewer may see: their own, plus friends' friends-visible trips. */
+export function visibleTrips(
+  trips: Trip[],
+  friendships: Friendship[],
+  viewerId: string
+): Trip[] {
+  const friendIds = acceptedFriendIds(friendships, viewerId);
+  return trips.filter(
+    (t) =>
+      t.userId === viewerId ||
+      (t.visibility === "friends" && friendIds.has(t.userId))
+  );
 }
 
 /** First photo of a pin (marker thumbs, covers). Videos don't qualify. */

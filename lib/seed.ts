@@ -4,6 +4,7 @@ import type {
   Pin,
   PinMedia,
   TopPlace,
+  Trip,
   User,
 } from "./types";
 
@@ -263,6 +264,36 @@ export const pins: Pin[] = rows.map((r, i) => {
     createdAt: new Date(2025, 0, 1 + i).toISOString(),
   };
 });
+
+// Planned trips: ordered stops stitched together by a thread on the map.
+// Visibility is friends-or-private only — routes are never world-public.
+export const seedTrips: Trip[] = [
+  {
+    id: "trip-1",
+    userId: "u-you",
+    title: "Atlantic Coast Roadtrip",
+    visibility: "friends",
+    stops: [
+      { id: "trip-1-s1", lng: -9.1393, lat: 38.7223, placeName: "Lisbon" },
+      { id: "trip-1-s2", lng: -9.4175, lat: 38.9636, placeName: "Ericeira" },
+      { id: "trip-1-s3", lng: -8.7813, lat: 40.2033, placeName: "Figueira da Foz" },
+      { id: "trip-1-s4", lng: -8.6291, lat: 41.1579, placeName: "Porto" },
+    ],
+    createdAt: new Date(2025, 5, 2).toISOString(),
+  },
+  {
+    id: "trip-2",
+    userId: "u-maria",
+    title: "Alps to Adriatic",
+    visibility: "friends",
+    stops: [
+      { id: "trip-2-s1", lng: 7.7491, lat: 45.9237, placeName: "Cervinia" },
+      { id: "trip-2-s2", lng: 11.1217, lat: 46.0667, placeName: "Trento" },
+      { id: "trip-2-s3", lng: 13.7522, lat: 45.6495, placeName: "Trieste" },
+    ],
+    createdAt: new Date(2025, 6, 12).toISOString(),
+  },
+];
 
 // Who the demo viewer already follows (creators). Following a creator overlays
 // their public pins on your map as a toggleable layer.

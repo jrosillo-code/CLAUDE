@@ -8,6 +8,8 @@ import BasemapToggle from "./BasemapToggle";
 import PinSheet from "./PinSheet";
 import AddPinSheet from "./AddPinSheet";
 import CreatorsPanel from "./CreatorsPanel";
+import TripsPanel from "./TripsPanel";
+import TripDraftBar from "./TripDraftBar";
 import TopSpotsPanel from "./TopSpotsPanel";
 import EmptyHint from "./EmptyHint";
 import { useStore } from "@/lib/store";
@@ -19,12 +21,21 @@ export default function MapApp() {
   const [resolving, setResolving] = useState(false);
   const [creatorsOpen, setCreatorsOpen] = useState(false);
   const [topSpotsOpen, setTopSpotsOpen] = useState(false);
+  const [tripsOpen, setTripsOpen] = useState(false);
   const startAddPin = useStore((s) => s.startAddPin);
+  const tripDraft = useStore((s) => s.tripDraft);
+  const addTripStop = useStore((s) => s.addTripStop);
   const addDraft = useStore((s) => s.addDraft);
   const selectedPinId = useStore((s) => s.selectedPinId);
   const visible = useVisiblePins();
 
   async function handlePick(lng: number, lat: number) {
+    // Trip-planning mode: every map tap is a new stop on the thread.
+    if (tripDraft) {
+      const geo = await reverseGeocode(lng, lat);
+      addTripStop({ lng, lat, placeName: geo.placeName });
+      return;
+    }
     setPlacing(false);
     setResolving(true);
     const geo = await reverseGeocode(lng, lat);
@@ -42,13 +53,14 @@ export default function MapApp() {
       className="fixed inset-0 overflow-hidden bg-paper"
       style={{ height: "100dvh", width: "100vw" }}
     >
-      <MapCanvas placing={placing} onPick={handlePick} />
+      <MapCanvas placing={placing || !!tripDraft} onPick={handlePick} />
 
-      <TopBar onOpenCreators={() => setCreatorsOpen(true)} />
+      <TopBar onOpenCreators={() => setCreatorsOpen(true)} onOpenTrips={() => setTripsOpen(true)} />
       <LayerRail />
       <BasemapToggle />
 
       {/* Top spots in this area */}
+      {!tripDraft && (
       <button
         onClick={() => setTopSpotsOpen(true)}
         className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper"
@@ -59,8 +71,12 @@ export default function MapApp() {
         </svg>
         Top spots
       </button>
+      )}
+
+      {tripDraft && <TripDraftBar />}
 
       {/* Add-pin FAB */}
+      {!tripDraft && (
       <button
         onClick={() => setPlacing((p) => !p)}
         aria-label={placing ? "Cancel placing pin" : "Add a pin"}
@@ -72,6 +88,7 @@ export default function MapApp() {
           <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
         </svg>
       </button>
+      )}
 
       {/* Placing hint banner */}
       {placing && (
@@ -91,6 +108,7 @@ export default function MapApp() {
       {addDraft && <AddPinSheet />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}
       {topSpotsOpen && <TopSpotsPanel onClose={() => setTopSpotsOpen(false)} />}
+      {tripsOpen && <TripsPanel onClose={() => setTripsOpen(false)} />}
     </div>
   );
 }

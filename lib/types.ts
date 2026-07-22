@@ -81,6 +81,24 @@ export interface Friendship {
   requestedBy: string;
 }
 
+/** A planned-route stop; trips connect their stops with a thread on the map. */
+export interface TripStop {
+  id: string;
+  lng: number;
+  lat: number;
+  placeName: string;
+}
+
+export interface Trip {
+  id: string;
+  userId: string;
+  title: string;
+  /** Trips are never public — at most your friends can see them. */
+  visibility: "friends" | "private";
+  stops: TripStop[];
+  createdAt: string;
+}
+
 export interface TopPlace {
   userId: string;
   rank: number; // 1..5

@@ -12,8 +12,9 @@ import {
   satelliteStyle,
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
-import { coverUrl } from "@/lib/data";
-import type { PinWithOwner } from "@/lib/types";
+import { coverUrl, visibleTrips } from "@/lib/data";
+import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
+import { useMemo } from "react";
 
 interface Props {
   placing: boolean;
@@ -31,6 +32,7 @@ type ClusterProps = {
 };
 
 const DEM_SOURCE = "waypoint-dem";
+const TRIPS_SOURCE = "waypoint-trips";
 
 // Remembered across theme switches (module scope): which online style hosts
 // are reachable. Lets a repeat theme switch jump straight to its final style.
@@ -53,6 +55,21 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const basemap = useStore((s) => s.basemap);
   const terrain3d = useStore((s) => s.terrain3d);
   const themeId = useStore((s) => s.theme);
+  const trips = useStore((s) => s.trips);
+  const shownTripIds = useStore((s) => s.shownTripIds);
+  const tripDraft = useStore((s) => s.tripDraft);
+  const friendships = useStore((s) => s.friendships);
+  const users = useStore((s) => s.users);
+  const viewerId = useStore((s) => s.viewerId);
+
+  const shownTrips = useMemo(
+    () => visibleTrips(trips, friendships, viewerId).filter((t) => shownTripIds.has(t.id)),
+    [trips, friendships, viewerId, shownTripIds]
+  );
+  const avatarsById = useMemo(
+    () => new Map(users.map((u) => [u.id, u.avatarUrl])),
+    [users]
+  );
 
   const placingRef = useRef(placing);
   const onPickRef = useRef(onPick);
@@ -61,6 +78,12 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const selectedRef = useRef<string | null>(selectedPinId);
   const terrainRef = useRef(terrain3d);
   const themeRef = useRef(THEMES[themeId]);
+  const tripsRef = useRef<{
+    trips: Trip[];
+    draft: { stops: TripStop[] } | null;
+    avatars: Map<string, string>;
+    viewerId: string;
+  }>({ trips: shownTrips, draft: tripDraft, avatars: avatarsById, viewerId });
   // Set when the elevation source can't load (offline / bundled basemap):
   // terrain gets disabled so fills still render.
   const terrainBrokenRef = useRef(true);
@@ -71,6 +94,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   selectedRef.current = selectedPinId;
   terrainRef.current = terrain3d;
   themeRef.current = THEMES[themeId];
+  tripsRef.current = { trips: shownTrips, draft: tripDraft, avatars: avatarsById, viewerId };
 
   // Apply the "planet" chrome — globe projection, themed atmosphere, and 3D
   // terrain — after any style (re)load, since setStyle wipes sources/terrain.
@@ -118,6 +142,51 @@ export default function MapCanvas({ placing, onPick }: Props) {
       map.setTerrain(terrainRef.current ? { source: DEM_SOURCE, exaggeration: 1.25 } : null);
     } catch {
       /* terrain source blocked — map still works flat */
+    }
+  }
+
+  // The thread: one line source stitching each shown trip's stops in order.
+  // Re-added after every style swap (setStyle wipes sources/layers).
+  function syncTripThreads(map: maplibregl.Map) {
+    const { trips: shown, draft } = tripsRef.current;
+    const features: GeoJSON.Feature[] = [];
+    for (const t of shown) {
+      if (t.stops.length < 2) continue;
+      features.push({
+        type: "Feature",
+        properties: { color: "#80858f", dash: 1 },
+        geometry: { type: "LineString", coordinates: t.stops.map((s) => [s.lng, s.lat]) },
+      });
+    }
+    if (draft && draft.stops.length >= 2) {
+      features.push({
+        type: "Feature",
+        properties: { color: themeRef.current.pinColor, dash: 1 },
+        geometry: { type: "LineString", coordinates: draft.stops.map((s) => [s.lng, s.lat]) },
+      });
+    }
+    const fc: GeoJSON.FeatureCollection = { type: "FeatureCollection", features };
+    try {
+      const src = map.getSource(TRIPS_SOURCE) as maplibregl.GeoJSONSource | undefined;
+      if (src) {
+        src.setData(fc);
+      } else {
+        map.addSource(TRIPS_SOURCE, { type: "geojson", data: fc });
+        map.addLayer({
+          id: "waypoint-trip-thread",
+          type: "line",
+          source: TRIPS_SOURCE,
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: {
+            "line-color": ["get", "color"],
+            "line-width": 2.4,
+            "line-dasharray": [0.1, 2.2],
+            "line-opacity": 0.95,
+          },
+        });
+      }
+    } catch {
+      /* style mid-swap — the next style.load re-syncs */
     }
   }
 
@@ -206,9 +275,11 @@ export default function MapCanvas({ placing, onPick }: Props) {
       "bottom-right"
     );
 
-    // Runs once, on the first style that loads.
+    // Runs once, on the first style that loads. (applyGlobeChrome and the
+    // trip-thread layer re-apply on EVERY style.load — setStyle wipes them.)
     const initOnce = () => {
       applyGlobeChrome(map);
+      syncTripThreads(map);
       if (readyRef.current) return;
       readyRef.current = true;
       map.resize();
@@ -392,6 +463,15 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedPinId]);
 
+  // Trips or draft changed → refresh the thread and the needle markers.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !readyRef.current) return;
+    syncTripThreads(map);
+    render();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shownTrips, tripDraft]);
+
   // ---- Fly-to intent from the store ----
   useEffect(() => {
     const map = mapRef.current;
@@ -509,54 +589,43 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
 
     const next = new Set<string>();
-    for (const c of clusters) {
-      const props = c.properties as ClusterProps;
-      const [lng, lat] = c.geometry.coordinates as [number, number];
-      const key = props.cluster ? `c-${props.cluster_id}` : `p-${props.pinId}`;
+
+    // Create-or-update a marker, then run the visibility gate: hide it when
+    // its projection is garbage for this frame (NaN / wild off-screen — the
+    // "random pins flickering in the corner" glitch) or, at globe scale, when
+    // it falls outside the sphere's silhouette (beyond the horizon).
+    const upsert = (
+      key: string,
+      lng: number,
+      lat: number,
+      content: HTMLDivElement,
+      zIndex: string,
+      onClick: ((ev: MouseEvent) => void) | null
+    ) => {
       next.add(key);
-
       let marker = markersRef.current.get(key);
-      // Teardrop pin, colored by the active theme. Clusters render as a
-      // stacked pair of pins — no count badge.
-      const pinColor = themeRef.current.pinColor;
-      const content = props.cluster
-        ? teardropEl({ photo: props.photo, color: pinColor, height: 46, stacked: true, selected: false })
-        : teardropEl({
-            photo: props.photo,
-            color: pinColor,
-            height: props.pinId === selectedRef.current ? 50 : 38,
-            stacked: false,
-            selected: props.pinId === selectedRef.current,
-          });
-
       if (marker) {
         // The marker's outer element belongs to MapLibre (it carries the
         // positioning transform); we only ever swap our content inside it.
         marker.getElement().replaceChildren(content);
         marker.setLngLat([lng, lat]);
       } else {
-        const container = document.createElement("div");
-        container.appendChild(content);
-        marker = new maplibregl.Marker({ element: container, anchor: "bottom" })
+        const el = document.createElement("div");
+        el.appendChild(content);
+        marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
           .setLngLat([lng, lat])
           .addTo(map);
         markersRef.current.set(key, marker);
       }
-
       const element = marker.getElement();
-      element.style.zIndex = !props.cluster && props.pinId === selectedRef.current ? "5" : "1";
-
-      // Visibility gate. Hide a marker whenever its projection is garbage for
-      // this frame (NaN or a wild off-screen point — the source of "random pins
-      // flickering in the corner" during zoom animations), and, at globe scale,
-      // whenever it falls outside the sphere's silhouette (beyond the horizon).
+      element.style.zIndex = zIndex;
       let visible = true;
       try {
         const mPx = map.project([lng, lat]);
         if (!Number.isFinite(mPx.x) || !Number.isFinite(mPx.y)) {
           visible = false;
         } else if (mPx.x < -150 || mPx.y < -150 || mPx.x > cw + 150 || mPx.y > ch + 150) {
-          visible = false; // far off-viewport (also catches origin-glitch frames)
+          visible = false;
         } else if (silhouette) {
           const d = Math.hypot(mPx.x - silhouette.cx, mPx.y - silhouette.cy);
           visible = Number.isFinite(d) && d <= silhouette.r;
@@ -565,8 +634,21 @@ export default function MapCanvas({ placing, onPick }: Props) {
         visible = false;
       }
       element.style.display = visible ? "" : "none";
+      element.onclick = onClick;
+    };
 
-      element.onclick = (ev) => {
+    // Teardrop pins, colored by the active theme. Clusters render as a
+    // stacked pair of pins — no count badge.
+    const pinColor = themeRef.current.pinColor;
+    for (const c of clusters) {
+      const props = c.properties as ClusterProps;
+      const [lng, lat] = c.geometry.coordinates as [number, number];
+      const key = props.cluster ? `c-${props.cluster_id}` : `p-${props.pinId}`;
+      const selected = !props.cluster && props.pinId === selectedRef.current;
+      const content = props.cluster
+        ? teardropEl({ photo: props.photo, color: pinColor, height: 46, stacked: true, selected: false })
+        : teardropEl({ photo: props.photo, color: pinColor, height: selected ? 50 : 38, stacked: false, selected });
+      upsert(key, lng, lat, content, selected ? "5" : "1", (ev) => {
         ev.stopPropagation();
         if (placingRef.current) return;
         if (props.cluster && props.cluster_id != null) {
@@ -581,7 +663,37 @@ export default function MapCanvas({ placing, onPick }: Props) {
             duration: 800,
           });
         }
-      };
+      });
+    }
+
+    // Trip stops: needle pins (round avatar head on a thin stick), stitched
+    // together by the thread layer underneath.
+    const tripState = tripsRef.current;
+    for (const trip of tripState.trips) {
+      const avatar = tripState.avatars.get(trip.userId);
+      for (const stop of trip.stops) {
+        upsert(
+          `ts-${trip.id}-${stop.id}`,
+          stop.lng,
+          stop.lat,
+          needleEl({ avatar, ghost: false }),
+          "2",
+          (ev) => ev.stopPropagation()
+        );
+      }
+    }
+    if (tripState.draft) {
+      const avatar = tripState.avatars.get(tripState.viewerId);
+      tripState.draft.stops.forEach((stop, i) => {
+        upsert(
+          `td-${i}`,
+          stop.lng,
+          stop.lat,
+          needleEl({ avatar, ghost: true }),
+          "4",
+          (ev) => ev.stopPropagation()
+        );
+      });
     }
 
     for (const [key, marker] of markersRef.current) {
@@ -601,6 +713,35 @@ export default function MapCanvas({ placing, onPick }: Props) {
       style={{ width: "100%", height: "100%" }}
     />
   );
+}
+
+// Trip-stop needle: a round head (the owner's profile picture) on a thin gray
+// stick, tip planted on the location — like a sewing pin. Draft stops render
+// slightly translucent until saved.
+function needleEl(opts: { avatar?: string; ghost: boolean }): HTMLDivElement {
+  const { avatar, ghost } = opts;
+  const headSize = 26;
+  const stickHeight = 20;
+  const width = headSize + 4;
+  const height = headSize + stickHeight;
+  const wrap = document.createElement("div");
+  wrap.className = "marker-in cursor-pointer select-none";
+  wrap.style.cssText = `position:relative;width:${width}px;height:${height}px;opacity:${ghost ? 0.8 : 1};filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));`;
+
+  const stick = document.createElement("div");
+  stick.style.cssText = `position:absolute;left:50%;bottom:0;width:2.5px;height:${stickHeight + headSize / 2}px;transform:translateX(-50%);background:#585d66;border-radius:2px;`;
+  wrap.appendChild(stick);
+
+  const head = document.createElement("div");
+  head.style.cssText = `position:absolute;left:50%;top:0;width:${headSize}px;height:${headSize}px;transform:translateX(-50%);border-radius:9999px;background-size:cover;background-position:center;background-color:#c65d3b;box-shadow:0 0 0 2px rgba(255,255,255,.95);`;
+  if (avatar) head.style.backgroundImage = `url("${avatar}")`;
+  wrap.appendChild(head);
+
+  // The little specular highlight from the reference pin.
+  const gleam = document.createElement("div");
+  gleam.style.cssText = `position:absolute;left:calc(50% + ${Math.round(headSize * 0.16)}px);top:${Math.round(headSize * 0.16)}px;width:${Math.round(headSize * 0.24)}px;height:${Math.round(headSize * 0.24)}px;border-radius:9999px;background:rgba(255,255,255,.55);`;
+  wrap.appendChild(gleam);
+  return wrap;
 }
 
 // A classic teardrop map pin in the theme's color, with a small circular

@@ -6,7 +6,13 @@ import { useStore } from "@/lib/store";
 import { useViewer } from "@/lib/hooks";
 import { searchPlaces, type GeoResult } from "@/lib/geocode";
 
-export default function TopBar({ onOpenCreators }: { onOpenCreators: () => void }) {
+export default function TopBar({
+  onOpenCreators,
+  onOpenTrips,
+}: {
+  onOpenCreators: () => void;
+  onOpenTrips: () => void;
+}) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
 
@@ -87,6 +93,20 @@ export default function TopBar({ onOpenCreators }: { onOpenCreators: () => void 
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
+        {/* Trips */}
+        <button
+          onClick={onOpenTrips}
+          className="flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-2 shadow-float backdrop-blur"
+          title="Trips"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent-2">
+            <circle cx="5" cy="19" r="2.4" fill="currentColor" />
+            <circle cx="19" cy="5" r="2.4" fill="currentColor" />
+            <path d="M6.8 17.2C10 14 8.5 11 12 8.5c2.4-1.7 4-1.5 5.4-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="0.5 3.4" />
+          </svg>
+          <span className="hidden text-sm font-medium sm:block">Trips</span>
+        </button>
+
         {/* Creators */}
         <button
           onClick={onOpenCreators}

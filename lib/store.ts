@@ -1,7 +1,15 @@
 "use client";
 
 import { create } from "zustand";
-import type { Friendship, Pin, TopPlace, User, Visibility } from "./types";
+import type {
+  Friendship,
+  Pin,
+  TopPlace,
+  Trip,
+  TripStop,
+  User,
+  Visibility,
+} from "./types";
 import type { ThemeId } from "./themes";
 import { THEMES } from "./themes";
 import {
@@ -10,6 +18,7 @@ import {
   pins as seedPins,
   seedFollows,
   seedLikeCounts,
+  seedTrips,
   topPlaces as seedTopPlaces,
   users as seedUsers,
 } from "./seed";
@@ -65,6 +74,21 @@ interface WaypointState {
   toggleSave: (pinId: string) => void;
   follows: Set<string>;
   toggleFollow: (creatorId: string) => void;
+
+  // Trips: ordered stops stitched by a thread. Draft mode turns map taps into
+  // stops until saved. Visibility is friends-or-private only.
+  trips: Trip[];
+  shownTripIds: Set<string>;
+  toggleTripShown: (id: string) => void;
+  deleteTrip: (id: string) => void;
+  tripDraft: { title: string; visibility: "friends" | "private"; stops: TripStop[] } | null;
+  startTripDraft: () => void;
+  cancelTripDraft: () => void;
+  setTripDraftTitle: (t: string) => void;
+  setTripDraftVisibility: (v: "friends" | "private") => void;
+  addTripStop: (s: Omit<TripStop, "id">) => void;
+  undoTripStop: () => void;
+  saveTripDraft: () => Trip | null;
 
   // Map layer state. `activeUserIds === null` => Everyone.
   activeUserIds: Set<string> | null;
@@ -250,6 +274,66 @@ export const useStore = create<WaypointState>((set, get) => ({
         .filter((t): t is NonNullable<typeof t> => t !== null);
       return { topPlaces: [...others, ...reordered] };
     }),
+
+  trips: [...seedTrips],
+  shownTripIds: new Set(seedTrips.filter((t) => t.userId === CURRENT_USER_ID).map((t) => t.id)),
+  toggleTripShown: (id) =>
+    set((s) => {
+      const shown = new Set(s.shownTripIds);
+      if (shown.has(id)) shown.delete(id);
+      else shown.add(id);
+      return { shownTripIds: shown };
+    }),
+  deleteTrip: (id) =>
+    set((s) => ({
+      trips: s.trips.filter((t) => !(t.id === id && t.userId === s.viewerId)),
+      shownTripIds: new Set([...s.shownTripIds].filter((x) => x !== id)),
+    })),
+  tripDraft: null,
+  startTripDraft: () =>
+    set({
+      tripDraft: { title: "", visibility: "friends", stops: [] },
+      selectedPinId: null,
+      addDraft: null,
+    }),
+  cancelTripDraft: () => set({ tripDraft: null }),
+  setTripDraftTitle: (t) =>
+    set((s) => (s.tripDraft ? { tripDraft: { ...s.tripDraft, title: t } } : {})),
+  setTripDraftVisibility: (v) =>
+    set((s) => (s.tripDraft ? { tripDraft: { ...s.tripDraft, visibility: v } } : {})),
+  addTripStop: (stop) =>
+    set((s) => {
+      if (!s.tripDraft) return {};
+      const id = `stop-${s.tripDraft.stops.length + 1}-${s.tripDraft.stops.length}`;
+      return {
+        tripDraft: { ...s.tripDraft, stops: [...s.tripDraft.stops, { ...stop, id }] },
+      };
+    }),
+  undoTripStop: () =>
+    set((s) =>
+      s.tripDraft
+        ? { tripDraft: { ...s.tripDraft, stops: s.tripDraft.stops.slice(0, -1) } }
+        : {}
+    ),
+  saveTripDraft: () => {
+    const s = get();
+    if (!s.tripDraft || s.tripDraft.stops.length < 2) return null;
+    const id = `trip-${s.trips.length + 1}-${Math.abs(s.trips.length * 7 + 13)}`;
+    const trip: Trip = {
+      id,
+      userId: s.viewerId,
+      title: s.tripDraft.title.trim() || "Untitled trip",
+      visibility: s.tripDraft.visibility,
+      stops: s.tripDraft.stops,
+      createdAt: new Date().toISOString(),
+    };
+    set({
+      trips: [...s.trips, trip],
+      tripDraft: null,
+      shownTripIds: new Set([...s.shownTripIds, id]),
+    });
+    return trip;
+  },
 
   selectedPinId: null,
   selectPin: (id) => set({ selectedPinId: id, addDraft: null }),
