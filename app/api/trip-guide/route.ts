@@ -91,7 +91,14 @@ async function groundStop(stop: ReqStop): Promise<Grounding> {
   const hit = cache.get(key);
   if (hit) return hit;
 
-  const [wiki, osm] = await Promise.all([fetchWikipedia(stop), fetchOverpass(stop)]);
+  // Places: Geoapify when a free key is configured (faster, more reliable),
+  // otherwise the keyless Overpass API.
+  const places = GEOAPIFY_KEY
+    ? fetchGeoapifyPlaces(stop).then((r) =>
+        r.hotels.length || r.attractions.length ? r : fetchOverpass(stop)
+      )
+    : fetchOverpass(stop);
+  const [wiki, osm] = await Promise.all([fetchWikipedia(stop), places]);
   const g: Grounding = { ...wiki, ...osm };
   cache.set(key, g);
   if (cache.size > 400) cache.delete(cache.keys().next().value!);
@@ -155,6 +162,75 @@ async function fetchWikipedia(stop: ReqStop): Promise<Pick<Grounding, "wikiTitle
         .slice(0, 10)
         .map((a) => a.title),
     };
+  } catch {
+    return empty;
+  }
+}
+
+// Free-tier Geoapify key (geoapify.com — 3,000 req/day, no card required).
+const GEOAPIFY_KEY = process.env.GEOAPIFY_API_KEY || process.env.NEXT_PUBLIC_GEOAPIFY_KEY;
+
+async function fetchGeoapifyPlaces(stop: ReqStop): Promise<Pick<Grounding, "hotels" | "attractions">> {
+  const empty = { hotels: [], attractions: [] } as Pick<Grounding, "hotels" | "attractions">;
+  try {
+    const base = "https://api.geoapify.com/v2/places";
+    const around = (radius: number) =>
+      `filter=circle:${stop.lng},${stop.lat},${radius}&bias=proximity:${stop.lng},${stop.lat}`;
+    const [stayRes, sightRes] = await Promise.all([
+      fetch(
+        `${base}?categories=accommodation.hotel,accommodation.hostel,accommodation.guest_house&${around(5000)}&limit=20&apiKey=${GEOAPIFY_KEY}`,
+        { signal: AbortSignal.timeout(9000) }
+      ),
+      fetch(
+        `${base}?categories=tourism.sights,tourism.attraction,entertainment.museum,national_park,leisure.park&${around(7000)}&limit=20&apiKey=${GEOAPIFY_KEY}`,
+        { signal: AbortSignal.timeout(9000) }
+      ),
+    ]);
+
+    type Feat = {
+      properties?: {
+        name?: string;
+        distance?: number;
+        categories?: string[];
+      };
+    };
+    const parse = async (res: Response): Promise<Feat[]> =>
+      res.ok ? (((await res.json())?.features ?? []) as Feat[]) : [];
+    const [stays, sights] = await Promise.all([parse(stayRes), parse(sightRes)]);
+
+    const seen = new Set<string>();
+    const named = (f: Feat) => {
+      const name = f.properties?.name;
+      if (!name || seen.has(name.toLowerCase())) return null;
+      seen.add(name.toLowerCase());
+      return name;
+    };
+
+    const hotels: Grounding["hotels"] = [];
+    for (const f of stays) {
+      const name = named(f);
+      if (!name) continue;
+      const cats = f.properties?.categories ?? [];
+      hotels.push({
+        name,
+        kind: cats.some((c) => c.includes("hostel") || c.includes("guest_house")) ? "hostel" : "hotel",
+        distanceKm: (f.properties?.distance ?? 0) / 1000,
+      });
+    }
+    const attractions: Grounding["attractions"] = [];
+    for (const f of sights) {
+      const name = named(f);
+      if (!name) continue;
+      const cats = f.properties?.categories ?? [];
+      attractions.push({
+        name,
+        kind: cats.find((c) => c.startsWith("entertainment.") || c.startsWith("tourism."))?.split(".").pop() ?? "sight",
+        distanceKm: (f.properties?.distance ?? 0) / 1000,
+      });
+    }
+    hotels.sort((a, b) => a.distanceKm - b.distanceKm);
+    attractions.sort((a, b) => a.distanceKm - b.distanceKm);
+    return { hotels: hotels.slice(0, 18), attractions: attractions.slice(0, 18) };
   } catch {
     return empty;
   }

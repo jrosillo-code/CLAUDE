@@ -29,7 +29,7 @@ export default function LayerRail() {
     [...follows].every((id) => activeUserIds!.has(id));
 
   return (
-    <div className="fixed left-3 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-2">
+    <div className="fixed left-3 top-[70px] z-30 flex flex-col gap-2 sm:left-4 sm:top-[76px]">
       <div className="w-[220px] rounded-3xl bg-paper/90 p-2 shadow-float backdrop-blur">
         <button
           onClick={() => setOpen((o) => !o)}

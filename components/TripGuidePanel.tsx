@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Sheet from "./Sheet";
 import type { Trip } from "@/lib/types";
+import { appleMapsRouteUrl, googleMapsRouteUrl } from "@/lib/directions";
 
 // AI route guide: opens alongside "View route" and briefs every stop on the
 // trip — what the place is, best hotels/hostels, and things to do.
@@ -23,9 +24,12 @@ type State =
 export default function TripGuidePanel({
   trip,
   onClose,
+  onBack,
 }: {
   trip: Trip;
   onClose: () => void;
+  /** Return to the Trips list this guide was opened from. */
+  onBack: () => void;
 }) {
   const [state, setState] = useState<State>({ status: "loading" });
   const [attempt, setAttempt] = useState(0);
@@ -60,8 +64,18 @@ export default function TripGuidePanel({
   return (
     <Sheet onClose={onClose}>
       <div className="border-b border-line px-5 py-4">
-        <div className="flex items-center justify-between">
-          <div className="min-w-0">
+        <div className="flex items-center gap-2.5">
+          <button
+            onClick={onBack}
+            aria-label="Back to trips"
+            title="Back to trips"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-paper-2 hover:bg-line"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="m14 6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <div className="min-w-0 flex-1">
             <h2 className="truncate font-display text-2xl">Route guide</h2>
             <p className="mt-0.5 truncate text-sm text-ink-3">
               {trip.title} · {trip.stops.length} stops
@@ -76,6 +90,26 @@ export default function TripGuidePanel({
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
+        </div>
+
+        {/* Turn-by-turn hand-off for the whole route, right from the guide */}
+        <div className="mt-3 flex gap-2">
+          <a
+            href={googleMapsRouteUrl(trip.stops)}
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 rounded-full bg-paper-2 py-2 text-center text-xs font-semibold text-ink-2 ring-1 ring-line transition-colors hover:bg-line"
+          >
+            Google Maps ↗
+          </a>
+          <a
+            href={appleMapsRouteUrl(trip.stops)}
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 rounded-full bg-paper-2 py-2 text-center text-xs font-semibold text-ink-2 ring-1 ring-line transition-colors hover:bg-line"
+          >
+            Apple Maps ↗
+          </a>
         </div>
         {state.status === "ready" && state.source === "live" && (
           <p className="mt-2 rounded-xl bg-paper-2 px-3 py-2 text-xs text-ink-3">

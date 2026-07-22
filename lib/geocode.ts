@@ -17,13 +17,18 @@ export interface GeoResult {
 
 const NOMINATIM = "https://nominatim.openstreetmap.org";
 const PHOTON = "https://photon.komoot.io";
+// Optional free-tier key (geoapify.com — 3,000 req/day, no card). When set,
+// Geoapify's autocomplete leads the results; the keyless engines still run
+// and fill any gaps.
+const GEOAPIFY_KEY = process.env.NEXT_PUBLIC_GEOAPIFY_KEY;
 
 /** Forward search: free-text place query → ranked candidate locations. */
 export async function searchPlaces(query: string, signal?: AbortSignal): Promise<GeoResult[]> {
   const q = query.trim();
   if (q.length < 2) return [];
 
-  const [photon, nominatim] = await Promise.all([
+  const [geoapify, photon, nominatim] = await Promise.all([
+    GEOAPIFY_KEY ? geoapifySearch(q, signal) : Promise.resolve([]),
     photonSearch(q, signal),
     nominatimSearch(q, signal),
   ]);
@@ -38,7 +43,7 @@ export async function searchPlaces(query: string, signal?: AbortSignal): Promise
           Math.abs(m.lat - r.lat) < 0.015 &&
           Math.abs(m.lng - r.lng) < 0.02)
     );
-  for (const r of [...photon, ...nominatim]) if (!isDupe(r)) merged.push(r);
+  for (const r of [...geoapify, ...photon, ...nominatim]) if (!isDupe(r)) merged.push(r);
 
   // Rank: exact-name matches first, then places (cities/countries) over POIs
   // over bare addresses/streets; each engine's own order breaks ties.
@@ -64,6 +69,63 @@ function norm(s: string): string {
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]/g, "");
+}
+
+// ── Geoapify (optional free key) ───────────────────────────────────────────
+
+interface GeoapifyFeature {
+  geometry: { coordinates: [number, number] };
+  properties: {
+    name?: string;
+    address_line1?: string;
+    country?: string;
+    country_code?: string;
+    state?: string;
+    city?: string;
+    place_id?: string;
+    result_type?: string;
+  };
+}
+
+async function geoapifySearch(q: string, signal?: AbortSignal): Promise<(GeoResult & { dedupe: string })[]> {
+  try {
+    const res = await fetch(
+      `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(q)}&limit=8&lang=en&apiKey=${GEOAPIFY_KEY}`,
+      { signal }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return ((data?.features ?? []) as GeoapifyFeature[])
+      .filter((f) => f.geometry?.coordinates && (f.properties?.name || f.properties?.address_line1))
+      .map((f) => {
+        const p = f.properties;
+        const [lng, lat] = f.geometry.coordinates;
+        const name = p.name || p.address_line1!;
+        const t = p.result_type ?? "";
+        const kind: GeoResult["kind"] =
+          t === "amenity"
+            ? "poi"
+            : t === "street" || t === "building"
+              ? "address"
+              : "place";
+        const contextParts = [
+          p.city && p.city !== name ? p.city : null,
+          p.state && p.state !== name && p.state !== p.city ? p.state : null,
+          p.country && p.country !== name ? p.country : null,
+        ].filter(Boolean);
+        return {
+          placeName: name,
+          context: contextParts.join(", "),
+          countryCode: (p.country_code ?? "").toUpperCase(),
+          lng,
+          lat,
+          kind,
+          dedupe: p.place_id ?? `${name}@${lat.toFixed(2)}`,
+        };
+      });
+  } catch {
+    return [];
+  }
 }
 
 // ── Photon ─────────────────────────────────────────────────────────────────

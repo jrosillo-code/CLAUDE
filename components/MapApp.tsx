@@ -141,7 +141,14 @@ export default function MapApp() {
         <TripsPanel onClose={() => setTripsOpen(false)} onOpenGuide={setGuideTripId} />
       )}
       {guideTrip && (
-        <TripGuidePanel trip={guideTrip} onClose={() => setGuideTripId(null)} />
+        <TripGuidePanel
+          trip={guideTrip}
+          onClose={() => setGuideTripId(null)}
+          onBack={() => {
+            setGuideTripId(null);
+            setTripsOpen(true);
+          }}
+        />
       )}
     </div>
   );
