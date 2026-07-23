@@ -317,6 +317,14 @@ export const pins: Pin[] = rows.map((r, i) => {
 
 // Planned trips: ordered stops stitched together by a thread on the map.
 // Visibility is friends-or-private only — routes are never world-public.
+// A little activity so the bell has something to show in the demo.
+export const seedNotifications = [
+  { id: "n-1", type: "like" as const, actorId: "u-maria", pinId: pinIdFor("u-you", "Lisbon"), read: false, createdAt: new Date(2026, 6, 22, 18, 40).toISOString() },
+  { id: "n-2", type: "like" as const, actorId: "u-leo", pinId: pinIdFor("u-you", "Ericeira"), read: false, createdAt: new Date(2026, 6, 22, 9, 15).toISOString() },
+  { id: "n-3", type: "friend_request" as const, actorId: "u-nina", pinId: undefined, read: false, createdAt: new Date(2026, 6, 21, 20, 5).toISOString() },
+  { id: "n-4", type: "like" as const, actorId: "u-amara", pinId: pinIdFor("u-you", "Tokyo"), read: true, createdAt: new Date(2026, 6, 19, 13, 30).toISOString() },
+];
+
 export const seedTrips: Trip[] = [
   {
     id: "trip-1",

@@ -8,6 +8,7 @@
 import { supabase } from "./supabase";
 import type {
   ActivitySlug,
+  AppNotification,
   Friendship,
   Pin,
   Trip,
@@ -137,13 +138,14 @@ export interface World {
   likedPinIds: Set<string>;
   savedPinIds: Set<string>;
   follows: Set<string>;
+  notifications: AppNotification[];
 }
 
 /** Everything the store needs, in one parallel fetch. RLS scopes all of it. */
 export async function loadWorld(viewerId: string): Promise<World | null> {
   const sb = supabase!;
   try {
-    const [usersQ, pinsQ, friendsQ, tripsQ, likesQ, savesQ, followsQ] = await Promise.all([
+    const [usersQ, pinsQ, friendsQ, tripsQ, likesQ, savesQ, followsQ, notifQ] = await Promise.all([
       sb.from("users").select("*"),
       sb
         .from("pins")
@@ -154,6 +156,12 @@ export async function loadWorld(viewerId: string): Promise<World | null> {
       sb.from("pin_likes").select("pin_id").eq("user_id", viewerId),
       sb.from("pin_saves").select("pin_id").eq("user_id", viewerId),
       sb.from("follows").select("creator_id").eq("follower_id", viewerId),
+      sb
+        .from("notifications")
+        .select("*")
+        .eq("user_id", viewerId)
+        .order("created_at", { ascending: false })
+        .limit(50),
     ]);
     const firstError =
       usersQ.error ?? pinsQ.error ?? friendsQ.error ?? tripsQ.error ?? likesQ.error ?? savesQ.error ?? followsQ.error;
@@ -187,6 +195,16 @@ export async function loadWorld(viewerId: string): Promise<World | null> {
       likedPinIds: new Set((likesQ.data ?? []).map((r) => r.pin_id as string)),
       savedPinIds: new Set((savesQ.data ?? []).map((r) => r.pin_id as string)),
       follows: new Set((followsQ.data ?? []).map((r) => r.creator_id as string)),
+      notifications: ((notifQ.data ?? []) as { id: string; type: AppNotification["type"]; actor_id: string; pin_id: string | null; read: boolean; created_at: string }[]).map(
+        (n) => ({
+          id: n.id,
+          type: n.type,
+          actorId: n.actor_id,
+          pinId: n.pin_id ?? undefined,
+          read: n.read,
+          createdAt: n.created_at,
+        })
+      ),
     };
   } catch (e) {
     log("loadWorld")(e);
@@ -281,12 +299,32 @@ export function syncRatePin(pinId: string, rating: number | null): void {
     .then(({ error }) => error && log("ratePin")(error));
 }
 
-export function syncLike(pinId: string, userId: string, liked: boolean): void {
+export function syncLike(pinId: string, userId: string, liked: boolean, pinOwnerId?: string): void {
   const sb = supabase!;
   void (liked
     ? sb.from("pin_likes").insert({ pin_id: pinId, user_id: userId })
     : sb.from("pin_likes").delete().eq("pin_id", pinId).eq("user_id", userId)
   ).then(({ error }) => error && log("like")(error));
+  if (liked && pinOwnerId && pinOwnerId !== userId) {
+    notify(pinOwnerId, userId, "like", pinId);
+  }
+}
+
+/** Fire an in-app notification row for someone else. */
+function notify(userId: string, actorId: string, type: "like" | "friend_request" | "friend_accept", pinId?: string): void {
+  void supabase!
+    .from("notifications")
+    .insert({ user_id: userId, actor_id: actorId, type, pin_id: pinId ?? null })
+    .then(({ error }) => error && log("notify")(error));
+}
+
+export function syncMarkNotificationsRead(userId: string): void {
+  void supabase!
+    .from("notifications")
+    .update({ read: true })
+    .eq("user_id", userId)
+    .eq("read", false)
+    .then(({ error }) => error && log("markNotificationsRead")(error));
 }
 
 export function syncSave(pinId: string, userId: string, saved: boolean): void {
@@ -310,6 +348,7 @@ export function syncSendFriendRequest(viewerId: string, userId: string): void {
     .from("friendships")
     .insert({ ...pair(viewerId, userId), status: "pending", requested_by: viewerId })
     .then(({ error }) => error && log("sendFriendRequest")(error));
+  notify(userId, viewerId, "friend_request");
 }
 
 export function syncRespondFriendRequest(viewerId: string, userId: string, accept: boolean): void {
@@ -319,6 +358,7 @@ export function syncRespondFriendRequest(viewerId: string, userId: string, accep
     ? sb.from("friendships").update({ status: "accepted" }).match(p)
     : sb.from("friendships").delete().match(p)
   ).then(({ error }) => error && log("respondFriendRequest")(error));
+  if (accept) notify(userId, viewerId, "friend_accept");
 }
 
 export function syncSaveTrip(trip: Trip): void {

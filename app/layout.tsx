@@ -8,6 +8,13 @@ export const metadata: Metadata = {
     "A social app where the world map is the interface. Friends appear as photo-pins on the places they've been.",
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "Waypoint", statusBarStyle: "black-translucent" },
+  icons: {
+    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
   openGraph: {
     title: "Waypoint",
     description: "Your friends' travels, on one living map.",

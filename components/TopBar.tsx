@@ -10,14 +10,17 @@ import WaypointLogo from "./Logo";
 export default function TopBar({
   onOpenCreators,
   onOpenTrips,
+  onOpenActivity,
   tripsActive,
 }: {
   onOpenCreators: () => void;
   onOpenTrips: () => void;
+  onOpenActivity: () => void;
   tripsActive: boolean;
 }) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
+  const unread = useStore((s) => s.notifications.filter((n) => !n.read).length);
 
   const [q, setQ] = useState("");
   const [results, setResults] = useState<GeoResult[]>([]);
@@ -143,6 +146,23 @@ export default function TopBar({
             />
           </svg>
           <span className="hidden text-sm font-medium sm:block">Creators</span>
+        </button>
+
+        {/* Activity bell */}
+        <button
+          onClick={onOpenActivity}
+          className="relative grid h-9 w-9 place-items-center rounded-full bg-paper/85 shadow-float backdrop-blur"
+          title="Activity"
+          aria-label="Activity"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3.5a6 6 0 0 0-6 6v3.2l-1.6 2.9a.8.8 0 0 0 .7 1.2h13.8a.8.8 0 0 0 .7-1.2L18 12.7V9.5a6 6 0 0 0-6-6zM10 19.5a2 2 0 0 0 4 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          {unread > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 grid h-4.5 min-w-4.5 place-items-center rounded-full bg-accent px-1 text-[9px] font-bold text-paper" style={{ height: 18, minWidth: 18 }}>
+              {unread}
+            </span>
+          )}
         </button>
 
         {/* Viewer / profile */}

@@ -84,12 +84,20 @@ export async function POST(req: Request) {
 
 // ── Grounding: Wikipedia + OpenStreetMap ───────────────────────────────────
 
-const cache = new Map<string, Grounding>();
+// In-memory LRU with a 24h TTL: repeat guide views for the same stops are
+// instant while the instance is warm, and stale groundings refresh daily.
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const CACHE_MAX = 500;
+const cache = new Map<string, { at: number; g: Grounding }>();
 
 async function groundStop(stop: ReqStop): Promise<Grounding> {
   const key = `${stop.lat.toFixed(3)},${stop.lng.toFixed(3)}`;
   const hit = cache.get(key);
-  if (hit) return hit;
+  if (hit && Date.now() - hit.at < CACHE_TTL_MS) {
+    cache.delete(key); // LRU: re-insert as most recent
+    cache.set(key, hit);
+    return hit.g;
+  }
 
   // Places: Geoapify when a free key is configured (faster, more reliable),
   // otherwise the keyless Overpass API.
@@ -100,8 +108,8 @@ async function groundStop(stop: ReqStop): Promise<Grounding> {
     : fetchOverpass(stop);
   const [wiki, osm] = await Promise.all([fetchWikipedia(stop), places]);
   const g: Grounding = { ...wiki, ...osm };
-  cache.set(key, g);
-  if (cache.size > 400) cache.delete(cache.keys().next().value!);
+  cache.set(key, { at: Date.now(), g });
+  while (cache.size > CACHE_MAX) cache.delete(cache.keys().next().value!);
   return g;
 }
 

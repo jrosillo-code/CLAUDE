@@ -117,6 +117,16 @@ export interface TopPlace {
   blurb: string; // one-line "why"
 }
 
+/** An in-app notification: someone acted on your world. */
+export interface AppNotification {
+  id: string;
+  type: "like" | "friend_request" | "friend_accept";
+  actorId: string;
+  pinId?: string;
+  read: boolean;
+  createdAt: string;
+}
+
 /** A pin joined with its owner — the shape most UI actually renders. */
 export interface PinWithOwner extends Pin {
   owner: User;

@@ -68,6 +68,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const selectedLandmarkId = useStore((s) => s.selectedLandmarkId);
   const userLocation = useStore((s) => s.userLocation);
   const setUserLocation = useStore((s) => s.setUserLocation);
+  const showWishlist = useStore((s) => s.showWishlist);
+  const savedPinIds = useStore((s) => s.savedPinIds);
+  const allPins = useStore((s) => s.pins);
 
   const shownTrips = useMemo(
     () => visibleTrips(trips, friendships, viewerId).filter((t) => shownTripIds.has(t.id)),
@@ -110,6 +113,16 @@ export default function MapCanvas({ placing, onPick }: Props) {
   selectLandmarkRef.current = selectLandmark;
   const userLocationRef = useRef(userLocation);
   userLocationRef.current = userLocation;
+  const wishlistRef = useRef<{ show: boolean; pins: PinWithOwner[] }>({ show: false, pins: [] });
+  wishlistRef.current = {
+    show: showWishlist,
+    // Ghost only the saved pins that aren't already on the map normally.
+    pins: showWishlist
+      ? allPins
+          .filter((p) => savedPinIds.has(p.id) && !visiblePins.some((v) => v.id === p.id))
+          .map((p) => ({ ...p, owner: users.find((u) => u.id === p.userId) ?? users[0] }))
+      : [],
+  };
 
   // The blue you-are-here dot, like Apple/Google Maps. If location permission
   // is already granted we follow the device silently; otherwise the dot
@@ -583,7 +596,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   useEffect(() => {
     if (readyRef.current) render();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPinId, showLandmarks, selectedLandmarkId]);
+  }, [selectedPinId, showLandmarks, selectedLandmarkId, showWishlist, savedPinIds]);
 
   // Trips, draft, or map mode changed → refresh the thread and the markers.
   useEffect(() => {
@@ -874,6 +887,33 @@ export default function MapCanvas({ placing, onPick }: Props) {
             if (placingRef.current) return;
             selectLandmarkRef.current(lm.id);
             map.flyTo({ center: [lm.lng, lm.lat], zoom: Math.max(map.getZoom(), 5.5), duration: 700 });
+          }
+        );
+      }
+    }
+
+    // Wishlist: places you saved render as ghost needles — the want-to-go
+    // layer over the have-been map.
+    if (!inTripsMode && wishlistRef.current.show) {
+      for (const p of wishlistRef.current.pins) {
+        upsert(
+          `wl-${p.id}`,
+          p.lng,
+          p.lat,
+          `${coverUrl(p) ?? ""}|wish`,
+          () =>
+            needleEl({
+              photo: coverUrl(p) ?? p.owner.avatarUrl,
+              ring: "#8a8f98",
+              scale: 0.92,
+              stacked: false,
+              ghost: true,
+            }),
+          "0",
+          (ev) => {
+            ev.stopPropagation();
+            if (placingRef.current) return;
+            selectRef.current(p.id);
           }
         );
       }

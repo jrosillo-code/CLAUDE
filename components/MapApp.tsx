@@ -9,6 +9,7 @@ import PinSheet from "./PinSheet";
 import AddPinSheet from "./AddPinSheet";
 import CreatorsPanel from "./CreatorsPanel";
 import FriendsPanel from "./FriendsPanel";
+import ActivityPanel from "./ActivityPanel";
 import TripsPanel from "./TripsPanel";
 import TripGuidePanel from "./TripGuidePanel";
 import TripDraftBar from "./TripDraftBar";
@@ -24,6 +25,7 @@ export default function MapApp() {
   const [resolving, setResolving] = useState(false);
   const [creatorsOpen, setCreatorsOpen] = useState(false);
   const [friendsOpen, setFriendsOpen] = useState(false);
+  const [activityOpen, setActivityOpen] = useState(false);
   const [topSpotsOpen, setTopSpotsOpen] = useState(false);
   const [tripsOpen, setTripsOpen] = useState(false);
   const [guideTripId, setGuideTripId] = useState<string | null>(null);
@@ -66,6 +68,7 @@ export default function MapApp() {
 
       <TopBar
         onOpenCreators={() => setCreatorsOpen(true)}
+        onOpenActivity={() => setActivityOpen(true)}
         tripsActive={mapMode === "trips"}
         onOpenTrips={() => {
           setMapMode("trips");
@@ -139,6 +142,7 @@ export default function MapApp() {
       {addDraft && <AddPinSheet />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}
       {friendsOpen && <FriendsPanel onClose={() => setFriendsOpen(false)} />}
+      {activityOpen && <ActivityPanel onClose={() => setActivityOpen(false)} />}
       {topSpotsOpen && <TopSpotsPanel onClose={() => setTopSpotsOpen(false)} />}
       {tripsOpen && (
         <TripsPanel onClose={() => setTripsOpen(false)} onOpenGuide={setGuideTripId} />

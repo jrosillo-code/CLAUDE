@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import type {
   ActivitySlug,
+  AppNotification,
   Friendship,
   Pin,
   TopPlace,
@@ -20,6 +21,7 @@ import {
   pins as seedPins,
   seedFollows,
   seedLikeCounts,
+  seedNotifications,
   seedTrips,
   topPlaces as seedTopPlaces,
   users as seedUsers,
@@ -92,6 +94,9 @@ interface WaypointState {
   /** Device location for the blue you-are-here dot (set once permission is granted). */
   userLocation: { lng: number; lat: number } | null;
   setUserLocation: (l: { lng: number; lat: number } | null) => void;
+  /** Wishlist layer: pins you saved render as ghost needles on the map. */
+  showWishlist: boolean;
+  setShowWishlist: (v: boolean) => void;
   /** World landmarks layer (UNESCO / monuments / parks / culture icons). */
   showLandmarks: boolean;
   setShowLandmarks: (v: boolean) => void;
@@ -193,6 +198,10 @@ interface WaypointState {
   // ── Creator application ──
   creatorApplied: boolean;
   applyCreator: (data: { activities: ActivitySlug[]; link: string }) => void;
+
+  // ── Notifications ──
+  notifications: AppNotification[];
+  markNotificationsRead: () => void;
 }
 
 let pinCounter = seedPins.length;
@@ -229,6 +238,7 @@ export const useStore = create<WaypointState>((set, get) => ({
           likedPinIds: world?.likedPinIds ?? new Set(),
           savedPinIds: world?.savedPinIds ?? new Set(),
           follows: world?.follows ?? new Set(),
+          notifications: world?.notifications ?? [],
           shownTripIds: new Set(
             (world?.trips ?? []).filter((t) => t.userId === userId).map((t) => t.id)
           ),
@@ -336,6 +346,8 @@ export const useStore = create<WaypointState>((set, get) => ({
   setTerrain3d: (v) => set({ terrain3d: v }),
   userLocation: null,
   setUserLocation: (l) => set({ userLocation: l }),
+  showWishlist: false,
+  setShowWishlist: (v) => set({ showWishlist: v }),
   // Off by default — travelers opt in from the map controls.
   showLandmarks: false,
   setShowLandmarks: (v) => set({ showLandmarks: v, selectedLandmarkId: null }),
@@ -366,7 +378,10 @@ export const useStore = create<WaypointState>((set, get) => ({
         liked.add(pinId);
         counts[pinId] = (counts[pinId] ?? 0) + 1;
       }
-      if (backendEnabled) backend.syncLike(pinId, s.viewerId, liked.has(pinId));
+      if (backendEnabled) {
+        const owner = s.pins.find((p) => p.id === pinId)?.userId;
+        backend.syncLike(pinId, s.viewerId, liked.has(pinId), owner);
+      }
       return { likedPinIds: liked, likeCounts: counts };
     }),
 
@@ -654,6 +669,12 @@ export const useStore = create<WaypointState>((set, get) => ({
         /* quota/private mode — keep it for this session anyway */
       }
     }
+  },
+
+  notifications: [...seedNotifications],
+  markNotificationsRead: () => {
+    if (backendEnabled) backend.syncMarkNotificationsRead(get().viewerId);
+    set((s) => ({ notifications: s.notifications.map((n) => ({ ...n, read: true })) }));
   },
 
   creatorApplied: false,

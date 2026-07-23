@@ -15,6 +15,9 @@ export default function BasemapToggle() {
   const setTheme = useStore((s) => s.setTheme);
   const showLandmarks = useStore((s) => s.showLandmarks);
   const setShowLandmarks = useStore((s) => s.setShowLandmarks);
+  const showWishlist = useStore((s) => s.showWishlist);
+  const setShowWishlist = useStore((s) => s.setShowWishlist);
+  const savedCount = useStore((s) => s.savedPinIds.size);
   const [themesOpen, setThemesOpen] = useState(false);
 
   return (
@@ -73,6 +76,18 @@ export default function BasemapToggle() {
             <path d="M4 21h16M5 10h14M6 21v-8m4 8v-8m4 8v-8m4 8v-8M12 3 4.5 8.5h15z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
           Landmarks
+        </button>
+        <button
+          onClick={() => setShowWishlist(!showWishlist)}
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium shadow-float backdrop-blur transition-colors ${
+            showWishlist ? "bg-ink text-paper" : "bg-paper/90 text-ink-2"
+          }`}
+          title="Wishlist: show places you saved as ghost pins"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+            <path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+          </svg>
+          Wishlist{savedCount > 0 ? ` · ${savedCount}` : ""}
         </button>
         <button
           onClick={() => setThemesOpen((o) => !o)}
