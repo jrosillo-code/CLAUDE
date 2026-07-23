@@ -19,6 +19,7 @@ import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 import SocialLinks, { SOCIAL_NETWORKS } from "./SocialLinks";
 import RecapSheet from "./RecapSheet";
 import ImportPanel from "./ImportPanel";
+import ConstellationBackdrop from "./ConstellationBackdrop";
 import { backendEnabled } from "@/lib/supabase";
 import { version as APP_VERSION } from "../package.json";
 
@@ -107,8 +108,6 @@ export default function ProfileView({ handle }: { handle: string }) {
   })();
   const isFollowing = follows.has(user.id);
   const savedPins = pins.filter((p) => savedPinIds.has(p.id));
-  const cover =
-    (top[0] && coverUrl(top[0].pin)) ?? (myPins[0] && coverUrl(myPins[0])) ?? undefined;
 
   function viewOnMap() {
     showOnly(user!.id);
@@ -125,26 +124,20 @@ export default function ProfileView({ handle }: { handle: string }) {
 
   return (
     <div className="min-h-screen bg-paper pb-20">
-      {/* Cover — taller, fading into the page so the card floats over it. */}
-      <div className="relative h-56 w-full overflow-hidden sm:h-72">
-        {cover ? (
-          <img src={cover} alt="" className="h-full w-full object-cover" />
-        ) : (
-          <div className="h-full w-full bg-gradient-to-br from-accent/25 via-paper-2 to-accent-2/25" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-paper via-transparent to-ink/10" />
-        <Link
-          href="/"
-          className="fixed left-4 top-4 z-40 flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-1.5 text-sm shadow-float backdrop-blur"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m15 6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          Map
-        </Link>
-      </div>
+      {/* The world as a constellation — coastline stars, threaded continents,
+          slowly breathing behind everything. */}
+      <ConstellationBackdrop />
+      <Link
+        href="/"
+        className="fixed left-4 top-4 z-40 flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-1.5 text-sm shadow-float backdrop-blur"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m15 6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        Map
+      </Link>
 
-      <div className="mx-auto max-w-2xl px-5 sm:px-6">
-        {/* Identity card — frosted glass, overlapping the cover. */}
-        <div className="relative -mt-28 rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:-mt-24 sm:px-8">
+      <div className="relative z-10 mx-auto max-w-2xl px-5 pt-20 sm:px-6 sm:pt-24">
+        {/* Identity card — frosted glass floating over the constellation. */}
+        <div className="rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:px-8">
         <div className="flex flex-col items-center text-center">
           {isMe ? (
             /* Your own avatar is an upload button — new photo shows everywhere. */
