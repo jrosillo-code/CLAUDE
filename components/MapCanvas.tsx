@@ -77,6 +77,13 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const clusterRef = useRef<Supercluster | null>(null);
+  // render() runs every animation frame during camera moves; these caches keep
+  // the per-frame supercluster work near zero while the index is unchanged.
+  const clusterQueryRef = useRef<{
+    key: string;
+    clusters: ReturnType<Supercluster["getClusters"]>;
+  } | null>(null);
+  const leavesCacheRef = useRef(new Map<number, { head?: string; twin?: string }>());
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
   const readyRef = useRef(false);
   const didInitialFit = useRef(false);
@@ -526,7 +533,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
       map.resize();
       rebuildIndex();
       render();
-      fitToViewer();
+      // Let the first tiles and glyphs land before the intro spin starts, so
+      // the opening camera move doesn't stutter over a half-loaded style.
+      map.once("idle", fitToViewer);
+      window.setTimeout(fitToViewer, 2400);
     };
     map.on("style.load", initOnce);
     map.on("load", initOnce);
@@ -690,6 +700,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }))
     );
     clusterRef.current = index;
+    clusterQueryRef.current = null;
+    leavesCacheRef.current.clear();
   }
 
   useEffect(() => {
@@ -829,7 +841,18 @@ export default function MapCanvas({ placing, onPick }: Props) {
       bbox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
     }
     const zoom = Math.round(zoomNow);
-    const clusters = index.getClusters(bbox, zoom);
+    // A planet-scale spin queries the same world bbox at the same zoom every
+    // frame — reuse the last answer instead of re-walking the cluster tree.
+    const qKey = planetScale
+      ? `w|${zoom}`
+      : `${zoom}|${bbox.map((n) => n.toFixed(2)).join(",")}`;
+    let clusters: ReturnType<Supercluster["getClusters"]>;
+    if (clusterQueryRef.current?.key === qKey) {
+      clusters = clusterQueryRef.current.clusters;
+    } else {
+      clusters = index.getClusters(bbox, zoom);
+      clusterQueryRef.current = { key: qKey, clusters };
+    }
 
     // Markers beyond the globe's horizon get projected OUTWARD past the
     // sphere's silhouette and float detached beside the planet. Hide them with
@@ -934,13 +957,21 @@ export default function MapCanvas({ placing, onPick }: Props) {
         let headPhoto = props.photo;
         let twinPhoto: string | undefined;
         if (props.cluster && props.cluster_id != null) {
-          try {
-            const leaves = index.getLeaves(props.cluster_id, 2);
-            headPhoto = (leaves[0]?.properties as ClusterProps | undefined)?.photo ?? headPhoto;
-            twinPhoto = (leaves[1]?.properties as ClusterProps | undefined)?.photo;
-          } catch {
-            /* cluster vanished mid-frame */
+          let duo = leavesCacheRef.current.get(props.cluster_id);
+          if (!duo) {
+            try {
+              const leaves = index.getLeaves(props.cluster_id, 2);
+              duo = {
+                head: (leaves[0]?.properties as ClusterProps | undefined)?.photo,
+                twin: (leaves[1]?.properties as ClusterProps | undefined)?.photo,
+              };
+            } catch {
+              duo = {}; /* cluster vanished mid-frame */
+            }
+            leavesCacheRef.current.set(props.cluster_id, duo);
           }
+          headPhoto = duo.head ?? headPhoto;
+          twinPhoto = duo.twin;
         }
         const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
         upsert(

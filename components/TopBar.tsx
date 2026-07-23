@@ -77,7 +77,7 @@ export default function TopBar({
       </div>
 
       {/* Search — its own centered row on phones, underneath the icon row */}
-      <div className="relative max-sm:fixed max-sm:left-1/2 max-sm:top-[118px] max-sm:w-[min(76vw,320px)] max-sm:-translate-x-1/2 sm:w-full sm:max-w-sm sm:shrink">
+      <div className="relative max-sm:fixed max-sm:left-1/2 max-sm:top-[84px] max-sm:w-[min(76vw,320px)] max-sm:-translate-x-1/2 sm:w-full sm:max-w-sm sm:shrink">
         <div className="flex items-center gap-2 rounded-full bg-paper/85 px-3 py-2 shadow-float backdrop-blur sm:px-4 sm:py-2.5">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0 text-ink-3">
             <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
@@ -173,6 +173,7 @@ export default function TopBar({
         {/* Viewer / profile */}
         <Link
           href={`/u/${viewer.handle}`}
+          prefetch
           className="flex items-center gap-2 rounded-full bg-paper/85 shadow-float backdrop-blur max-sm:h-9 max-sm:w-9 max-sm:justify-center sm:py-1.5 sm:pl-1.5 sm:pr-3"
         >
           <img

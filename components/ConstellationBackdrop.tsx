@@ -29,6 +29,12 @@ const THREAD: [number, number][] = [
 
 let starCache: Star[] | null = null;
 
+/** Warm the geo fetch + star sampling ahead of time (called from the map page
+ *  during idle) so the Me page paints its backdrop instantly. */
+export function preloadStars(): void {
+  void loadStars().catch(() => {});
+}
+
 async function loadStars(): Promise<Star[]> {
   if (starCache) return starCache;
   const res = await fetch("/geo/countries-110m.json");
@@ -116,7 +122,15 @@ export default function ConstellationBackdrop() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    // The twinkle is slow — 30fps is indistinguishable and halves the canvas
+    // cost, which keeps profile scrolling smooth on phones.
+    let lastFrame = 0;
     const draw = (ms: number) => {
+      if (!reduced && ms - lastFrame < 31) {
+        raf = requestAnimationFrame(draw);
+        return;
+      }
+      lastFrame = ms;
       const t = ms / 1000;
       const drift = reduced ? 0 : Math.sin(t * 0.07) * 10;
       ctx.clearRect(0, 0, w, h);

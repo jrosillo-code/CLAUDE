@@ -7,6 +7,7 @@ import type maplibregl from "maplibre-gl";
 
 const SRC = "wp-flyover-src";
 const LYR = "wp-flyover-lyr";
+const LYR_GLOW = "wp-flyover-glow";
 const CRUISE_ZOOM = 3.4;
 const SPEED_DEG_PER_S = 26; // arc speed between stops
 const PAUSE_MS = 480; // hover at each pin
@@ -56,19 +57,43 @@ function slerp(a: Stop, b: Stop, f: number, nearLng: number): [number, number] {
 
 const easeInOut = (f: number) => f * f * (3 - 2 * f);
 
+function hexToRgba(hex: string, alpha: number): string {
+  const m = hex.replace("#", "");
+  const n = m.length === 3 ? m.split("").map((c) => c + c).join("") : m;
+  const r = parseInt(n.slice(0, 2), 16);
+  const g = parseInt(n.slice(2, 4), 16);
+  const b = parseInt(n.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 function planeEl(avatarUrl: string, accent: string) {
   const el = document.createElement("div");
   el.style.cssText = "position:relative;width:46px;height:46px;pointer-events:none;z-index:5;";
+
+  // Soft radar pulse under the jet — same keyframes as the you-are-here dot.
+  const halo = document.createElement("div");
+  halo.className = "wp-loc-pulse";
+  halo.style.cssText = `position:absolute;left:50%;top:50%;width:42px;height:42px;border-radius:50%;background:${hexToRgba(accent, 0.3)};transform:translate(-50%,-50%);`;
+  el.appendChild(halo);
+
+  const gid = `wpjet-${Math.random().toString(36).slice(2, 8)}`;
   const plane = document.createElement("div");
   plane.style.cssText =
     "position:absolute;inset:0;display:grid;place-items:center;will-change:transform;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));";
-  plane.innerHTML = `<svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+  plane.innerHTML = `<svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+    <defs>
+      <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8fd8ff"/>
+        <stop offset="1" stop-color="${accent}"/>
+      </linearGradient>
+    </defs>
     <path d="M21 15.5v-2.2l-8-5V3.6a1.5 1.5 0 0 0-3 0v4.7l-8 5v2.2l8-2.4v4.9l-2.1 1.6v1.7l3.6-1.1 3.6 1.1v-1.7L13 18v-4.9z"
-      fill="${accent}" stroke="#ffffff" stroke-width="1.1" stroke-linejoin="round"/>
+      fill="url(#${gid})" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round"/>
   </svg>`;
   const avatar = document.createElement("img");
   avatar.src = avatarUrl;
   avatar.alt = "";
+  avatar.decoding = "async";
   avatar.style.cssText =
     "position:absolute;top:-9px;right:-7px;width:21px;height:21px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.3);";
   el.appendChild(plane);
@@ -113,6 +138,7 @@ export function startFlyover(
   const cleanupMap = () => {
     try {
       if (map.getLayer(LYR)) map.removeLayer(LYR);
+      if (map.getLayer(LYR_GLOW)) map.removeLayer(LYR_GLOW);
       if (map.getSource(SRC)) map.removeSource(SRC);
     } catch {
       /* style may have been swapped mid-flight */
@@ -155,14 +181,53 @@ export function startFlyover(
     try {
       map.addSource(SRC, {
         type: "geojson",
+        lineMetrics: true, // enables the comet gradient along the line
         data: { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: [] } },
+      });
+      // Comet trail: a wide soft glow underlay plus a bright core, both fading
+      // toward the tail so the light chases the plane.
+      map.addLayer({
+        id: LYR_GLOW,
+        type: "line",
+        source: SRC,
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-width": 8,
+          "line-blur": 5,
+          "line-gradient": [
+            "interpolate",
+            ["linear"],
+            ["line-progress"],
+            0,
+            hexToRgba(accent, 0),
+            0.6,
+            hexToRgba(accent, 0.25),
+            1,
+            hexToRgba(accent, 0.75),
+          ],
+        },
       });
       map.addLayer({
         id: LYR,
         type: "line",
         source: SRC,
         layout: { "line-cap": "round", "line-join": "round" },
-        paint: { "line-color": accent, "line-width": 2.5, "line-opacity": 0.9 },
+        paint: {
+          "line-width": 2.5,
+          "line-gradient": [
+            "interpolate",
+            ["linear"],
+            ["line-progress"],
+            0,
+            hexToRgba(accent, 0),
+            0.5,
+            hexToRgba(accent, 0.35),
+            0.85,
+            accent,
+            1,
+            "#a5e0ff",
+          ],
+        },
       });
     } catch {
       cancel();
@@ -175,6 +240,7 @@ export function startFlyover(
     let leg = 0;
     let phase: "fly" | "pause" = "pause";
     let phaseStart = performance.now();
+    let headingDeg: number | null = null;
 
     const frame = (now: number) => {
       if (disposed) return;
@@ -187,8 +253,9 @@ export function startFlyover(
         return;
       }
       const f = Math.min(1, (now - phaseStart) / legMs[leg]);
+      const eased = easeInOut(f);
       const prevLng = trail[trail.length - 1][0];
-      const [lng, lat] = slerp(path[leg], path[leg + 1], easeInOut(f), prevLng);
+      const [lng, lat] = slerp(path[leg], path[leg + 1], eased, prevLng);
       trail.push([lng, lat]);
       try {
         (map.getSource(SRC) as maplibregl.GeoJSONSource | undefined)?.setData({
@@ -197,16 +264,32 @@ export function startFlyover(
           geometry: { type: "LineString", coordinates: trail },
         });
         marker.setLngLat([lng, lat]);
-        // Point the plane along its actual on-screen motion.
-        const ahead = slerp(path[leg], path[leg + 1], Math.min(1, easeInOut(f) + 0.02), lng);
+        // Point the plane along its actual on-screen motion — with the heading
+        // low-pass filtered so projection jitter never twitches the nose — and
+        // scale it up mid-leg for a hint of cruising altitude.
+        const ahead = slerp(path[leg], path[leg + 1], Math.min(1, eased + 0.02), lng);
         const p1 = map.project([lng, lat]);
         const p2 = map.project(ahead);
         if (Math.hypot(p2.x - p1.x, p2.y - p1.y) > 0.5) {
-          const deg = (Math.atan2(p2.x - p1.x, -(p2.y - p1.y)) * 180) / Math.PI;
-          plane.style.transform = `rotate(${deg}deg)`;
+          const target = (Math.atan2(p2.x - p1.x, -(p2.y - p1.y)) * 180) / Math.PI;
+          if (headingDeg == null) {
+            headingDeg = target;
+          } else {
+            let d = target - headingDeg;
+            while (d > 180) d -= 360;
+            while (d < -180) d += 360;
+            headingDeg += d * 0.22;
+          }
         }
-        // The camera rides the plane — the globe does the moving.
-        map.jumpTo({ center: [lng, lat] });
+        const altitude = 1 + 0.22 * Math.sin(f * Math.PI);
+        plane.style.transform = `rotate(${headingDeg ?? 0}deg) scale(${altitude})`;
+        // The camera rides the plane — the globe does the moving — and eases
+        // out a touch on long hauls, like gaining altitude.
+        const zoomOut = legMs[leg] > 1800 ? 0.45 : 0.15;
+        map.jumpTo({
+          center: [lng, lat],
+          zoom: CRUISE_ZOOM - zoomOut * Math.sin(f * Math.PI),
+        });
       } catch {
         cancel();
         return;

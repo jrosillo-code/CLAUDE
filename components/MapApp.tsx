@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MapCanvas from "./MapCanvas";
+import { preloadStars } from "./ConstellationBackdrop";
 import TopBar from "./TopBar";
 import LayerRail from "./LayerRail";
 import BasemapToggle from "./BasemapToggle";
@@ -39,6 +40,21 @@ export default function MapApp() {
   const selectedPinId = useStore((s) => s.selectedPinId);
   const visible = useVisiblePins();
   const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
+
+  // Warm the Me-page backdrop (geo fetch + star sampling) while the map idles,
+  // so tapping the avatar opens the profile with its constellation ready.
+  useEffect(() => {
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(preloadStars, { timeout: 4000 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const t = window.setTimeout(preloadStars, 2500);
+    return () => clearTimeout(t);
+  }, []);
 
   async function handlePick(lng: number, lat: number) {
     // Trip-planning mode: every map tap is a new stop on the thread.
@@ -96,7 +112,7 @@ export default function MapApp() {
       {!tripDraft && mapMode === "pins" && (
       <button
         onClick={() => setTopSpotsOpen(true)}
-        className="fixed z-30 flex items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:bottom-40 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:px-3 max-sm:py-2 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2"
+        className="fixed z-30 flex items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:bottom-[116px] max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:px-3 max-sm:py-2 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2"
       >
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="text-accent">
           <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
