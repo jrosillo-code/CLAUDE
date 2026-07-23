@@ -170,6 +170,20 @@ export function coverUrl(pin: Pin): string | undefined {
   return pin.media.find((m) => m.kind === "photo")?.url;
 }
 
+/**
+ * Small variant of a pin's cover for map marker heads (~26 px on screen).
+ * Full-size covers are 1200 px — decoding hundreds of those during a zoom is
+ * the difference between a smooth globe and a janky one. Picsum URLs get
+ * rewritten to a 120 px square; other URLs (uploads, data URLs) pass through.
+ */
+export function thumbUrl(pin: Pin): string | undefined {
+  const url = coverUrl(pin);
+  if (!url) return undefined;
+  const picsum = url.match(/^(https:\/\/picsum\.photos\/seed\/[^/]+)\/\d+\/\d+/);
+  if (picsum) return `${picsum[1]}/120/120`;
+  return url;
+}
+
 export const visibilityLabel: Record<Visibility, string> = {
   public: "Public",
   friends: "Friends",

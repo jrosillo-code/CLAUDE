@@ -13,7 +13,7 @@ import {
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
-import { coverUrl, visibleTrips } from "@/lib/data";
+import { thumbUrl, visibleTrips } from "@/lib/data";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
 
@@ -146,16 +146,18 @@ export default function MapCanvas({ placing, onPick }: Props) {
   selectLandmarkRef.current = selectLandmark;
   const userLocationRef = useRef(userLocation);
   userLocationRef.current = userLocation;
+  // Ghost only the saved pins that aren't already on the map normally.
+  // Memoized: this scan shouldn't rerun on unrelated re-renders.
+  const wishlistPins = useMemo<PinWithOwner[]>(() => {
+    if (!showWishlist) return [];
+    const visibleIds = new Set(visiblePins.map((v) => v.id));
+    const usersById = new Map(users.map((u) => [u.id, u]));
+    return allPins
+      .filter((p) => savedPinIds.has(p.id) && !visibleIds.has(p.id))
+      .map((p) => ({ ...p, owner: usersById.get(p.userId) ?? users[0] }));
+  }, [showWishlist, savedPinIds, allPins, visiblePins, users]);
   const wishlistRef = useRef<{ show: boolean; pins: PinWithOwner[] }>({ show: false, pins: [] });
-  wishlistRef.current = {
-    show: showWishlist,
-    // Ghost only the saved pins that aren't already on the map normally.
-    pins: showWishlist
-      ? allPins
-          .filter((p) => savedPinIds.has(p.id) && !visiblePins.some((v) => v.id === p.id))
-          .map((p) => ({ ...p, owner: users.find((u) => u.id === p.userId) ?? users[0] }))
-      : [],
-  };
+  wishlistRef.current = { show: showWishlist, pins: wishlistPins };
 
   // The blue you-are-here dot, like Apple/Google Maps. If location permission
   // is already granted we follow the device silently; otherwise the dot
@@ -680,7 +682,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           pinId: p.id,
           ownerId: p.userId,
           color: p.owner.color,
-          photo: coverUrl(p) ?? p.owner.avatarUrl,
+          photo: thumbUrl(p) ?? p.owner.avatarUrl,
         },
         geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },
       }))
@@ -960,10 +962,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
           `wl-${p.id}`,
           p.lng,
           p.lat,
-          `${coverUrl(p) ?? ""}|wish`,
+          `${thumbUrl(p) ?? ""}|wish`,
           () =>
             needleEl({
-              photo: coverUrl(p) ?? p.owner.avatarUrl,
+              photo: thumbUrl(p) ?? p.owner.avatarUrl,
               ring: "#8a8f98",
               scale: 0.92,
               stacked: false,

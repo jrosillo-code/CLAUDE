@@ -389,6 +389,8 @@ function Collage({ media, onOpen }: { media: PinMedia[]; onOpen: (i: number) => 
         <img
           src={media[i].url}
           alt=""
+          loading={i > 0 ? "lazy" : "eager"}
+          decoding="async"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           draggable={false}
         />

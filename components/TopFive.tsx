@@ -5,7 +5,8 @@ import { useStore } from "@/lib/store";
 import { coverUrl, topPlacesFor } from "@/lib/data";
 
 // Rated Top 5 — the profile's centerpiece (plan §1.4, Letterboxd-style).
-// Drag-to-rank when it's your own profile.
+// Reorder your own: drag rows, or use the ▲▼ arrows (which also work on
+// touch, where HTML5 drag-and-drop doesn't exist).
 export default function TopFive({
   userId,
   editable,
@@ -31,18 +32,12 @@ export default function TopFive({
     );
   }
 
-  function onDrop(target: number) {
-    if (dragIndex === null || dragIndex === target) {
-      setDragIndex(null);
-      setOverIndex(null);
-      return;
-    }
+  function commitMove(from: number, to: number) {
+    if (from === to || from < 0 || to < 0 || from >= ranked.length || to >= ranked.length) return;
     const order = ranked.map((r) => r.pin.id);
-    const [moved] = order.splice(dragIndex, 1);
-    order.splice(target, 0, moved);
+    const [moved] = order.splice(from, 1);
+    order.splice(to, 0, moved);
     reorderTop(userId, order);
-    setDragIndex(null);
-    setOverIndex(null);
   }
 
   return (
@@ -51,17 +46,33 @@ export default function TopFive({
         <li
           key={r.pin.id}
           draggable={editable}
-          onDragStart={() => setDragIndex(i)}
+          onDragStart={(e) => {
+            // Firefox cancels drags that carry no data; set it always.
+            e.dataTransfer.setData("text/plain", String(i));
+            e.dataTransfer.effectAllowed = "move";
+            setDragIndex(i);
+          }}
           onDragOver={(e) => {
             if (!editable) return;
             e.preventDefault();
-            setOverIndex(i);
+            e.dataTransfer.dropEffect = "move";
+            if (overIndex !== i) setOverIndex(i);
           }}
-          onDrop={() => onDrop(i)}
-          onDragEnd={() => { setDragIndex(null); setOverIndex(null); }}
+          onDrop={(e) => {
+            e.preventDefault();
+            // State can lag a fast drag — the dataTransfer index is authoritative.
+            const from = Number(e.dataTransfer.getData("text/plain"));
+            commitMove(Number.isFinite(from) ? from : (dragIndex ?? -1), i);
+            setDragIndex(null);
+            setOverIndex(null);
+          }}
+          onDragEnd={() => {
+            setDragIndex(null);
+            setOverIndex(null);
+          }}
           className={`group flex items-stretch gap-3 rounded-2xl bg-paper-2 p-2 transition-all ${
             editable ? "cursor-grab active:cursor-grabbing" : ""
-          } ${overIndex === i && dragIndex !== null ? "ring-2 ring-accent" : ""} ${
+          } ${overIndex === i && dragIndex !== null && dragIndex !== i ? "ring-2 ring-accent" : ""} ${
             dragIndex === i ? "opacity-40" : ""
           }`}
         >
@@ -77,8 +88,10 @@ export default function TopFive({
           >
             {coverUrl(r.pin) && (
               <img
-                src={coverUrl(r.pin)}
+                src={coverUrl(r.pin)!}
                 alt=""
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             )}
@@ -96,13 +109,25 @@ export default function TopFive({
             <p className="mt-0.5 line-clamp-2 text-sm text-ink-2">{r.blurb}</p>
           </button>
 
+          {/* Reorder controls: arrows always work — drag is the shortcut. */}
           {editable && (
-            <div className="flex w-6 shrink-0 items-center justify-center text-ink-3">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <circle cx="9" cy="6" r="1.4" fill="currentColor" /><circle cx="15" cy="6" r="1.4" fill="currentColor" />
-                <circle cx="9" cy="12" r="1.4" fill="currentColor" /><circle cx="15" cy="12" r="1.4" fill="currentColor" />
-                <circle cx="9" cy="18" r="1.4" fill="currentColor" /><circle cx="15" cy="18" r="1.4" fill="currentColor" />
-              </svg>
+            <div className="flex shrink-0 flex-col items-center justify-center gap-0.5 pr-1">
+              <button
+                onClick={() => commitMove(i, i - 1)}
+                disabled={i === 0}
+                aria-label={`Move ${r.pin.placeName} up`}
+                className="grid h-6 w-6 place-items-center rounded-full text-ink-3 hover:bg-paper hover:text-ink disabled:opacity-25"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="m6 14 6-6 6 6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </button>
+              <button
+                onClick={() => commitMove(i, i + 1)}
+                disabled={i === ranked.length - 1}
+                aria-label={`Move ${r.pin.placeName} down`}
+                className="grid h-6 w-6 place-items-center rounded-full text-ink-3 hover:bg-paper hover:text-ink disabled:opacity-25"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="m6 10 6 6 6-6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              </button>
             </div>
           )}
         </li>
