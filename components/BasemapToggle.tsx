@@ -82,12 +82,12 @@ export default function BasemapToggle() {
           className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium shadow-float backdrop-blur transition-colors ${
             showWishlist ? "bg-ink text-paper" : "bg-paper/90 text-ink-2"
           }`}
-          title="Wishlist: show places you saved as ghost pins"
+          title="Show places you saved (the Save button on any pin) as ghost pins — your want-to-go layer"
         >
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
             <path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
           </svg>
-          Wishlist{savedCount > 0 ? ` · ${savedCount}` : ""}
+          Saved{savedCount > 0 ? ` · ${savedCount}` : ""}
         </button>
         <button
           onClick={() => setThemesOpen((o) => !o)}

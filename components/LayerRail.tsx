@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useFollowedCreators, useFriends, useViewer } from "@/lib/hooks";
 import { findCountryAt } from "@/lib/focus";
+import WorldProgress from "./WorldProgress";
 
 // Me / individual friends / Everyone toggles (plan §6). Collapses to a pill on
 // mobile; expands to a left rail of avatars.
@@ -103,6 +104,8 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
               </span>
             )}
           </button>
+
+          <WorldProgress />
 
           {creators.length > 0 && (
             <>
