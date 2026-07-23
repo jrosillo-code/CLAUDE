@@ -21,7 +21,7 @@ export default function BasemapToggle() {
   const [themesOpen, setThemesOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-6 left-3 z-30 flex flex-col gap-2">
+    <div className="fixed z-30 flex flex-col gap-2 max-sm:bottom-4 max-sm:left-2 max-sm:max-w-[calc(100vw-88px)] sm:bottom-6 sm:left-3">
       {themesOpen && (
         <div className="animate-fade flex items-center gap-1.5 self-start rounded-full bg-paper/90 p-1.5 shadow-float backdrop-blur">
           {THEME_ORDER.map((id) => {
@@ -52,7 +52,7 @@ export default function BasemapToggle() {
         <Tab active={basemap === "satellite"} onClick={() => setBasemap("satellite")}>Satellite</Tab>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 max-sm:flex-wrap">
         <button
           onClick={() => setTerrain3d(!terrain3d)}
           className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium shadow-float backdrop-blur transition-colors ${
@@ -63,7 +63,7 @@ export default function BasemapToggle() {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
             <path d="m3 20 6-10 4 6 3-4 5 8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
           </svg>
-          3D
+          <span className="max-sm:hidden">3D</span>
         </button>
         <button
           onClick={() => setShowLandmarks(!showLandmarks)}
@@ -75,7 +75,7 @@ export default function BasemapToggle() {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
             <path d="M4 21h16M5 10h14M6 21v-8m4 8v-8m4 8v-8m4 8v-8M12 3 4.5 8.5h15z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" strokeLinecap="round" />
           </svg>
-          Landmarks
+          <span className="max-sm:hidden">Landmarks</span>
         </button>
         <button
           onClick={() => setShowWishlist(!showWishlist)}
@@ -87,7 +87,7 @@ export default function BasemapToggle() {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
             <path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
           </svg>
-          Saved{savedCount > 0 ? ` · ${savedCount}` : ""}
+          <span className="max-sm:hidden">Saved{savedCount > 0 ? ` · ${savedCount}` : ""}</span>
         </button>
         <button
           onClick={() => setThemesOpen((o) => !o)}
@@ -100,7 +100,7 @@ export default function BasemapToggle() {
             <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
             <path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" opacity=".35" />
           </svg>
-          Theme
+          <span className="max-sm:hidden">Theme</span>
         </button>
       </div>
     </div>

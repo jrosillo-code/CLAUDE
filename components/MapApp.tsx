@@ -96,7 +96,7 @@ export default function MapApp() {
       {!tripDraft && mapMode === "pins" && (
       <button
         onClick={() => setTopSpotsOpen(true)}
-        className="fixed bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper"
+        className="fixed z-30 flex items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:bottom-[72px] max-sm:right-3 max-sm:px-3 max-sm:py-2 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2"
       >
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="text-accent">
           <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
@@ -113,7 +113,7 @@ export default function MapApp() {
       <button
         onClick={() => setPlacing((p) => !p)}
         aria-label={placing ? "Cancel placing pin" : "Add a pin"}
-        className={`fixed bottom-6 right-4 z-30 h-14 w-14 rounded-full shadow-float grid place-items-center transition-colors ${
+        className={`fixed z-30 grid place-items-center rounded-full shadow-float transition-colors max-sm:bottom-4 max-sm:right-3 max-sm:h-12 max-sm:w-12 sm:bottom-6 sm:right-4 sm:h-14 sm:w-14 ${
           placing ? "bg-ink text-paper" : "bg-accent text-paper"
         }`}
       >

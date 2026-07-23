@@ -59,21 +59,22 @@ export default function TopBar({
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 flex items-start gap-3 p-3 sm:p-4">
-      {/* Brand — side groups share flex-1/basis-0 so the search stays truly centered */}
-      <div className="flex min-w-0 flex-1 basis-0 justify-start">
+    <header className="fixed inset-x-0 top-0 z-30 flex items-start gap-1.5 p-2 sm:gap-3 sm:p-4">
+      {/* Brand — on desktop the side groups share flex-1/basis-0 so the search
+          stays truly centered; on phones they collapse so search gets the room */}
+      <div className="flex min-w-0 shrink-0 justify-start sm:flex-1 sm:basis-0">
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2 rounded-full bg-paper/85 px-3.5 py-2 shadow-float backdrop-blur"
+          className="flex shrink-0 items-center gap-2 rounded-full bg-paper/85 px-2.5 py-2 shadow-float backdrop-blur sm:px-3.5"
         >
           <WaypointLogo size={20} />
-          <span className="hidden font-display text-lg leading-none min-[440px]:block">Waypoint</span>
+          <span className="hidden font-display text-lg leading-none sm:block">Waypoint</span>
         </Link>
       </div>
 
       {/* Search */}
-      <div className="relative w-full max-w-sm shrink">
-        <div className="flex items-center gap-2 rounded-full bg-paper/85 px-4 py-2.5 shadow-float backdrop-blur">
+      <div className="relative min-w-0 flex-1 sm:w-full sm:max-w-sm sm:flex-none sm:shrink">
+        <div className="flex items-center gap-2 rounded-full bg-paper/85 px-3 py-2 shadow-float backdrop-blur sm:px-4 sm:py-2.5">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0 text-ink-3">
             <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
             <path d="m20 20-3-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -116,11 +117,11 @@ export default function TopBar({
         )}
       </div>
 
-      <div className="flex min-w-0 flex-1 basis-0 items-center justify-end gap-2">
+      <div className="flex min-w-0 shrink-0 items-center justify-end gap-1.5 sm:flex-1 sm:basis-0 sm:gap-2">
         {/* Trips */}
         <button
           onClick={onOpenTrips}
-          className={`flex items-center gap-1.5 rounded-full px-3 py-2 shadow-float backdrop-blur ${
+          className={`flex items-center gap-1.5 rounded-full shadow-float backdrop-blur max-sm:h-9 max-sm:w-9 max-sm:justify-center sm:px-3 sm:py-2 ${
             tripsActive ? "bg-ink text-paper" : "bg-paper/85"
           }`}
           title="Trips"
@@ -136,7 +137,7 @@ export default function TopBar({
         {/* Creators */}
         <button
           onClick={onOpenCreators}
-          className="flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-2 shadow-float backdrop-blur"
+          className="flex items-center gap-1.5 rounded-full bg-paper/85 shadow-float backdrop-blur max-sm:h-9 max-sm:w-9 max-sm:justify-center sm:px-3 sm:py-2"
           title="Creators"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent">
@@ -168,12 +169,12 @@ export default function TopBar({
         {/* Viewer / profile */}
         <Link
           href={`/u/${viewer.handle}`}
-          className="flex items-center gap-2 rounded-full bg-paper/85 py-1.5 pl-1.5 pr-3 shadow-float backdrop-blur"
+          className="flex items-center gap-2 rounded-full bg-paper/85 shadow-float backdrop-blur max-sm:h-9 max-sm:w-9 max-sm:justify-center sm:py-1.5 sm:pl-1.5 sm:pr-3"
         >
           <img
             src={viewer.avatarUrl}
             alt=""
-            className="h-8 w-8 rounded-full object-cover ring-2"
+            className="h-7 w-7 rounded-full object-cover ring-2 sm:h-8 sm:w-8"
             style={{ ["--tw-ring-color" as string]: viewer.color }}
           />
           <span className="hidden text-sm font-medium sm:block">Me</span>
