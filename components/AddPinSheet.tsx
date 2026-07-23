@@ -9,10 +9,37 @@ import type { MediaKind } from "@/lib/types";
 import type { Visibility } from "@/lib/types";
 import { visibilityLabel } from "@/lib/data";
 import { RatingScale } from "./RatingScale";
+import { backendEnabled } from "@/lib/supabase";
+import { uploadPinMedia } from "@/lib/backend";
 
 // Add-pin flow (plan §6): crosshair drop → bottom-sheet form → optimistic render.
 // Photo upload is mocked here (Supabase Storage in production); tapping "Add
 // photos" attaches seeded demo shots so the marker renders immediately.
+// Downscale an image file to a max edge, returning a JPEG data-URL.
+function downscaleImage(file: File, maxEdge: number): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const img = new Image();
+      img.onerror = () => resolve(reader.result as string);
+      img.onload = () => {
+        const scale = Math.min(1, maxEdge / Math.max(img.width, img.height));
+        if (scale === 1) return resolve(reader.result as string);
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return resolve(reader.result as string);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.86));
+      };
+      img.src = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 export default function AddPinSheet() {
   const draft = useStore((s) => s.addDraft)!;
   const cancelAddPin = useStore((s) => s.cancelAddPin);
@@ -25,9 +52,37 @@ export default function AddPinSheet() {
   const [visibility, setVisibility] = useState<Visibility>(viewer.defaultPinVisibility);
   const [mediaItems, setMediaItems] = useState<{ kind: MediaKind; url: string }[]>([]);
   const [rating, setRating] = useState<number | null>(null);
+  const [uploading, setUploading] = useState(0);
 
-  // Uploads are mocked until Supabase Storage is wired: "add photos" attaches
-  // seeded demo shots; "add video" attaches a public sample clip.
+  // Real uploads: photos are downscaled client-side; with the live backend
+  // they go to Supabase Storage, in demo mode they live as data/object URLs.
+  async function handleFiles(files: FileList | null) {
+    if (!files) return;
+    for (const file of Array.from(files).slice(0, 8 - mediaItems.length)) {
+      const isVideo = file.type.startsWith("video/");
+      setUploading((n) => n + 1);
+      try {
+        if (isVideo) {
+          const url = backendEnabled
+            ? await uploadPinMedia(viewer.id, file, file.name.split(".").pop() || "mp4")
+            : URL.createObjectURL(file);
+          if (url) setMediaItems((p) => [...p, { kind: "video" as const, url }].slice(0, 8));
+        } else {
+          const dataUrl = await downscaleImage(file, 1600);
+          let url: string | null = dataUrl;
+          if (backendEnabled) {
+            const blob = await (await fetch(dataUrl)).blob();
+            url = await uploadPinMedia(viewer.id, blob, "jpg");
+          }
+          if (url) setMediaItems((p) => [...p, { kind: "photo" as const, url }].slice(0, 8));
+        }
+      } finally {
+        setUploading((n) => n - 1);
+      }
+    }
+  }
+
+  // Demo-world helpers (hidden when the real backend is live).
   function addDemoPhotos() {
     const base = mediaItems.length;
     const more = Array.from({ length: 3 }, (_, i) => ({
@@ -96,23 +151,48 @@ export default function AddPinSheet() {
                 <img key={`${m.url}-${i}`} src={m.url} alt="" className="h-20 w-20 shrink-0 rounded-xl object-cover" />
               )
             )}
-            <button
-              onClick={addDemoPhotos}
-              title="Add photos"
-              className="grid h-20 w-20 shrink-0 place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
+            {/* Real upload — photos and videos from the device */}
+            <label
+              title="Upload photos or videos"
+              className="grid h-20 w-20 shrink-0 cursor-pointer place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-            </button>
-            <button
-              onClick={addDemoVideo}
-              title="Add a video"
-              className="grid h-20 w-20 shrink-0 place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="6" width="13" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
-                <path d="m16 10 5-2.5v9L16 14" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-              </svg>
-            </button>
+              {uploading > 0 ? (
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-line border-t-ink-2" />
+              ) : (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+              )}
+              <input
+                type="file"
+                accept="image/*,video/*"
+                multiple
+                className="hidden"
+                onChange={(e) => {
+                  void handleFiles(e.target.files);
+                  e.target.value = "";
+                }}
+              />
+            </label>
+            {!backendEnabled && (
+              <>
+                <button
+                  onClick={addDemoPhotos}
+                  title="Add sample photos (demo)"
+                  className="grid h-20 w-20 shrink-0 place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.8" /><path d="m4 16 4.5-4.5 3.5 3.5 3-3 5 5" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /><circle cx="9" cy="9.5" r="1.4" fill="currentColor" /></svg>
+                </button>
+                <button
+                  onClick={addDemoVideo}
+                  title="Add a sample video (demo)"
+                  className="grid h-20 w-20 shrink-0 place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
+                >
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="6" width="13" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+                    <path d="m16 10 5-2.5v9L16 14" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </>
+            )}
           </div>
         </div>
 

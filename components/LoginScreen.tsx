@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useStore } from "@/lib/store";
+import { backendEnabled, supabase } from "@/lib/supabase";
 import WaypointLogo from "./Logo";
 
 // Sign-in. Demo-mode: each provider button creates a local session for the
@@ -12,11 +13,33 @@ export default function LoginScreen() {
   const signIn = useStore((s) => s.signIn);
   const [email, setEmail] = useState("");
   const [linkSent, setLinkSent] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
 
-  function submitEmail(e: React.FormEvent) {
+  // Live backend → real Supabase auth; otherwise the local demo session.
+  async function oauth(provider: "apple" | "google") {
+    if (!backendEnabled) return signIn(provider);
+    setAuthError(null);
+    const { error } = await supabase!.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: window.location.origin },
+    });
+    if (error) setAuthError(`${provider === "apple" ? "Apple" : "Google"} sign-in isn't configured yet — use email below.`);
+  }
+
+  async function submitEmail(e: React.FormEvent) {
     e.preventDefault();
     if (!email.includes("@")) return;
-    setLinkSent(true);
+    if (!backendEnabled) {
+      setLinkSent(true);
+      return;
+    }
+    setAuthError(null);
+    const { error } = await supabase!.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.origin },
+    });
+    if (error) setAuthError(error.message);
+    else setLinkSent(true);
   }
 
   return (
@@ -47,14 +70,14 @@ export default function LoginScreen() {
         {/* Providers */}
         <div className="mt-9 space-y-2.5">
           <button
-            onClick={() => signIn("apple")}
+            onClick={() => oauth("apple")}
             className="flex w-full items-center justify-center gap-2.5 rounded-full bg-ink py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
           >
             <AppleLogo />
             Continue with Apple
           </button>
           <button
-            onClick={() => signIn("google")}
+            onClick={() => oauth("google")}
             className="flex w-full items-center justify-center gap-2.5 rounded-full bg-paper py-3 text-[15px] font-semibold text-ink ring-1 ring-line transition-colors hover:bg-paper-2"
           >
             <GoogleLogo />
@@ -76,12 +99,14 @@ export default function LoginScreen() {
             <p className="mt-1 text-sm text-ink-3">
               We sent a sign-in link to <span className="text-ink-2">{email}</span>.
             </p>
-            <button
-              onClick={() => signIn("email")}
-              className="mt-4 w-full rounded-full bg-accent py-2.5 text-sm font-semibold text-paper"
-            >
-              Open the link (demo)
-            </button>
+            {!backendEnabled && (
+              <button
+                onClick={() => signIn("email")}
+                className="mt-4 w-full rounded-full bg-accent py-2.5 text-sm font-semibold text-paper"
+              >
+                Open the link (demo)
+              </button>
+            )}
           </div>
         ) : (
           <form onSubmit={submitEmail} className="space-y-2.5">
@@ -102,10 +127,22 @@ export default function LoginScreen() {
           </form>
         )}
 
+        {authError && (
+          <p className="mt-4 rounded-xl bg-accent/10 px-4 py-2.5 text-center text-xs text-accent">
+            {authError}
+          </p>
+        )}
+
         <p className="mt-7 text-center text-xs leading-relaxed text-ink-3">
-          Demo build — every option signs you into the sample account.
-          <br />
-          By continuing you agree to keep exploring.
+          {backendEnabled ? (
+            <>Sign in to see your friends&apos; maps — and let them see yours.</>
+          ) : (
+            <>
+              Demo build — every option signs you into the sample account.
+              <br />
+              By continuing you agree to keep exploring.
+            </>
+          )}
         </p>
       </div>
     </div>

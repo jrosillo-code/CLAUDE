@@ -26,6 +26,13 @@ export default function PinSheet() {
   const savedPinIds = useStore((s) => s.savedPinIds);
   const toggleSave = useStore((s) => s.toggleSave);
   const ratePin = useStore((s) => s.ratePin);
+  const updatePin = useStore((s) => s.updatePin);
+  const deletePin = useStore((s) => s.deletePin);
+  const [editing, setEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editNote, setEditNote] = useState("");
+  const [editVisibility, setEditVisibility] = useState<"public" | "friends" | "private">("friends");
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const [lightbox, setLightbox] = useState<number | null>(null);
 
@@ -219,10 +226,88 @@ export default function PinSheet() {
                 </div>
               )}
 
-              {isOwner && (
+              {isOwner && !editing && (
                 <div className="mt-6 flex gap-2">
-                  <button className="flex-1 rounded-full bg-paper-2 py-2.5 text-sm font-medium text-ink-2 hover:bg-line">Edit</button>
-                  <button className="flex-1 rounded-full bg-paper-2 py-2.5 text-sm font-medium text-accent hover:bg-line">Delete</button>
+                  <button
+                    onClick={() => {
+                      setEditTitle(pin.title);
+                      setEditNote(pin.note);
+                      setEditVisibility(pin.visibility);
+                      setEditing(true);
+                      setConfirmDelete(false);
+                    }}
+                    className="flex-1 rounded-full bg-paper-2 py-2.5 text-sm font-medium text-ink-2 hover:bg-line"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (confirmDelete) {
+                        deletePin(pin.id);
+                      } else {
+                        setConfirmDelete(true);
+                      }
+                    }}
+                    onBlur={() => setConfirmDelete(false)}
+                    className={`flex-1 rounded-full py-2.5 text-sm font-medium transition-colors ${
+                      confirmDelete ? "bg-accent text-paper" : "bg-paper-2 text-accent hover:bg-line"
+                    }`}
+                  >
+                    {confirmDelete ? "Really delete?" : "Delete"}
+                  </button>
+                </div>
+              )}
+
+              {isOwner && editing && (
+                <div className="mt-6 rounded-2xl border border-line bg-paper-2/60 p-4">
+                  <label className="text-xs font-medium uppercase tracking-wide text-ink-3">Title</label>
+                  <input
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    className="mt-1.5 w-full rounded-2xl bg-paper px-3.5 py-2.5 text-sm outline-none ring-1 ring-line focus:ring-ink/30"
+                  />
+                  <label className="mt-3 block text-xs font-medium uppercase tracking-wide text-ink-3">Note</label>
+                  <textarea
+                    value={editNote}
+                    onChange={(e) => setEditNote(e.target.value)}
+                    rows={3}
+                    className="mt-1.5 w-full resize-none rounded-2xl bg-paper px-3.5 py-2.5 text-sm outline-none ring-1 ring-line focus:ring-ink/30"
+                  />
+                  <label className="mt-3 block text-xs font-medium uppercase tracking-wide text-ink-3">Who can see this</label>
+                  <div className="mt-1.5 flex gap-1.5">
+                    {(["public", "friends", "private"] as const).map((v) => (
+                      <button
+                        key={v}
+                        onClick={() => setEditVisibility(v)}
+                        className={`flex-1 rounded-full px-2 py-2 text-xs font-medium ${
+                          editVisibility === v ? "bg-ink text-paper" : "bg-paper text-ink-2 ring-1 ring-line"
+                        }`}
+                      >
+                        {visibilityLabel[v]}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-4 flex justify-end gap-2">
+                    <button
+                      onClick={() => setEditing(false)}
+                      className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-ink-2 ring-1 ring-line"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        updatePin(pin.id, {
+                          title: editTitle.trim() || pin.title,
+                          note: editNote.trim(),
+                          visibility: editVisibility,
+                        });
+                        setEditing(false);
+                      }}
+                      className="rounded-full bg-ink px-5 py-2 text-xs font-semibold text-paper"
+                    >
+                      Save changes
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

@@ -66,25 +66,36 @@ supabase/migrations/
 Design intent: **the photos are the product, chrome stays minimal** — a muted basemap,
 warm paper UI, one travel-ink accent, serif display type.
 
-## Wiring the live Supabase backend
+## Going live with Supabase (fully wired — just add keys)
 
-The app is written so the backend is a swap at one seam — `lib/store.ts`.
+The integration is already written: `lib/supabase.ts` (client), `lib/backend.ts` (data
+layer), and write-through hooks in `lib/store.ts`. Without env keys the app runs the
+seeded in-memory demo; with them, auth + data + storage are live. To turn it on:
 
-1. Create a Supabase project. Run the migrations:
+1. **Create a project** at [supabase.com](https://supabase.com) (free tier is fine).
+2. **Run the migrations** `supabase/migrations/0001…0008` in order:
    ```bash
-   supabase db push          # or paste supabase/migrations/*.sql into the SQL editor
+   supabase link --project-ref <your-ref> && supabase db push
    ```
-   This creates the schema, PostGIS indexes, and RLS policies.
-2. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (see `.env.example`).
-3. Replace the seeded arrays in `lib/store.ts` with data fetched from Supabase, and back
-   `addPin` / `reorderTop` with `insert`/`update` calls. The query helpers in `lib/data.ts`
-   already encode the exact visibility logic that `0002_rls.sql` enforces on the server, so
-   the client can trust the rows Postgres returns.
-4. Point photo uploads at Supabase Storage (currently mocked with seeded imagery) and
-   generate marker thumbnails on upload.
+   or paste each file into the dashboard's SQL editor. This creates the schema,
+   PostGIS + RLS, the auto-profile-on-signup trigger, and the `avatars` /
+   `pin-media` storage buckets.
+3. **Set env** in `.env` (and in Vercel for deploys):
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon key>
+   ```
+4. **Auth providers**: email magic-link works out of the box. For the Apple/Google
+   buttons, enable those providers in Dashboard → Authentication → Providers (each
+   needs its own developer credentials); until then the login screen falls back to
+   email with a friendly notice.
+5. Restart `npm run dev`, sign in with a real email, and you have a live account:
+   pins/trips/likes/friends persist, avatars and pin media upload to Storage, and a
+   second account in another browser sees exactly what RLS allows it to see.
 
 Because visibility lives in RLS, no client change can leak a private pin — the API returns
-only rows the viewer is allowed to see.
+only rows the viewer is allowed to see. Client mutations are optimistic; failures log to
+the console and the next full load reconciles.
 
 ## Not in v1 (by design)
 

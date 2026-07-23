@@ -24,11 +24,33 @@ import {
   topPlaces as seedTopPlaces,
   users as seedUsers,
 } from "./seed";
+import { backendEnabled, supabase } from "./supabase";
+import * as backend from "./backend";
+
+// When the Supabase env is configured the store hydrates from the real
+// backend and every mutation writes through; otherwise the seeded demo world
+// is used and everything stays in-memory.
+let authListenerBound = false;
 
 function followsFor(viewerId: string): Set<string> {
   return new Set(
     seedFollows.filter((f) => f.followerId === viewerId).map((f) => f.creatorId)
   );
+}
+
+/** Accept (map to accepted) or remove the friendship row between two users. */
+function respondLocal(
+  friendships: Friendship[],
+  viewerId: string,
+  userId: string,
+  accept: boolean
+): Friendship[] {
+  const matches = (f: Friendship) =>
+    (f.userA === userId && f.userB === viewerId) ||
+    (f.userA === viewerId && f.userB === userId);
+  return accept
+    ? friendships.map((f) => (matches(f) ? { ...f, status: "accepted" as const } : f))
+    : friendships.filter((f) => !matches(f));
 }
 
 export interface AddPinDraft {
@@ -148,6 +170,10 @@ interface WaypointState {
     dates?: [string, string];
     rating?: number;
   }) => Pin;
+  /** Edit your own pin (title, note, visibility, rating). */
+  updatePin: (pinId: string, patch: Partial<Pick<Pin, "title" | "note" | "visibility" | "rating">>) => void;
+  /** Delete your own pin everywhere. */
+  deletePin: (pinId: string) => void;
   /** Set (or clear with null) your own 1–10 score on a pin you own. */
   ratePin: (pinId: string, rating: number | null) => void;
 
@@ -181,6 +207,53 @@ export const useStore = create<WaypointState>((set, get) => ({
   session: null,
   sessionReady: false,
   hydrateSession: () => {
+    // ── Live backend: session comes from Supabase Auth ──
+    if (backendEnabled) {
+      const applyAuthUser = async (userId: string, email?: string) => {
+        const profile = await backend.ensureProfile(userId, email);
+        const world = await backend.loadWorld(userId);
+        set((s) => ({
+          session: { userId, method: "email" },
+          sessionReady: true,
+          viewerId: userId,
+          users: world?.users?.length
+            ? world.users
+            : profile
+              ? [profile]
+              : s.users,
+          pins: world?.pins ?? [],
+          friendships: world?.friendships ?? [],
+          trips: world?.trips ?? [],
+          topPlaces: [],
+          likeCounts: world?.likeCounts ?? {},
+          likedPinIds: world?.likedPinIds ?? new Set(),
+          savedPinIds: world?.savedPinIds ?? new Set(),
+          follows: world?.follows ?? new Set(),
+          shownTripIds: new Set(
+            (world?.trips ?? []).filter((t) => t.userId === userId).map((t) => t.id)
+          ),
+          activeUserIds: null,
+        }));
+      };
+      void supabase!.auth.getSession().then(({ data }) => {
+        const u = data.session?.user;
+        if (u) void applyAuthUser(u.id, u.email);
+        else set({ session: null, sessionReady: true });
+      });
+      if (!authListenerBound) {
+        authListenerBound = true;
+        supabase!.auth.onAuthStateChange((event, session) => {
+          if (event === "SIGNED_IN" && session?.user) {
+            void applyAuthUser(session.user.id, session.user.email);
+          } else if (event === "SIGNED_OUT") {
+            set({ session: null });
+          }
+        });
+      }
+      return;
+    }
+
+    // ── Demo mode: local session + locally persisted profile extras ──
     let session: WaypointState["session"] = null;
     try {
       const raw = window.localStorage.getItem("wp-session");
@@ -228,6 +301,7 @@ export const useStore = create<WaypointState>((set, get) => ({
     set({ session, viewerId: CURRENT_USER_ID });
   },
   signOut: () => {
+    if (backendEnabled) void supabase!.auth.signOut();
     try {
       window.localStorage.removeItem("wp-session");
     } catch {
@@ -292,6 +366,7 @@ export const useStore = create<WaypointState>((set, get) => ({
         liked.add(pinId);
         counts[pinId] = (counts[pinId] ?? 0) + 1;
       }
+      if (backendEnabled) backend.syncLike(pinId, s.viewerId, liked.has(pinId));
       return { likedPinIds: liked, likeCounts: counts };
     }),
 
@@ -301,6 +376,7 @@ export const useStore = create<WaypointState>((set, get) => ({
       const saved = new Set(s.savedPinIds);
       if (saved.has(pinId)) saved.delete(pinId);
       else saved.add(pinId);
+      if (backendEnabled) backend.syncSave(pinId, s.viewerId, saved.has(pinId));
       return { savedPinIds: saved };
     }),
 
@@ -318,6 +394,7 @@ export const useStore = create<WaypointState>((set, get) => ({
         if (follows.has(creatorId)) activeUserIds.add(creatorId);
         else activeUserIds.delete(creatorId);
       }
+      if (backendEnabled) backend.syncFollow(creatorId, s.viewerId, follows.has(creatorId));
       return { follows, activeUserIds };
     }),
 
@@ -365,10 +442,14 @@ export const useStore = create<WaypointState>((set, get) => ({
       return { shownTripIds: shown };
     }),
   deleteTrip: (id) =>
-    set((s) => ({
-      trips: s.trips.filter((t) => !(t.id === id && t.userId === s.viewerId)),
-      shownTripIds: new Set([...s.shownTripIds].filter((x) => x !== id)),
-    })),
+    set((s) => {
+      if (!s.trips.some((t) => t.id === id && t.userId === s.viewerId)) return {};
+      if (backendEnabled) backend.syncDeleteTrip(id);
+      return {
+        trips: s.trips.filter((t) => !(t.id === id && t.userId === s.viewerId)),
+        shownTripIds: new Set([...s.shownTripIds].filter((x) => x !== id)),
+      };
+    }),
   tripDraft: null,
   startTripDraft: () =>
     set({
@@ -385,7 +466,9 @@ export const useStore = create<WaypointState>((set, get) => ({
   addTripStop: (stop) =>
     set((s) => {
       if (!s.tripDraft) return {};
-      const id = `stop-${s.tripDraft.stops.length + 1}-${s.tripDraft.stops.length}`;
+      const id = backendEnabled
+        ? crypto.randomUUID()
+        : `stop-${s.tripDraft.stops.length + 1}-${s.tripDraft.stops.length}`;
       return {
         tripDraft: { ...s.tripDraft, stops: [...s.tripDraft.stops, { ...stop, id }] },
       };
@@ -399,7 +482,9 @@ export const useStore = create<WaypointState>((set, get) => ({
   saveTripDraft: () => {
     const s = get();
     if (!s.tripDraft || s.tripDraft.stops.length < 2) return null;
-    const id = `trip-${s.trips.length + 1}-${Math.abs(s.trips.length * 7 + 13)}`;
+    const id = backendEnabled
+      ? crypto.randomUUID()
+      : `trip-${s.trips.length + 1}-${Math.abs(s.trips.length * 7 + 13)}`;
     const trip: Trip = {
       id,
       userId: s.viewerId,
@@ -408,6 +493,7 @@ export const useStore = create<WaypointState>((set, get) => ({
       stops: s.tripDraft.stops,
       createdAt: new Date().toISOString(),
     };
+    if (backendEnabled) backend.syncSaveTrip(trip);
     set({
       trips: [...s.trips, trip],
       tripDraft: null,
@@ -433,7 +519,7 @@ export const useStore = create<WaypointState>((set, get) => ({
   setViewBounds: (b) => set({ viewBounds: b }),
 
   addPin: (input) => {
-    const id = `pin-${++pinCounter}`;
+    const id = backendEnabled ? crypto.randomUUID() : `pin-${++pinCounter}`;
     const pin: Pin = {
       id,
       userId: get().viewerId,
@@ -447,25 +533,52 @@ export const useStore = create<WaypointState>((set, get) => ({
       startedOn: input.dates?.[0],
       endedOn: input.dates?.[1],
       media: input.media.map((m, i) => ({
-        id: `${id}-m${i + 1}`,
+        id: backendEnabled ? crypto.randomUUID() : `${id}-m${i + 1}`,
         kind: m.kind,
         url: m.url,
       })),
       rating: input.rating,
       createdAt: new Date().toISOString(),
     };
+    if (backendEnabled) backend.syncAddPin(pin);
     set((s) => ({ pins: [...s.pins, pin], addDraft: null, selectedPinId: id }));
     return pin;
   },
 
+  updatePin: (pinId, patch) =>
+    set((s) => {
+      const pins = s.pins.map((p) => {
+        if (p.id !== pinId || p.userId !== s.viewerId) return p;
+        const next = { ...p, ...patch };
+        if (backendEnabled) backend.syncUpdatePin(next);
+        return next;
+      });
+      return { pins };
+    }),
+
+  deletePin: (pinId) =>
+    set((s) => {
+      if (!s.pins.some((p) => p.id === pinId && p.userId === s.viewerId)) return {};
+      if (backendEnabled) backend.syncDeletePin(pinId);
+      return {
+        pins: s.pins.filter((p) => p.id !== pinId),
+        topPlaces: s.topPlaces.filter((t) => t.pinId !== pinId),
+        selectedPinId: s.selectedPinId === pinId ? null : s.selectedPinId,
+      };
+    }),
+
   ratePin: (pinId, rating) =>
-    set((s) => ({
-      pins: s.pins.map((p) =>
-        p.id === pinId && p.userId === s.viewerId
-          ? { ...p, rating: rating ?? undefined }
-          : p
-      ),
-    })),
+    set((s) => {
+      if (!s.pins.some((p) => p.id === pinId && p.userId === s.viewerId)) return {};
+      if (backendEnabled) backend.syncRatePin(pinId, rating);
+      return {
+        pins: s.pins.map((p) =>
+          p.id === pinId && p.userId === s.viewerId
+            ? { ...p, rating: rating ?? undefined }
+            : p
+        ),
+      };
+    }),
 
   sendFriendRequest: (userId) =>
     set((s) => {
@@ -476,6 +589,7 @@ export const useStore = create<WaypointState>((set, get) => ({
           (f.userA === userId && f.userB === s.viewerId)
       );
       if (exists) return {};
+      if (backendEnabled) backend.syncSendFriendRequest(s.viewerId, userId);
       return {
         friendships: [
           ...s.friendships,
@@ -485,62 +599,66 @@ export const useStore = create<WaypointState>((set, get) => ({
     }),
 
   respondFriendRequest: (userId, accept) =>
-    set((s) => ({
-      friendships: accept
-        ? s.friendships.map((f) =>
-            (f.userA === userId && f.userB === s.viewerId) ||
-            (f.userA === s.viewerId && f.userB === userId)
-              ? { ...f, status: "accepted" as const }
-              : f
-          )
-        : s.friendships.filter(
-            (f) =>
-              !(
-                (f.userA === userId && f.userB === s.viewerId) ||
-                (f.userA === s.viewerId && f.userB === userId)
-              )
-          ),
-    })),
+    set((s) => {
+      if (backendEnabled) backend.syncRespondFriendRequest(s.viewerId, userId, accept);
+      return { friendships: respondLocal(s.friendships, s.viewerId, userId, accept) };
+    }),
 
   cancelFriendRequest: (userId) =>
-    set((s) => ({
-      friendships: s.friendships.filter(
+    set((s) => {
+      const match = s.friendships.some(
         (f) =>
-          !(
-            f.status === "pending" &&
-            f.requestedBy === s.viewerId &&
-            ((f.userA === s.viewerId && f.userB === userId) ||
-              (f.userA === userId && f.userB === s.viewerId))
-          )
-      ),
-    })),
+          f.status === "pending" &&
+          f.requestedBy === s.viewerId &&
+          ((f.userA === s.viewerId && f.userB === userId) ||
+            (f.userA === userId && f.userB === s.viewerId))
+      );
+      if (!match) return {};
+      if (backendEnabled) backend.syncRespondFriendRequest(s.viewerId, userId, false);
+      return { friendships: respondLocal(s.friendships, s.viewerId, userId, false) };
+    }),
 
   setMySocials: (socials) =>
     set((s) => {
-      try {
-        window.localStorage.setItem("wp-socials", JSON.stringify(socials));
-      } catch {
-        /* private mode */
+      if (backendEnabled) backend.syncSocials(s.viewerId, socials);
+      else {
+        try {
+          window.localStorage.setItem("wp-socials", JSON.stringify(socials));
+        } catch {
+          /* private mode */
+        }
       }
       return {
         users: s.users.map((u) => (u.id === s.viewerId ? { ...u, socials } : u)),
       };
     }),
 
-  setMyAvatar: (dataUrl) =>
-    set((s) => {
+  setMyAvatar: (dataUrl) => {
+    const viewerId = get().viewerId;
+    // Optimistic: show the new photo immediately everywhere.
+    set((s) => ({
+      users: s.users.map((u) => (u.id === viewerId ? { ...u, avatarUrl: dataUrl } : u)),
+    }));
+    if (backendEnabled) {
+      // Upload to Storage, then swap in the durable public URL.
+      void backend.uploadAvatar(viewerId, dataUrl).then((url) => {
+        if (url)
+          set((s) => ({
+            users: s.users.map((u) => (u.id === viewerId ? { ...u, avatarUrl: url } : u)),
+          }));
+      });
+    } else {
       try {
         window.localStorage.setItem("wp-avatar", dataUrl);
       } catch {
         /* quota/private mode — keep it for this session anyway */
       }
-      return {
-        users: s.users.map((u) => (u.id === s.viewerId ? { ...u, avatarUrl: dataUrl } : u)),
-      };
-    }),
+    }
+  },
 
   creatorApplied: false,
   applyCreator: (data) => {
+    if (backendEnabled) backend.syncApplyCreator(get().viewerId, data.activities, data.link);
     try {
       window.localStorage.setItem("wp-creator-app", JSON.stringify(data));
     } catch {
