@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useFollowedCreators, useFriends, useViewer } from "@/lib/hooks";
@@ -224,26 +225,26 @@ function Row({
   on,
   onToggle,
 }: {
-  user: { avatarUrl: string; color: string };
+  user: { avatarUrl: string; color: string; handle: string };
   label: string;
   on: boolean;
   onToggle: () => void;
 }) {
   return (
-    <li>
-      <button
-        onClick={onToggle}
-        className="flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 hover:bg-paper-2"
-      >
+    <li className="flex items-center gap-2.5 rounded-xl px-2 py-1.5 hover:bg-paper-2">
+      {/* Avatar opens the profile; the rest of the row toggles map visibility. */}
+      <Link href={`/u/${user.handle}`} title="View profile" className="shrink-0">
         <img
           src={user.avatarUrl}
           alt=""
-          className="h-7 w-7 rounded-full object-cover ring-2"
+          className="h-7 w-7 rounded-full object-cover ring-2 transition-transform hover:scale-110"
           style={{ ["--tw-ring-color" as string]: user.color, opacity: on ? 1 : 0.35 }}
         />
+      </Link>
+      <button onClick={onToggle} className="flex min-w-0 flex-1 items-center gap-2.5">
         <span className={`truncate text-sm ${on ? "text-ink" : "text-ink-3"}`}>{label}</span>
         <span
-          className="ml-auto h-4 w-4 rounded-full border-2"
+          className="ml-auto h-4 w-4 shrink-0 rounded-full border-2"
           style={{
             borderColor: user.color,
             background: on ? user.color : "transparent",

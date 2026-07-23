@@ -23,8 +23,15 @@ export default function TopBar({
   const [results, setResults] = useState<GeoResult[]>([]);
   const [open, setOpen] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+  // Picking a result writes its name into the input — that programmatic change
+  // must not re-run the search and pop the dropdown back open.
+  const suppressSearchRef = useRef(false);
 
   useEffect(() => {
+    if (suppressSearchRef.current) {
+      suppressSearchRef.current = false;
+      return;
+    }
     if (q.trim().length < 2) {
       setResults([]);
       return;
@@ -41,7 +48,9 @@ export default function TopBar({
   }, [q]);
 
   function pick(r: GeoResult) {
+    suppressSearchRef.current = true;
     setOpen(false);
+    setResults([]);
     setQ(r.placeName);
     requestFlyTo(r.lng, r.lat, 9);
   }

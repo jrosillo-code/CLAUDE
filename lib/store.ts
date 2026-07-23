@@ -249,7 +249,8 @@ export const useStore = create<WaypointState>((set, get) => ({
   setTerrain3d: (v) => set({ terrain3d: v }),
   userLocation: null,
   setUserLocation: (l) => set({ userLocation: l }),
-  showLandmarks: true,
+  // Off by default — travelers opt in from the map controls.
+  showLandmarks: false,
   setShowLandmarks: (v) => set({ showLandmarks: v, selectedLandmarkId: null }),
   selectedLandmarkId: null,
   selectLandmark: (id) => set({ selectedLandmarkId: id }),

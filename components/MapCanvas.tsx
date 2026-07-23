@@ -777,18 +777,22 @@ export default function MapCanvas({ placing, onPick }: Props) {
         const [lng, lat] = c.geometry.coordinates as [number, number];
         const key = props.cluster ? `c-${props.cluster_id}` : `p-${props.pinId}`;
         const selected = !props.cluster && props.pinId === selectedRef.current;
-        // Clusters render as a stacked pair; the twin behind shows the SECOND
-        // pin's photo so it reads as "two pins here", not a rendering echo.
+        // Supercluster does NOT propagate leaf properties onto clusters, so a
+        // cluster has no `photo` of its own (heads rendered as bare theme-color
+        // balls). Pull the first two leaves: leaf 0's photo becomes the head,
+        // leaf 1's the stacked twin — so a pair reads as "two pins here".
+        let headPhoto = props.photo;
         let twinPhoto: string | undefined;
         if (props.cluster && props.cluster_id != null) {
           try {
             const leaves = index.getLeaves(props.cluster_id, 2);
+            headPhoto = (leaves[0]?.properties as ClusterProps | undefined)?.photo ?? headPhoto;
             twinPhoto = (leaves[1]?.properties as ClusterProps | undefined)?.photo;
           } catch {
             /* cluster vanished mid-frame */
           }
         }
-        const contentKey = `${props.photo}|${twinPhoto ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
+        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
         upsert(
           key,
           lng,
@@ -796,7 +800,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           contentKey,
           () =>
             needleEl({
-              photo: props.photo,
+              photo: headPhoto,
               ring: ringColor,
               scale: selected ? 1.25 : 1,
               stacked: !!props.cluster,

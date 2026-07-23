@@ -20,18 +20,20 @@ export default function FriendsPanel({ onClose }: { onClose: () => void }) {
 
   const [q, setQ] = useState("");
 
-  const { incoming, outgoing, discover } = useMemo(() => {
+  const { incoming, outgoing, discover, current } = useMemo(() => {
     const inc: User[] = [];
     const out: User[] = [];
     const disc: User[] = [];
+    const cur: User[] = [];
     for (const u of users) {
       if (u.id === viewerId || u.isCreator) continue;
       const f = friendshipStatus(friendships, viewerId, u.id);
       if (!f) disc.push(u);
+      else if (f.status === "accepted") cur.push(u);
       else if (f.status === "pending" && f.requestedBy === u.id) inc.push(u);
       else if (f.status === "pending" && f.requestedBy === viewerId) out.push(u);
     }
-    return { incoming: inc, outgoing: out, discover: disc };
+    return { incoming: inc, outgoing: out, discover: disc, current: cur };
   }, [users, friendships, viewerId]);
 
   const needle = q.trim().toLowerCase();
@@ -146,8 +148,43 @@ export default function FriendsPanel({ onClose }: { onClose: () => void }) {
             </li>
           )}
         </ul>
+
+        {/* Current friends — tap through to profiles, or remove */}
+        {current.length > 0 && (
+          <div className="mt-5">
+            <div className="px-1 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+              Your friends · {current.length}
+            </div>
+            <ul className="mt-2 space-y-2">
+              {current.map((u) => (
+                <RemovableFriend key={u.id} user={u} onClose={onClose} />
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </Sheet>
+  );
+}
+
+// A friend row with a two-tap remove (first tap arms, second confirms) so a
+// stray click can't sever a friendship.
+function RemovableFriend({ user, onClose }: { user: User; onClose: () => void }) {
+  const respondFriendRequest = useStore((s) => s.respondFriendRequest);
+  const [arming, setArming] = useState(false);
+  return (
+    <li className="flex items-center gap-3 rounded-2xl border border-line p-3">
+      <PersonInfo user={user} onClose={onClose} />
+      <button
+        onClick={() => (arming ? respondFriendRequest(user.id, false) : setArming(true))}
+        onBlur={() => setArming(false)}
+        className={`ml-auto shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+          arming ? "bg-accent text-paper" : "bg-paper-2 text-ink-3 ring-1 ring-line hover:text-accent"
+        }`}
+      >
+        {arming ? "Confirm remove" : "Remove"}
+      </button>
+    </li>
   );
 }
 

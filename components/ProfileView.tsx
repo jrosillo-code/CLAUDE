@@ -41,6 +41,7 @@ export default function ProfileView({ handle }: { handle: string }) {
   const [tab, setTab] = useState<Tab>("top");
   const [editingSocials, setEditingSocials] = useState(false);
   const [socialsDraft, setSocialsDraft] = useState<UserSocials>({});
+  const [statView, setStatView] = useState<"pins" | "countries" | "friends" | null>(null);
 
   const user = users.find((u) => u.handle === handle);
   if (!user) {
@@ -63,6 +64,21 @@ export default function ProfileView({ handle }: { handle: string }) {
   const friendCount = acceptedFriendIds(friendships, user.id).size;
   const isFriend = acceptedFriendIds(friendships, viewerId).has(user.id);
   const friendship = friendshipStatus(friendships, viewerId, user.id);
+  const friendUsers = users.filter((u) => acceptedFriendIds(friendships, user.id).has(u.id));
+  // Countries this profile has pinned, with per-country pin counts.
+  const countryRows = (() => {
+    const byCode = new Map<string, number>();
+    for (const p of myPins) if (p.countryCode) byCode.set(p.countryCode, (byCode.get(p.countryCode) ?? 0) + 1);
+    let names: Intl.DisplayNames | null = null;
+    try {
+      names = new Intl.DisplayNames(["en"], { type: "region" });
+    } catch {
+      /* older runtime */
+    }
+    return [...byCode.entries()]
+      .map(([code, count]) => ({ code, count, name: names?.of(code) ?? code }))
+      .sort((a, b) => b.count - a.count);
+  })();
   const isFollowing = follows.has(user.id);
   const savedPins = pins.filter((p) => savedPinIds.has(p.id));
   const cover =
@@ -190,16 +206,100 @@ export default function ProfileView({ handle }: { handle: string }) {
           </div>
         )}
 
-        {/* Stats — three equal, divided columns. */}
+        {/* Stats — three equal, divided columns. Tap one to expand the list. */}
         <div className="mt-6 grid grid-cols-3 divide-x divide-line border-y border-line py-5">
-          <Stat n={myPins.length} label="pins" />
-          <Stat n={countries} label="countries" />
+          <Stat n={myPins.length} label="pins" active={statView === "pins"} onClick={() => setStatView(statView === "pins" ? null : "pins")} />
+          <Stat n={countries} label="countries" active={statView === "countries"} onClick={() => setStatView(statView === "countries" ? null : "countries")} />
           {user.isCreator ? (
             <Stat n={user.followerCount ?? 0} label="followers" format />
           ) : (
-            <Stat n={friendCount} label="friends" />
+            <Stat n={friendCount} label="friends" active={statView === "friends"} onClick={() => setStatView(statView === "friends" ? null : "friends")} />
           )}
         </div>
+
+        {/* Expanded stat detail */}
+        {statView === "friends" && (
+          <div className="mt-4 rounded-2xl border border-line bg-paper-2/50 p-3">
+            <div className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+              {isMe ? "Your friends" : `${user.displayName.split(" ")[0]}'s friends`}
+            </div>
+            {friendUsers.length === 0 && (
+              <p className="px-1 pb-2 text-sm text-ink-3">No friends yet.</p>
+            )}
+            <ul className="space-y-1">
+              {friendUsers.map((f) => (
+                <li key={f.id} className="flex items-center gap-2.5 rounded-xl px-2 py-1.5 hover:bg-paper">
+                  <Link href={`/u/${f.handle}`} className="flex min-w-0 flex-1 items-center gap-2.5">
+                    <img src={f.avatarUrl} alt="" className="h-9 w-9 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: f.color }} />
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-medium">{f.displayName}</span>
+                      <span className="block truncate text-xs text-ink-3">@{f.handle} · {f.homeCity}</span>
+                    </span>
+                  </Link>
+                  {isMe && (
+                    <button
+                      onClick={() => respondFriendRequest(f.id, false)}
+                      className="shrink-0 rounded-full bg-paper px-3 py-1.5 text-xs font-medium text-accent ring-1 ring-line hover:bg-paper-2"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {statView === "countries" && (
+          <div className="mt-4 rounded-2xl border border-line bg-paper-2/50 p-3">
+            <div className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+              Countries pinned
+            </div>
+            <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+              {countryRows.map((c) => (
+                <li key={c.code} className="flex items-center gap-2.5 rounded-xl px-2 py-1.5">
+                  <span className="text-lg leading-none">{flagEmoji(c.code)}</span>
+                  <span className="min-w-0 flex-1 truncate text-sm">{c.name}</span>
+                  <span className="text-xs tabular-nums text-ink-3">
+                    {c.count} {c.count === 1 ? "pin" : "pins"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {statView === "pins" && (
+          <div className="mt-4 rounded-2xl border border-line bg-paper-2/50 p-3">
+            <div className="px-1 pb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+              Every pin
+            </div>
+            <ul className="space-y-1">
+              {myPins.map((p) => (
+                <li key={p.id}>
+                  <button
+                    onClick={() => openPin(p.id, p.lng, p.lat)}
+                    className="flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-left hover:bg-paper"
+                  >
+                    {coverUrl(p) ? (
+                      <img src={coverUrl(p)!} alt="" className="h-9 w-9 shrink-0 rounded-lg object-cover" />
+                    ) : (
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-paper text-sm">📍</span>
+                    )}
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium">{p.title}</span>
+                      <span className="block truncate text-xs text-ink-3">
+                        {p.placeName}
+                        {p.countryCode ? ` · ${flagEmoji(p.countryCode)} ${p.countryCode}` : ""}
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-xs font-medium text-ink-3">Map ›</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Actions — centered. */}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -379,13 +479,41 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
   );
 }
 
-function Stat({ n, label, format }: { n: number; label: string; format?: boolean }) {
-  return (
-    <div className="text-center">
+function Stat({
+  n,
+  label,
+  format,
+  active,
+  onClick,
+}: {
+  n: number;
+  label: string;
+  format?: boolean;
+  active?: boolean;
+  onClick?: () => void;
+}) {
+  const inner = (
+    <>
       <div className="tnum font-display text-[26px] leading-none">
         {format ? formatFollowers(n) : n}
       </div>
-      <div className="mt-1.5 text-[11px] uppercase tracking-[0.14em] text-ink-3">{label}</div>
-    </div>
+      <div className={`mt-1.5 text-[11px] uppercase tracking-[0.14em] ${active ? "text-accent" : "text-ink-3"}`}>
+        {label}
+        {onClick && <span className="ml-1 text-ink-3">{active ? "▴" : "▾"}</span>}
+      </div>
+    </>
   );
+  if (!onClick) return <div className="text-center">{inner}</div>;
+  return (
+    <button onClick={onClick} className="text-center transition-opacity hover:opacity-70">
+      {inner}
+    </button>
+  );
+}
+
+/** Country code → flag emoji ("PT" → 🇵🇹). */
+function flagEmoji(cc: string): string {
+  const code = cc.trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(code)) return "🏳️";
+  return String.fromCodePoint(...[...code].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
 }
