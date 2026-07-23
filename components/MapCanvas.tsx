@@ -218,7 +218,17 @@ export default function MapCanvas({ placing, onPick }: Props) {
               map.setPaintProperty(id, "fill-outline-color", theme.ocean);
             } else if (/building/.test(ref)) {
               if (dark) map.setPaintProperty(id, "fill-color", "#242e40");
-            } else if (/landcover|landuse|park|grass|wood|forest|sand|glacier|residential/.test(ref)) {
+            } else if (/park|protected|reserve|national_forest/.test(ref)) {
+              // Parks/protected areas: near-land tone at low strength, so big
+              // reserves (Tibet, Alaska…) stop reading as black holes.
+              if (dark) {
+                map.setPaintProperty(id, "fill-color", "#222f3f");
+                map.setPaintProperty(id, "fill-opacity", 0.35);
+              }
+            } else if (/glacier|snow|ice/.test(ref)) {
+              // Ice should stay lighter than the land around it, even at night.
+              if (dark) map.setPaintProperty(id, "fill-color", "#2e3a50");
+            } else if (/landcover|landuse|grass|wood|forest|sand|residential/.test(ref)) {
               if (dark) map.setPaintProperty(id, "fill-color", "#1f2939");
             } else if (dark) {
               map.setPaintProperty(id, "fill-color", theme.land);
@@ -226,10 +236,15 @@ export default function MapCanvas({ placing, onPick }: Props) {
           } else if (layer.type === "line") {
             if (/water|river|stream|canal/.test(ref)) {
               map.setPaintProperty(id, "line-color", theme.ocean);
+            } else if (dark && /park|protected|reserve/.test(ref)) {
+              // The bright dotted park outlines that glow in dark mode.
+              map.setPaintProperty(id, "line-color", "#33415a");
+              map.setPaintProperty(id, "line-opacity", 0.6);
             } else if (dark && /road|highway|street|path|rail|bridge|tunnel|transit/.test(ref)) {
               map.setPaintProperty(id, "line-color", /casing/.test(ref) ? "#161e2c" : "#4a5870");
-            } else if (dark && /boundary|border/.test(ref)) {
+            } else if (dark && /boundary|border|admin|disputed/.test(ref)) {
               map.setPaintProperty(id, "line-color", theme.border);
+              map.setPaintProperty(id, "line-opacity", 0.55);
             }
           } else if (layer.type === "symbol") {
             map.setPaintProperty(id, "text-color", theme.labelColor);

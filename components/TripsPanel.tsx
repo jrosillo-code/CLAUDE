@@ -145,9 +145,10 @@ export default function TripsPanel({
                   href={appleMapsRouteUrl(t.stops)}
                   target="_blank"
                   rel="noreferrer"
+                  title="Apple Maps doesn't support multi-stop links — this starts directions to the first stop. Open the route guide for per-stop directions."
                   className="flex-1 rounded-full bg-paper py-2 text-center text-xs font-semibold text-ink-2 ring-1 ring-line transition-colors hover:bg-paper-2"
                 >
-                  Apple Maps ↗
+                  Apple Maps · stop 1 ↗
                 </a>
               </div>
             </div>

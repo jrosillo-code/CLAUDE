@@ -31,7 +31,11 @@ export function googleMapsDirectionsUrl(lat: number, lng: number, placeName?: st
 }
 
 export function appleMapsDirectionsUrl(lat: number, lng: number, placeName?: string): string {
-  return `https://maps.apple.com/?daddr=${encodeURIComponent(loc({ lat, lng, placeName }))}`;
+  // Only documented params (daddr + dirflg): Apple's web app silently shows
+  // nothing for URLs it can't parse, so no undocumented extras.
+  return `https://maps.apple.com/?daddr=${encodeURIComponent(
+    loc({ lat, lng, placeName })
+  )}&dirflg=d`;
 }
 
 /**
@@ -51,11 +55,14 @@ export function googleMapsRouteUrl(stops: Stop[]): string {
   )}&waypoints=${encodeURIComponent(mids.map(loc).join("|"))}`;
 }
 
-/** Apple Maps chains extra destinations with "+to:" after the first daddr. */
+/**
+ * Apple Maps has no working multi-stop URL: the old "+to:" chain is
+ * undocumented and the maps.apple.com web app rejects the whole link (no
+ * directions at all). So the route button starts you off — directions from
+ * your current location to the FIRST stop — and each stop offers its own
+ * directions link for the legs after that.
+ */
 export function appleMapsRouteUrl(stops: Stop[]): string {
   if (stops.length === 0) return "https://maps.apple.com/";
-  const [first, ...rest] = stops;
-  return `https://maps.apple.com/?daddr=${encodeURIComponent(loc(first))}${rest
-    .map((s) => `+to:${encodeURIComponent(loc(s))}`)
-    .join("")}`;
+  return appleMapsDirectionsUrl(stops[0].lat, stops[0].lng, stops[0].placeName);
 }

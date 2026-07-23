@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import Sheet from "./Sheet";
 import type { Trip } from "@/lib/types";
-import { appleMapsRouteUrl, googleMapsRouteUrl } from "@/lib/directions";
+import {
+  appleMapsDirectionsUrl,
+  appleMapsRouteUrl,
+  googleMapsDirectionsUrl,
+  googleMapsRouteUrl,
+} from "@/lib/directions";
 
 // AI route guide: opens alongside "View route" and briefs every stop on the
 // trip — what the place is, best hotels/hostels, and things to do.
@@ -106,9 +111,10 @@ export default function TripGuidePanel({
             href={appleMapsRouteUrl(trip.stops)}
             target="_blank"
             rel="noreferrer"
+            title="Apple Maps doesn't support multi-stop links — this starts directions to your first stop. Each stop below has its own directions."
             className="flex-1 rounded-full bg-paper-2 py-2 text-center text-xs font-semibold text-ink-2 ring-1 ring-line transition-colors hover:bg-line"
           >
-            Apple Maps ↗
+            Apple Maps · stop 1 ↗
           </a>
         </div>
         {state.status === "ready" && state.source === "live" && (
@@ -219,6 +225,29 @@ export default function TripGuidePanel({
                       </span>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {/* Per-stop hand-off — this is how Apple Maps does multi-stop */}
+              {trip.stops[i] && (
+                <div className="mt-3 flex items-center gap-2 border-t border-line pt-2.5 text-xs">
+                  <span className="font-medium text-ink-3">Navigate here:</span>
+                  <a
+                    href={googleMapsDirectionsUrl(trip.stops[i].lat, trip.stops[i].lng, trip.stops[i].placeName)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-semibold text-ink-2 underline-offset-2 hover:underline"
+                  >
+                    Google ↗
+                  </a>
+                  <a
+                    href={appleMapsDirectionsUrl(trip.stops[i].lat, trip.stops[i].lng, trip.stops[i].placeName)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-semibold text-ink-2 underline-offset-2 hover:underline"
+                  >
+                    Apple ↗
+                  </a>
                 </div>
               )}
             </div>
