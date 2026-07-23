@@ -499,6 +499,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
 
     // Snappier, more controllable wheel zoom (Apple-ish feel).
     map.scrollZoom.setWheelZoomRate(1 / 240);
+    // Trackpad pinch (browsers deliver it as ctrl+wheel) uses the plain zoom
+    // rate — default is 1/100; doubled so a pinch travels twice as far in
+    // both directions.
+    map.scrollZoom.setZoomRate(1 / 50);
 
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
     map.addControl(
