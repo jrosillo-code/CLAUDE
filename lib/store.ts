@@ -159,6 +159,9 @@ interface WaypointState {
   requestFlyTo: (lng: number, lat: number, zoom?: number) => void;
   fitBoundsTo: { w: number; s: number; e: number; n: number; nonce: number } | null;
   requestFitBounds: (b: { w: number; s: number; e: number; n: number }) => void;
+  /** Journey flyover: tapping the Waypoint logo replays your pins as a flight. */
+  flyoverReq: number;
+  requestFlyover: () => void;
 
   // Current viewport (updated by the map on move-end) — powers "Top spots in
   // this area". At planet scale it covers the whole world.
@@ -554,6 +557,9 @@ export const useStore = create<WaypointState>((set, get) => ({
     set({ flyTo: { lng, lat, zoom, nonce: ++flyNonce } }),
   fitBoundsTo: null,
   requestFitBounds: (b) => set({ fitBoundsTo: { ...b, nonce: ++flyNonce } }),
+
+  flyoverReq: 0,
+  requestFlyover: () => set((s) => ({ flyoverReq: s.flyoverReq + 1 })),
 
   viewBounds: null,
   setViewBounds: (b) => set({ viewBounds: b }),

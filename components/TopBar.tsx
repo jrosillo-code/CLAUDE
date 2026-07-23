@@ -20,6 +20,7 @@ export default function TopBar({
 }) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
+  const requestFlyover = useStore((s) => s.requestFlyover);
   const unread = useStore((s) => s.notifications.filter((n) => !n.read).length);
 
   const [q, setQ] = useState("");
@@ -63,13 +64,16 @@ export default function TopBar({
       {/* Brand — on desktop the side groups share flex-1/basis-0 so the search
           stays truly centered; on phones they collapse so search gets the room */}
       <div className="flex min-w-0 shrink-0 justify-start sm:flex-1 sm:basis-0">
-        <Link
-          href="/"
+        {/* Tapping the brand replays your journey: a little you-on-a-plane
+            flies pin to pin while the globe follows. */}
+        <button
+          onClick={requestFlyover}
+          title="Replay your journey"
           className="flex shrink-0 items-center gap-2 rounded-full bg-paper/85 px-2.5 py-2 shadow-float backdrop-blur sm:px-3.5"
         >
           <WaypointLogo size={20} />
           <span className="hidden font-display text-lg leading-none sm:block">Waypoint</span>
-        </Link>
+        </button>
       </div>
 
       {/* Search — its own centered row on phones, underneath the icon row */}

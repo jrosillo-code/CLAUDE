@@ -14,6 +14,7 @@ import {
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
 import { thumbUrl, visibleTrips } from "@/lib/data";
+import { startFlyover } from "@/lib/flyover";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
 
@@ -86,6 +87,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const selectPin = useStore((s) => s.selectPin);
   const flyTo = useStore((s) => s.flyTo);
   const fitBoundsTo = useStore((s) => s.fitBoundsTo);
+  const flyoverReq = useStore((s) => s.flyoverReq);
   const basemap = useStore((s) => s.basemap);
   const terrain3d = useStore((s) => s.terrain3d);
   const themeId = useStore((s) => s.theme);
@@ -731,6 +733,30 @@ export default function MapCanvas({ placing, onPick }: Props) {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flyTo?.nonce]);
+
+  // ---- Journey flyover (Waypoint logo tap): your pins as a flight ----
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !flyoverReq || !readyRef.current) return;
+    const st = useStore.getState();
+    const own = st.pins
+      .filter((p) => p.userId === st.viewerId)
+      .sort((a, b) => (a.startedOn ?? a.createdAt).localeCompare(b.startedOn ?? b.createdAt));
+    const me = st.users.find((u) => u.id === st.viewerId);
+    if (!me || own.length === 0) return;
+    const accent =
+      getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
+      "#0a84ff";
+    return startFlyover(
+      map,
+      maplibregl.Marker,
+      maplibregl.LngLatBounds,
+      own.map((p) => ({ lng: p.lng, lat: p.lat })),
+      me.avatarUrl,
+      accent
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flyoverReq]);
 
   // ---- Fit-bounds intent (country Focus) ----
   useEffect(() => {
