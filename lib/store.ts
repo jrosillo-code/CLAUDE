@@ -201,6 +201,8 @@ interface WaypointState {
 
   // ── Notifications ──
   notifications: AppNotification[];
+  /** Mark one notification read (hovering/tapping its row). */
+  markNotificationRead: (id: string) => void;
   markNotificationsRead: () => void;
 }
 
@@ -672,6 +674,15 @@ export const useStore = create<WaypointState>((set, get) => ({
   },
 
   notifications: [...seedNotifications],
+  markNotificationRead: (id) =>
+    set((s) => {
+      const target = s.notifications.find((n) => n.id === id);
+      if (!target || target.read) return {};
+      if (backendEnabled) backend.syncMarkNotificationRead(id);
+      return {
+        notifications: s.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
+      };
+    }),
   markNotificationsRead: () => {
     if (backendEnabled) backend.syncMarkNotificationsRead(get().viewerId);
     set((s) => ({ notifications: s.notifications.map((n) => ({ ...n, read: true })) }));

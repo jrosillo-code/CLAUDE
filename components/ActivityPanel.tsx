@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import Link from "next/link";
 import Sheet from "./Sheet";
 import { useStore } from "@/lib/store";
@@ -12,15 +11,11 @@ export default function ActivityPanel({ onClose }: { onClose: () => void }) {
   const notifications = useStore((s) => s.notifications);
   const users = useStore((s) => s.users);
   const pins = useStore((s) => s.pins);
-  const markRead = useStore((s) => s.markNotificationsRead);
+  const markAllRead = useStore((s) => s.markNotificationsRead);
+  const markOneRead = useStore((s) => s.markNotificationRead);
   const selectPin = useStore((s) => s.selectPin);
   const requestFlyTo = useStore((s) => s.requestFlyTo);
-
-  useEffect(() => {
-    const t = setTimeout(() => markRead(), 800);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const unread = notifications.filter((n) => !n.read).length;
 
   const usersById = new Map(users.map((u) => [u.id, u]));
   const pinsById = new Map(pins.map((p) => [p.id, p]));
@@ -51,9 +46,19 @@ export default function ActivityPanel({ onClose }: { onClose: () => void }) {
       <div className="border-b border-line px-5 py-4">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-2xl">Activity</h2>
-          <button onClick={onClose} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-full hover:bg-paper-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-          </button>
+          <div className="flex items-center gap-2">
+            {unread > 0 && (
+              <button
+                onClick={markAllRead}
+                className="rounded-full bg-paper-2 px-3 py-1.5 text-xs font-medium text-ink-3 hover:text-ink"
+              >
+                Mark all read
+              </button>
+            )}
+            <button onClick={onClose} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-full hover:bg-paper-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -73,9 +78,13 @@ export default function ActivityPanel({ onClose }: { onClose: () => void }) {
             if (!actor) return null;
             const clickable = !!(n.pinId && pinsById.get(n.pinId));
             return (
-              <li key={n.id}>
+              // hover lives on the li — disabled buttons swallow mouse events
+              <li key={n.id} onMouseEnter={() => markOneRead(n.id)}>
                 <button
-                  onClick={() => open(n)}
+                  onClick={() => {
+                    markOneRead(n.id); // touch has no hover — tapping reads it
+                    open(n);
+                  }}
                   disabled={!clickable && n.type === "like"}
                   className={`flex w-full items-start gap-3 rounded-2xl px-3 py-2.5 text-left ${
                     clickable ? "hover:bg-paper-2" : ""

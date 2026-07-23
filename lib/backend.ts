@@ -318,6 +318,14 @@ function notify(userId: string, actorId: string, type: "like" | "friend_request"
     .then(({ error }) => error && log("notify")(error));
 }
 
+export function syncMarkNotificationRead(id: string): void {
+  void supabase!
+    .from("notifications")
+    .update({ read: true })
+    .eq("id", id)
+    .then(({ error }) => error && log("markNotificationRead")(error));
+}
+
 export function syncMarkNotificationsRead(userId: string): void {
   void supabase!
     .from("notifications")
