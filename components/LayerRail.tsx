@@ -39,7 +39,7 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
     [...follows].every((id) => activeUserIds!.has(id));
 
   return (
-    <div className={`fixed top-1/2 flex -translate-y-1/2 flex-col gap-2 max-sm:left-2 sm:left-3 ${open ? "z-40" : "z-30"}`}>
+    <div className={`fixed flex flex-col gap-2 max-sm:bottom-[72px] max-sm:left-3 sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-40" : "z-30"}`}>
       <div className="max-sm:relative sm:w-[220px] sm:rounded-3xl sm:bg-paper/90 sm:p-2 sm:shadow-float sm:backdrop-blur">
         <button
           onClick={() => setOpen((o) => !o)}
@@ -66,7 +66,7 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
         </button>
 
         <div
-          className={`${open ? "block" : "hidden"} px-1 pb-1 max-sm:absolute max-sm:left-11 max-sm:top-0 max-sm:max-h-[62vh] max-sm:w-[248px] max-sm:overflow-y-auto max-sm:rounded-3xl max-sm:bg-paper/90 max-sm:p-3 max-sm:shadow-float max-sm:backdrop-blur`}
+          className={`${open ? "block" : "hidden"} px-1 pb-1 max-sm:absolute max-sm:bottom-0 max-sm:left-11 max-sm:max-h-[62vh] max-sm:w-[248px] max-sm:overflow-y-auto max-sm:rounded-3xl max-sm:bg-paper/90 max-sm:p-3 max-sm:shadow-float max-sm:backdrop-blur`}
         >
           <div className="mb-2 flex gap-1">
             <Segment active={isEveryone} onClick={showEveryone}>Everyone</Segment>
