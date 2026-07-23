@@ -105,10 +105,30 @@ async function groundStop(stop: ReqStop): Promise<Grounding> {
   return g;
 }
 
+// Does a Wikipedia short-description sound like an area (city, region…) rather
+// than a niche article (a battle, a single building, a shipwreck)?
+const AREA_DESC =
+  /city|capital|town|municipality|metropol|region|village|island|district|prefecture|province|county|commune|settlement|conurbation|resort|national park|state of|country in/i;
+
+async function wikiSummary(title: string) {
+  const res = await fetch(
+    `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`,
+    { signal: AbortSignal.timeout(8000), headers: { "User-Agent": "Waypoint travel app (demo)" } }
+  );
+  if (!res.ok) return null;
+  const sum = await res.json();
+  if (!sum?.extract || sum.type === "disambiguation") return null;
+  return {
+    title: (sum.title as string) ?? title,
+    extract: sum.extract as string,
+    description: ((sum.description as string) ?? "").trim() || null,
+  };
+}
+
 async function fetchWikipedia(stop: ReqStop): Promise<Pick<Grounding, "wikiTitle" | "wikiExtract" | "wikiDescription" | "nearbyArticles">> {
   const empty = { wikiTitle: null, wikiExtract: null, wikiDescription: null, nearbyArticles: [] as string[] };
   try {
-    // Nearby articles: real named places/sights around the coordinates.
+    // Nearby articles (used for real things-to-do): everything within ~10 km.
     const geoUrl =
       `https://en.wikipedia.org/w/api.php?action=query&list=geosearch` +
       `&gscoord=${stop.lat}%7C${stop.lng}&gsradius=10000&gslimit=14&format=json&origin=*`;
@@ -121,44 +141,44 @@ async function fetchWikipedia(stop: ReqStop): Promise<Pick<Grounding, "wikiTitle
       (r: { title: string; dist: number }) => ({ title: r.title, dist: r.dist })
     );
 
-    // Pick the article that IS the place: exact/loose name match, else nearest.
+    // The overview must describe the AREA — "Riyadh, capital of Saudi Arabia" —
+    // never whatever niche article happens to sit nearest the coordinates.
+    // Priority: (1) the stop's own name (Wikipedia resolves redirects), then
+    // (2) a name-matching geosearch hit, then (3) the first nearby article
+    // whose description sounds like a place, then (4) nearest as last resort.
     const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
     const target = norm(stop.placeName);
-    const main =
-      nearby.find((a) => norm(a.title) === target) ??
-      nearby.find((a) => norm(a.title).includes(target) || target.includes(norm(a.title))) ??
-      nearby[0];
+    let main: { title: string; extract: string; description: string | null } | null = null;
 
-    let extract: string | null = null;
-    let description: string | null = null;
-    let mainTitle: string | null = null;
-    // Try the matched geosearch article, then the raw place name.
-    for (const t of [main?.title, stop.placeName]) {
-      if (!t || extract) continue;
-      try {
-        const sumRes = await fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(t)}`,
-          { signal: AbortSignal.timeout(8000), headers: { "User-Agent": "Waypoint travel app (demo)" } }
-        );
-        if (sumRes.ok) {
-          const sum = await sumRes.json();
-          if (sum?.extract && sum.type !== "disambiguation") {
-            extract = sum.extract as string;
-            description = (sum.description as string) ?? null;
-            mainTitle = (sum.title as string) ?? t;
-          }
+    main = await wikiSummary(stop.placeName).catch(() => null);
+
+    if (!main) {
+      const nameMatch =
+        nearby.find((a) => norm(a.title) === target) ??
+        nearby.find((a) => norm(a.title).includes(target) || target.includes(norm(a.title)));
+      if (nameMatch) main = await wikiSummary(nameMatch.title).catch(() => null);
+    }
+
+    if (!main) {
+      for (const cand of nearby.slice(0, 5)) {
+        const sum = await wikiSummary(cand.title).catch(() => null);
+        if (sum && AREA_DESC.test(sum.description ?? "")) {
+          main = sum;
+          break;
         }
-      } catch {
-        /* next candidate */
       }
     }
 
+    if (!main && nearby[0]) {
+      main = await wikiSummary(nearby[0].title).catch(() => null);
+    }
+
     return {
-      wikiTitle: mainTitle,
-      wikiExtract: extract,
-      wikiDescription: description,
+      wikiTitle: main?.title ?? null,
+      wikiExtract: main?.extract ?? null,
+      wikiDescription: main?.description ?? null,
       nearbyArticles: nearby
-        .filter((a) => a.title !== mainTitle)
+        .filter((a) => a.title !== main?.title)
         .slice(0, 10)
         .map((a) => a.title),
     };
@@ -336,7 +356,7 @@ async function askClaude(
         "to each location — never generic filler that could describe anywhere. Reply with ONLY a JSON object, " +
         "no markdown fences, matching exactly: " +
         '{"stops":[{"placeName":string,"overview":string,"facts":[string],"stay":[{"name":string,"kind":"hotel"|"hostel","note":string}],"activities":[string]}]}. ' +
-        "Rules per stop: overview = 2-4 vivid sentences about what THIS place is and why it matters, weaving in its history from the grounding. " +
+        "Rules per stop: overview = 2-4 vivid sentences about the AREA at large — what the city/region is ('Riyadh, the capital of Saudi Arabia…'), its character and a line of its history. Never lead with a niche nearby article (a battle, one building, a shipwreck); zoom out to the destination a traveler is actually visiting. " +
         "facts = 2-3 short surprising historical or cultural facts specific to the place. " +
         "stay = 3-4 entries picked from the provided real OSM list when available (keep exact names; note = one line on location/vibe using the distance given); include at least one hostel/budget pick when one exists. " +
         "activities = 4-6 concrete things to do IN or NEAR this stop, using the real attraction names provided plus what you know of the area — name the actual sight, hike, beach or neighborhood; no generic 'walking tour' filler. " +

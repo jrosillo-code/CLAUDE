@@ -29,7 +29,7 @@ export default function LayerRail() {
     [...follows].every((id) => activeUserIds!.has(id));
 
   return (
-    <div className="fixed left-3 top-[70px] z-30 flex flex-col gap-2 sm:left-4 sm:top-[76px]">
+    <div className="fixed left-3 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-2">
       <div className="w-[220px] rounded-3xl bg-paper/90 p-2 shadow-float backdrop-blur">
         <button
           onClick={() => setOpen((o) => !o)}
@@ -106,6 +106,7 @@ export default function LayerRail() {
 function FocusButton() {
   const requestFitBounds = useStore((s) => s.requestFitBounds);
   const requestFlyTo = useStore((s) => s.requestFlyTo);
+  const setUserLocation = useStore((s) => s.setUserLocation);
   const [state, setState] = useState<"idle" | "locating" | "off">("idle");
   const [countryName, setCountryName] = useState<string | null>(null);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -130,6 +131,7 @@ function FocusButton() {
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude, longitude } = pos.coords;
+        setUserLocation({ lng: longitude, lat: latitude });
         const country = await findCountryAt(longitude, latitude);
         if (country) {
           requestFitBounds(country);
@@ -156,7 +158,7 @@ function FocusButton() {
     <button
       onClick={focus}
       title="Frame the country you're in"
-      className="flex w-[220px] items-center justify-center gap-2 rounded-full bg-paper/90 px-3 py-2.5 text-sm font-medium text-ink-2 shadow-float backdrop-blur transition-colors hover:text-ink"
+      className="flex w-[220px] items-center gap-2 rounded-full bg-paper/90 py-2.5 pl-5 pr-4 text-left font-display text-base text-ink shadow-float backdrop-blur transition-colors hover:bg-paper"
     >
       <svg
         width="15"

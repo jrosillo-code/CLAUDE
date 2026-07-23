@@ -169,3 +169,23 @@ body {
 .no-scrollbar {
   scrollbar-width: none;
 }
+
+/* You-are-here dot: soft radar pulse (transform kept in sync with the marker's
+   centering translate — only scale and opacity animate). */
+@keyframes wp-loc-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.45);
+    opacity: 0.9;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}
+.wp-loc-pulse {
+  animation: wp-loc-pulse 2.4s ease-out infinite;
+}

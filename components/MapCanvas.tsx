@@ -66,6 +66,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const showLandmarks = useStore((s) => s.showLandmarks);
   const selectLandmark = useStore((s) => s.selectLandmark);
   const selectedLandmarkId = useStore((s) => s.selectedLandmarkId);
+  const userLocation = useStore((s) => s.userLocation);
+  const setUserLocation = useStore((s) => s.setUserLocation);
 
   const shownTrips = useMemo(
     () => visibleTrips(trips, friendships, viewerId).filter((t) => shownTripIds.has(t.id)),
@@ -106,6 +108,42 @@ export default function MapCanvas({ placing, onPick }: Props) {
   landmarksRef.current = { show: showLandmarks, selected: selectedLandmarkId };
   const selectLandmarkRef = useRef(selectLandmark);
   selectLandmarkRef.current = selectLandmark;
+  const userLocationRef = useRef(userLocation);
+  userLocationRef.current = userLocation;
+
+  // The blue you-are-here dot, like Apple/Google Maps. If location permission
+  // is already granted we follow the device silently; otherwise the dot
+  // appears after the first feature that asks (Focus, Top spots near me).
+  useEffect(() => {
+    if (!("geolocation" in navigator)) return;
+    let watchId: number | null = null;
+    const start = () => {
+      if (watchId != null) return;
+      watchId = navigator.geolocation.watchPosition(
+        (pos) => setUserLocation({ lng: pos.coords.longitude, lat: pos.coords.latitude }),
+        () => {},
+        { enableHighAccuracy: false, maximumAge: 30000, timeout: 20000 }
+      );
+    };
+    if ("permissions" in navigator) {
+      navigator.permissions
+        .query({ name: "geolocation" })
+        .then((p) => {
+          if (p.state === "granted") start();
+          p.onchange = () => p.state === "granted" && start();
+        })
+        .catch(() => {});
+    }
+    return () => {
+      if (watchId != null) navigator.geolocation.clearWatch(watchId);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (readyRef.current) render();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userLocation]);
 
   // Apply the "planet" chrome — globe projection, themed atmosphere, and 3D
   // terrain — after any style (re)load, since setStyle wipes sources/terrain.
@@ -810,6 +848,12 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }
     }
 
+    // The blue you-are-here dot renders in every mode, above everything.
+    const you = userLocationRef.current;
+    if (you) {
+      upsert("you-dot", you.lng, you.lat, "you", () => locationDotEl(), "6", null);
+    }
+
     // Trips mode: only the threads and their stops — no pin overlay.
     if (inTripsMode) {
       const tripState = tripsRef.current;
@@ -905,6 +949,27 @@ function needleEl(opts: {
 
   if (stacked) wrap.appendChild(needle(Math.round(headSize * 0.34), -2, 0.55, true));
   wrap.appendChild(needle(0, 0, 1, false));
+  return wrap;
+}
+
+// The blue you-are-here dot: white-ringed blue disc with a soft radar pulse,
+// like Apple/Google Maps. Marker anchor is "bottom", so the disc is drawn
+// hanging half below the wrapper — its center lands exactly on the location.
+function locationDotEl(): HTMLDivElement {
+  const wrap = document.createElement("div");
+  wrap.className = "select-none";
+  wrap.style.cssText = "position:relative;width:44px;height:22px;pointer-events:none;";
+
+  const halo = document.createElement("div");
+  halo.className = "wp-loc-pulse";
+  halo.style.cssText =
+    "position:absolute;left:50%;top:22px;width:44px;height:44px;transform:translate(-50%,-50%);border-radius:9999px;background:rgba(47,124,246,.28);";
+  wrap.appendChild(halo);
+
+  const dot = document.createElement("div");
+  dot.style.cssText =
+    "position:absolute;left:50%;top:22px;width:17px;height:17px;transform:translate(-50%,-50%);border-radius:9999px;background:#2f7cf6;box-shadow:0 0 0 3px #fff,0 1px 6px rgba(0,0,0,.4);";
+  wrap.appendChild(dot);
   return wrap;
 }
 

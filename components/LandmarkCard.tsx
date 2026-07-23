@@ -54,7 +54,7 @@ export default function LandmarkCard() {
                 </button>
               )}
               <a
-                href={googleMapsDirectionsUrl(lm.lat, lm.lng)}
+                href={googleMapsDirectionsUrl(lm.lat, lm.lng, `${lm.name}, ${lm.countryCode}`)}
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full bg-paper-2 px-3.5 py-1.5 text-xs font-semibold text-ink-2 hover:bg-line"
@@ -62,7 +62,7 @@ export default function LandmarkCard() {
                 Google Maps ↗
               </a>
               <a
-                href={appleMapsDirectionsUrl(lm.lat, lm.lng)}
+                href={appleMapsDirectionsUrl(lm.lat, lm.lng, `${lm.name}, ${lm.countryCode}`)}
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full bg-paper-2 px-3.5 py-1.5 text-xs font-semibold text-ink-2 hover:bg-line"

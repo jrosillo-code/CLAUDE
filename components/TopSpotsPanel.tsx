@@ -268,7 +268,7 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
                 {r.likes.toLocaleString()}
               </span>
               <a
-                href={googleMapsDirectionsUrl(r.pin.lat, r.pin.lng)}
+                href={googleMapsDirectionsUrl(r.pin.lat, r.pin.lng, r.pin.placeName)}
                 target="_blank"
                 rel="noreferrer"
                 className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-medium text-paper"

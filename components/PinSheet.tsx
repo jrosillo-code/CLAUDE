@@ -56,6 +56,9 @@ export default function PinSheet() {
   const liked = likedPinIds.has(pin.id);
   const saved = savedPinIds.has(pin.id);
   const likeCount = likeCounts[pin.id] ?? 0;
+  // Send the maps apps a real place name — raw coordinates snap to whatever
+  // address is nearest, which reads as a random location.
+  const pinPlace = pin.countryCode ? `${pin.placeName}, ${pin.countryCode}` : pin.placeName;
 
   return (
     <>
@@ -158,7 +161,7 @@ export default function PinSheet() {
                   Get there
                 </span>
                 <a
-                  href={googleMapsDirectionsUrl(pin.lat, pin.lng)}
+                  href={googleMapsDirectionsUrl(pin.lat, pin.lng, pinPlace)}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-1.5 rounded-full bg-paper-2 px-3.5 py-2 text-sm font-medium text-ink-2 transition-colors hover:bg-line"
@@ -167,7 +170,7 @@ export default function PinSheet() {
                   Google Maps
                 </a>
                 <a
-                  href={appleMapsDirectionsUrl(pin.lat, pin.lng)}
+                  href={appleMapsDirectionsUrl(pin.lat, pin.lng, pinPlace)}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-1.5 rounded-full bg-paper-2 px-3.5 py-2 text-sm font-medium text-ink-2 transition-colors hover:bg-line"

@@ -65,6 +65,9 @@ interface WaypointState {
   basemap: "map" | "satellite";
   setBasemap: (b: "map" | "satellite") => void;
   terrain3d: boolean;
+  /** Device location for the blue you-are-here dot (set once permission is granted). */
+  userLocation: { lng: number; lat: number } | null;
+  setUserLocation: (l: { lng: number; lat: number } | null) => void;
   /** World landmarks layer (UNESCO / monuments / parks / culture icons). */
   showLandmarks: boolean;
   setShowLandmarks: (v: boolean) => void;
@@ -210,6 +213,8 @@ export const useStore = create<WaypointState>((set, get) => ({
   setBasemap: (b) => set({ basemap: b }),
   terrain3d: true,
   setTerrain3d: (v) => set({ terrain3d: v }),
+  userLocation: null,
+  setUserLocation: (l) => set({ userLocation: l }),
   showLandmarks: true,
   setShowLandmarks: (v) => set({ showLandmarks: v, selectedLandmarkId: null }),
   selectedLandmarkId: null,
