@@ -6,6 +6,14 @@ export type Visibility = "public" | "friends" | "private";
 
 export type FriendshipStatus = "pending" | "accepted";
 
+/** Linked social accounts, shown as small icons on the profile. */
+export interface UserSocials {
+  instagram?: string;
+  tiktok?: string;
+  snapchat?: string;
+  youtube?: string;
+}
+
 export interface User {
   id: string;
   handle: string; // unique, no @
@@ -20,6 +28,7 @@ export interface User {
   /** Creator-only: public follower count and activity verticals (surf, mtb…). */
   followerCount?: number;
   activities?: ActivitySlug[];
+  socials?: UserSocials;
 }
 
 export type ActivitySlug =

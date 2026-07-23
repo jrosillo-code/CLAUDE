@@ -7,13 +7,21 @@ import { findCountryAt } from "@/lib/focus";
 
 // Me / individual friends / Everyone toggles (plan §6). Collapses to a pill on
 // mobile; expands to a left rail of avatars.
-export default function LayerRail() {
+export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void }) {
   const [open, setOpen] = useState(false);
   const viewer = useViewer();
   const friends = useFriends();
   const creators = useFollowedCreators();
   const activeUserIds = useStore((s) => s.activeUserIds);
   const follows = useStore((s) => s.follows);
+  const friendships = useStore((s) => s.friendships);
+  const viewerId = useStore((s) => s.viewerId);
+  const pendingIncoming = friendships.filter(
+    (f) =>
+      f.status === "pending" &&
+      f.requestedBy !== viewerId &&
+      (f.userA === viewerId || f.userB === viewerId)
+  ).length;
   const showOnlyMe = useStore((s) => s.showOnlyMe);
   const showEveryone = useStore((s) => s.showEveryone);
   const showOnlyCreators = useStore((s) => s.showOnlyCreators);
@@ -43,6 +51,11 @@ export default function LayerRail() {
               <path d="M15.4 14.9c1.6-.8 3.9-.4 5.2 1.6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity=".55" />
             </svg>
             Travelers
+            {pendingIncoming > 0 && (
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-paper">
+                {pendingIncoming}
+              </span>
+            )}
           </span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className={`text-ink-3 transition-transform ${open ? "rotate-180" : ""}`}>
             <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -73,6 +86,22 @@ export default function LayerRail() {
               />
             ))}
           </ul>
+
+          {/* Add friends — with the requests badge when someone's waiting */}
+          <button
+            onClick={onOpenFriends}
+            className="mt-1.5 flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-sm text-ink-2 hover:bg-paper-2"
+          >
+            <span className="grid h-7 w-7 place-items-center rounded-full border-2 border-dashed border-line text-ink-3">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
+            </span>
+            Add friends
+            {pendingIncoming > 0 && (
+              <span className="ml-auto grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-paper">
+                {pendingIncoming}
+              </span>
+            )}
+          </button>
 
           {creators.length > 0 && (
             <>

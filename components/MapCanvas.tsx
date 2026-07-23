@@ -777,7 +777,18 @@ export default function MapCanvas({ placing, onPick }: Props) {
         const [lng, lat] = c.geometry.coordinates as [number, number];
         const key = props.cluster ? `c-${props.cluster_id}` : `p-${props.pinId}`;
         const selected = !props.cluster && props.pinId === selectedRef.current;
-        const contentKey = `${props.photo}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
+        // Clusters render as a stacked pair; the twin behind shows the SECOND
+        // pin's photo so it reads as "two pins here", not a rendering echo.
+        let twinPhoto: string | undefined;
+        if (props.cluster && props.cluster_id != null) {
+          try {
+            const leaves = index.getLeaves(props.cluster_id, 2);
+            twinPhoto = (leaves[1]?.properties as ClusterProps | undefined)?.photo;
+          } catch {
+            /* cluster vanished mid-frame */
+          }
+        }
+        const contentKey = `${props.photo}|${twinPhoto ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
         upsert(
           key,
           lng,
@@ -790,6 +801,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
               scale: selected ? 1.25 : 1,
               stacked: !!props.cluster,
               ghost: false,
+              twinPhoto,
             }),
           selected ? "5" : "1",
           (ev) => {
@@ -931,8 +943,10 @@ function needleEl(opts: {
   scale: number;
   stacked: boolean;
   ghost: boolean;
+  /** Cluster twin: the second pin's photo, so the pair reads as two pins. */
+  twinPhoto?: string;
 }): HTMLDivElement {
-  const { photo, ring, scale, stacked, ghost } = opts;
+  const { photo, ring, scale, stacked, ghost, twinPhoto } = opts;
   const headSize = Math.round(26 * scale);
   const stickHeight = Math.round(20 * scale);
   const width = headSize + 14; // room for the stacked twin
@@ -941,7 +955,7 @@ function needleEl(opts: {
   wrap.className = "marker-in cursor-pointer select-none";
   wrap.style.cssText = `position:relative;width:${width}px;height:${height}px;opacity:${ghost ? 0.8 : 1};filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));`;
 
-  const needle = (dx: number, dy: number, opacity: number, small: boolean) => {
+  const needle = (dx: number, dy: number, opacity: number, small: boolean, img?: string) => {
     const h = small ? Math.round(headSize * 0.86) : headSize;
     const group = document.createElement("div");
     group.style.cssText = `position:absolute;left:0;right:0;bottom:0;top:0;transform:translate(${dx}px,${dy}px);opacity:${opacity};`;
@@ -952,7 +966,8 @@ function needleEl(opts: {
 
     const head = document.createElement("div");
     head.style.cssText = `position:absolute;left:50%;top:${headSize - h}px;width:${h}px;height:${h}px;transform:translateX(-50%);border-radius:9999px;background-size:cover;background-position:center;background-color:${ring};box-shadow:0 0 0 1.5px rgba(255,255,255,.95),0 0 0 3.5px ${ring};`;
-    if (photo) head.style.backgroundImage = `url("${photo}")`;
+    const src = img ?? photo;
+    if (src) head.style.backgroundImage = `url("${src}")`;
     group.appendChild(head);
 
     // The little specular highlight from the reference pin.

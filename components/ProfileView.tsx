@@ -10,11 +10,13 @@ import {
   pinsForUser,
   topPlacesFor,
   acceptedFriendIds,
+  friendshipStatus,
 } from "@/lib/data";
 import { formatDates } from "@/lib/format";
-import { ACTIVITY_LABELS, type Pin } from "@/lib/types";
+import { ACTIVITY_LABELS, type Pin, type UserSocials } from "@/lib/types";
 import TopFive from "./TopFive";
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
+import SocialLinks, { SOCIAL_NETWORKS } from "./SocialLinks";
 
 type Tab = "top" | "pins" | "saved";
 
@@ -32,7 +34,13 @@ export default function ProfileView({ handle }: { handle: string }) {
   const showOnly = useStore((s) => s.showOnly);
   const requestFlyTo = useStore((s) => s.requestFlyTo);
   const selectPin = useStore((s) => s.selectPin);
+  const sendFriendRequest = useStore((s) => s.sendFriendRequest);
+  const respondFriendRequest = useStore((s) => s.respondFriendRequest);
+  const cancelFriendRequest = useStore((s) => s.cancelFriendRequest);
+  const setMySocials = useStore((s) => s.setMySocials);
   const [tab, setTab] = useState<Tab>("top");
+  const [editingSocials, setEditingSocials] = useState(false);
+  const [socialsDraft, setSocialsDraft] = useState<UserSocials>({});
 
   const user = users.find((u) => u.handle === handle);
   if (!user) {
@@ -54,6 +62,7 @@ export default function ProfileView({ handle }: { handle: string }) {
   const top = topPlacesFor(topPlaces, pins, user.id);
   const friendCount = acceptedFriendIds(friendships, user.id).size;
   const isFriend = acceptedFriendIds(friendships, viewerId).has(user.id);
+  const friendship = friendshipStatus(friendships, viewerId, user.id);
   const isFollowing = follows.has(user.id);
   const savedPins = pins.filter((p) => savedPinIds.has(p.id));
   const cover =
@@ -119,7 +128,67 @@ export default function ProfileView({ handle }: { handle: string }) {
             </div>
           )}
           <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-2">{user.bio}</p>
+
+          {/* Linked socials */}
+          <div className="mt-4 flex items-center gap-2">
+            <SocialLinks socials={user.socials} />
+            {isMe && (
+              <button
+                onClick={() => {
+                  setSocialsDraft(user.socials ?? {});
+                  setEditingSocials(true);
+                }}
+                className="rounded-full bg-paper-2 px-3 py-1.5 text-xs font-medium text-ink-3 ring-1 ring-line transition-colors hover:text-ink"
+              >
+                {user.socials && Object.values(user.socials).some(Boolean)
+                  ? "Edit socials"
+                  : "+ Connect socials"}
+              </button>
+            )}
+          </div>
         </div>
+
+        {/* Socials editor (own profile) */}
+        {isMe && editingSocials && (
+          <div className="mx-auto mt-5 max-w-md rounded-2xl border border-line bg-paper-2/60 p-4">
+            <div className="text-xs font-semibold uppercase tracking-wide text-ink-3">
+              Connect your socials
+            </div>
+            <div className="mt-3 space-y-2">
+              {SOCIAL_NETWORKS.map(({ key, label }) => (
+                <label key={key} className="flex items-center gap-2 text-sm">
+                  <span className="w-24 shrink-0 text-ink-3">{label}</span>
+                  <span className="text-ink-3">@</span>
+                  <input
+                    value={socialsDraft[key] ?? ""}
+                    onChange={(e) =>
+                      setSocialsDraft((d) => ({ ...d, [key]: e.target.value.replace(/^@/, "") }))
+                    }
+                    placeholder="username"
+                    className="w-full rounded-xl bg-paper px-3 py-2 text-sm outline-none ring-1 ring-line focus:ring-ink/30"
+                  />
+                </label>
+              ))}
+            </div>
+            <div className="mt-3 flex justify-end gap-2">
+              <button
+                onClick={() => setEditingSocials(false)}
+                className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-ink-2 ring-1 ring-line"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setMySocials(socialsDraft);
+                  setEditingSocials(false);
+                }}
+                className="rounded-full bg-ink px-4 py-2 text-xs font-semibold text-paper"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Stats — three equal, divided columns. */}
         <div className="mt-6 grid grid-cols-3 divide-x divide-line border-y border-line py-5">
@@ -150,13 +219,43 @@ export default function ProfileView({ handle }: { handle: string }) {
               >
                 {isFollowing ? "Following ✓" : "Follow"}
               </button>
+            ) : isFriend ? (
+              <button
+                onClick={() => respondFriendRequest(user.id, false)}
+                title="Tap to unfriend"
+                className="rounded-full bg-paper-2 px-6 py-2.5 text-sm font-semibold text-ink-2 ring-1 ring-line"
+              >
+                Friends ✓
+              </button>
+            ) : friendship?.status === "pending" && friendship.requestedBy === viewerId ? (
+              <button
+                onClick={() => cancelFriendRequest(user.id)}
+                title="Tap to withdraw your request"
+                className="rounded-full bg-paper-2 px-6 py-2.5 text-sm font-semibold text-ink-3 ring-1 ring-line"
+              >
+                Requested ✓
+              </button>
+            ) : friendship?.status === "pending" ? (
+              <>
+                <button
+                  onClick={() => respondFriendRequest(user.id, true)}
+                  className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-paper"
+                >
+                  Accept request
+                </button>
+                <button
+                  onClick={() => respondFriendRequest(user.id, false)}
+                  className="rounded-full bg-paper-2 px-5 py-2.5 text-sm font-semibold text-ink-3 ring-1 ring-line"
+                >
+                  Decline
+                </button>
+              </>
             ) : (
               <button
-                className={`rounded-full px-6 py-2.5 text-sm font-semibold ${
-                  isFriend ? "bg-paper-2 text-ink-2 ring-1 ring-line" : "bg-accent text-paper"
-                }`}
+                onClick={() => sendFriendRequest(user.id)}
+                className="rounded-full bg-accent px-6 py-2.5 text-sm font-semibold text-paper"
               >
-                {isFriend ? "Friends ✓" : "Add friend"}
+                Add friend
               </button>
             ))}
         </div>

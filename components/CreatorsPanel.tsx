@@ -129,8 +129,89 @@ export default function CreatorsPanel({ onClose }: { onClose: () => void }) {
             </div>
           );
         })}
+
+        <ApplyCard />
       </div>
     </Sheet>
+  );
+}
+
+// "Become a creator": pick your verticals, drop a portfolio link, apply. Demo
+// stores the application locally; production posts to creator_applications.
+function ApplyCard() {
+  const creatorApplied = useStore((s) => s.creatorApplied);
+  const applyCreator = useStore((s) => s.applyCreator);
+  const [open, setOpen] = useState(false);
+  const [picked, setPicked] = useState<ActivitySlug[]>([]);
+  const [link, setLink] = useState("");
+
+  if (creatorApplied) {
+    return (
+      <div className="rounded-2xl border border-line bg-paper-2/60 p-4 text-center">
+        <div className="text-xl">🎉</div>
+        <p className="mt-1 font-display text-lg">Application received</p>
+        <p className="mt-1 text-sm text-ink-3">
+          We review creator applications weekly — you&apos;ll hear back by email.
+        </p>
+      </div>
+    );
+  }
+
+  const toggle = (a: ActivitySlug) =>
+    setPicked((p) => (p.includes(a) ? p.filter((x) => x !== a) : p.length < 3 ? [...p, a] : p));
+
+  return (
+    <div className="rounded-2xl border border-dashed border-line p-4">
+      {!open ? (
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="font-display text-lg">Are you a creator?</p>
+            <p className="mt-0.5 text-sm text-ink-3">
+              Map your sport for {`${(132400 + 210500 + 58100).toLocaleString()}`}+ followers.
+            </p>
+          </div>
+          <button
+            onClick={() => setOpen(true)}
+            className="shrink-0 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-paper"
+          >
+            Apply
+          </button>
+        </div>
+      ) : (
+        <div>
+          <p className="font-display text-lg">Apply to be a creator</p>
+          <p className="mt-0.5 text-sm text-ink-3">Pick up to 3 verticals you cover.</p>
+          <div className="mt-2.5 flex flex-wrap gap-1.5">
+            {(Object.keys(ACTIVITY_LABELS) as ActivitySlug[]).map((a) => (
+              <Chip key={a} active={picked.includes(a)} onClick={() => toggle(a)}>
+                {ACTIVITY_LABELS[a]}
+              </Chip>
+            ))}
+          </div>
+          <input
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            placeholder="Link to your work (Instagram, YouTube, site…)"
+            className="mt-3 w-full rounded-2xl bg-paper-2 px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-ink/15"
+          />
+          <div className="mt-3 flex justify-end gap-2">
+            <button
+              onClick={() => setOpen(false)}
+              className="rounded-full bg-paper-2 px-4 py-2 text-xs font-semibold text-ink-2"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => picked.length > 0 && applyCreator({ activities: picked, link: link.trim() })}
+              disabled={picked.length === 0}
+              className="rounded-full bg-accent px-5 py-2 text-xs font-semibold text-paper disabled:opacity-40"
+            >
+              Submit application
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 

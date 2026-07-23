@@ -47,6 +47,7 @@ export const users: User[] = [
     homeCity: "Lisbon, Portugal",
     color: "#c65d3b",
     defaultPinVisibility: "friends",
+    socials: { instagram: "waypoint.you" },
   },
   {
     id: "u-maria",
@@ -57,6 +58,7 @@ export const users: User[] = [
     homeCity: "Barcelona, Spain",
     color: "#2f6b6b",
     defaultPinVisibility: "friends",
+    socials: { instagram: "maria.runs.far", tiktok: "mariacomposta" },
   },
   {
     id: "u-kenji",
@@ -70,6 +72,7 @@ export const users: User[] = [
     isCreator: true,
     followerCount: 24800,
     activities: ["photography", "ski"],
+    socials: { instagram: "kenjipow", youtube: "kenjipow" },
   },
   {
     id: "u-amara",
@@ -94,6 +97,40 @@ export const users: User[] = [
 
   // ── Creators: public accounts anyone can follow; their pins overlay your
   //    map as layers, organized by activity verticals (plan §v2, built now). ──
+  // ── Travelers you haven't connected with yet (discoverable in Add friends) ──
+  {
+    id: "u-nina",
+    handle: "ninaberlin",
+    displayName: "Nina Weber",
+    avatarUrl: photo("avatar-nina", 200, 200),
+    bio: "Weekend city-hopper. Museums, flea markets, night trains.",
+    homeCity: "Berlin, Germany",
+    color: "#b0574f",
+    defaultPinVisibility: "friends",
+    socials: { instagram: "nina.unterwegs" },
+  },
+  {
+    id: "u-tomas",
+    handle: "tomascdmx",
+    displayName: "Tomás Herrera",
+    avatarUrl: photo("avatar-tomas", 200, 200),
+    bio: "Tacos are a compass. Mercados, murals, mezcal.",
+    homeCity: "Mexico City, Mexico",
+    color: "#3a7ca5",
+    defaultPinVisibility: "friends",
+  },
+  {
+    id: "u-zara",
+    handle: "zarasouk",
+    displayName: "Zara El Amrani",
+    avatarUrl: photo("avatar-zara", 200, 200),
+    bio: "Desert roads and rooftop mint tea. Guiding trips through the Atlas.",
+    homeCity: "Marrakesh, Morocco",
+    color: "#8c6a3a",
+    defaultPinVisibility: "friends",
+    socials: { instagram: "zarasouk", tiktok: "zarasouk" },
+  },
+
   {
     id: "u-kai",
     handle: "kaialana",
@@ -106,6 +143,7 @@ export const users: User[] = [
     isCreator: true,
     followerCount: 132400,
     activities: ["surf"],
+    socials: { instagram: "kaialana", tiktok: "kaialana.surf", youtube: "kaialana" },
   },
   {
     id: "u-lena",
@@ -132,6 +170,7 @@ export const users: User[] = [
     isCreator: true,
     followerCount: 210500,
     activities: ["soccer", "basketball"],
+    socials: { instagram: "marcofutebol", tiktok: "marcofutebol", snapchat: "marcofutebol" },
   },
   {
     id: "u-aiko",
@@ -233,6 +272,15 @@ const rows: Seed[] = [
   ["u-aiko", -115.1745, 51.1784, "Banff", "AB", "Rockies deep", "Minus 20 and blower. Worth every frozen finger.", 4, "public", undefined, ["ski"]],
   ["u-aiko", -72.9629, -41.1580, "Osorno Volcano", "CL", "August in Chile", "Corn snow on a volcano over a lake. Unreal light.", 5, "public", undefined, ["ski", "photography"]],
   ["u-aiko", 6.8652, 45.9163, "Chamonix", "FR", "Vallée Blanche", "20km glacier run under the Aiguille du Midi.", 5, "public", undefined, ["ski", "photography"]],
+
+  // — Not-yet-friends (pins hidden until a request is accepted) —
+  ["u-nina", 13.4050, 52.5200, "Berlin", "DE", "Home", "Sunday flea at Mauerpark, always.", 2, "friends"],
+  ["u-nina", 14.4378, 50.0755, "Prague", "CZ", "Night train east", "Woke up to spires. Best €29 ever spent.", 3, "friends"],
+  ["u-nina", 19.0402, 47.4979, "Budapest", "HU", "Thermal baths crawl", "Széchenyi at 7am, Rudas at midnight.", 2, "public"],
+  ["u-tomas", -99.1332, 19.4326, "Mexico City", "MX", "Mercado run", "San Juan to Coyoacán. Ate everything.", 3, "friends"],
+  ["u-tomas", -89.6237, 17.2220, "Tikal", "GT", "Sunrise from Temple IV", "Howler monkeys as the alarm clock.", 3, "public"],
+  ["u-zara", -7.9892, 31.6295, "Marrakesh", "MA", "Home souk", "My grandmother's stall is still the best one.", 3, "friends"],
+  ["u-zara", -4.0000, 31.1000, "Erg Chebbi", "MA", "Dune camp", "Guests cried at the stars again. They always do.", 4, "public"],
 ];
 
 export const pins: Pin[] = rows.map((r, i) => {
@@ -340,6 +388,8 @@ export const friendships: Friendship[] = [
   { userA: "u-you", userB: "u-leo", status: "accepted", requestedBy: "u-leo" },
   { userA: "u-maria", userB: "u-amara", status: "accepted", requestedBy: "u-maria" },
   { userA: "u-kenji", userB: "u-leo", status: "accepted", requestedBy: "u-leo" },
+  // Incoming request waiting on you — powers the requests inbox demo.
+  { userA: "u-nina", userB: "u-you", status: "pending", requestedBy: "u-nina" },
 ];
 
 export const topPlaces: TopPlace[] = [

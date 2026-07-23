@@ -56,13 +56,18 @@ export function googleMapsRouteUrl(stops: Stop[]): string {
 }
 
 /**
- * Apple Maps has no working multi-stop URL: the old "+to:" chain is
- * undocumented and the maps.apple.com web app rejects the whole link (no
- * directions at all). So the route button starts you off — directions from
- * your current location to the FIRST stop — and each stop offers its own
- * directions link for the legs after that.
+ * Apple Maps multi-stop: the "daddr=A+to:B+to:C" chain is how the native
+ * Maps app (iPhone/Mac) accepts a full route — every stop, in order. Place
+ * names are individually encoded but the "+to:" joiners stay raw, since
+ * they're syntax, not content. The desktop web preview of maps.apple.com
+ * doesn't understand chains, which is why every stop card also carries its
+ * own single-destination Apple link as the fallback.
  */
 export function appleMapsRouteUrl(stops: Stop[]): string {
   if (stops.length === 0) return "https://maps.apple.com/";
-  return appleMapsDirectionsUrl(stops[0].lat, stops[0].lng, stops[0].placeName);
+  if (stops.length === 1) {
+    return appleMapsDirectionsUrl(stops[0].lat, stops[0].lng, stops[0].placeName);
+  }
+  const chain = stops.map((s) => encodeURIComponent(loc(s))).join("+to:");
+  return `https://maps.apple.com/?daddr=${chain}&dirflg=d`;
 }

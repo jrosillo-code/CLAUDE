@@ -2,12 +2,14 @@
 
 import { create } from "zustand";
 import type {
+  ActivitySlug,
   Friendship,
   Pin,
   TopPlace,
   Trip,
   TripStop,
   User,
+  UserSocials,
   Visibility,
 } from "./types";
 import type { ThemeId } from "./themes";
@@ -148,6 +150,21 @@ interface WaypointState {
   }) => Pin;
   /** Set (or clear with null) your own 1–10 score on a pin you own. */
   ratePin: (pinId: string, rating: number | null) => void;
+
+  // ── Friends ──
+  /** Send a friend request from the viewer to another traveler. */
+  sendFriendRequest: (userId: string) => void;
+  /** Accept (true) or decline (false) a pending request involving this user. */
+  respondFriendRequest: (userId: string, accept: boolean) => void;
+  /** Withdraw a request the viewer sent. */
+  cancelFriendRequest: (userId: string) => void;
+
+  // ── Socials on your profile ──
+  setMySocials: (socials: UserSocials) => void;
+
+  // ── Creator application ──
+  creatorApplied: boolean;
+  applyCreator: (data: { activities: ActivitySlug[]; link: string }) => void;
 }
 
 let pinCounter = seedPins.length;
@@ -169,7 +186,24 @@ export const useStore = create<WaypointState>((set, get) => ({
     } catch {
       /* private mode / bad JSON */
     }
-    set({ session, sessionReady: true });
+    // Restore locally-persisted profile extras (socials, creator application).
+    let creatorApplied = false;
+    let savedSocials: UserSocials | null = null;
+    try {
+      creatorApplied = !!window.localStorage.getItem("wp-creator-app");
+      const rawSocials = window.localStorage.getItem("wp-socials");
+      if (rawSocials) savedSocials = JSON.parse(rawSocials) as UserSocials;
+    } catch {
+      /* ignore */
+    }
+    set((s) => ({
+      session,
+      sessionReady: true,
+      creatorApplied,
+      users: savedSocials
+        ? s.users.map((u) => (u.id === s.viewerId ? { ...u, socials: savedSocials! } : u))
+        : s.users,
+    }));
   },
   signIn: (method) => {
     const session = { userId: CURRENT_USER_ID, method };
@@ -418,6 +452,76 @@ export const useStore = create<WaypointState>((set, get) => ({
           : p
       ),
     })),
+
+  sendFriendRequest: (userId) =>
+    set((s) => {
+      if (userId === s.viewerId) return {};
+      const exists = s.friendships.some(
+        (f) =>
+          (f.userA === s.viewerId && f.userB === userId) ||
+          (f.userA === userId && f.userB === s.viewerId)
+      );
+      if (exists) return {};
+      return {
+        friendships: [
+          ...s.friendships,
+          { userA: s.viewerId, userB: userId, status: "pending" as const, requestedBy: s.viewerId },
+        ],
+      };
+    }),
+
+  respondFriendRequest: (userId, accept) =>
+    set((s) => ({
+      friendships: accept
+        ? s.friendships.map((f) =>
+            (f.userA === userId && f.userB === s.viewerId) ||
+            (f.userA === s.viewerId && f.userB === userId)
+              ? { ...f, status: "accepted" as const }
+              : f
+          )
+        : s.friendships.filter(
+            (f) =>
+              !(
+                (f.userA === userId && f.userB === s.viewerId) ||
+                (f.userA === s.viewerId && f.userB === userId)
+              )
+          ),
+    })),
+
+  cancelFriendRequest: (userId) =>
+    set((s) => ({
+      friendships: s.friendships.filter(
+        (f) =>
+          !(
+            f.status === "pending" &&
+            f.requestedBy === s.viewerId &&
+            ((f.userA === s.viewerId && f.userB === userId) ||
+              (f.userA === userId && f.userB === s.viewerId))
+          )
+      ),
+    })),
+
+  setMySocials: (socials) =>
+    set((s) => {
+      try {
+        window.localStorage.setItem("wp-socials", JSON.stringify(socials));
+      } catch {
+        /* private mode */
+      }
+      return {
+        users: s.users.map((u) => (u.id === s.viewerId ? { ...u, socials } : u)),
+      };
+    }),
+
+  creatorApplied: false,
+  applyCreator: (data) => {
+    try {
+      window.localStorage.setItem("wp-creator-app", JSON.stringify(data));
+    } catch {
+      /* private mode */
+    }
+    set({ creatorApplied: true });
+  },
 }));
 
 // The set of owner ids a viewer could see under "Everyone": self + accepted
