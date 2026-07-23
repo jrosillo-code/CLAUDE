@@ -20,6 +20,7 @@ import SocialLinks, { SOCIAL_NETWORKS } from "./SocialLinks";
 import RecapSheet from "./RecapSheet";
 import ImportPanel from "./ImportPanel";
 import ConstellationBackdrop from "./ConstellationBackdrop";
+import PassportCard from "./PassportCard";
 import { backendEnabled } from "@/lib/supabase";
 import { version as APP_VERSION } from "../package.json";
 
@@ -381,6 +382,9 @@ export default function ProfileView({ handle }: { handle: string }) {
             </ul>
           </div>
         )}
+
+        {/* Passport — the world at a glance, stamped from this profile's pins */}
+        {myPins.length > 0 && <PassportCard pins={myPins} />}
 
         {/* Actions — centered. */}
         <div className="mt-6 flex flex-wrap justify-center gap-2">

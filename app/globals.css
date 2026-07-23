@@ -93,10 +93,14 @@ body {
 .maplibregl-ctrl-bottom-right {
   bottom: 88px;
 }
-/* Phones: clear the FAB on the right edge. */
+/* Phones: pinch and rotate gestures replace the zoom/compass buttons — hide
+   them so the screen stays clean. Attribution stays, tucked above the FAB. */
 @media (max-width: 639px) {
   .maplibregl-ctrl-bottom-right {
-    bottom: 84px;
+    bottom: 76px;
+  }
+  .maplibregl-ctrl-bottom-right .maplibregl-ctrl-group {
+    display: none;
   }
 }
 .maplibregl-ctrl-attrib {

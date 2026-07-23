@@ -585,6 +585,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // only once the map is fully idle.
     let recenterTimer: ReturnType<typeof setTimeout> | null = null;
     const scheduleRecenter = () => {
+      // Phones: let the globe rest wherever the user leaves it — snapping it
+      // back after every gesture reads as the map fighting your fingers.
+      if (window.innerWidth < 640) return;
       if (recenterTimer !== null) clearTimeout(recenterTimer);
       recenterTimer = setTimeout(() => {
         recenterTimer = null;
