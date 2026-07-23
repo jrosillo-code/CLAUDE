@@ -39,11 +39,12 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
     [...follows].every((id) => activeUserIds!.has(id));
 
   return (
-    <div className="fixed z-30 flex flex-col gap-2 max-sm:left-2 max-sm:top-[60px] max-sm:scale-[0.88] max-sm:[transform-origin:top_left] sm:left-3 sm:top-1/2 sm:-translate-y-1/2">
-      <div className="w-[220px] rounded-3xl bg-paper/90 p-2 shadow-float backdrop-blur">
+    <div className={`fixed top-1/2 flex -translate-y-1/2 flex-col gap-2 max-sm:left-2 sm:left-3 ${open ? "z-40" : "z-30"}`}>
+      <div className="max-sm:relative sm:w-[220px] sm:rounded-3xl sm:bg-paper/90 sm:p-2 sm:shadow-float sm:backdrop-blur">
         <button
           onClick={() => setOpen((o) => !o)}
-          className="flex w-full items-center justify-between rounded-2xl px-3 py-2 text-left"
+          title="Travelers"
+          className="flex items-center text-left max-sm:relative max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:rounded-full max-sm:bg-paper/85 max-sm:shadow-float max-sm:backdrop-blur sm:w-full sm:justify-between sm:rounded-2xl sm:px-3 sm:py-2"
         >
           <span className="flex items-center gap-2 font-display text-base">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="text-accent">
@@ -52,19 +53,21 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
               <circle cx="17.5" cy="8.6" r="2.4" stroke="currentColor" strokeWidth="1.6" opacity=".55" />
               <path d="M15.4 14.9c1.6-.8 3.9-.4 5.2 1.6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity=".55" />
             </svg>
-            Travelers
+            <span className="max-sm:hidden">Travelers</span>
             {pendingIncoming > 0 && (
-              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-paper">
+              <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-paper max-sm:absolute max-sm:-right-1 max-sm:-top-1 max-sm:h-4 max-sm:min-w-4 max-sm:text-[9px]">
                 {pendingIncoming}
               </span>
             )}
           </span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className={`text-ink-3 transition-transform ${open ? "rotate-180" : ""}`}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className={`text-ink-3 transition-transform max-sm:hidden ${open ? "rotate-180" : ""}`}>
             <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </button>
 
-        <div className={`${open ? "block" : "hidden"} px-1 pb-1`}>
+        <div
+          className={`${open ? "block" : "hidden"} px-1 pb-1 max-sm:absolute max-sm:left-11 max-sm:top-0 max-sm:max-h-[62vh] max-sm:w-[248px] max-sm:overflow-y-auto max-sm:rounded-3xl max-sm:bg-paper/90 max-sm:p-3 max-sm:shadow-float max-sm:backdrop-blur`}
+        >
           <div className="mb-2 flex gap-1">
             <Segment active={isEveryone} onClick={showEveryone}>Everyone</Segment>
             <Segment active={onlyCreators} onClick={showOnlyCreators}>Creators</Segment>
@@ -191,7 +194,7 @@ function FocusButton() {
     <button
       onClick={focus}
       title="Frame the country you're in"
-      className="flex w-[220px] items-center gap-2 rounded-full bg-paper/90 py-2.5 pl-5 pr-4 text-left font-display text-base text-ink shadow-float backdrop-blur transition-colors hover:bg-paper"
+      className="flex items-center gap-2 rounded-full bg-paper/90 text-left font-display text-base text-ink shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:bg-paper/85 sm:w-[220px] sm:py-2.5 sm:pl-5 sm:pr-4"
     >
       <svg
         width="15"
@@ -204,7 +207,7 @@ function FocusButton() {
         <circle cx="12" cy="12" r="2.2" fill="currentColor" />
         <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
-      <span className="truncate">{label}</span>
+      <span className="truncate max-sm:hidden">{label}</span>
     </button>
   );
 }

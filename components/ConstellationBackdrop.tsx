@@ -84,9 +84,14 @@ export default function ConstellationBackdrop() {
     const css = () => getComputedStyle(document.documentElement);
     let inkColor = css().getPropertyValue("--color-ink").trim() || "#0b1220";
     let accent = css().getPropertyValue("--color-accent").trim() || "#0a84ff";
+    // Light mode needs more presence: on near-white paper the same alphas that
+    // shimmer on Midnight read as almost blank, so daylight gets a sky wash,
+    // stronger lines/stars, and halos on the bright ones. Midnight is untouched.
+    let dark = document.documentElement.getAttribute("data-theme") === "dark";
     const themeObserver = new MutationObserver(() => {
       inkColor = css().getPropertyValue("--color-ink").trim() || inkColor;
       accent = css().getPropertyValue("--color-accent").trim() || accent;
+      dark = document.documentElement.getAttribute("data-theme") === "dark";
     });
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
@@ -116,10 +121,22 @@ export default function ConstellationBackdrop() {
       const drift = reduced ? 0 : Math.sin(t * 0.07) * 10;
       ctx.clearRect(0, 0, w, h);
 
+      // Daylight only: a cool sky wash from the top so the constellation sits
+      // in atmosphere instead of on flat paper — the glass cards pop against it.
+      if (!dark) {
+        const sky = ctx.createLinearGradient(0, 0, 0, h);
+        sky.addColorStop(0, "rgba(10, 132, 255, 0.11)");
+        sky.addColorStop(0.5, "rgba(48, 176, 199, 0.05)");
+        sky.addColorStop(1, "rgba(10, 132, 255, 0)");
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, w, h);
+      }
+
       // Constellation lines — consecutive coastline stars, faint.
       ctx.lineWidth = 1;
       ctx.strokeStyle = inkColor;
-      ctx.globalAlpha = 0.07;
+      ctx.globalAlpha = dark ? 0.07 : 0.15;
       ctx.beginPath();
       for (let i = 1; i < stars.length; i++) {
         const a = stars[i - 1];
@@ -140,25 +157,36 @@ export default function ConstellationBackdrop() {
         if (x < -10 || x > w + 10 || y < -10 || y > h + 10) continue;
         const tw = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.9 + s.phase);
         if (s.bright) {
-          ctx.globalAlpha = 0.35 + 0.4 * tw;
+          if (!dark) {
+            // A soft halo lifts the accent stars off the light paper.
+            const halo = ctx.createRadialGradient(x, y, 0, x, y, 7);
+            halo.addColorStop(0, accent);
+            halo.addColorStop(1, "transparent");
+            ctx.globalAlpha = 0.14 + 0.14 * tw;
+            ctx.fillStyle = halo;
+            ctx.beginPath();
+            ctx.arc(x, y, 7, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.globalAlpha = dark ? 0.35 + 0.4 * tw : 0.55 + 0.4 * tw;
           ctx.fillStyle = accent;
           ctx.beginPath();
-          ctx.arc(x, y, 1.9, 0, Math.PI * 2);
+          ctx.arc(x, y, dark ? 1.9 : 2.2, 0, Math.PI * 2);
           ctx.fill();
         } else {
-          ctx.globalAlpha = 0.16 + 0.22 * tw;
+          ctx.globalAlpha = dark ? 0.16 + 0.22 * tw : 0.3 + 0.3 * tw;
           ctx.fillStyle = inkColor;
           ctx.beginPath();
-          ctx.arc(x, y, 1.15, 0, Math.PI * 2);
+          ctx.arc(x, y, dark ? 1.15 : 1.35, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
       // The thread — a soft curve stitched continent to continent…
       const pts = THREAD.map(([lng, lat]) => project(lng, lat, drift));
-      ctx.globalAlpha = 0.28;
+      ctx.globalAlpha = dark ? 0.28 : 0.5;
       ctx.strokeStyle = accent;
-      ctx.lineWidth = 1.4;
+      ctx.lineWidth = dark ? 1.4 : 1.6;
       ctx.setLineDash([1, 7]);
       ctx.lineCap = "round";
       ctx.beginPath();

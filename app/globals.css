@@ -93,10 +93,10 @@ body {
 .maplibregl-ctrl-bottom-right {
   bottom: 88px;
 }
-/* Phones: clear the taller FAB + Top-spots stack on the right edge. */
+/* Phones: clear the FAB on the right edge. */
 @media (max-width: 639px) {
   .maplibregl-ctrl-bottom-right {
-    bottom: 118px;
+    bottom: 84px;
   }
 }
 .maplibregl-ctrl-attrib {
