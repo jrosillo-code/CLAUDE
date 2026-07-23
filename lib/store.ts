@@ -161,6 +161,8 @@ interface WaypointState {
 
   // ── Socials on your profile ──
   setMySocials: (socials: UserSocials) => void;
+  /** Swap your profile picture — updates everywhere your avatar renders. */
+  setMyAvatar: (dataUrl: string) => void;
 
   // ── Creator application ──
   creatorApplied: boolean;
@@ -189,10 +191,12 @@ export const useStore = create<WaypointState>((set, get) => ({
     // Restore locally-persisted profile extras (socials, creator application).
     let creatorApplied = false;
     let savedSocials: UserSocials | null = null;
+    let savedAvatar: string | null = null;
     try {
       creatorApplied = !!window.localStorage.getItem("wp-creator-app");
       const rawSocials = window.localStorage.getItem("wp-socials");
       if (rawSocials) savedSocials = JSON.parse(rawSocials) as UserSocials;
+      savedAvatar = window.localStorage.getItem("wp-avatar");
     } catch {
       /* ignore */
     }
@@ -200,9 +204,18 @@ export const useStore = create<WaypointState>((set, get) => ({
       session,
       sessionReady: true,
       creatorApplied,
-      users: savedSocials
-        ? s.users.map((u) => (u.id === s.viewerId ? { ...u, socials: savedSocials! } : u))
-        : s.users,
+      users:
+        savedSocials || savedAvatar
+          ? s.users.map((u) =>
+              u.id === s.viewerId
+                ? {
+                    ...u,
+                    ...(savedSocials ? { socials: savedSocials } : {}),
+                    ...(savedAvatar ? { avatarUrl: savedAvatar } : {}),
+                  }
+                : u
+            )
+          : s.users,
     }));
   },
   signIn: (method) => {
@@ -511,6 +524,18 @@ export const useStore = create<WaypointState>((set, get) => ({
       }
       return {
         users: s.users.map((u) => (u.id === s.viewerId ? { ...u, socials } : u)),
+      };
+    }),
+
+  setMyAvatar: (dataUrl) =>
+    set((s) => {
+      try {
+        window.localStorage.setItem("wp-avatar", dataUrl);
+      } catch {
+        /* quota/private mode — keep it for this session anyway */
+      }
+      return {
+        users: s.users.map((u) => (u.id === s.viewerId ? { ...u, avatarUrl: dataUrl } : u)),
       };
     }),
 

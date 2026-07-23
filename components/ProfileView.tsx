@@ -38,6 +38,7 @@ export default function ProfileView({ handle }: { handle: string }) {
   const respondFriendRequest = useStore((s) => s.respondFriendRequest);
   const cancelFriendRequest = useStore((s) => s.cancelFriendRequest);
   const setMySocials = useStore((s) => s.setMySocials);
+  const setMyAvatar = useStore((s) => s.setMyAvatar);
   const [tab, setTab] = useState<Tab>("top");
   const [editingSocials, setEditingSocials] = useState(false);
   const [socialsDraft, setSocialsDraft] = useState<UserSocials>({});
@@ -109,7 +110,7 @@ export default function ProfileView({ handle }: { handle: string }) {
         <div className="absolute inset-0 bg-gradient-to-t from-ink/45 via-transparent to-ink/10" />
         <Link
           href="/"
-          className="absolute left-4 top-4 flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-1.5 text-sm shadow-float backdrop-blur"
+          className="fixed left-4 top-4 z-40 flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-1.5 text-sm shadow-float backdrop-blur"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m15 6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           Map
@@ -119,12 +120,40 @@ export default function ProfileView({ handle }: { handle: string }) {
       <div className="mx-auto max-w-2xl px-5 sm:px-6">
         {/* Identity — centered and symmetric, fully below the cover. */}
         <div className="flex flex-col items-center pt-7 text-center">
-          <img
-            src={user.avatarUrl}
-            alt=""
-            className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28"
-            style={{ boxShadow: `0 0 0 3px var(--color-paper), 0 0 0 6px ${user.color}` }}
-          />
+          {isMe ? (
+            /* Your own avatar is an upload button — new photo shows everywhere. */
+            <label className="group relative cursor-pointer" title="Change profile picture">
+              <img
+                src={user.avatarUrl}
+                alt=""
+                className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28"
+                style={{ boxShadow: `0 0 0 3px var(--color-paper), 0 0 0 6px ${user.color}` }}
+              />
+              <span className="absolute bottom-0 right-0 grid h-8 w-8 place-items-center rounded-full bg-ink text-paper shadow-float transition-transform group-hover:scale-110">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M4 8h3l2-2.5h6L17 8h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                  <circle cx="12" cy="13.5" r="3.2" stroke="currentColor" strokeWidth="1.8" />
+                </svg>
+              </span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) uploadAvatar(file, setMyAvatar);
+                  e.target.value = "";
+                }}
+              />
+            </label>
+          ) : (
+            <img
+              src={user.avatarUrl}
+              alt=""
+              className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28"
+              style={{ boxShadow: `0 0 0 3px var(--color-paper), 0 0 0 6px ${user.color}` }}
+            />
+          )}
           <div className="mt-4 flex items-center justify-center gap-2">
             <h1 className="font-display text-4xl leading-none tracking-tight">
               {user.displayName}
@@ -149,17 +178,25 @@ export default function ProfileView({ handle }: { handle: string }) {
           <div className="mt-4 flex items-center gap-2">
             <SocialLinks socials={user.socials} />
             {isMe && (
-              <button
-                onClick={() => {
-                  setSocialsDraft(user.socials ?? {});
-                  setEditingSocials(true);
-                }}
-                className="rounded-full bg-paper-2 px-3 py-1.5 text-xs font-medium text-ink-3 ring-1 ring-line transition-colors hover:text-ink"
-              >
-                {user.socials && Object.values(user.socials).some(Boolean)
-                  ? "Edit socials"
-                  : "+ Connect socials"}
-              </button>
+              <>
+                <button
+                  onClick={() => {
+                    setSocialsDraft(user.socials ?? {});
+                    setEditingSocials(true);
+                  }}
+                  className="rounded-full bg-paper-2 px-3 py-1.5 text-xs font-medium text-ink-3 ring-1 ring-line transition-colors hover:text-ink"
+                >
+                  {user.socials && Object.values(user.socials).some(Boolean)
+                    ? "Edit socials"
+                    : "+ Connect socials"}
+                </button>
+                <button
+                  onClick={() => signOut()}
+                  className="rounded-full bg-paper-2 px-3 py-1.5 text-xs font-medium text-ink-3 ring-1 ring-line transition-colors hover:text-accent"
+                >
+                  Sign out
+                </button>
+              </>
             )}
           </div>
         </div>
@@ -301,14 +338,16 @@ export default function ProfileView({ handle }: { handle: string }) {
           </div>
         )}
 
-        {/* Actions — centered. */}
+        {/* Actions — centered. Your own profile needs none of these. */}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={viewOnMap}
-            className="rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-paper"
-          >
-            View {isMe ? "my" : "their"} map
-          </button>
+          {!isMe && (
+            <button
+              onClick={viewOnMap}
+              className="rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-paper"
+            >
+              View their map
+            </button>
+          )}
           {!isMe &&
             (user.isCreator ? (
               <button
@@ -359,16 +398,6 @@ export default function ProfileView({ handle }: { handle: string }) {
               </button>
             ))}
         </div>
-        {isMe && (
-          <div className="mt-3 text-center">
-            <button
-              onClick={() => signOut()}
-              className="text-xs text-ink-3 underline-offset-2 hover:text-ink-2 hover:underline"
-            >
-              Sign out
-            </button>
-          </div>
-        )}
 
         {/* Tabs */}
         <div className="mt-8 flex gap-1.5 rounded-full bg-paper-2 p-1">
@@ -509,6 +538,31 @@ function Stat({
       {inner}
     </button>
   );
+}
+
+// Downscale the chosen photo to a 256px square JPEG data-URL so it persists
+// comfortably and renders crisply everywhere (rail, pins, top bar). With the
+// Supabase backend this becomes a Storage upload + profiles.avatar_url update.
+function uploadAvatar(file: File, apply: (dataUrl: string) => void) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const size = 256;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return apply(reader.result as string);
+      // Cover-crop to a centered square.
+      const s = Math.min(img.width, img.height);
+      ctx.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
+      apply(canvas.toDataURL("image/jpeg", 0.85));
+    };
+    img.onerror = () => apply(reader.result as string);
+    img.src = reader.result as string;
+  };
+  reader.readAsDataURL(file);
 }
 
 /** Country code → flag emoji ("PT" → 🇵🇹). */
