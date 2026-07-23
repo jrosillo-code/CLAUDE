@@ -17,6 +17,8 @@ import { ACTIVITY_LABELS, type Pin, type UserSocials } from "@/lib/types";
 import TopFive from "./TopFive";
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 import SocialLinks, { SOCIAL_NETWORKS } from "./SocialLinks";
+import RecapSheet from "./RecapSheet";
+import ImportPanel from "./ImportPanel";
 
 type Tab = "top" | "pins" | "saved";
 
@@ -43,6 +45,8 @@ export default function ProfileView({ handle }: { handle: string }) {
   const [editingSocials, setEditingSocials] = useState(false);
   const [socialsDraft, setSocialsDraft] = useState<UserSocials>({});
   const [statView, setStatView] = useState<"pins" | "countries" | "friends" | null>(null);
+  const [recapOpen, setRecapOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
 
   const user = users.find((u) => u.handle === handle);
   if (!user) {
@@ -66,6 +70,25 @@ export default function ProfileView({ handle }: { handle: string }) {
   const isFriend = acceptedFriendIds(friendships, viewerId).has(user.id);
   const friendship = friendshipStatus(friendships, viewerId, user.id);
   const friendUsers = users.filter((u) => acceptedFriendIds(friendships, user.id).has(u.id));
+  // Travel overlap: places you've both been (within ~60 km or same name).
+  const overlap = (() => {
+    if (isMe) return [];
+    const mine = pins.filter((p) => p.userId === viewerId);
+    const seen = new Set<string>();
+    const out: { theirs: Pin; minePlace: string }[] = [];
+    for (const theirs of myPins) {
+      const match = mine.find(
+        (m) =>
+          m.placeName.toLowerCase() === theirs.placeName.toLowerCase() ||
+          distKm(m.lat, m.lng, theirs.lat, theirs.lng) < 60
+      );
+      if (match && !seen.has(theirs.placeName.toLowerCase())) {
+        seen.add(theirs.placeName.toLowerCase());
+        out.push({ theirs, minePlace: match.placeName });
+      }
+    }
+    return out;
+  })();
   // Countries this profile has pinned, with per-country pin counts.
   const countryRows = (() => {
     const byCode = new Map<string, number>();
@@ -254,6 +277,30 @@ export default function ProfileView({ handle }: { handle: string }) {
           )}
         </div>
 
+        {/* Travel overlap — you've both been here */}
+        {!isMe && overlap.length > 0 && (
+          <div className="mt-4 rounded-2xl border border-line bg-paper-2/50 p-4">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🧭</span>
+              <span className="font-display text-lg">
+                You&apos;ve both been to {overlap.length} {overlap.length === 1 ? "place" : "places"}
+              </span>
+            </div>
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
+              {overlap.slice(0, 12).map(({ theirs }) => (
+                <button
+                  key={theirs.id}
+                  onClick={() => openPin(theirs.id, theirs.lng, theirs.lat)}
+                  className="rounded-full bg-paper px-3 py-1.5 text-xs font-medium text-ink-2 ring-1 ring-line transition-colors hover:bg-paper-2"
+                >
+                  {theirs.countryCode ? `${flagEmoji(theirs.countryCode)} ` : ""}
+                  {theirs.placeName}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Expanded stat detail */}
         {statView === "friends" && (
           <div className="mt-4 rounded-2xl border border-line bg-paper-2/50 p-3">
@@ -338,8 +385,24 @@ export default function ProfileView({ handle }: { handle: string }) {
           </div>
         )}
 
-        {/* Actions — centered. Your own profile needs none of these. */}
+        {/* Actions — centered. */}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
+          {isMe && (
+            <>
+              <button
+                onClick={() => setRecapOpen(true)}
+                className="rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-paper"
+              >
+                🎁 {new Date().getFullYear()} recap
+              </button>
+              <button
+                onClick={() => setImportOpen(true)}
+                className="rounded-full bg-paper-2 px-6 py-2.5 text-sm font-semibold text-ink-2 ring-1 ring-line"
+              >
+                Import travels
+              </button>
+            </>
+          )}
           {!isMe && (
             <button
               onClick={viewOnMap}
@@ -454,6 +517,9 @@ export default function ProfileView({ handle }: { handle: string }) {
           </section>
         )}
       </div>
+
+      {recapOpen && <RecapSheet onClose={() => setRecapOpen(false)} />}
+      {importOpen && <ImportPanel onClose={() => setImportOpen(false)} />}
     </div>
   );
 }
@@ -563,6 +629,15 @@ function uploadAvatar(file: File, apply: (dataUrl: string) => void) {
     img.src = reader.result as string;
   };
   reader.readAsDataURL(file);
+}
+
+function distKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
+  return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 /** Country code → flag emoji ("PT" → 🇵🇹). */

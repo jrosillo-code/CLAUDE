@@ -34,6 +34,39 @@ type ClusterProps = {
 
 const DEM_SOURCE = "waypoint-dem";
 const TRIPS_SOURCE = "waypoint-trips";
+const LM_SOURCE = "waypoint-landmarks";
+const LM_LAYER = "waypoint-landmarks-lyr";
+
+// The landmark layer is GPU-rendered (one symbol layer, built-in collision
+// decluttering) instead of 563 DOM markers. Icons are canvas-drawn badges.
+function landmarkIconImage(glyph: string, color: string): ImageData {
+  const s = 56; // drawn at 2x, rendered with pixelRatio 2
+  const canvas = document.createElement("canvas");
+  canvas.width = s;
+  canvas.height = s;
+  const ctx = canvas.getContext("2d")!;
+  ctx.beginPath();
+  ctx.arc(s / 2, s / 2, 23, 0, Math.PI * 2);
+  ctx.fillStyle = "#fffdf8";
+  ctx.fill();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = color;
+  ctx.stroke();
+  ctx.font = "26px sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(glyph, s / 2, s / 2 + 2);
+  return ctx.getImageData(0, 0, s, s);
+}
+
+const landmarksFC: GeoJSON.FeatureCollection = {
+  type: "FeatureCollection",
+  features: LANDMARKS.map((lm) => ({
+    type: "Feature",
+    properties: { id: lm.id, category: lm.category },
+    geometry: { type: "Point", coordinates: [lm.lng, lm.lat] },
+  })),
+};
 
 // Remembered across theme switches (module scope): which online style hosts
 // are reachable. Lets a repeat theme switch jump straight to its final style.
@@ -272,6 +305,70 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
   }
 
+  // Landmarks as a symbol layer: re-added after every style swap. Click,
+  // hover-cursor, and selected-size all live here.
+  function syncLandmarksLayer(map: maplibregl.Map) {
+    try {
+      for (const [cat, meta] of Object.entries(LANDMARK_CATEGORY_META)) {
+        const name = `lm-${cat}`;
+        if (!map.hasImage(name)) {
+          map.addImage(name, landmarkIconImage(meta.glyph, meta.color), { pixelRatio: 2 });
+        }
+      }
+      if (!map.getSource(LM_SOURCE)) {
+        map.addSource(LM_SOURCE, { type: "geojson", data: landmarksFC });
+      }
+      if (!map.getLayer(LM_LAYER)) {
+        map.addLayer({
+          id: LM_LAYER,
+          type: "symbol",
+          source: LM_SOURCE,
+          minzoom: 2.1,
+          layout: {
+            "icon-image": ["concat", "lm-", ["get", "category"]],
+            "icon-size": 1,
+            "icon-allow-overlap": false,
+            "icon-padding": 2,
+          },
+        });
+        map.on("click", LM_LAYER, (e) => {
+          const f = e.features?.[0];
+          const id = f?.properties?.id as string | undefined;
+          if (!id || placingRef.current) return;
+          selectLandmarkRef.current(id);
+          const lm = LANDMARKS.find((l) => l.id === id);
+          if (lm) map.flyTo({ center: [lm.lng, lm.lat], zoom: Math.max(map.getZoom(), 5.5), duration: 700 });
+        });
+        map.on("mouseenter", LM_LAYER, () => (map.getCanvas().style.cursor = "pointer"));
+        map.on("mouseleave", LM_LAYER, () => (map.getCanvas().style.cursor = ""));
+      }
+      updateLandmarksLayer(map);
+    } catch {
+      /* style mid-swap */
+    }
+  }
+
+  // Visibility + selected emphasis, cheap enough to run on every state change.
+  function updateLandmarksLayer(map: maplibregl.Map) {
+    try {
+      if (!map.getLayer(LM_LAYER)) return;
+      const { show, selected } = landmarksRef.current;
+      map.setLayoutProperty(
+        LM_LAYER,
+        "visibility",
+        show && modeRef.current === "pins" ? "visible" : "none"
+      );
+      map.setLayoutProperty(LM_LAYER, "icon-size", [
+        "case",
+        ["==", ["get", "id"], selected ?? ""],
+        1.3,
+        1,
+      ]);
+    } catch {
+      /* layer not ready */
+    }
+  }
+
   // The thread: one line source stitching each shown trip's stops in order.
   // Re-added after every style swap (setStyle wipes sources/layers).
   function syncTripThreads(map: maplibregl.Map) {
@@ -415,6 +512,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       applyGlobeChrome(map);
       applyThemeTint(map);
       syncTripThreads(map);
+      syncLandmarksLayer(map);
       if (readyRef.current) return;
       readyRef.current = true;
       map.resize();
@@ -596,7 +694,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
   useEffect(() => {
     if (readyRef.current) render();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPinId, showLandmarks, selectedLandmarkId, showWishlist, savedPinIds]);
+  }, [selectedPinId, showWishlist, savedPinIds]);
+
+  // Landmark layer visibility + selected emphasis.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map && readyRef.current) updateLandmarksLayer(map);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showLandmarks, selectedLandmarkId, mapMode]);
 
   // Trips, draft, or map mode changed → refresh the thread and the markers.
   useEffect(() => {
@@ -841,56 +946,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }
     }
 
-    // World landmarks: small category-badged dots (UNESCO, monuments, parks,
-    // cultural sites). They appear once zoomed past planet scale so the globe
-    // stays clean, and sit under the travel pins.
-    if (!inTripsMode && landmarksRef.current.show && zoomNow >= 2.1) {
-      const [w, s, e, n] = bbox;
-      // The database is ~560 sites, so dense regions get screen-space thinning:
-      // one badge per 54-px grid cell (dataset order wins), capped per frame.
-      // Zoomed in past 6 the viewport is small enough to show everything.
-      const thin = zoomNow < 6;
-      const cells = new Set<string>();
-      let shown = 0;
-      for (const lm of LANDMARKS) {
-        if (shown > 170) break;
-        if (lm.lat < s || lm.lat > n) continue;
-        if (!planetScale) {
-          // handle antimeridian-crossing viewports
-          const inLng = w <= e ? lm.lng >= w && lm.lng <= e : lm.lng >= w || lm.lng <= e;
-          if (!inLng) continue;
-        }
-        const isSel = landmarksRef.current.selected === lm.id;
-        if (thin && !isSel) {
-          try {
-            const px = map.project([lm.lng, lm.lat]);
-            if (!Number.isFinite(px.x) || !Number.isFinite(px.y)) continue;
-            if (px.x < -40 || px.y < -40 || px.x > cw + 40 || px.y > ch + 40) continue;
-            const cell = `${Math.round(px.x / 54)}:${Math.round(px.y / 54)}`;
-            if (cells.has(cell)) continue;
-            cells.add(cell);
-          } catch {
-            continue;
-          }
-        }
-        shown++;
-        const meta = LANDMARK_CATEGORY_META[lm.category];
-        upsert(
-          `lm-${lm.id}`,
-          lm.lng,
-          lm.lat,
-          `${lm.category}|${isSel ? "sel" : ""}`,
-          () => landmarkEl(meta.glyph, meta.color, isSel),
-          isSel ? "3" : "0",
-          (ev) => {
-            ev.stopPropagation();
-            if (placingRef.current) return;
-            selectLandmarkRef.current(lm.id);
-            map.flyTo({ center: [lm.lng, lm.lat], zoom: Math.max(map.getZoom(), 5.5), duration: 700 });
-          }
-        );
-      }
-    }
+    // (World landmarks render as a GPU symbol layer — see syncLandmarksLayer.)
 
     // Wishlist: places you saved render as ghost needles — the want-to-go
     // layer over the have-been map.
@@ -1047,21 +1103,3 @@ function locationDotEl(): HTMLDivElement {
   return wrap;
 }
 
-// A world landmark: small round category badge with a tiny tail so it reads as
-// planted on the site. Deliberately more discreet than the travel needles.
-function landmarkEl(glyph: string, color: string, selected: boolean): HTMLDivElement {
-  const size = selected ? 26 : 21;
-  const wrap = document.createElement("div");
-  wrap.className = "marker-in cursor-pointer select-none";
-  wrap.style.cssText = `position:relative;width:${size}px;height:${size + 5}px;filter:drop-shadow(0 1.5px 2.5px rgba(0,0,0,.35));`;
-
-  const tail = document.createElement("div");
-  tail.style.cssText = `position:absolute;left:50%;bottom:0;width:2px;height:6px;transform:translateX(-50%);background:${color};border-radius:1px;`;
-  wrap.appendChild(tail);
-
-  const badge = document.createElement("div");
-  badge.style.cssText = `position:absolute;left:50%;top:0;width:${size}px;height:${size}px;transform:translateX(-50%);border-radius:9999px;background:#fffdf8;box-shadow:0 0 0 1.8px ${color};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size * 0.56)}px;line-height:1;`;
-  badge.textContent = glyph;
-  wrap.appendChild(badge);
-  return wrap;
-}
