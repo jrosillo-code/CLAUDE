@@ -19,6 +19,8 @@ import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 import SocialLinks, { SOCIAL_NETWORKS } from "./SocialLinks";
 import RecapSheet from "./RecapSheet";
 import ImportPanel from "./ImportPanel";
+import { backendEnabled } from "@/lib/supabase";
+import { version as APP_VERSION } from "../package.json";
 
 type Tab = "top" | "pins" | "saved";
 
@@ -123,14 +125,14 @@ export default function ProfileView({ handle }: { handle: string }) {
 
   return (
     <div className="min-h-screen bg-paper pb-20">
-      {/* Cover — purely scenic; nothing overlaps it, so nothing gets cut. */}
-      <div className="relative h-44 w-full overflow-hidden sm:h-60">
+      {/* Cover — taller, fading into the page so the card floats over it. */}
+      <div className="relative h-56 w-full overflow-hidden sm:h-72">
         {cover ? (
           <img src={cover} alt="" className="h-full w-full object-cover" />
         ) : (
-          <div className="h-full w-full bg-paper-2" />
+          <div className="h-full w-full bg-gradient-to-br from-accent/25 via-paper-2 to-accent-2/25" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/45 via-transparent to-ink/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-paper via-transparent to-ink/10" />
         <Link
           href="/"
           className="fixed left-4 top-4 z-40 flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-1.5 text-sm shadow-float backdrop-blur"
@@ -141,8 +143,9 @@ export default function ProfileView({ handle }: { handle: string }) {
       </div>
 
       <div className="mx-auto max-w-2xl px-5 sm:px-6">
-        {/* Identity — centered and symmetric, fully below the cover. */}
-        <div className="flex flex-col items-center pt-7 text-center">
+        {/* Identity card — frosted glass, overlapping the cover. */}
+        <div className="relative -mt-28 rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:-mt-24 sm:px-8">
+        <div className="flex flex-col items-center text-center">
           {isMe ? (
             /* Your own avatar is an upload button — new photo shows everywhere. */
             <label className="group relative cursor-pointer" title="Change profile picture">
@@ -223,6 +226,7 @@ export default function ProfileView({ handle }: { handle: string }) {
             )}
           </div>
         </div>
+        </div>{/* /identity card */}
 
         {/* Socials editor (own profile) */}
         {isMe && editingSocials && (
@@ -266,8 +270,8 @@ export default function ProfileView({ handle }: { handle: string }) {
           </div>
         )}
 
-        {/* Stats — three equal, divided columns. Tap one to expand the list. */}
-        <div className="mt-6 grid grid-cols-3 divide-x divide-line border-y border-line py-5">
+        {/* Stats — three glass tiles. Tap one to expand the list. */}
+        <div className="mt-4 grid grid-cols-3 gap-3">
           <Stat n={myPins.length} label="pins" active={statView === "pins"} onClick={() => setStatView(statView === "pins" ? null : "pins")} />
           <Stat n={countries} label="countries" active={statView === "countries"} onClick={() => setStatView(statView === "countries" ? null : "countries")} />
           {user.isCreator ? (
@@ -516,6 +520,11 @@ export default function ProfileView({ handle }: { handle: string }) {
             )}
           </section>
         )}
+
+        {/* App version — quiet, at the very bottom. */}
+        <p className="mt-12 text-center text-[11px] tracking-wide text-ink-3">
+          Waypoint v{APP_VERSION} · {backendEnabled ? "live" : "demo"} build
+        </p>
       </div>
 
       {recapOpen && <RecapSheet onClose={() => setRecapOpen(false)} />}
@@ -591,7 +600,7 @@ function Stat({
 }) {
   const inner = (
     <>
-      <div className="tnum font-display text-[26px] leading-none">
+      <div className={`tnum font-display text-[28px] leading-none ${active ? "text-accent" : ""}`}>
         {format ? formatFollowers(n) : n}
       </div>
       <div className={`mt-1.5 text-[11px] uppercase tracking-[0.14em] ${active ? "text-accent" : "text-ink-3"}`}>
@@ -600,9 +609,13 @@ function Stat({
       </div>
     </>
   );
-  if (!onClick) return <div className="text-center">{inner}</div>;
+  const tile = "rounded-2xl bg-paper-2/60 py-4 text-center ring-1 ring-line/60";
+  if (!onClick) return <div className={tile}>{inner}</div>;
   return (
-    <button onClick={onClick} className="text-center transition-opacity hover:opacity-70">
+    <button
+      onClick={onClick}
+      className={`${tile} transition-all hover:bg-paper-2 ${active ? "ring-2 ring-accent" : ""}`}
+    >
       {inner}
     </button>
   );

@@ -1,6 +1,6 @@
 {
   "name": "waypoint",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "private": true,
   "description": "Waypoint — a map-first travel social app. Friends appear as photo-pins on the places they've been.",
   "scripts": {
