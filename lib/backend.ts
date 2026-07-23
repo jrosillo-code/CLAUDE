@@ -139,13 +139,14 @@ export interface World {
   savedPinIds: Set<string>;
   follows: Set<string>;
   notifications: AppNotification[];
+  topPlaces: { userId: string; rank: number; pinId: string; blurb: string }[];
 }
 
 /** Everything the store needs, in one parallel fetch. RLS scopes all of it. */
 export async function loadWorld(viewerId: string): Promise<World | null> {
   const sb = supabase!;
   try {
-    const [usersQ, pinsQ, friendsQ, tripsQ, likesQ, savesQ, followsQ, notifQ] = await Promise.all([
+    const [usersQ, pinsQ, friendsQ, tripsQ, likesQ, savesQ, followsQ, notifQ, topQ] = await Promise.all([
       sb.from("users").select("*"),
       sb
         .from("pins")
@@ -162,6 +163,7 @@ export async function loadWorld(viewerId: string): Promise<World | null> {
         .eq("user_id", viewerId)
         .order("created_at", { ascending: false })
         .limit(50),
+      sb.from("top_places").select("*"),
     ]);
     const firstError =
       usersQ.error ?? pinsQ.error ?? friendsQ.error ?? tripsQ.error ?? likesQ.error ?? savesQ.error ?? followsQ.error;
@@ -205,6 +207,12 @@ export async function loadWorld(viewerId: string): Promise<World | null> {
           createdAt: n.created_at,
         })
       ),
+      topPlaces: ((topQ.data ?? []) as { user_id: string; rank: number; pin_id: string; blurb: string | null }[]).map((t) => ({
+        userId: t.user_id,
+        rank: t.rank,
+        pinId: t.pin_id,
+        blurb: t.blurb ?? "",
+      })),
     };
   } catch (e) {
     log("loadWorld")(e);
@@ -400,6 +408,23 @@ export function syncDeleteTrip(tripId: string): void {
     .delete()
     .eq("id", tripId)
     .then(({ error }) => error && log("deleteTrip")(error));
+}
+
+/** Replace the viewer's Top 5 rows wholesale (small set, simplest correct). */
+export function syncTopPlaces(
+  userId: string,
+  entries: { rank: number; pinId: string; blurb: string }[]
+): void {
+  const sb = supabase!;
+  void (async () => {
+    const { error: delErr } = await sb.from("top_places").delete().eq("user_id", userId);
+    if (delErr) return log("topPlaces clear")(delErr);
+    if (!entries.length) return;
+    const { error } = await sb.from("top_places").insert(
+      entries.map((e) => ({ user_id: userId, rank: e.rank, pin_id: e.pinId, blurb: e.blurb }))
+    );
+    if (error) log("topPlaces insert")(error);
+  })();
 }
 
 export function syncSocials(userId: string, socials: UserSocials): void {

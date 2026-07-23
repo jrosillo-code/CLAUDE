@@ -144,6 +144,8 @@ interface WaypointState {
 
   // Reorder a user's Top 5 (drag-to-rank on the profile).
   reorderTop: (userId: string, orderedPinIds: string[]) => void;
+  /** Put one of your pins into a Top 5 slot — replacing whatever held it. */
+  setTopPlace: (rank: number, pinId: string) => void;
 
   // Selection + flows.
   selectedPinId: string | null;
@@ -235,7 +237,7 @@ export const useStore = create<WaypointState>((set, get) => ({
           pins: world?.pins ?? [],
           friendships: world?.friendships ?? [],
           trips: world?.trips ?? [],
-          topPlaces: [],
+          topPlaces: world?.topPlaces ?? [],
           likeCounts: world?.likeCounts ?? {},
           likedPinIds: world?.likedPinIds ?? new Set(),
           savedPinIds: world?.savedPinIds ?? new Set(),
@@ -446,7 +448,28 @@ export const useStore = create<WaypointState>((set, get) => ({
           return t ? { ...t, rank: i + 1 } : null;
         })
         .filter((t): t is NonNullable<typeof t> => t !== null);
+      if (backendEnabled && userId === s.viewerId) backend.syncTopPlaces(userId, reordered);
       return { topPlaces: [...others, ...reordered] };
+    }),
+
+  setTopPlace: (rank, pinId) =>
+    set((s) => {
+      const pin = s.pins.find((p) => p.id === pinId && p.userId === s.viewerId);
+      if (!pin || rank < 1 || rank > 5) return {};
+      const others = s.topPlaces.filter((t) => t.userId !== s.viewerId);
+      const mine = s.topPlaces.filter((t) => t.userId === s.viewerId);
+      const occupant = mine.find((t) => t.rank === rank);
+      const already = mine.find((t) => t.pinId === pinId);
+      let next = mine.filter((t) => t.rank !== rank && t.pinId !== pinId);
+      next.push({ userId: s.viewerId, rank, pinId, blurb: pin.note.slice(0, 90) });
+      // If the chosen pin already held another slot, the displaced pin takes it
+      // (a swap, so no rank is ever left empty by accident).
+      if (already && occupant && already.rank !== rank) {
+        next.push({ ...occupant, rank: already.rank });
+      }
+      next = next.sort((a, b) => a.rank - b.rank);
+      if (backendEnabled) backend.syncTopPlaces(s.viewerId, next);
+      return { topPlaces: [...others, ...next] };
     }),
 
   trips: [...seedTrips],
