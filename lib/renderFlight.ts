@@ -59,9 +59,18 @@ function settleFrame(map: maplibregl.Map, timeoutMs: number): Promise<void> {
       resolve();
     };
     const to = setTimeout(finish, timeoutMs);
+    const trailReady = () => {
+      // The trail's GeoJSON is tiled in a worker — a fast GPU can otherwise
+      // outrun it and capture trail-less frames.
+      try {
+        return map.isSourceLoaded(TRAIL_SRC);
+      } catch {
+        return true;
+      }
+    };
     map.once("render", () => {
       // Tile requests for this camera have been issued by now.
-      if (map.loaded()) finish();
+      if (map.loaded() && trailReady()) finish();
       else map.once("idle", finish);
     });
     map.triggerRepaint();
@@ -105,6 +114,11 @@ async function pickCodec(width: number, height: number): Promise<CodecChoice | n
 
 export async function renderFlightFilm(
   map: maplibregl.Map,
+  // The maplibre module itself — its setNow/restoreNow drive the library's
+  // internal clock, so time-based transitions (the globe↔mercator projection
+  // morph) advance with OUR frame clock instead of wall time. Without this the
+  // zoom-out frames capture mid-morph states that look like the map bulging.
+  ml: { setNow: (n: number) => void; restoreNow: () => void },
   stops: Stop[],
   avatarUrl: string,
   accent: string,
@@ -245,6 +259,9 @@ export async function renderFlightFilm(
       paint: { "line-width": 2.5, "line-gradient": grads.core(0) as never },
     });
 
+    // Let the trail's worker round-trip finish before the first frame.
+    await settleFrame(map, 4000);
+
     let lastFrac = -1;
     let settledSet = false;
     const easeInOutQ = (f: number) => f * f * (3 - 2 * f);
@@ -252,8 +269,11 @@ export async function renderFlightFilm(
     for (let i = 0; i < frames; i++) {
       if (cancelled || encodeFailed) break;
       const t = (i * 1000) / FPS;
+      // Deterministic library clock: projection morphs etc. follow film time.
+      ml.setNow(t);
 
       let planeVisible = false;
+      let fracNow = 1;
       let px = 0, py = 0, heading = 0, altitude = 1;
 
       if (t <= plan.totalMs) {
@@ -265,6 +285,7 @@ export async function renderFlightFilm(
           map.setPaintProperty(TRAIL_GLOW, "line-gradient", grads.glow(s.frac) as never);
         }
         planeVisible = s.phase !== "settle";
+        fracNow = s.frac;
         heading = s.heading;
         altitude = s.altitude;
         const p = map.project([s.lng, s.lat]);
@@ -298,6 +319,28 @@ export async function renderFlightFilm(
 
       ctx.drawImage(mapCopy, 0, 0, W, H);
       const k = W / mapCanvas.clientWidth;
+
+      // The journey's stops, drawn into the film (the app's pin needles are
+      // DOM elements the GL canvas can't see). Upcoming stops wait as faint
+      // rings; the plane lights each one up as it arrives.
+      for (let si = 0; si < plan.path.length; si++) {
+        const visited = plan.stopFracs[si] <= fracNow + 0.002;
+        const sp = map.project([plan.path[si].lng, plan.path[si].lat]);
+        const sx = sp.x * k;
+        const sy = sp.y * k;
+        if (sx < -20 || sy < -20 || sx > W + 20 || sy > H + 20) continue;
+        ctx.beginPath();
+        ctx.arc(sx, sy, (visited ? 6 : 4.5) * k, 0, Math.PI * 2);
+        ctx.fillStyle = visited ? accent : "rgba(255,255,255,.7)";
+        ctx.shadowColor = "rgba(0,0,0,.3)";
+        ctx.shadowBlur = 4 * k;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.lineWidth = 2 * k;
+        ctx.strokeStyle = visited ? "#ffffff" : accent;
+        ctx.stroke();
+      }
+
       if (planeVisible) {
         drawFlightOverlay(ctx, { x: px * k, y: py * k, k, heading, altitude, accent, assets });
       }
@@ -343,6 +386,11 @@ export async function renderFlightFilm(
     }
     return "failed";
   } finally {
+    try {
+      ml.restoreNow();
+    } catch {
+      /* ignore */
+    }
     window.removeEventListener(CANCEL_EVENT, onCancel);
     map.off("render", snapshot);
     cleanupMap();

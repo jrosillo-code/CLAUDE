@@ -29,6 +29,8 @@ export interface FlightState {
 export interface FlightPlan {
   path: Stop[];
   lineCoords: [number, number][];
+  /** Trail fraction at which each stop is reached — drives stop markers. */
+  stopFracs: number[];
   /** Duration through landing + settle (pull-back is the renderer's coda). */
   totalMs: number;
   stateAt(t: number): FlightState;
@@ -80,6 +82,9 @@ export function buildFlightPlan(stops: Stop[]): FlightPlan {
     const i0 = Math.floor(fi);
     return cumFrac[i0] + (cumFrac[i0 + 1] - cumFrac[i0]) * (fi - i0);
   };
+  const stopFracs = path.map((_, i) =>
+    cumFrac[Math.min(cumFrac.length - 1, i * SAMPLES_PER_LEG)]
+  );
 
   const legMs = path
     .slice(1)
@@ -159,5 +164,5 @@ export function buildFlightPlan(stops: Stop[]): FlightPlan {
     };
   };
 
-  return { path, lineCoords, totalMs, stateAt };
+  return { path, lineCoords, stopFracs, totalMs, stateAt };
 }

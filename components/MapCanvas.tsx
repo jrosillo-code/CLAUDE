@@ -543,11 +543,6 @@ export default function MapCanvas({ placing, onPick }: Props) {
     map.once("load", collapseAttrib);
     setTimeout(collapseAttrib, 400);
     setTimeout(collapseAttrib, 1500);
-    map.addControl(
-      new maplibregl.NavigationControl({ showCompass: true, visualizePitch: true }),
-      "bottom-right"
-    );
-
     // Runs once, on the first style that loads. (applyGlobeChrome and the
     // trip-thread layer re-apply on EVERY style.load — setStyle wipes them.)
     const initOnce = () => {
@@ -818,7 +813,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
         // Preferred path: deterministic offline render — every frame waits
         // for its tiles, timestamps are exact, playback is butter.
         st.setFlightProgress(0);
-        const result = await renderFlightFilm(map, stops, me.avatarUrl, accent, year, (p) =>
+        const result = await renderFlightFilm(map, maplibregl, stops, me.avatarUrl, accent, year, (p) =>
           useStore.getState().setFlightProgress(p)
         );
         useStore.getState().setFlightProgress(null);
