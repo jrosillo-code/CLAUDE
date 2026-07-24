@@ -464,6 +464,31 @@ export function syncSocials(userId: string, socials: UserSocials): void {
     .then(({ error }) => error && log("socials")(error));
 }
 
+/** Signup: is this username still free? Fails open — the DB's unique
+ *  constraint is the real gate; this just gives instant feedback. */
+export async function checkHandleAvailable(handle: string): Promise<boolean> {
+  const { data, error } = await supabase!
+    .from("users")
+    .select("id")
+    .eq("handle", handle)
+    .limit(1);
+  if (error) {
+    log("handle check")(error);
+    return true;
+  }
+  return !data?.length;
+}
+
+/** Claim the username picked at signup (the auto-profile trigger derived a
+ *  placeholder from the email). Display name starts as the username too. */
+export async function claimHandle(userId: string, handle: string): Promise<void> {
+  const { error } = await supabase!
+    .from("users")
+    .update({ handle, display_name: handle })
+    .eq("id", userId);
+  if (error) log("handle claim")(error);
+}
+
 export function syncProfile(
   userId: string,
   p: { displayName: string; bio: string; homeCity: string }

@@ -3,16 +3,20 @@
 import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { backendEnabled, supabase } from "@/lib/supabase";
+import { checkHandleAvailable } from "@/lib/backend";
 import WaypointLogo from "./Logo";
 
-// Sign-in. Demo-mode: each provider button creates a local session for the
-// seeded account. When the Supabase backend is wired, these call
-// supabase.auth.signInWithOAuth({ provider: 'apple' | 'google' }) and
-// signInWithOtp({ email }) — the UI is already shaped for it.
+// Sign-in. Live mode: create an account (username + email + password) or
+// sign in with an existing one; a magic-link fallback covers forgotten
+// passwords. Demo mode: every option opens the seeded sample account.
 export default function LoginScreen() {
   const signIn = useStore((s) => s.signIn);
+  const [mode, setMode] = useState<"signup" | "signin">("signup");
+  const [handle, setHandle] = useState("");
   const [email, setEmail] = useState("");
-  const [linkSent, setLinkSent] = useState(false);
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [linkSent, setLinkSent] = useState<false | "otp" | "confirm">(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
   // Live mode shows an OAuth button only when that provider is actually
@@ -25,7 +29,6 @@ export default function LoginScreen() {
   const showApple = !backendEnabled || oauthProviders.includes("apple");
   const showGoogle = !backendEnabled || oauthProviders.includes("google");
 
-  // Live backend → real Supabase auth; otherwise the local demo session.
   async function oauth(provider: "apple" | "google") {
     if (!backendEnabled) return signIn(provider);
     setAuthError(null);
@@ -36,11 +39,69 @@ export default function LoginScreen() {
     if (error) setAuthError(`${provider === "apple" ? "Apple" : "Google"} sign-in isn't configured yet — use email below.`);
   }
 
-  async function submitEmail(e: React.FormEvent) {
+  const emailOk = email.includes("@");
+  const cleanHandle = handle.trim().toLowerCase().replace(/^@/, "");
+  const handleOk = /^[a-z0-9_]{2,30}$/.test(cleanHandle);
+
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.includes("@")) return;
+    if (!backendEnabled) return signIn("email"); // demo: straight in
+    setAuthError(null);
+
+    if (mode === "signup") {
+      if (!handleOk) {
+        setAuthError("Usernames are 2–30 characters: letters, numbers, underscores.");
+        return;
+      }
+      if (password.length < 6) {
+        setAuthError("Password needs at least 6 characters.");
+        return;
+      }
+      setBusy(true);
+      try {
+        if (!(await checkHandleAvailable(cleanHandle))) {
+          setAuthError(`@${cleanHandle} is taken — try another username.`);
+          return;
+        }
+        // The handle waits here until the session exists (hydrateSession
+        // claims it) — this also survives the email-confirmation detour.
+        try {
+          window.localStorage.setItem("wp-pending-handle", cleanHandle);
+        } catch {
+          /* private mode */
+        }
+        const { data, error } = await supabase!.auth.signUp({ email, password });
+        if (error) setAuthError(error.message);
+        else if (!data.session) setLinkSent("confirm"); // confirm-email is on
+        // else: SIGNED_IN fires and the app takes over.
+      } finally {
+        setBusy(false);
+      }
+      return;
+    }
+
+    // Sign in
+    setBusy(true);
+    try {
+      const { error } = await supabase!.auth.signInWithPassword({ email, password });
+      if (error)
+        setAuthError(
+          /confirm/i.test(error.message)
+            ? "Confirm your email first — check your inbox."
+            : "Wrong email or password."
+        );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function sendMagicLink() {
+    if (!emailOk) {
+      setAuthError("Enter your email above first.");
+      return;
+    }
     if (!backendEnabled) {
-      setLinkSent(true);
+      setLinkSent("otp");
       return;
     }
     setAuthError(null);
@@ -49,8 +110,11 @@ export default function LoginScreen() {
       options: { emailRedirectTo: window.location.origin },
     });
     if (error) setAuthError(error.message);
-    else setLinkSent(true);
+    else setLinkSent("otp");
   }
+
+  const inputCls =
+    "w-full rounded-full bg-paper-2 px-5 py-3 text-[15px] outline-none ring-line placeholder:text-ink-3 focus:ring-2 focus:ring-ink/15";
 
   return (
     <div className="relative grid min-h-dvh place-items-center overflow-hidden bg-paper px-5">
@@ -77,47 +141,15 @@ export default function LoginScreen() {
           </p>
         </div>
 
-        {/* Providers */}
-        {(showApple || showGoogle) && (
-          <div className="mt-9 space-y-2.5">
-            {showApple && (
-              <button
-                onClick={() => oauth("apple")}
-                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-ink py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
-              >
-                <AppleLogo />
-                Continue with Apple
-              </button>
-            )}
-            {showGoogle && (
-              <button
-                onClick={() => oauth("google")}
-                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-paper py-3 text-[15px] font-semibold text-ink ring-1 ring-line transition-colors hover:bg-paper-2"
-              >
-                <GoogleLogo />
-                Continue with Google
-              </button>
-            )}
-          </div>
-        )}
-
-        {showApple || showGoogle ? (
-          <div className="my-6 flex items-center gap-3">
-            <span className="h-px flex-1 bg-line" />
-            <span className="text-xs uppercase tracking-wider text-ink-3">or</span>
-            <span className="h-px flex-1 bg-line" />
-          </div>
-        ) : (
-          <div className="mt-9" />
-        )}
-
-        {/* Email magic link */}
         {linkSent ? (
-          <div className="rounded-2xl border border-line bg-paper-2/60 p-5 text-center">
+          <div className="mt-9 rounded-2xl border border-line bg-paper-2/60 p-5 text-center">
             <div className="text-2xl">✉️</div>
             <p className="mt-2 font-display text-lg">Check your inbox</p>
             <p className="mt-1 text-sm text-ink-3">
-              We sent a sign-in link to <span className="text-ink-2">{email}</span>.
+              {linkSent === "confirm"
+                ? "Tap the confirmation link we sent to "
+                : "We sent a sign-in link to "}
+              <span className="text-ink-2">{email}</span>.
             </p>
             {!backendEnabled && (
               <button
@@ -129,22 +161,105 @@ export default function LoginScreen() {
             )}
           </div>
         ) : (
-          <form onSubmit={submitEmail} className="space-y-2.5">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full rounded-full bg-paper-2 px-5 py-3 text-[15px] outline-none ring-line placeholder:text-ink-3 focus:ring-2 focus:ring-ink/15"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-full bg-accent py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-40"
-              disabled={!email.includes("@")}
-            >
-              Continue with email
-            </button>
-          </form>
+          <>
+            {/* Providers */}
+            {(showApple || showGoogle) && (
+              <>
+                <div className="mt-9 space-y-2.5">
+                  {showApple && (
+                    <button
+                      onClick={() => oauth("apple")}
+                      className="flex w-full items-center justify-center gap-2.5 rounded-full bg-ink py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
+                    >
+                      <AppleLogo />
+                      Continue with Apple
+                    </button>
+                  )}
+                  {showGoogle && (
+                    <button
+                      onClick={() => oauth("google")}
+                      className="flex w-full items-center justify-center gap-2.5 rounded-full bg-paper py-3 text-[15px] font-semibold text-ink ring-1 ring-line transition-colors hover:bg-paper-2"
+                    >
+                      <GoogleLogo />
+                      Continue with Google
+                    </button>
+                  )}
+                </div>
+                <div className="my-6 flex items-center gap-3">
+                  <span className="h-px flex-1 bg-line" />
+                  <span className="text-xs uppercase tracking-wider text-ink-3">or</span>
+                  <span className="h-px flex-1 bg-line" />
+                </div>
+              </>
+            )}
+            {!(showApple || showGoogle) && <div className="mt-9" />}
+
+            <form onSubmit={submit} className="space-y-2.5">
+              {mode === "signup" && (
+                <div className="relative">
+                  <span className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[15px] text-ink-3">
+                    @
+                  </span>
+                  <input
+                    value={handle}
+                    onChange={(e) => setHandle(e.target.value)}
+                    placeholder="username"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    className={`${inputCls} pl-9`}
+                  />
+                </div>
+              )}
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className={inputCls}
+              />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                className={inputCls}
+              />
+              <button
+                type="submit"
+                className="w-full rounded-full bg-accent py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90 disabled:opacity-40"
+                disabled={busy || !emailOk || (backendEnabled && password.length < 6)}
+              >
+                {busy ? "One moment…" : mode === "signup" ? "Create account" : "Sign in"}
+              </button>
+            </form>
+
+            {/* Mode switch + magic-link fallback */}
+            <div className="mt-4 space-y-1.5 text-center text-sm text-ink-3">
+              {mode === "signup" ? (
+                <p>
+                  Already have an account?{" "}
+                  <button onClick={() => { setMode("signin"); setAuthError(null); }} className="font-semibold text-ink underline-offset-2 hover:underline">
+                    Sign in
+                  </button>
+                </p>
+              ) : (
+                <>
+                  <p>
+                    New here?{" "}
+                    <button onClick={() => { setMode("signup"); setAuthError(null); }} className="font-semibold text-ink underline-offset-2 hover:underline">
+                      Create an account
+                    </button>
+                  </p>
+                  <p>
+                    <button onClick={sendMagicLink} className="text-xs underline-offset-2 hover:underline">
+                      Forgot password? Email me a sign-in link
+                    </button>
+                  </p>
+                </>
+              )}
+            </div>
+          </>
         )}
 
         {authError && (
@@ -155,7 +270,7 @@ export default function LoginScreen() {
 
         <p className="mt-7 text-center text-xs leading-relaxed text-ink-3">
           {backendEnabled ? (
-            <>Sign in to see your friends&apos; maps — and let them see yours.</>
+            <>Your username is how friends find you. Sign in to see their maps — and let them see yours.</>
           ) : (
             <>
               Demo build — every option signs you into the sample account.

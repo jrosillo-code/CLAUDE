@@ -242,6 +242,17 @@ export const useStore = create<WaypointState>((set, get) => ({
     if (backendEnabled) {
       const applyAuthUser = async (userId: string, email?: string) => {
         const profile = await backend.ensureProfile(userId, email);
+        // A username picked on the signup form waits in localStorage until
+        // the session exists, then becomes the account's handle.
+        try {
+          const pending = window.localStorage.getItem("wp-pending-handle");
+          if (pending) {
+            await backend.claimHandle(userId, pending);
+            window.localStorage.removeItem("wp-pending-handle");
+          }
+        } catch {
+          /* private mode */
+        }
         const world = await backend.loadWorld(userId);
         set((s) => ({
           session: { userId, method: "email" },
