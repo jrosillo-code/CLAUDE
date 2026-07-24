@@ -74,7 +74,31 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
             <Segment active={onlyMe} onClick={showOnlyMe}>Just me</Segment>
           </div>
 
-          <ul className="space-y-0.5">
+          {/* Phones: a light chip cloud — tap to toggle, dimmed when off.
+              The dotted list rows read as clutter at this size. */}
+          <div className="flex flex-wrap gap-1.5 sm:hidden">
+            <PersonChip user={viewer} label="You" on={isOn(viewer.id)} onToggle={() => toggleUser(viewer.id)} />
+            {friends.map((f) => (
+              <PersonChip
+                key={f.id}
+                user={f}
+                label={f.displayName.split(" ")[0]}
+                on={isOn(f.id)}
+                onToggle={() => toggleUser(f.id)}
+              />
+            ))}
+            {creators.map((c) => (
+              <PersonChip
+                key={c.id}
+                user={c}
+                label={c.displayName.split(" ")[0]}
+                on={isOn(c.id)}
+                onToggle={() => toggleUser(c.id)}
+              />
+            ))}
+          </div>
+
+          <ul className="space-y-0.5 max-sm:hidden">
             <Row
               user={viewer}
               label="You"
@@ -114,7 +138,7 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
           <WorldProgress />
 
           {creators.length > 0 && (
-            <>
+            <div className="max-sm:hidden">
               <div className="mt-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-ink-3">
                 Creators
               </div>
@@ -129,7 +153,7 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
                   />
                 ))}
               </ul>
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -231,6 +255,37 @@ function Segment({ active, onClick, children }: { active: boolean; onClick: () =
       }`}
     >
       {children}
+    </button>
+  );
+}
+
+// Phone-size traveler toggle: avatar + first name in a pill. On/off reads as
+// bright/dimmed — no extra indicator dot needed.
+function PersonChip({
+  user,
+  label,
+  on,
+  onToggle,
+}: {
+  user: { avatarUrl: string; color: string };
+  label: string;
+  on: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      onClick={onToggle}
+      className={`flex items-center gap-1.5 rounded-full py-1 pl-1 pr-2.5 text-xs font-medium transition-opacity ${
+        on ? "bg-paper-2 text-ink" : "bg-paper-2/50 text-ink-3 opacity-55"
+      }`}
+    >
+      <img
+        src={user.avatarUrl}
+        alt=""
+        className="h-6 w-6 rounded-full object-cover ring-2"
+        style={{ ["--tw-ring-color" as string]: user.color, opacity: on ? 1 : 0.5 }}
+      />
+      {label}
     </button>
   );
 }

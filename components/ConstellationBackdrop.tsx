@@ -110,7 +110,14 @@ export default function ConstellationBackdrop() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
-    window.addEventListener("resize", resize);
+    // Debounced: mobile browsers fire a resize storm while the URL bar
+    // collapses, and re-projecting every event made the sky visibly glitch.
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
+    const onResize = () => {
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize, 180);
+    };
+    window.addEventListener("resize", onResize);
 
     // Equirectangular, scaled to cover, nudged toward the inhabited world.
     const project = (lng: number, lat: number, drift: number): [number, number] => {
@@ -133,6 +140,11 @@ export default function ConstellationBackdrop() {
       lastFrame = ms;
       const t = ms / 1000;
       const drift = reduced ? 0 : Math.sin(t * 0.07) * 10;
+      // Cover-scaling zooms hard on tall narrow screens; everything measured
+      // in pixels (segment reach, star size, thread arc) scales with it so a
+      // phone shows the same constellation, just closer — not shredded dots.
+      const scale = Math.max(w / 360, h / 150) * 1.08;
+      const sz = Math.min(1.5, Math.max(1, scale / 4.5));
       ctx.clearRect(0, 0, w, h);
 
       // Daylight only: a cool sky wash from the top so the constellation sits
@@ -159,7 +171,7 @@ export default function ConstellationBackdrop() {
         const [x1, y1] = project(a.lng, a.lat, drift);
         const [x2, y2] = project(b.lng, b.lat, drift);
         if ((x1 < -40 && x2 < -40) || (x1 > w + 40 && x2 > w + 40)) continue;
-        if (Math.hypot(x2 - x1, y2 - y1) > 70) continue;
+        if (Math.hypot(x2 - x1, y2 - y1) > scale * 17) continue;
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
       }
@@ -173,25 +185,25 @@ export default function ConstellationBackdrop() {
         if (s.bright) {
           if (!dark) {
             // A soft halo lifts the accent stars off the light paper.
-            const halo = ctx.createRadialGradient(x, y, 0, x, y, 7);
+            const halo = ctx.createRadialGradient(x, y, 0, x, y, 7 * sz);
             halo.addColorStop(0, accent);
             halo.addColorStop(1, "transparent");
             ctx.globalAlpha = 0.14 + 0.14 * tw;
             ctx.fillStyle = halo;
             ctx.beginPath();
-            ctx.arc(x, y, 7, 0, Math.PI * 2);
+            ctx.arc(x, y, 7 * sz, 0, Math.PI * 2);
             ctx.fill();
           }
           ctx.globalAlpha = dark ? 0.35 + 0.4 * tw : 0.55 + 0.4 * tw;
           ctx.fillStyle = accent;
           ctx.beginPath();
-          ctx.arc(x, y, dark ? 1.9 : 2.2, 0, Math.PI * 2);
+          ctx.arc(x, y, (dark ? 1.9 : 2.2) * sz, 0, Math.PI * 2);
           ctx.fill();
         } else {
           ctx.globalAlpha = dark ? 0.16 + 0.22 * tw : 0.3 + 0.3 * tw;
           ctx.fillStyle = inkColor;
           ctx.beginPath();
-          ctx.arc(x, y, dark ? 1.15 : 1.35, 0, Math.PI * 2);
+          ctx.arc(x, y, (dark ? 1.15 : 1.35) * sz, 0, Math.PI * 2);
           ctx.fill();
         }
       }
@@ -200,16 +212,17 @@ export default function ConstellationBackdrop() {
       const pts = THREAD.map(([lng, lat]) => project(lng, lat, drift));
       ctx.globalAlpha = dark ? 0.28 : 0.5;
       ctx.strokeStyle = accent;
-      ctx.lineWidth = dark ? 1.4 : 1.6;
-      ctx.setLineDash([1, 7]);
+      ctx.lineWidth = (dark ? 1.4 : 1.6) * sz;
+      ctx.setLineDash([1 * sz, 7 * sz]);
       ctx.lineCap = "round";
       ctx.beginPath();
       ctx.moveTo(pts[0][0], pts[0][1]);
       for (let i = 1; i < pts.length; i++) {
         const [px, py] = pts[i - 1];
         const [x, y] = pts[i];
-        ctx.quadraticCurveTo(px, py - 60, (px + x) / 2, (py + y) / 2 - 30);
-        ctx.quadraticCurveTo(x, y - 30, x, y);
+        const lift = scale * 14;
+        ctx.quadraticCurveTo(px, py - lift, (px + x) / 2, (py + y) / 2 - lift / 2);
+        ctx.quadraticCurveTo(x, y - lift / 2, x, y);
       }
       ctx.stroke();
       ctx.setLineDash([]);
@@ -222,19 +235,19 @@ export default function ConstellationBackdrop() {
         const [x1, y1] = pts[i];
         const [x2, y2] = pts[i + 1];
         const px = x1 + (x2 - x1) * f;
-        const py = y1 + (y2 - y1) * f - Math.sin(f * Math.PI) * 45;
-        const glow = ctx.createRadialGradient(px, py, 0, px, py, 14);
+        const py = y1 + (y2 - y1) * f - Math.sin(f * Math.PI) * scale * 10;
+        const glow = ctx.createRadialGradient(px, py, 0, px, py, 14 * sz);
         glow.addColorStop(0, accent);
         glow.addColorStop(1, "transparent");
         ctx.globalAlpha = 0.5;
         ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(px, py, 14, 0, Math.PI * 2);
+        ctx.arc(px, py, 14 * sz, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 0.9;
         ctx.fillStyle = accent;
         ctx.beginPath();
-        ctx.arc(px, py, 2.4, 0, Math.PI * 2);
+        ctx.arc(px, py, 2.4 * sz, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -251,7 +264,8 @@ export default function ConstellationBackdrop() {
     return () => {
       disposed = true;
       cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
+      if (resizeTimer) clearTimeout(resizeTimer);
+      window.removeEventListener("resize", onResize);
       themeObserver.disconnect();
     };
   }, []);

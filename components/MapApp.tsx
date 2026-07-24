@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MapCanvas from "./MapCanvas";
 import { preloadStars } from "./ConstellationBackdrop";
 import TopBar from "./TopBar";
@@ -40,6 +40,21 @@ export default function MapApp() {
   const selectedPinId = useStore((s) => s.selectedPinId);
   const visible = useVisiblePins();
   const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
+
+  // Phones: when a trip draft ends, land somewhere sensible — the trips panel
+  // if it was saved (see the new route), the pins map if it was abandoned.
+  const hadDraftRef = useRef(false);
+  const tripsAtDraftStartRef = useRef(0);
+  useEffect(() => {
+    if (tripDraft && !hadDraftRef.current) tripsAtDraftStartRef.current = trips.length;
+    const had = hadDraftRef.current;
+    hadDraftRef.current = !!tripDraft;
+    if (had && !tripDraft && window.innerWidth < 640) {
+      if (trips.length > tripsAtDraftStartRef.current) setTripsOpen(true);
+      else setMapMode("pins");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tripDraft, trips.length]);
 
   // Warm the Me-page backdrop (geo fetch + star sampling) while the map idles,
   // so tapping the avatar opens the profile with its constellation ready.
@@ -167,7 +182,9 @@ export default function MapApp() {
           onClose={() => {
             setTripsOpen(false);
             // Phones have no trips-mode banner — closing the panel is the exit.
-            if (window.innerWidth < 640) setMapMode("pins");
+            // Unless a draft just started: "Plan a trip" closes the panel so the
+            // map can take stops, and leaving trips mode would kill the thread.
+            if (window.innerWidth < 640 && !useStore.getState().tripDraft) setMapMode("pins");
           }}
           onOpenGuide={setGuideTripId}
         />
