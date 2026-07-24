@@ -16,6 +16,8 @@ export interface PassportStats {
   continentsVisited: number;
   continentsTotal: number;
   countriesTotal: number;
+  /** Distinct first-level admin areas (states/provinces) among the pins. */
+  regions: number;
   cities: number;
   coveragePct: number; // countries / 195
   first: { date: string; code?: string } | null;
@@ -80,9 +82,11 @@ export function flagEmoji(cc: string): string {
 export function computePassport(pins: Pin[]): PassportStats {
   const codes = new Set<string>();
   const cities = new Set<string>();
+  const regions = new Set<string>();
   for (const p of pins) {
     if (p.countryCode) codes.add(p.countryCode.toUpperCase());
     if (p.placeName) cities.add(p.placeName.trim().toLowerCase());
+    if (p.region) regions.add(`${p.countryCode}:${p.region.trim().toLowerCase()}`);
   }
 
   const continentsHit = new Set<string>();
@@ -117,6 +121,7 @@ export function computePassport(pins: Pin[]): PassportStats {
     continentsVisited: continentsHit.size,
     continentsTotal: 7,
     countriesTotal: WORLD_TARGET,
+    regions: regions.size,
     cities: cities.size,
     coveragePct: Math.min(1, codes.size / WORLD_TARGET),
     first,

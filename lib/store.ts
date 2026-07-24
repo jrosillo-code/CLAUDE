@@ -60,6 +60,7 @@ export interface AddPinDraft {
   lat: number;
   placeName: string;
   countryCode: string;
+  region?: string;
 }
 
 interface WaypointState {
@@ -173,6 +174,7 @@ interface WaypointState {
     lat: number;
     placeName: string;
     countryCode: string;
+    region?: string;
     title: string;
     note: string;
     visibility: Visibility;
@@ -573,6 +575,7 @@ export const useStore = create<WaypointState>((set, get) => ({
       lat: input.lat,
       placeName: input.placeName,
       countryCode: input.countryCode,
+      region: input.region,
       title: input.title,
       note: input.note,
       visibility: input.visibility,

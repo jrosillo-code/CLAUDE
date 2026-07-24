@@ -481,7 +481,7 @@ export default function ProfileView({ handle }: { handle: string }) {
           <section className="mt-6">
             <div className="flex items-baseline justify-between">
               <h2 className="font-display text-2xl">Top 5 destinations</h2>
-              {isMe && top.length > 1 && <span className="text-xs text-ink-3">drag to rank</span>}
+              {isMe && top.length > 1 && <span className="text-xs text-ink-3">ranked by your ratings</span>}
             </div>
             <p className="mt-1 text-sm text-ink-3">
               {isMe ? "Your" : `${user.displayName.split(" ")[0]}'s`} places, ranked. Every one is a real pin.

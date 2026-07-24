@@ -45,6 +45,7 @@ interface PinRow {
   lat: number | null;
   place_name: string;
   country_code: string | null;
+  region?: string | null;
   title: string;
   note: string | null;
   started_on: string | null;
@@ -102,6 +103,7 @@ function toPin(r: PinRow): Pin {
     lat: r.lat ?? 0,
     placeName: r.place_name,
     countryCode: r.country_code ?? "",
+    region: r.region ?? undefined,
     title: r.title,
     note: r.note ?? "",
     startedOn: r.started_on ?? undefined,
@@ -254,6 +256,7 @@ export function syncAddPin(pin: Pin): void {
       lat: pin.lat,
       place_name: pin.placeName,
       country_code: pin.countryCode || null,
+      region: pin.region ?? null,
       title: pin.title,
       note: pin.note,
       started_on: pin.startedOn ?? null,

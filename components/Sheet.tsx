@@ -25,7 +25,9 @@ export default function Sheet({
         className="fixed inset-0 z-40 bg-ink/20 sm:hidden"
       />
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-end sm:inset-y-0 sm:right-0 sm:items-stretch">
-        <div className="animate-sheet pointer-events-auto flex max-h-[86vh] w-full flex-col overflow-hidden rounded-t-[22px] bg-paper shadow-float sm:m-4 sm:max-h-none sm:w-[380px] sm:rounded-[22px]">
+        {/* dvh, not vh: on iOS Safari vh is the large viewport, so an 86vh
+            sheet overflowed the visible area and clipped its own header. */}
+        <div className="animate-sheet pointer-events-auto flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-[22px] bg-paper shadow-float sm:m-4 sm:max-h-none sm:w-[380px] sm:rounded-[22px]">
           {children}
         </div>
       </div>

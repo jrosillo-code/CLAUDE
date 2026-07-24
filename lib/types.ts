@@ -71,6 +71,8 @@ export interface Pin {
   lat: number;
   placeName: string;
   countryCode: string;
+  /** First-level admin area (state/province/region), when known. */
+  region?: string;
   title: string;
   note: string;
   startedOn?: string; // ISO date

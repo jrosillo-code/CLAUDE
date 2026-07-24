@@ -283,6 +283,32 @@ const rows: Seed[] = [
   ["u-zara", -4.0000, 31.1000, "Erg Chebbi", "MA", "Dune camp", "Guests cried at the stars again. They always do.", 4, "public"],
 ];
 
+// First-level admin areas for the seeded places — feeds the passport's
+// regions tally. Live pins get this from reverse geocoding at drop time.
+const REGIONS: Record<string, string> = {
+  Lisbon: "Lisboa", Ericeira: "Lisboa", "Funchal, Madeira": "Madeira",
+  Barcelona: "Catalonia", "La Palma": "Canary Islands", Rome: "Lazio",
+  Vilnius: "Vilnius County", "Reykjavík": "Capital Region", Tokyo: "Kantō",
+  "Zürich": "Zürich", Cervinia: "Aosta Valley", "Everest Base Camp": "Koshi",
+  Santiago: "Santiago Metropolitan", Trieste: "Friuli-Venezia Giulia",
+  Ohrid: "Southwestern Region", Tenerife: "Canary Islands", Florence: "Tuscany",
+  Niseko: "Hokkaidō", "Oʻahu": "Hawaii", Bali: "Bali", Canberra: "ACT",
+  "Franz Josef": "West Coast", "Mt Fuji": "Yamanashi", Okinawa: "Okinawa",
+  "Cape Town": "Western Cape", Kilimanjaro: "Kilimanjaro", Gorongosa: "Sofala",
+  Waterberg: "North West", "Great Rift Valley": "Nakuru",
+  Chamonix: "Auvergne-Rhône-Alpes", "La Paz": "La Paz", Mauritius: "Rivière Noire",
+  Hossegor: "Nouvelle-Aquitaine", Taghazout: "Souss-Massa", Porto: "Norte",
+  "El Hierro": "Canary Islands", Piha: "Auckland", "Punta Arenas": "Magallanes",
+  "Banzai Pipeline, Oʻahu": "Hawaii", Uluwatu: "Bali",
+  "Snapper Rocks": "Queensland", "Punta Hermosa": "Lima", Innsbruck: "Tyrol",
+  "Hurricane, Utah": "Utah", Zermatt: "Valais", "Twizel, NZ": "Canterbury",
+  "Rio de Janeiro": "Rio de Janeiro", Paris: "Île-de-France",
+  Brooklyn: "New York", Seville: "Andalusia", Hakuba: "Nagano",
+  Banff: "Alberta", "Osorno Volcano": "Los Lagos", Berlin: "Berlin",
+  Prague: "Prague", Budapest: "Budapest", "Mexico City": "Mexico City",
+  Tikal: "Petén", Marrakesh: "Marrakesh-Safi", "Erg Chebbi": "Drâa-Tafilalet",
+};
+
 export const pins: Pin[] = rows.map((r, i) => {
   const id = `pin-${i + 1}`;
   const [userId, lng, lat, place, cc, title, note, n, vis, dates, activities] = r;
@@ -302,6 +328,7 @@ export const pins: Pin[] = rows.map((r, i) => {
     lat,
     placeName: place,
     countryCode: cc,
+    region: REGIONS[place],
     title,
     note,
     visibility: vis ?? "friends",

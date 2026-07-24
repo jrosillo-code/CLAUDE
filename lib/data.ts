@@ -98,17 +98,31 @@ export interface RankedPlace extends TopPlace {
   pin: Pin;
 }
 
+/**
+ * The Top 5 is earned, not arranged: it's the owner's five highest-rated pins.
+ * Ties go to the older trip — the place that's stayed a favorite the longest.
+ * (The manual topPlaces list only contributes its blurbs, when one exists.)
+ */
 export function topPlacesFor(
   topPlaces: TopPlace[],
   pins: Pin[],
   userId: string
 ): RankedPlace[] {
-  const byId = new Map(pins.map((p) => [p.id, p]));
-  return topPlaces
-    .filter((t) => t.userId === userId)
-    .map((t) => ({ ...t, pin: byId.get(t.pinId) }))
-    .filter((t): t is RankedPlace => Boolean(t.pin))
-    .sort((a, b) => a.rank - b.rank);
+  const blurbs = new Map(
+    topPlaces.filter((t) => t.userId === userId).map((t) => [t.pinId, t.blurb])
+  );
+  const when = (p: Pin) => p.startedOn ?? p.createdAt;
+  return pins
+    .filter((p) => p.userId === userId)
+    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0) || when(a).localeCompare(when(b)))
+    .slice(0, 5)
+    .map((pin, i) => ({
+      userId,
+      rank: i + 1,
+      pinId: pin.id,
+      blurb: blurbs.get(pin.id) ?? pin.note,
+      pin,
+    }));
 }
 
 /** Great-circle distance between two points, in kilometres (haversine). */

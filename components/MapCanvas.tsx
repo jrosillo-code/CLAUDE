@@ -516,6 +516,16 @@ export default function MapCanvas({ placing, onPick }: Props) {
     map.scrollZoom.setZoomRate(1 / 50);
 
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+    // MapLibre opens the compact attribution on load; collapse it so only the
+    // ⓘ shows until someone actually asks for it.
+    const collapseAttrib = () => {
+      const el = map.getContainer().querySelector(".maplibregl-ctrl-attrib");
+      el?.classList.remove("maplibregl-compact-show");
+      el?.removeAttribute("open");
+    };
+    map.once("load", collapseAttrib);
+    setTimeout(collapseAttrib, 400);
+    setTimeout(collapseAttrib, 1500);
     map.addControl(
       new maplibregl.NavigationControl({ showCompass: true, visualizePitch: true }),
       "bottom-right"

@@ -72,6 +72,7 @@ export default function MapApp() {
       lat,
       placeName: geo.placeName,
       countryCode: geo.countryCode,
+      region: geo.region,
     });
   }
 
@@ -94,8 +95,9 @@ export default function MapApp() {
       {mapMode === "pins" && <LayerRail onOpenFriends={() => setFriendsOpen(true)} />}
 
       {/* Trips-mode banner: trips are their own map — exit back to pins */}
+      {/* Desktop only — phones exit trips mode by closing the panel instead */}
       {mapMode === "trips" && (
-        <div className="fixed left-1/2 top-16 z-30 -translate-x-1/2 sm:top-20">
+        <div className="fixed left-1/2 top-16 z-30 -translate-x-1/2 max-sm:hidden sm:top-20">
           <button
             onClick={() => setMapMode("pins")}
             className="animate-fade flex items-center gap-2 rounded-full bg-ink/90 px-4 py-2 text-sm text-paper shadow-float backdrop-blur"
@@ -161,7 +163,14 @@ export default function MapApp() {
       {activityOpen && <ActivityPanel onClose={() => setActivityOpen(false)} />}
       {topSpotsOpen && <TopSpotsPanel onClose={() => setTopSpotsOpen(false)} />}
       {tripsOpen && (
-        <TripsPanel onClose={() => setTripsOpen(false)} onOpenGuide={setGuideTripId} />
+        <TripsPanel
+          onClose={() => {
+            setTripsOpen(false);
+            // Phones have no trips-mode banner — closing the panel is the exit.
+            if (window.innerWidth < 640) setMapMode("pins");
+          }}
+          onOpenGuide={setGuideTripId}
+        />
       )}
       {guideTrip && (
         <TripGuidePanel

@@ -94,7 +94,10 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
 
           {/* Add friends — with the requests badge when someone's waiting */}
           <button
-            onClick={onOpenFriends}
+            onClick={() => {
+              setOpen(false); // the sheet takes over — don't leave this floating behind it
+              onOpenFriends();
+            }}
             className="mt-1.5 flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-sm text-ink-2 hover:bg-paper-2"
           >
             <span className="grid h-7 w-7 place-items-center rounded-full border-2 border-dashed border-line text-ink-3">
@@ -194,8 +197,15 @@ function FocusButton() {
     <button
       onClick={focus}
       title="Frame the country you're in"
-      className="flex items-center gap-2 rounded-full bg-paper/90 text-left font-display text-base text-ink shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:bg-paper/85 sm:w-[220px] sm:py-2.5 sm:pl-5 sm:pr-4"
+      className="flex items-center gap-2 rounded-full bg-paper/90 text-left font-display text-base text-ink shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:relative max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:bg-paper/85 sm:w-[220px] sm:py-2.5 sm:pl-5 sm:pr-4"
     >
+      {/* Phones hide the inline label, so feedback floats beside the icon —
+          without this, a denied location permission looked like a dead button. */}
+      {(state !== "idle" || countryName) && (
+        <span className="pointer-events-none absolute left-11 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ink/90 px-3 py-1.5 font-sans text-xs font-medium text-paper shadow-float sm:hidden">
+          {state === "off" ? "Location unavailable — allow access" : label}
+        </span>
+      )}
       <svg
         width="15"
         height="15"

@@ -168,24 +168,28 @@ export default function PassportCard({ pins }: { pins: Pin[] }) {
       <canvas ref={canvasRef} aria-hidden className="mt-3 w-full" />
 
       {/* Tally strip */}
-      <div className="mt-3 grid grid-cols-3 gap-3 text-center">
+      <div className="mt-3 grid grid-cols-4 gap-2 text-center">
         <div>
           <div className="tnum font-display text-xl">
             {stats.continentsVisited}
             <span className="text-sm text-ink-3">/{stats.continentsTotal}</span>
           </div>
-          <div className="text-[11px] uppercase tracking-wide text-ink-3">continents</div>
+          <div className="text-[10px] uppercase tracking-wide text-ink-3">continents</div>
         </div>
         <div>
           <div className="tnum font-display text-xl">
             {stats.codes.length}
             <span className="text-sm text-ink-3">/{stats.countriesTotal}</span>
           </div>
-          <div className="text-[11px] uppercase tracking-wide text-ink-3">countries</div>
+          <div className="text-[10px] uppercase tracking-wide text-ink-3">countries</div>
+        </div>
+        <div>
+          <div className="tnum font-display text-xl">{stats.regions}</div>
+          <div className="text-[10px] uppercase tracking-wide text-ink-3">regions</div>
         </div>
         <div>
           <div className="tnum font-display text-xl">{stats.cities}</div>
-          <div className="text-[11px] uppercase tracking-wide text-ink-3">places</div>
+          <div className="text-[10px] uppercase tracking-wide text-ink-3">cities</div>
         </div>
       </div>
 

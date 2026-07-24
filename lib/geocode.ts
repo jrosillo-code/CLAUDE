@@ -8,6 +8,8 @@ export interface GeoResult {
   placeName: string;
   /** Secondary line: region + country ("Alentejo, Portugal"). */
   context: string;
+  /** First-level admin area (state/province/region), when known. */
+  region?: string;
   countryCode: string;
   lng: number;
   lat: number;
@@ -263,6 +265,7 @@ export async function reverseGeocode(lng: number, lat: number): Promise<GeoResul
         return {
           placeName: name,
           context: [a.state, a.country].filter((x) => x && x !== name).join(", "),
+          region: a.state,
           countryCode: (a.country_code ?? "").toUpperCase(),
           lng: parseFloat(data.lon),
           lat: parseFloat(data.lat),

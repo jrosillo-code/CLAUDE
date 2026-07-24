@@ -104,6 +104,7 @@ export default function AddPinSheet() {
       lat: draft.lat,
       placeName: draft.placeName,
       countryCode: draft.countryCode,
+      region: draft.region,
       title: title.trim() || draft.placeName,
       note: note.trim(),
       visibility,

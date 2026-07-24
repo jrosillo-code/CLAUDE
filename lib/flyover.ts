@@ -4,6 +4,11 @@ import type maplibregl from "maplibre-gl";
 // avatar rides a little plane from pin to pin along a great-circle thread
 // while the camera stays locked on the plane, so the globe itself glides
 // underneath. Ends by framing the whole journey.
+//
+// The trail is drawn as ONE static line uploaded once; each frame only moves
+// a gradient "reveal head" along it (setPaintProperty). No per-frame geometry
+// re-uploads means the line can never lag or momentarily vanish behind the
+// plane the way a growing LineString did.
 
 const SRC = "wp-flyover-src";
 const LYR = "wp-flyover-lyr";
@@ -11,6 +16,8 @@ const LYR_GLOW = "wp-flyover-glow";
 const CRUISE_ZOOM = 3.4;
 const SPEED_DEG_PER_S = 26; // arc speed between stops
 const PAUSE_MS = 480; // hover at each pin
+const SAMPLES_PER_LEG = 72;
+const TRANS = "rgba(0,0,0,0)";
 
 interface Stop {
   lng: number;
@@ -64,6 +71,34 @@ function hexToRgba(hex: string, alpha: number): string {
   const g = parseInt(n.slice(2, 4), 16);
   const b = parseInt(n.slice(4, 6), 16);
   return `rgba(${r},${g},${b},${alpha})`;
+}
+
+/** Mercator-projected Y — line-progress measures length in projected space,
+ *  so the reveal head is weighted the same way the renderer weighs the line. */
+function mercY(lat: number): number {
+  const φ = (Math.max(-85, Math.min(85, lat)) * Math.PI) / 180;
+  return Math.log(Math.tan(Math.PI / 4 + φ / 2));
+}
+
+/** Comet reveal: everything behind the head stays visible (dim → brighter near
+ *  the head), everything ahead of it is transparent. Stops kept strictly
+ *  ascending for the interpolate expression. */
+function revealGradient(
+  head: number,
+  base: string,
+  near: string,
+  headColor: string
+): unknown[] {
+  const e = 0.0015;
+  const h = Math.max(0, Math.min(1 - 2 * e, head));
+  if (h < 4 * e) {
+    return ["interpolate", ["linear"], ["line-progress"], 0, TRANS, 1, TRANS];
+  }
+  const m = h - 0.25;
+  const flat: unknown[] = [0, base];
+  if (m > e && m < h - e) flat.push(m, near);
+  flat.push(h, headColor, h + e, TRANS, 1, TRANS);
+  return ["interpolate", ["linear"], ["line-progress"], ...flat];
 }
 
 function planeEl(avatarUrl: string, accent: string) {
@@ -133,7 +168,6 @@ export function startFlyover(
   const { el, plane } = planeEl(avatarUrl, accent);
   const marker = new MarkerCtor({ element: el, anchor: "center" });
   let markerAdded = false;
-  const trail: [number, number][] = [];
 
   const cleanupMap = () => {
     try {
@@ -167,6 +201,32 @@ export function startFlyover(
     return cancel;
   }
 
+  // ── The whole route, sampled once ──
+  const lineCoords: [number, number][] = [];
+  {
+    let prev = path[0].lng;
+    for (let i = 0; i < path.length - 1; i++) {
+      for (let s = i === 0 ? 0 : 1; s <= SAMPLES_PER_LEG; s++) {
+        const [lng, lat] = slerp(path[i], path[i + 1], s / SAMPLES_PER_LEG, prev);
+        lineCoords.push([lng, lat]);
+        prev = lng;
+      }
+    }
+  }
+  // Cumulative fraction of projected line length at each sample — this is the
+  // space line-progress lives in, so the reveal head sits exactly on the plane.
+  const cumFrac: number[] = [0];
+  {
+    let total = 0;
+    for (let i = 1; i < lineCoords.length; i++) {
+      const dx = ((lineCoords[i][0] - lineCoords[i - 1][0]) * Math.PI) / 180;
+      const dy = mercY(lineCoords[i][1]) - mercY(lineCoords[i - 1][1]);
+      total += Math.hypot(dx, dy);
+      cumFrac.push(total);
+    }
+    for (let i = 0; i < cumFrac.length; i++) cumFrac[i] = total > 0 ? cumFrac[i] / total : 0;
+  }
+
   // Leg durations from arc length, clamped so short hops still read and long
   // hauls don't drag.
   const legMs = path
@@ -175,17 +235,26 @@ export function startFlyover(
       Math.min(3400, Math.max(1100, (arcDeg(path[i], b) / SPEED_DEG_PER_S) * 1000))
     );
 
+  const coreGradient = (h: number) =>
+    revealGradient(h, hexToRgba(accent, 0.3), hexToRgba(accent, 0.75), "#a5e0ff");
+  const glowGradient = (h: number) =>
+    revealGradient(h, hexToRgba(accent, 0.1), hexToRgba(accent, 0.3), hexToRgba(accent, 0.8));
+
   const begin = () => {
     if (disposed) return;
     cleanupMap();
     try {
       map.addSource(SRC, {
         type: "geojson",
-        lineMetrics: true, // enables the comet gradient along the line
-        data: { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: [] } },
+        lineMetrics: true, // enables line-progress for the reveal gradient
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: { type: "LineString", coordinates: lineCoords },
+        },
       });
-      // Comet trail: a wide soft glow underlay plus a bright core, both fading
-      // toward the tail so the light chases the plane.
+      // Comet trail: a wide soft glow underlay plus a bright core; both are
+      // revealed by moving the gradient head — geometry never changes.
       map.addLayer({
         id: LYR_GLOW,
         type: "line",
@@ -194,17 +263,7 @@ export function startFlyover(
         paint: {
           "line-width": 8,
           "line-blur": 5,
-          "line-gradient": [
-            "interpolate",
-            ["linear"],
-            ["line-progress"],
-            0,
-            hexToRgba(accent, 0),
-            0.6,
-            hexToRgba(accent, 0.25),
-            1,
-            hexToRgba(accent, 0.75),
-          ],
+          "line-gradient": glowGradient(0) as never,
         },
       });
       map.addLayer({
@@ -212,22 +271,7 @@ export function startFlyover(
         type: "line",
         source: SRC,
         layout: { "line-cap": "round", "line-join": "round" },
-        paint: {
-          "line-width": 2.5,
-          "line-gradient": [
-            "interpolate",
-            ["linear"],
-            ["line-progress"],
-            0,
-            hexToRgba(accent, 0),
-            0.5,
-            hexToRgba(accent, 0.35),
-            0.85,
-            accent,
-            1,
-            "#a5e0ff",
-          ],
-        },
+        paint: { "line-width": 2.5, "line-gradient": coreGradient(0) as never },
       });
     } catch {
       cancel();
@@ -235,12 +279,13 @@ export function startFlyover(
     }
     marker.setLngLat([path[0].lng, path[0].lat]).addTo(map);
     markerAdded = true;
-    trail.push([path[0].lng, path[0].lat]);
 
     let leg = 0;
     let phase: "fly" | "pause" = "pause";
     let phaseStart = performance.now();
     let headingDeg: number | null = null;
+    let lastLng = path[0].lng;
+    let lastFrac = -1;
 
     const frame = (now: number) => {
       if (disposed) return;
@@ -254,16 +299,21 @@ export function startFlyover(
       }
       const f = Math.min(1, (now - phaseStart) / legMs[leg]);
       const eased = easeInOut(f);
-      const prevLng = trail[trail.length - 1][0];
-      const [lng, lat] = slerp(path[leg], path[leg + 1], eased, prevLng);
-      trail.push([lng, lat]);
+      const [lng, lat] = slerp(path[leg], path[leg + 1], eased, lastLng);
+      lastLng = lng;
       try {
-        (map.getSource(SRC) as maplibregl.GeoJSONSource | undefined)?.setData({
-          type: "Feature",
-          properties: {},
-          geometry: { type: "LineString", coordinates: trail },
-        });
         marker.setLngLat([lng, lat]);
+
+        // Reveal the trail up to the plane — interpolated in projected space.
+        const fi = Math.min(lineCoords.length - 1.001, (leg + eased) * SAMPLES_PER_LEG);
+        const i0 = Math.floor(fi);
+        const frac = cumFrac[i0] + (cumFrac[i0 + 1] - cumFrac[i0]) * (fi - i0);
+        if (Math.abs(frac - lastFrac) > 0.0006) {
+          lastFrac = frac;
+          map.setPaintProperty(LYR, "line-gradient", coreGradient(frac) as never);
+          map.setPaintProperty(LYR_GLOW, "line-gradient", glowGradient(frac) as never);
+        }
+
         // Point the plane along its actual on-screen motion — with the heading
         // low-pass filtered so projection jitter never twitches the nose — and
         // scale it up mid-leg for a hint of cruising altitude.
@@ -309,14 +359,28 @@ export function startFlyover(
   };
 
   const finish = () => {
-    // Land, breathe, then pull back to frame the whole journey; the thread
-    // lingers a beat before fading out with the cleanup.
+    // Land, settle the full route to a steady glow, then pull back to frame
+    // the whole journey; the thread lingers a beat before the cleanup.
+    try {
+      const settledCore = [
+        "interpolate", ["linear"], ["line-progress"],
+        0, hexToRgba(accent, 0.55), 1, accent,
+      ];
+      const settledGlow = [
+        "interpolate", ["linear"], ["line-progress"],
+        0, hexToRgba(accent, 0.15), 1, hexToRgba(accent, 0.45),
+      ];
+      map.setPaintProperty(LYR, "line-gradient", settledCore as never);
+      map.setPaintProperty(LYR_GLOW, "line-gradient", settledGlow as never);
+    } catch {
+      /* ignore */
+    }
     later(() => {
       if (markerAdded) marker.remove();
       markerAdded = false;
       try {
         const b = new LngLatBoundsCtor();
-        trail.forEach(([lng, lat]) => b.extend([lng, lat]));
+        lineCoords.forEach(([lng, lat]) => b.extend([lng, lat]));
         map.fitBounds(b, { padding: 90, maxZoom: 5, duration: 2200, essential: true });
       } catch {
         /* ignore */
