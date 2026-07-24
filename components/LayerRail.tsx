@@ -172,14 +172,15 @@ export default function LayerRail({
       <button
         onClick={onOpenTrips}
         title="Trips"
-        className="flex items-center rounded-full shadow-float backdrop-blur transition-colors max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:bg-paper/85 sm:w-[220px] sm:gap-2 sm:bg-paper/90 sm:py-2.5 sm:pl-5 sm:pr-4 sm:text-left sm:font-display sm:text-base sm:text-ink sm:hover:bg-paper"
+        className="flex items-center text-left rounded-full shadow-float backdrop-blur transition-colors max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:bg-paper/85 sm:w-[220px] sm:gap-2 sm:bg-paper/90 sm:py-2.5 sm:pl-5 sm:pr-4 sm:hover:bg-paper"
       >
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="shrink-0 text-accent">
           <circle cx="5" cy="19" r="2.4" fill="currentColor" />
           <circle cx="19" cy="5" r="2.4" fill="currentColor" />
           <path d="M6.8 17.2C10 14 8.5 11 12 8.5c2.4-1.7 4-1.5 5.4-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="0.5 3.4" />
         </svg>
-        <span className="max-sm:hidden">Trips</span>
+        {/* Same type treatment as the Travelers row above */}
+        <span className="hidden font-display text-base text-ink sm:block">Trips</span>
       </button>
     </div>
   );
