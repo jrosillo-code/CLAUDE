@@ -13,11 +13,14 @@ export default function LayerRail({
   onOpenFriends,
   onOpenCreators,
   onOpenTravelers,
+  onOpenTrips,
 }: {
   onOpenFriends: () => void;
   onOpenCreators: () => void;
   /** Phones open the full Travelers sheet instead of the floating popover. */
   onOpenTravelers: () => void;
+  /** Desktop: Trips sits right under the Travelers card. */
+  onOpenTrips: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const viewer = useViewer();
@@ -164,9 +167,19 @@ export default function LayerRail({
         </div>
       </div>
 
-      <div className="max-sm:hidden">
-        <FocusButton />
-      </div>
+      {/* Trips — under Travelers on desktop; phones keep it bottom-right */}
+      <button
+        onClick={onOpenTrips}
+        title="Trips"
+        className="flex items-center gap-2 rounded-full bg-paper/90 py-2.5 pl-5 pr-4 text-left font-display text-base text-ink shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:hidden sm:w-[220px]"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0 text-accent-2">
+          <circle cx="5" cy="19" r="2.4" fill="currentColor" />
+          <circle cx="19" cy="5" r="2.4" fill="currentColor" />
+          <path d="M6.8 17.2C10 14 8.5 11 12 8.5c2.4-1.7 4-1.5 5.4-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="0.5 3.4" />
+        </svg>
+        Trips
+      </button>
     </div>
   );
 }
@@ -231,22 +244,23 @@ export function FocusButton({ bubbleLeft = false }: { bubbleLeft?: boolean }) {
     <button
       onClick={focus}
       title="Frame the country you're in"
-      className="flex items-center gap-2 rounded-full bg-paper/90 text-left font-display text-base text-ink shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:relative max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:bg-paper/85 sm:w-[220px] sm:py-2.5 sm:pl-5 sm:pr-4"
+      aria-label="Focus on the country you're in"
+      className="relative grid h-9 w-9 place-items-center rounded-full bg-paper/85 shadow-float backdrop-blur transition-colors hover:bg-paper sm:h-11 sm:w-11 sm:bg-paper/90"
     >
-      {/* Phones hide the inline label, so feedback floats beside the icon —
-          without this, a denied location permission looked like a dead button. */}
+      {/* Icon-only everywhere, so feedback floats beside the button — without
+          this, a denied location permission looked like a dead button. */}
       {(state !== "idle" || countryName) && (
         <span
-          className={`pointer-events-none absolute top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ink/90 px-3 py-1.5 font-sans text-xs font-medium text-paper shadow-float sm:hidden ${
-            bubbleLeft ? "right-11" : "left-11"
+          className={`pointer-events-none absolute top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ink/90 px-3 py-1.5 font-sans text-xs font-medium text-paper shadow-float ${
+            bubbleLeft ? "right-11 sm:right-[52px]" : "left-11 sm:left-[52px]"
           }`}
         >
           {state === "off" ? "Location unavailable — allow access" : label}
         </span>
       )}
       <svg
-        width="15"
-        height="15"
+        width="16"
+        height="16"
         viewBox="0 0 24 24"
         fill="none"
         className={state === "locating" ? "animate-pulse text-accent" : "text-accent"}
@@ -255,7 +269,6 @@ export function FocusButton({ bubbleLeft = false }: { bubbleLeft?: boolean }) {
         <circle cx="12" cy="12" r="2.2" fill="currentColor" />
         <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
-      <span className="truncate max-sm:hidden">{label}</span>
     </button>
   );
 }

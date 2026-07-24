@@ -111,7 +111,6 @@ export default function MapApp() {
       <MapCanvas placing={placing || !!tripDraft} onPick={handlePick} />
 
       <TopBar
-        onOpenCreators={() => setCreatorsOpen(true)}
         onOpenActivity={() => setActivityOpen(true)}
         onOpenFeed={() => setFeedOpen(true)}
         tripsActive={mapMode === "trips"}
@@ -125,6 +124,10 @@ export default function MapApp() {
           onOpenFriends={() => setFriendsOpen(true)}
           onOpenCreators={() => setCreatorsOpen(true)}
           onOpenTravelers={() => setTravelersOpen(true)}
+          onOpenTrips={() => {
+            setMapMode("trips");
+            setTripsOpen(true);
+          }}
         />
       )}
 

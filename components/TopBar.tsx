@@ -9,13 +9,11 @@ import WaypointLogo from "./Logo";
 import { FocusButton } from "./LayerRail";
 
 export default function TopBar({
-  onOpenCreators,
   onOpenTrips,
   onOpenActivity,
   onOpenFeed,
   tripsActive,
 }: {
-  onOpenCreators: () => void;
   onOpenTrips: () => void;
   onOpenActivity: () => void;
   onOpenFeed: () => void;
@@ -127,37 +125,6 @@ export default function TopBar({
       </div>
 
       <div className="ml-auto flex min-w-0 shrink-0 items-center justify-end gap-1.5 sm:ml-0 sm:flex-1 sm:basis-0 sm:gap-2">
-        {/* Trips — desktop only up here; phones get it bottom-right */}
-        <button
-          onClick={onOpenTrips}
-          className={`flex items-center gap-1.5 rounded-full shadow-float backdrop-blur max-sm:hidden sm:px-3 sm:py-2 ${
-            tripsActive ? "bg-ink text-paper" : "bg-paper/85"
-          }`}
-          title="Trips"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent-2">
-            <circle cx="5" cy="19" r="2.4" fill="currentColor" />
-            <circle cx="19" cy="5" r="2.4" fill="currentColor" />
-            <path d="M6.8 17.2C10 14 8.5 11 12 8.5c2.4-1.7 4-1.5 5.4-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="0.5 3.4" />
-          </svg>
-          <span className="hidden text-sm font-medium sm:block">Trips</span>
-        </button>
-
-        {/* Creators — desktop only up here; phones get it bottom-right */}
-        <button
-          onClick={onOpenCreators}
-          className="flex items-center gap-1.5 rounded-full bg-paper/85 shadow-float backdrop-blur max-sm:hidden sm:px-3 sm:py-2"
-          title="Creators"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent">
-            <path
-              d="M12 2.5 14.3 5l3.4-.3.6 3.3 3 1.6-1.4 3.1 1.4 3.1-3 1.6-.6 3.3-3.4-.3L12 22.7 9.7 20l-3.4.3-.6-3.3-3-1.6 1.4-3.1L2.7 9.2l3-1.6.6-3.3 3.4.3z"
-              fill="currentColor"
-            />
-          </svg>
-          <span className="hidden text-sm font-medium sm:block">Creators</span>
-        </button>
-
         {/* Activity bell */}
         <button
           onClick={onOpenActivity}
@@ -192,13 +159,14 @@ export default function TopBar({
       </div>
     </header>
 
-    {/* Phones: Trips + Creators live above the add-pin FAB, mirroring the
-        Travelers/Focus/Layers column on the left — search gets the top. */}
-    <div className="fixed bottom-[calc(72px+env(safe-area-inset-bottom))] right-[18px] z-30 flex flex-col gap-2 sm:hidden">
+    {/* Bottom-right column above the add-pin FAB. Phones: Trips + Focus.
+        Desktop: just the Focus icon, centered over the big blue plus —
+        Trips lives under Travelers in the left rail there. */}
+    <div className="fixed z-30 flex flex-col items-center gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:right-[18px] sm:bottom-24 sm:right-4 sm:w-14">
       <button
         onClick={onOpenTrips}
         title="Trips"
-        className={`grid h-9 w-9 place-items-center rounded-full shadow-float backdrop-blur ${
+        className={`grid h-9 w-9 place-items-center rounded-full shadow-float backdrop-blur sm:hidden ${
           tripsActive ? "bg-ink text-paper" : "bg-paper/85"
         }`}
       >
