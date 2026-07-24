@@ -12,16 +12,17 @@ export default function TopBar({
   onOpenCreators,
   onOpenTrips,
   onOpenActivity,
+  onOpenFeed,
   tripsActive,
 }: {
   onOpenCreators: () => void;
   onOpenTrips: () => void;
   onOpenActivity: () => void;
+  onOpenFeed: () => void;
   tripsActive: boolean;
 }) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
-  const requestFlyover = useStore((s) => s.requestFlyover);
   const unread = useStore((s) => s.notifications.filter((n) => !n.read).length);
 
   const [q, setQ] = useState("");
@@ -66,11 +67,11 @@ export default function TopBar({
       {/* Brand — on desktop the side groups share flex-1/basis-0 so the search
           stays truly centered; on phones they collapse so search gets the room */}
       <div className="flex min-w-0 shrink-0 justify-start sm:flex-1 sm:basis-0">
-        {/* Tapping the brand replays your journey: a little you-on-a-plane
-            flies pin to pin while the globe follows. */}
+        {/* Tapping the brand opens the pin feed — the latest drops from your
+            travelers, each with a "take me there" jump to the map. */}
         <button
-          onClick={requestFlyover}
-          title="Replay your journey"
+          onClick={onOpenFeed}
+          title="Latest pins"
           className="flex shrink-0 items-center gap-2 rounded-full bg-paper/85 px-2.5 py-2 shadow-float backdrop-blur sm:px-3.5"
         >
           <WaypointLogo size={20} />

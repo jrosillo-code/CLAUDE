@@ -75,11 +75,10 @@ const landmarksFC: GeoJSON.FeatureCollection = {
 // are reachable. Lets a repeat theme switch jump straight to its final style.
 const styleProbeCache = new Map<string, boolean>();
 
-// Request counters already consumed. Module scope on purpose: MapCanvas
-// unmounts when navigating to a profile, and on return the effects re-run
-// with the store's old counter values — without these markers the last
-// flyover/recording would replay itself.
-let flyoverConsumed = 0;
+// Request counter already consumed. Module scope on purpose: MapCanvas
+// unmounts when navigating to a profile, and on return the effect re-runs
+// with the store's old counter value — without this marker the last
+// recording would replay itself.
 let recapFlightConsumed = 0;
 
 export default function MapCanvas({ placing, onPick }: Props) {
@@ -105,7 +104,6 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const selectPin = useStore((s) => s.selectPin);
   const flyTo = useStore((s) => s.flyTo);
   const fitBoundsTo = useStore((s) => s.fitBoundsTo);
-  const flyoverReq = useStore((s) => s.flyoverReq);
   const recapFlightReq = useStore((s) => s.recapFlightReq);
   const basemap = useStore((s) => s.basemap);
   const terrain3d = useStore((s) => s.terrain3d);
@@ -610,9 +608,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // only once the map is fully idle.
     let recenterTimer: ReturnType<typeof setTimeout> | null = null;
     const scheduleRecenter = () => {
-      // Phones: let the globe rest wherever the user leaves it — snapping it
-      // back after every gesture reads as the map fighting your fingers.
-      if (window.innerWidth < 640) return;
+      // Phones get a wide tolerance band instead of an outright skip: casual
+      // gestures are never fought, but zooming out from a searched city at
+      // lat 40° still pulls the globe back to the middle of the screen.
+      const slack = window.innerWidth < 640 ? 16 : 0;
       if (recenterTimer !== null) clearTimeout(recenterTimer);
       recenterTimer = setTimeout(() => {
         recenterTimer = null;
@@ -623,7 +622,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
         const z = map.getZoom();
         if (z >= 3.2) return;
         const t = Math.max(0, Math.min(1, (z - 1.05) / (3.2 - 1.05)));
-        const maxLat = 12 + t * 63; // 12° fully zoomed out → 75° near street level
+        const maxLat = 12 + t * 63 + slack; // 12° fully zoomed out → 75° near street level
         const c = map.getCenter();
         const clampedLat = Math.max(-maxLat, Math.min(maxLat, c.lat));
         const needPitch = z < 2.4 && map.getPitch() > 4;
@@ -777,39 +776,15 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flyTo?.nonce]);
 
-  // ---- Journey flyover (Waypoint logo tap): your pins as a flight ----
-  useEffect(() => {
-    const map = mapRef.current;
-    if (!map || !flyoverReq || flyoverReq === flyoverConsumed || !readyRef.current) return;
-    flyoverConsumed = flyoverReq;
-    const st = useStore.getState();
-    const own = st.pins
-      .filter((p) => p.userId === st.viewerId)
-      .sort((a, b) => (a.startedOn ?? a.createdAt).localeCompare(b.startedOn ?? b.createdAt));
-    const me = st.users.find((u) => u.id === st.viewerId);
-    if (!me || own.length === 0) return;
-    const accent =
-      getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
-      "#0a84ff";
-    return startFlyover(
-      map,
-      maplibregl.Marker,
-      maplibregl.LngLatBounds,
-      own.map((p) => ({ lng: p.lng, lat: p.lat })),
-      me.avatarUrl,
-      accent
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [flyoverReq]);
-
   // ---- Recap flight film: this year's journey, recorded to a video ----
   useEffect(() => {
     if (!recapFlightReq || recapFlightReq === recapFlightConsumed) return;
-    recapFlightConsumed = recapFlightReq;
     let cancelled = false;
     let cancelFlight: (() => void) | null = null;
     // The request usually arrives right after navigating from the profile —
-    // wait for the map to finish coming up before takeoff.
+    // wait for the map to finish coming up before takeoff. The counter is
+    // consumed at actual takeoff (not on effect entry) so StrictMode's dev
+    // double-run doesn't swallow the request.
     const tryStart = (attempt: number) => {
       if (cancelled) return;
       const map = mapRef.current;
@@ -817,6 +792,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
         if (attempt < 40) setTimeout(() => tryStart(attempt + 1), 250);
         return;
       }
+      recapFlightConsumed = recapFlightReq;
       const st = useStore.getState();
       const me = st.users.find((u) => u.id === st.viewerId);
       const year = new Date().getFullYear();
@@ -847,9 +823,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
         { onFrame: recorder.handleFrame, onEnd: recorder.end }
       );
     };
-    tryStart(0);
+    const t0 = setTimeout(() => tryStart(0), 60);
     return () => {
       cancelled = true;
+      clearTimeout(t0);
       cancelFlight?.();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

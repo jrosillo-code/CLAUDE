@@ -10,6 +10,8 @@ import PinSheet from "./PinSheet";
 import AddPinSheet from "./AddPinSheet";
 import CreatorsPanel from "./CreatorsPanel";
 import FriendsPanel from "./FriendsPanel";
+import TravelersSheet from "./TravelersSheet";
+import PinFeed from "./PinFeed";
 import ActivityPanel from "./ActivityPanel";
 import TripsPanel from "./TripsPanel";
 import TripGuidePanel from "./TripGuidePanel";
@@ -26,6 +28,8 @@ export default function MapApp() {
   const [resolving, setResolving] = useState(false);
   const [creatorsOpen, setCreatorsOpen] = useState(false);
   const [friendsOpen, setFriendsOpen] = useState(false);
+  const [travelersOpen, setTravelersOpen] = useState(false);
+  const [feedOpen, setFeedOpen] = useState(false);
   const [activityOpen, setActivityOpen] = useState(false);
   const [topSpotsOpen, setTopSpotsOpen] = useState(false);
   const [tripsOpen, setTripsOpen] = useState(false);
@@ -102,6 +106,7 @@ export default function MapApp() {
       <TopBar
         onOpenCreators={() => setCreatorsOpen(true)}
         onOpenActivity={() => setActivityOpen(true)}
+        onOpenFeed={() => setFeedOpen(true)}
         tripsActive={mapMode === "trips"}
         onOpenTrips={() => {
           setMapMode("trips");
@@ -112,6 +117,7 @@ export default function MapApp() {
         <LayerRail
           onOpenFriends={() => setFriendsOpen(true)}
           onOpenCreators={() => setCreatorsOpen(true)}
+          onOpenTravelers={() => setTravelersOpen(true)}
         />
       )}
 
@@ -189,6 +195,13 @@ export default function MapApp() {
       {addDraft && <AddPinSheet />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}
       {friendsOpen && <FriendsPanel onClose={() => setFriendsOpen(false)} />}
+      {travelersOpen && (
+        <TravelersSheet
+          onClose={() => setTravelersOpen(false)}
+          onOpenFriends={() => setFriendsOpen(true)}
+        />
+      )}
+      {feedOpen && <PinFeed onClose={() => setFeedOpen(false)} />}
       {activityOpen && <ActivityPanel onClose={() => setActivityOpen(false)} />}
       {topSpotsOpen && <TopSpotsPanel onClose={() => setTopSpotsOpen(false)} />}
       {tripsOpen && (

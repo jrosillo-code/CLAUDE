@@ -12,9 +12,12 @@ import WorldProgress from "./WorldProgress";
 export default function LayerRail({
   onOpenFriends,
   onOpenCreators,
+  onOpenTravelers,
 }: {
   onOpenFriends: () => void;
   onOpenCreators: () => void;
+  /** Phones open the full Travelers sheet instead of the floating popover. */
+  onOpenTravelers: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const viewer = useViewer();
@@ -48,7 +51,9 @@ export default function LayerRail({
     <div className={`fixed flex flex-col gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:left-[18px] sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-40" : "z-30"}`}>
       <div className="max-sm:relative sm:w-[220px] sm:rounded-3xl sm:bg-paper/90 sm:p-2 sm:shadow-float sm:backdrop-blur">
         <button
-          onClick={() => setOpen((o) => !o)}
+          onClick={() =>
+            window.innerWidth < 640 ? onOpenTravelers() : setOpen((o) => !o)
+          }
           title="Travelers"
           className="flex items-center text-left max-sm:relative max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:rounded-full max-sm:bg-paper/85 max-sm:shadow-float max-sm:backdrop-blur sm:w-full sm:justify-between sm:rounded-2xl sm:px-3 sm:py-2"
         >
@@ -78,30 +83,6 @@ export default function LayerRail({
             <Segment active={isEveryone} onClick={showEveryone}>Everyone</Segment>
             <Segment active={onlyCreators} onClick={showOnlyCreators}>Creators</Segment>
             <Segment active={onlyMe} onClick={showOnlyMe}>Just me</Segment>
-          </div>
-
-          {/* Phones: a light chip cloud — tap to toggle, dimmed when off.
-              The dotted list rows read as clutter at this size. */}
-          <div className="flex flex-wrap gap-1.5 sm:hidden">
-            <PersonChip user={viewer} label="You" on={isOn(viewer.id)} onToggle={() => toggleUser(viewer.id)} />
-            {friends.map((f) => (
-              <PersonChip
-                key={f.id}
-                user={f}
-                label={f.displayName.split(" ")[0]}
-                on={isOn(f.id)}
-                onToggle={() => toggleUser(f.id)}
-              />
-            ))}
-            {creators.map((c) => (
-              <PersonChip
-                key={c.id}
-                user={c}
-                label={c.displayName.split(" ")[0]}
-                on={isOn(c.id)}
-                onToggle={() => toggleUser(c.id)}
-              />
-            ))}
           </div>
 
           <ul className="space-y-0.5 max-sm:hidden">
@@ -275,7 +256,15 @@ export function FocusButton({ bubbleLeft = false }: { bubbleLeft?: boolean }) {
   );
 }
 
-function Segment({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+export function Segment({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <button
       onClick={onClick}
@@ -288,38 +277,7 @@ function Segment({ active, onClick, children }: { active: boolean; onClick: () =
   );
 }
 
-// Phone-size traveler toggle: avatar + first name in a pill. On/off reads as
-// bright/dimmed — no extra indicator dot needed.
-function PersonChip({
-  user,
-  label,
-  on,
-  onToggle,
-}: {
-  user: { avatarUrl: string; color: string };
-  label: string;
-  on: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <button
-      onClick={onToggle}
-      className={`flex items-center gap-1.5 rounded-full py-1 pl-1 pr-2.5 text-xs font-medium transition-opacity ${
-        on ? "bg-paper-2 text-ink" : "bg-paper-2/50 text-ink-3 opacity-55"
-      }`}
-    >
-      <img
-        src={user.avatarUrl}
-        alt=""
-        className="h-6 w-6 rounded-full object-cover ring-2"
-        style={{ ["--tw-ring-color" as string]: user.color, opacity: on ? 1 : 0.5 }}
-      />
-      {label}
-    </button>
-  );
-}
-
-function Row({
+export function Row({
   user,
   label,
   on,

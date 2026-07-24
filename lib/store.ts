@@ -160,9 +160,6 @@ interface WaypointState {
   requestFlyTo: (lng: number, lat: number, zoom?: number) => void;
   fitBoundsTo: { w: number; s: number; e: number; n: number; nonce: number } | null;
   requestFitBounds: (b: { w: number; s: number; e: number; n: number }) => void;
-  /** Journey flyover: tapping the Waypoint logo replays your pins as a flight. */
-  flyoverReq: number;
-  requestFlyover: () => void;
   /** Recap flight film: run this year's flyover while recording a video. */
   recapFlightReq: number;
   requestRecapFlight: () => void;
@@ -565,8 +562,6 @@ export const useStore = create<WaypointState>((set, get) => ({
   fitBoundsTo: null,
   requestFitBounds: (b) => set({ fitBoundsTo: { ...b, nonce: ++flyNonce } }),
 
-  flyoverReq: 0,
-  requestFlyover: () => set((s) => ({ flyoverReq: s.flyoverReq + 1 })),
   recapFlightReq: 0,
   requestRecapFlight: () => set((s) => ({ recapFlightReq: s.recapFlightReq + 1 })),
   flightRecording: false,
