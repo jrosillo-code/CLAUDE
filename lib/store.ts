@@ -135,6 +135,8 @@ interface WaypointState {
   shownTripIds: Set<string>;
   toggleTripShown: (id: string) => void;
   deleteTrip: (id: string) => void;
+  /** Rename a saved trip (owner only). */
+  renameTrip: (id: string, title: string) => void;
   tripDraft: { title: string; visibility: "friends" | "private"; stops: TripStop[] } | null;
   startTripDraft: () => void;
   cancelTripDraft: () => void;
@@ -562,6 +564,18 @@ export const useStore = create<WaypointState>((set, get) => ({
       return {
         trips: s.trips.filter((t) => !(t.id === id && t.userId === s.viewerId)),
         shownTripIds: new Set([...s.shownTripIds].filter((x) => x !== id)),
+      };
+    }),
+  renameTrip: (id, title) =>
+    set((s) => {
+      const t = title.trim();
+      if (!t) return {};
+      if (!s.trips.some((x) => x.id === id && x.userId === s.viewerId)) return {};
+      if (backendEnabled) backend.syncRenameTrip(id, t);
+      return {
+        trips: s.trips.map((x) =>
+          x.id === id && x.userId === s.viewerId ? { ...x, title: t } : x
+        ),
       };
     }),
   tripDraft: null,

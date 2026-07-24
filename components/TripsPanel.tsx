@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Sheet from "./Sheet";
 import { useStore } from "@/lib/store";
 import { visibleTrips } from "@/lib/data";
@@ -25,11 +26,19 @@ export default function TripsPanel({
   const shownTripIds = useStore((s) => s.shownTripIds);
   const toggleTripShown = useStore((s) => s.toggleTripShown);
   const deleteTrip = useStore((s) => s.deleteTrip);
+  const renameTrip = useStore((s) => s.renameTrip);
   const startTripDraft = useStore((s) => s.startTripDraft);
   const requestFitBounds = useStore((s) => s.requestFitBounds);
 
   const list = visibleTrips(trips, friendships, viewerId);
   const usersById = new Map(users.map((u) => [u.id, u]));
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [draftTitle, setDraftTitle] = useState("");
+
+  function commitRename(id: string) {
+    if (draftTitle.trim()) renameTrip(id, draftTitle);
+    setEditingId(null);
+  }
 
   function viewTrip(id: string) {
     const t = trips.find((x) => x.id === id);
@@ -93,7 +102,40 @@ export default function TripsPanel({
                   <img src={owner.avatarUrl} alt="" className="h-9 w-9 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: owner.color }} />
                 )}
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm font-medium">{t.title}</div>
+                  {editingId === t.id ? (
+                    <input
+                      autoFocus
+                      value={draftTitle}
+                      onChange={(e) => setDraftTitle(e.target.value)}
+                      onBlur={() => commitRename(t.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") commitRename(t.id);
+                        if (e.key === "Escape") setEditingId(null);
+                      }}
+                      placeholder="Trip name"
+                      className="w-full rounded-lg bg-paper px-2 py-1 text-sm font-medium outline-none ring-1 ring-line focus:ring-ink/30"
+                    />
+                  ) : (
+                    <div className="flex items-center gap-1.5">
+                      <span className="truncate text-sm font-medium">{t.title}</span>
+                      {mine && (
+                        <button
+                          onClick={() => {
+                            setDraftTitle(t.title);
+                            setEditingId(t.id);
+                          }}
+                          title="Rename trip"
+                          aria-label="Rename trip"
+                          className="shrink-0 text-ink-3 transition-colors hover:text-ink"
+                        >
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                            <path d="m13.5 8.5 3 3" stroke="currentColor" strokeWidth="1.8" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  )}
                   <div className="text-xs text-ink-3">
                     {mine ? "You" : owner?.displayName} · {t.stops.length} stops ·{" "}
                     {t.visibility === "private" ? "Only me" : "Friends"}

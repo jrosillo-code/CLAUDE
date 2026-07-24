@@ -431,6 +431,14 @@ export function syncSaveTrip(trip: Trip): void {
   })();
 }
 
+export function syncRenameTrip(tripId: string, title: string): void {
+  void supabase!
+    .from("trips")
+    .update({ title })
+    .eq("id", tripId)
+    .then(({ error }) => error && log("renameTrip")(error));
+}
+
 export function syncDeleteTrip(tripId: string): void {
   void supabase!
     .from("trips")
