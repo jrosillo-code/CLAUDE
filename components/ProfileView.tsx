@@ -49,7 +49,6 @@ export default function ProfileView({ handle }: { handle: string }) {
   const [editingSocials, setEditingSocials] = useState(false);
   const [socialsDraft, setSocialsDraft] = useState<UserSocials>({});
   const [statView, setStatView] = useState<"pins" | "countries" | "friends" | null>(null);
-  const [socialsOpen, setSocialsOpen] = useState(false);
   const [recapOpen, setRecapOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
 
@@ -195,7 +194,7 @@ export default function ProfileView({ handle }: { handle: string }) {
           )}
           <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-2">{user.bio}</p>
 
-          {/* Recap + import lead the card; socials tuck behind the tree. */}
+          {/* Recap + import lead the card; socials sit right underneath. */}
           {isMe && (
             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
               <button
@@ -212,8 +211,8 @@ export default function ProfileView({ handle }: { handle: string }) {
               </button>
             </div>
           )}
-          {socialsOpen && (
-            <div className="animate-fade mt-4 flex items-center justify-center gap-2">
+          {(isMe || (user.socials && Object.values(user.socials).some(Boolean))) && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
               <SocialLinks socials={user.socials} />
               {isMe && (
                 <button
@@ -232,20 +231,6 @@ export default function ProfileView({ handle }: { handle: string }) {
           )}
         </div>
 
-        {/* The tree — linked socials grow behind it. */}
-        <button
-          onClick={() => setSocialsOpen((o) => !o)}
-          title="Linked socials"
-          aria-label="Show linked socials"
-          className={`absolute bottom-3 right-3 grid h-9 w-9 place-items-center rounded-full transition-colors ${
-            socialsOpen ? "bg-ink text-paper" : "bg-paper-2 text-ink-2 ring-1 ring-line hover:text-ink"
-          }`}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2.5 7.5 9h2.3L5.8 14.8h3.7L6.3 20h11.4l-3.2-5.2h3.7L14.2 9h2.3z" fill="currentColor" />
-            <path d="M11 20h2v2.2h-2z" fill="currentColor" />
-          </svg>
-        </button>
         </div>{/* /identity card */}
 
         {/* Socials editor (own profile) */}
