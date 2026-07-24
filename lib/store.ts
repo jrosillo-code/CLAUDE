@@ -105,6 +105,13 @@ interface WaypointState {
   /** World landmarks layer (UNESCO / monuments / parks / culture icons). */
   showLandmarks: boolean;
   setShowLandmarks: (v: boolean) => void;
+  /** Lazy-loaded worldwide overlays: airports, train stations, stadiums. */
+  showAirports: boolean;
+  setShowAirports: (v: boolean) => void;
+  showStations: boolean;
+  setShowStations: (v: boolean) => void;
+  showStadiums: boolean;
+  setShowStadiums: (v: boolean) => void;
   selectedLandmarkId: string | null;
   selectLandmark: (id: string | null) => void;
   setTerrain3d: (v: boolean) => void;
@@ -415,6 +422,13 @@ export const useStore = create<WaypointState>((set, get) => ({
   // Off by default — travelers opt in from the map controls.
   showLandmarks: false,
   setShowLandmarks: (v) => set({ showLandmarks: v, selectedLandmarkId: null }),
+
+  showAirports: false,
+  setShowAirports: (v) => set({ showAirports: v }),
+  showStations: false,
+  setShowStations: (v) => set({ showStations: v }),
+  showStadiums: false,
+  setShowStadiums: (v) => set({ showStadiums: v }),
   selectedLandmarkId: null,
   selectLandmark: (id) => set({ selectedLandmarkId: id }),
 

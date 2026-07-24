@@ -17,6 +17,12 @@ export default function BasemapToggle() {
   const setTheme = useStore((s) => s.setTheme);
   const showLandmarks = useStore((s) => s.showLandmarks);
   const setShowLandmarks = useStore((s) => s.setShowLandmarks);
+  const showAirports = useStore((s) => s.showAirports);
+  const setShowAirports = useStore((s) => s.setShowAirports);
+  const showStations = useStore((s) => s.showStations);
+  const setShowStations = useStore((s) => s.setShowStations);
+  const showStadiums = useStore((s) => s.showStadiums);
+  const setShowStadiums = useStore((s) => s.setShowStadiums);
   const showWishlist = useStore((s) => s.showWishlist);
   const setShowWishlist = useStore((s) => s.setShowWishlist);
   const savedCount = useStore((s) => s.savedPinIds.size);
@@ -35,6 +41,26 @@ export default function BasemapToggle() {
   const iconSaved = (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
       <path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.2L5 21V4.5a1 1 0 0 1 1-1z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    </svg>
+  );
+  const iconAirport = (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M21 15.5v-2l-8-5V4a1.5 1.5 0 0 0-3 0v4.5l-8 5v2l8-2.5V18l-2 1.5V21l3.5-1 3.5 1v-1.5L13 18v-5z" fill="currentColor" />
+    </svg>
+  );
+  const iconTrain = (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <rect x="6" y="3.5" width="12" height="13" rx="3" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M6 11h12" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="9" cy="13.6" r="1" fill="currentColor" /><circle cx="15" cy="13.6" r="1" fill="currentColor" />
+      <path d="m8 17-2 3.5M16 17l2 3.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+  const iconStadium = (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <ellipse cx="12" cy="9" rx="9" ry="4.2" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M3 9v5c0 2.3 4 4.2 9 4.2s9-1.9 9-4.2V9" stroke="currentColor" strokeWidth="1.7" />
+      <ellipse cx="12" cy="9" rx="3.4" ry="1.6" stroke="currentColor" strokeWidth="1.5" />
     </svg>
   );
 
@@ -60,6 +86,9 @@ export default function BasemapToggle() {
             <div className="mt-2 space-y-0.5">
               <RowToggle icon={icon3d} label="3D terrain" active={terrain3d} onClick={() => setTerrain3d(!terrain3d)} />
               <RowToggle icon={iconLandmarks} label="Landmarks" active={showLandmarks} onClick={() => setShowLandmarks(!showLandmarks)} />
+              <RowToggle icon={iconAirport} label="Airports" active={showAirports} onClick={() => setShowAirports(!showAirports)} />
+              <RowToggle icon={iconTrain} label="Train stations" active={showStations} onClick={() => setShowStations(!showStations)} />
+              <RowToggle icon={iconStadium} label="Stadiums & arenas" active={showStadiums} onClick={() => setShowStadiums(!showStadiums)} />
               <RowToggle
                 icon={iconSaved}
                 label={`Saved${savedCount > 0 ? ` · ${savedCount}` : ""}`}

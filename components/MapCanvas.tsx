@@ -13,6 +13,7 @@ import {
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
+import { OVERLAYS, type OverlayId } from "@/lib/overlays";
 import { visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
 import { createFlightRecorder } from "@/lib/recordFlight";
@@ -169,6 +170,18 @@ export default function MapCanvas({ placing, onPick }: Props) {
   landmarksRef.current = { show: showLandmarks, selected: selectedLandmarkId };
   const selectLandmarkRef = useRef(selectLandmark);
   selectLandmarkRef.current = selectLandmark;
+  const showAirports = useStore((s) => s.showAirports);
+  const showStations = useStore((s) => s.showStations);
+  const showStadiums = useStore((s) => s.showStadiums);
+  const overlayFlagsRef = useRef<Record<OverlayId, boolean>>({
+    airports: showAirports,
+    stations: showStations,
+    stadiums: showStadiums,
+  });
+  overlayFlagsRef.current = { airports: showAirports, stations: showStations, stadiums: showStadiums };
+  // Fetched GeoJSON, kept across style reloads so a theme switch doesn't refetch.
+  const overlayDataRef = useRef<Partial<Record<OverlayId, unknown>>>({});
+  const overlayFetchingRef = useRef<Partial<Record<OverlayId, boolean>>>({});
   const userLocationRef = useRef(userLocation);
   userLocationRef.current = userLocation;
   // Ghost only the saved pins that aren't already on the map normally.
@@ -375,6 +388,97 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
   }
 
+  // Worldwide reference overlays (airports / stations / stadiums). Each is
+  // lazy-fetched the first time its toggle turns on, then added as a zoom-gated
+  // circle + label layer. Re-runs on every style.load (setStyle wipes layers).
+  function syncOverlays(map: maplibregl.Map) {
+    for (const ov of OVERLAYS) {
+      const src = `wp-ov-${ov.id}`;
+      const dotLyr = `wp-ov-${ov.id}-dot`;
+      const txtLyr = `wp-ov-${ov.id}-txt`;
+      const on = overlayFlagsRef.current[ov.id] && modeRef.current === "pins";
+      if (!on) {
+        try {
+          if (map.getLayer(dotLyr)) map.setLayoutProperty(dotLyr, "visibility", "none");
+          if (map.getLayer(txtLyr)) map.setLayoutProperty(txtLyr, "visibility", "none");
+        } catch {
+          /* layer not ready */
+        }
+        continue;
+      }
+      const data = overlayDataRef.current[ov.id];
+      if (!data) {
+        // First activation — fetch once, then re-sync when it lands.
+        if (!overlayFetchingRef.current[ov.id]) {
+          overlayFetchingRef.current[ov.id] = true;
+          fetch(ov.file)
+            .then((r) => r.json())
+            .then((j) => {
+              overlayDataRef.current[ov.id] = j;
+              const m = mapRef.current;
+              if (m) syncOverlays(m);
+            })
+            .catch(() => {
+              overlayFetchingRef.current[ov.id] = false;
+            });
+        }
+        continue;
+      }
+      try {
+        if (!map.getSource(src)) {
+          map.addSource(src, { type: "geojson", data: data as GeoJSON.FeatureCollection });
+        }
+        if (!map.getLayer(dotLyr)) {
+          map.addLayer({
+            id: dotLyr,
+            type: "circle",
+            source: src,
+            minzoom: ov.minzoom,
+            paint: {
+              "circle-color": ov.color,
+              "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["zoom"],
+                ov.minzoom, 2.2,
+                ov.minzoom + 4, 4.5,
+                12, 7,
+              ],
+              "circle-stroke-color": "#ffffff",
+              "circle-stroke-width": 1.3,
+              "circle-opacity": 0.92,
+            },
+          });
+        }
+        if (!map.getLayer(txtLyr)) {
+          map.addLayer({
+            id: txtLyr,
+            type: "symbol",
+            source: src,
+            minzoom: ov.labelMinzoom,
+            layout: {
+              "text-field": ["get", ov.labelField],
+              "text-size": 11,
+              "text-offset": [0, 0.9],
+              "text-anchor": "top",
+              "text-allow-overlap": false,
+              "text-optional": true,
+            },
+            paint: {
+              "text-color": ov.color,
+              "text-halo-color": "#ffffff",
+              "text-halo-width": 1.5,
+            },
+          });
+        }
+        map.setLayoutProperty(dotLyr, "visibility", "visible");
+        map.setLayoutProperty(txtLyr, "visibility", "visible");
+      } catch {
+        /* style mid-swap */
+      }
+    }
+  }
+
   // Visibility + selected emphasis, cheap enough to run on every state change.
   function updateLandmarksLayer(map: maplibregl.Map) {
     try {
@@ -555,6 +659,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       applyThemeTint(map);
       syncTripThreads(map);
       syncLandmarksLayer(map);
+      syncOverlays(map);
       if (readyRef.current) return;
       readyRef.current = true;
       map.resize();
@@ -756,6 +861,12 @@ export default function MapCanvas({ placing, onPick }: Props) {
     if (map && readyRef.current) updateLandmarksLayer(map);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showLandmarks, selectedLandmarkId, mapMode]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map && readyRef.current) syncOverlays(map);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showAirports, showStations, showStadiums, mapMode]);
 
   // Trips, draft, or map mode changed → refresh the thread and the markers.
   useEffect(() => {
