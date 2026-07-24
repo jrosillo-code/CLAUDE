@@ -69,8 +69,17 @@ function settleFrame(map: maplibregl.Map, timeoutMs: number): Promise<void> {
       }
     };
     map.once("render", () => {
-      // Tile requests for this camera have been issued by now.
-      if (map.loaded() && trailReady()) finish();
+      // Tile requests for this camera have been issued by now. areTilesLoaded
+      // is the cheap per-frame truth; loaded() is also false during our own
+      // camera/paint churn, which forced a slow idle-wait on nearly every
+      // frame and multiplied the render time several times over.
+      let ready = false;
+      try {
+        ready = map.areTilesLoaded() && trailReady();
+      } catch {
+        ready = false;
+      }
+      if (ready) finish();
       else map.once("idle", finish);
     });
     map.triggerRepaint();
@@ -215,7 +224,19 @@ export async function renderFlightFilm(
       mp4Muxer ? mp4Muxer.addVideoChunk(chunk, meta) : webmMuxer!.addVideoChunk(chunk, meta),
     error: () => (encodeFailed = true),
   });
-  encoder.configure({ codec: choice.codec, width: W, height: H, bitrate: 10_000_000, framerate: FPS });
+  const encCfg = { codec: choice.codec, width: W, height: H, bitrate: 10_000_000, framerate: FPS };
+  // Ask for the GPU encoder outright where it exists — encoding becomes a
+  // rounding error instead of a real cost. Silently keep the default (which
+  // may still pick hardware) elsewhere.
+  let preferHw = false;
+  try {
+    preferHw =
+      (await VideoEncoder.isConfigSupported({ ...encCfg, hardwareAcceleration: "prefer-hardware" }))
+        .supported === true;
+  } catch {
+    preferHw = false;
+  }
+  encoder.configure(preferHw ? { ...encCfg, hardwareAcceleration: "prefer-hardware" } : encCfg);
 
   // The GL canvas is only safely readable right after a draw — snapshot it on
   // every render event (same trick as the realtime recorder) and composite
@@ -272,6 +293,20 @@ export async function renderFlightFilm(
 
     // Let the trail's worker round-trip finish before the first frame.
     await settleFrame(map, 4000);
+
+    // Warm the tile cache along the whole route first — each leg's cruise and
+    // zoomed-out midsection plus the final pull-back view. Capture frames then
+    // run at full speed instead of each stopping to wait for the network.
+    for (let wt = 0; wt <= plan.totalMs && !cancelled; wt += 600) {
+      const s = plan.stateAt(wt);
+      map.jumpTo({ center: [s.lng, s.lat], zoom: s.zoom, bearing: 0, pitch: 0 });
+      await settleFrame(map, 700);
+      onProgress(0.05 * (wt / plan.totalMs));
+    }
+    if (!cancelled) {
+      map.jumpTo({ center: [endCenter.lng, endCenter.lat], zoom: endZoom, bearing: 0, pitch: 0 });
+      await settleFrame(map, 900);
+    }
 
     let lastFrac = -1;
     let settledSet = false;
@@ -370,7 +405,7 @@ export async function renderFlightFilm(
           encoder.addEventListener("dequeue", () => r(), { once: true })
         );
       }
-      onProgress(i / frames);
+      onProgress(0.05 + 0.95 * (i / frames));
     }
 
     if (!cancelled && !encodeFailed) {
