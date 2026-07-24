@@ -48,7 +48,7 @@ export default function PinFeed({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Sheet onClose={onClose}>
+    <Sheet onClose={onClose} side="left">
       <div className="border-b border-line px-5 pb-3.5 pt-4">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-2xl">Latest pins</h2>

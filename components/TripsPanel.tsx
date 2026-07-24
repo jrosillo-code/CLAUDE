@@ -51,7 +51,7 @@ export default function TripsPanel({
   }
 
   return (
-    <Sheet onClose={onClose}>
+    <Sheet onClose={onClose} side="left">
       <div className="border-b border-line px-5 py-4">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-2xl">Trips</h2>
