@@ -10,9 +10,13 @@ import { appleMapsRouteUrl, googleMapsRouteUrl } from "@/lib/directions";
 export default function TripsPanel({
   onClose,
   onOpenGuide,
+  onViewRoute,
 }: {
   onClose: () => void;
   onOpenGuide: (tripId: string) => void;
+  /** Phones: View route shows the threaded map itself (no guide popup);
+   *  the AI guide waits behind a small floating button instead. */
+  onViewRoute?: (tripId: string) => void;
 }) {
   const trips = useStore((s) => s.trips);
   const users = useStore((s) => s.users);
@@ -39,7 +43,10 @@ export default function TripsPanel({
       e: Math.max(...lngs) + 0.5,
       n: Math.max(...lats) + 0.5,
     });
-    onOpenGuide(id);
+    // Phones want the MAP first — the guide is a follow-up tap; desktop keeps
+    // the side panel opening alongside the framed route.
+    if (window.innerWidth < 640 && onViewRoute) onViewRoute(id);
+    else onOpenGuide(id);
     onClose();
   }
 

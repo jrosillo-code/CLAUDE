@@ -169,6 +169,9 @@ interface WaypointState {
   requestRecapFlight: () => void;
   flightRecording: boolean;
   setFlightRecording: (b: boolean) => void;
+  /** Offline film render progress 0..1, or null when not rendering. */
+  flightProgress: number | null;
+  setFlightProgress: (p: number | null) => void;
 
   // Current viewport (updated by the map on move-end) — powers "Top spots in
   // this area". At planet scale it covers the whole world.
@@ -386,7 +389,7 @@ export const useStore = create<WaypointState>((set, get) => ({
 
   basemap: "map",
   setBasemap: (b) => set({ basemap: b }),
-  terrain3d: true,
+  terrain3d: false, // flat by default — 3D is an opt-in flourish
   setTerrain3d: (v) => set({ terrain3d: v }),
   userLocation: null,
   setUserLocation: (l) => set({ userLocation: l }),
@@ -599,6 +602,8 @@ export const useStore = create<WaypointState>((set, get) => ({
   requestRecapFlight: () => set((s) => ({ recapFlightReq: s.recapFlightReq + 1 })),
   flightRecording: false,
   setFlightRecording: (b) => set({ flightRecording: b }),
+  flightProgress: null,
+  setFlightProgress: (p) => set({ flightProgress: p }),
 
   viewBounds: null,
   setViewBounds: (b) => set({ viewBounds: b }),

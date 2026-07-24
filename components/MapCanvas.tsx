@@ -16,6 +16,7 @@ import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
 import { visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
 import { createFlightRecorder } from "@/lib/recordFlight";
+import { cancelFlightRender, renderFlightFilm } from "@/lib/renderFlight";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
 
@@ -518,6 +519,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
       // No cross-fade on newly loaded tiles/labels: the fade window reads as
       // a white flash when panning fast or right after launch.
       fadeDuration: 0,
+      // Keep more tiles warm — revisited areas (and the flight corridor)
+      // redraw instantly instead of re-fetching/re-rasterizing.
+      maxTileCacheSize: 512,
     });
     mapRef.current = map;
 
@@ -809,25 +813,58 @@ export default function MapCanvas({ placing, onPick }: Props) {
       const accent =
         getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
         "#0a84ff";
-      st.setFlightRecording(true);
-      const recorder = createFlightRecorder(map, me.avatarUrl, accent, year, () => {
-        useStore.getState().setFlightRecording(false);
-      });
-      cancelFlight = startFlyover(
-        map,
-        maplibregl.Marker,
-        maplibregl.LngLatBounds,
-        route.map((p) => ({ lng: p.lng, lat: p.lat })),
-        me.avatarUrl,
-        accent,
-        { onFrame: recorder.handleFrame, onEnd: recorder.end }
-      );
+      const stops = route.map((p) => ({ lng: p.lng, lat: p.lat }));
+      void (async () => {
+        // Preferred path: deterministic offline render — every frame waits
+        // for its tiles, timestamps are exact, playback is butter.
+        st.setFlightProgress(0);
+        const result = await renderFlightFilm(map, stops, me.avatarUrl, accent, year, (p) =>
+          useStore.getState().setFlightProgress(p)
+        );
+        useStore.getState().setFlightProgress(null);
+        console.info("[flight-film] offline render:", result);
+        // "saved" and "cancelled" are terminal; unsupported OR failed encoders
+        // fall through to the realtime recorder so the user always gets a film.
+        if (result === "saved" || result === "cancelled" || cancelled) return;
+
+        // Fallback (no WebCodecs): record the live flyover — after warming
+        // the tile cache along the route so the camera never outruns loading.
+        const st2 = useStore.getState();
+        st2.setFlightRecording(true);
+        for (const p of stops) {
+          if (cancelled) {
+            useStore.getState().setFlightRecording(false);
+            return;
+          }
+          map.jumpTo({ center: [p.lng, p.lat], zoom: 3.4 });
+          await new Promise<void>((r) => {
+            const to = setTimeout(r, 900);
+            map.once("idle", () => {
+              clearTimeout(to);
+              r();
+            });
+          });
+        }
+        const recorder = createFlightRecorder(map, me.avatarUrl, accent, year, () => {
+          useStore.getState().setFlightRecording(false);
+        });
+        cancelFlight = startFlyover(
+          map,
+          maplibregl.Marker,
+          maplibregl.LngLatBounds,
+          stops,
+          me.avatarUrl,
+          accent,
+          { onFrame: recorder.handleFrame, onEnd: recorder.end }
+        );
+      })();
     };
     const t0 = setTimeout(() => tryStart(0), 60);
     return () => {
       cancelled = true;
       clearTimeout(t0);
       cancelFlight?.();
+      cancelFlightRender(); // no-op unless an offline render is running
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recapFlightReq]);

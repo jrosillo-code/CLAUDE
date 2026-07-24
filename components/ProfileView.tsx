@@ -49,6 +49,7 @@ export default function ProfileView({ handle }: { handle: string }) {
   const [editingSocials, setEditingSocials] = useState(false);
   const [socialsDraft, setSocialsDraft] = useState<UserSocials>({});
   const [statView, setStatView] = useState<"pins" | "countries" | "friends" | null>(null);
+  const [socialsOpen, setSocialsOpen] = useState(false);
   const [recapOpen, setRecapOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
 
@@ -138,7 +139,7 @@ export default function ProfileView({ handle }: { handle: string }) {
 
       <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-20 sm:px-6 sm:pt-24">
         {/* Identity card — frosted glass floating over the constellation. */}
-        <div className="rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:px-8">
+        <div className="relative rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:px-8">
         <div className="flex flex-col items-center text-center">
           {isMe ? (
             /* Your own avatar is an upload button — new photo shows everywhere. */
@@ -194,11 +195,27 @@ export default function ProfileView({ handle }: { handle: string }) {
           )}
           <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-2">{user.bio}</p>
 
-          {/* Linked socials */}
-          <div className="mt-4 flex items-center gap-2">
-            <SocialLinks socials={user.socials} />
-            {isMe && (
-              <>
+          {/* Recap + import lead the card; socials tuck behind the tree. */}
+          {isMe && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              <button
+                onClick={() => setRecapOpen(true)}
+                className="rounded-full bg-ink px-5 py-2 text-sm font-semibold text-paper"
+              >
+                🎁 {new Date().getFullYear()} recap
+              </button>
+              <button
+                onClick={() => setImportOpen(true)}
+                className="rounded-full bg-paper-2 px-5 py-2 text-sm font-semibold text-ink-2 ring-1 ring-line"
+              >
+                Import travels
+              </button>
+            </div>
+          )}
+          {socialsOpen && (
+            <div className="animate-fade mt-4 flex items-center justify-center gap-2">
+              <SocialLinks socials={user.socials} />
+              {isMe && (
                 <button
                   onClick={() => {
                     setSocialsDraft(user.socials ?? {});
@@ -210,16 +227,25 @@ export default function ProfileView({ handle }: { handle: string }) {
                     ? "Edit socials"
                     : "+ Connect socials"}
                 </button>
-                <button
-                  onClick={() => signOut()}
-                  className="rounded-full bg-paper-2 px-3 py-1.5 text-xs font-medium text-ink-3 ring-1 ring-line transition-colors hover:text-accent"
-                >
-                  Sign out
-                </button>
-              </>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
+
+        {/* The tree — linked socials grow behind it. */}
+        <button
+          onClick={() => setSocialsOpen((o) => !o)}
+          title="Linked socials"
+          aria-label="Show linked socials"
+          className={`absolute bottom-3 right-3 grid h-9 w-9 place-items-center rounded-full transition-colors ${
+            socialsOpen ? "bg-ink text-paper" : "bg-paper-2 text-ink-2 ring-1 ring-line hover:text-ink"
+          }`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2.5 7.5 9h2.3L5.8 14.8h3.7L6.3 20h11.4l-3.2-5.2h3.7L14.2 9h2.3z" fill="currentColor" />
+            <path d="M11 20h2v2.2h-2z" fill="currentColor" />
+          </svg>
+        </button>
         </div>{/* /identity card */}
 
         {/* Socials editor (own profile) */}
@@ -386,24 +412,8 @@ export default function ProfileView({ handle }: { handle: string }) {
         {/* Passport — the world at a glance, stamped from this profile's pins */}
         {myPins.length > 0 && <PassportCard pins={myPins} />}
 
-        {/* Actions — centered. */}
+        {/* Actions — centered. (Recap/import moved up into the identity card.) */}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          {isMe && (
-            <>
-              <button
-                onClick={() => setRecapOpen(true)}
-                className="rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-paper"
-              >
-                🎁 {new Date().getFullYear()} recap
-              </button>
-              <button
-                onClick={() => setImportOpen(true)}
-                className="rounded-full bg-paper-2 px-6 py-2.5 text-sm font-semibold text-ink-2 ring-1 ring-line"
-              >
-                Import travels
-              </button>
-            </>
-          )}
           {!isMe && (
             <button
               onClick={viewOnMap}
@@ -518,8 +528,21 @@ export default function ProfileView({ handle }: { handle: string }) {
           </section>
         )}
 
+        {/* Sign out — deliberate, at the end of the page, out of the way of
+            everything you actually do daily. */}
+        {isMe && (
+          <div className="mt-14 flex justify-center">
+            <button
+              onClick={() => signOut()}
+              className="rounded-full px-8 py-2.5 text-sm font-medium text-ink-3 ring-1 ring-line transition-colors hover:bg-paper-2 hover:text-accent"
+            >
+              Sign out
+            </button>
+          </div>
+        )}
+
         {/* App version — quiet, at the very bottom. */}
-        <p className="mt-12 text-center text-[11px] tracking-wide text-ink-3">
+        <p className="mt-6 text-center text-[11px] tracking-wide text-ink-3">
           Waypoint v{APP_VERSION} · {backendEnabled ? "live" : "demo"} build
         </p>
       </div>

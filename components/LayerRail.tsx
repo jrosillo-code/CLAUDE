@@ -11,9 +11,11 @@ import WorldProgress from "./WorldProgress";
 // mobile; expands to a left rail of avatars.
 export default function LayerRail({
   onOpenFriends,
+  onOpenCreators,
   onOpenTravelers,
 }: {
   onOpenFriends: () => void;
+  onOpenCreators: () => void;
   /** Phones open the full Travelers sheet instead of the floating popover. */
   onOpenTravelers: () => void;
 }) {
@@ -118,6 +120,25 @@ export default function LayerRail({
                 {pendingIncoming}
               </span>
             )}
+          </button>
+
+          {/* Creators discovery lives with the rest of the people controls. */}
+          <button
+            onClick={() => {
+              setOpen(false);
+              onOpenCreators();
+            }}
+            className="mt-0.5 flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-sm text-ink-2 hover:bg-paper-2"
+          >
+            <span className="grid h-7 w-7 place-items-center rounded-full border-2 border-dashed border-line text-accent">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 2.5 14.3 5l3.4-.3.6 3.3 3 1.6-1.4 3.1 1.4 3.1-3 1.6-.6 3.3-3.4-.3L12 22.7 9.7 20l-3.4.3-.6-3.3-3-1.6 1.4-3.1L2.7 9.2l3-1.6.6-3.3 3.4.3z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Add creators
           </button>
 
           <WorldProgress />

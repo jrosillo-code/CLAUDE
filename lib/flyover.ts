@@ -10,16 +10,19 @@ import type maplibregl from "maplibre-gl";
 // re-uploads means the line can never lag or momentarily vanish behind the
 // plane the way a growing LineString did.
 
-const SRC = "wp-flyover-src";
-const LYR = "wp-flyover-lyr";
-const LYR_GLOW = "wp-flyover-glow";
-const CRUISE_ZOOM = 3.4;
-const SPEED_DEG_PER_S = 26; // arc speed between stops
-const PAUSE_MS = 480; // hover at each pin
-const SAMPLES_PER_LEG = 72;
+export const TRAIL_SRC = "wp-flyover-src";
+export const TRAIL_LYR = "wp-flyover-lyr";
+export const TRAIL_GLOW = "wp-flyover-glow";
+const SRC = TRAIL_SRC;
+const LYR = TRAIL_LYR;
+const LYR_GLOW = TRAIL_GLOW;
+export const CRUISE_ZOOM = 3.4;
+export const SPEED_DEG_PER_S = 26; // arc speed between stops
+export const PAUSE_MS = 480; // hover at each pin
+export const SAMPLES_PER_LEG = 72;
 const TRANS = "rgba(0,0,0,0)";
 
-interface Stop {
+export interface Stop {
   lng: number;
   lat: number;
 }
@@ -38,13 +41,13 @@ export interface FlyoverOpts {
   onEnd?: (completed: boolean) => void;
 }
 
-function vec(lng: number, lat: number): [number, number, number] {
+export function vec(lng: number, lat: number): [number, number, number] {
   const φ = (lat * Math.PI) / 180;
   const λ = (lng * Math.PI) / 180;
   return [Math.cos(φ) * Math.cos(λ), Math.cos(φ) * Math.sin(λ), Math.sin(φ)];
 }
 
-function arcDeg(a: Stop, b: Stop): number {
+export function arcDeg(a: Stop, b: Stop): number {
   const va = vec(a.lng, a.lat);
   const vb = vec(b.lng, b.lat);
   const dot = Math.min(1, Math.max(-1, va[0] * vb[0] + va[1] * vb[1] + va[2] * vb[2]));
@@ -53,7 +56,7 @@ function arcDeg(a: Stop, b: Stop): number {
 
 // Spherical interpolation, then the longitude gets unwrapped near `nearLng`
 // so antimeridian hops don't snap the thread across the whole map.
-function slerp(a: Stop, b: Stop, f: number, nearLng: number): [number, number] {
+export function slerp(a: Stop, b: Stop, f: number, nearLng: number): [number, number] {
   const va = vec(a.lng, a.lat);
   const vb = vec(b.lng, b.lat);
   const dot = Math.min(1, Math.max(-1, va[0] * vb[0] + va[1] * vb[1] + va[2] * vb[2]));
@@ -76,7 +79,7 @@ function slerp(a: Stop, b: Stop, f: number, nearLng: number): [number, number] {
   return [lng, lat];
 }
 
-const easeInOut = (f: number) => f * f * (3 - 2 * f);
+export const easeInOut = (f: number) => f * f * (3 - 2 * f);
 
 function hexToRgba(hex: string, alpha: number): string {
   const m = hex.replace("#", "");
@@ -89,7 +92,7 @@ function hexToRgba(hex: string, alpha: number): string {
 
 /** Mercator-projected Y — line-progress measures length in projected space,
  *  so the reveal head is weighted the same way the renderer weighs the line. */
-function mercY(lat: number): number {
+export function mercY(lat: number): number {
   const φ = (Math.max(-85, Math.min(85, lat)) * Math.PI) / 180;
   return Math.log(Math.tan(Math.PI / 4 + φ / 2));
 }
@@ -97,7 +100,7 @@ function mercY(lat: number): number {
 /** Comet reveal: everything behind the head stays visible (dim → brighter near
  *  the head), everything ahead of it is transparent. Stops kept strictly
  *  ascending for the interpolate expression. */
-function revealGradient(
+export function revealGradient(
   head: number,
   base: string,
   near: string,
@@ -113,6 +116,25 @@ function revealGradient(
   if (m > e && m < h - e) flat.push(m, near);
   flat.push(h, headColor, h + e, TRANS, 1, TRANS);
   return ["interpolate", ["linear"], ["line-progress"], ...flat];
+}
+
+/** The trail's gradient family for a given accent — shared by the live
+ *  flyover and the offline film renderer so both look identical. */
+export function trailGradients(accent: string) {
+  return {
+    core: (h: number) =>
+      revealGradient(h, hexToRgba(accent, 0.3), hexToRgba(accent, 0.75), "#a5e0ff"),
+    glow: (h: number) =>
+      revealGradient(h, hexToRgba(accent, 0.1), hexToRgba(accent, 0.3), hexToRgba(accent, 0.8)),
+    settledCore: [
+      "interpolate", ["linear"], ["line-progress"],
+      0, hexToRgba(accent, 0.55), 1, accent,
+    ] as unknown[],
+    settledGlow: [
+      "interpolate", ["linear"], ["line-progress"],
+      0, hexToRgba(accent, 0.15), 1, hexToRgba(accent, 0.45),
+    ] as unknown[],
+  };
 }
 
 /** The jet artwork — one source of truth for the DOM marker and the video
@@ -260,10 +282,7 @@ export function startFlyover(
       Math.min(3400, Math.max(1100, (arcDeg(path[i], b) / SPEED_DEG_PER_S) * 1000))
     );
 
-  const coreGradient = (h: number) =>
-    revealGradient(h, hexToRgba(accent, 0.3), hexToRgba(accent, 0.75), "#a5e0ff");
-  const glowGradient = (h: number) =>
-    revealGradient(h, hexToRgba(accent, 0.1), hexToRgba(accent, 0.3), hexToRgba(accent, 0.8));
+  const { core: coreGradient, glow: glowGradient } = trailGradients(accent);
 
   const begin = () => {
     if (disposed) return;

@@ -22,6 +22,7 @@ import EmptyHint from "./EmptyHint";
 import { useStore } from "@/lib/store";
 import { useVisiblePins } from "@/lib/hooks";
 import { reverseGeocode } from "@/lib/geocode";
+import { cancelFlightRender } from "@/lib/renderFlight";
 
 export default function MapApp() {
   const [placing, setPlacing] = useState(false);
@@ -34,6 +35,8 @@ export default function MapApp() {
   const [topSpotsOpen, setTopSpotsOpen] = useState(false);
   const [tripsOpen, setTripsOpen] = useState(false);
   const [guideTripId, setGuideTripId] = useState<string | null>(null);
+  // Phones: the trip whose route is on screen — powers the floating guide button.
+  const [activeTripId, setActiveTripId] = useState<string | null>(null);
   const trips = useStore((s) => s.trips);
   const startAddPin = useStore((s) => s.startAddPin);
   const tripDraft = useStore((s) => s.tripDraft);
@@ -43,6 +46,7 @@ export default function MapApp() {
   const addDraft = useStore((s) => s.addDraft);
   const selectedPinId = useStore((s) => s.selectedPinId);
   const flightRecording = useStore((s) => s.flightRecording);
+  const flightProgress = useStore((s) => s.flightProgress);
   const visible = useVisiblePins();
   const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
 
@@ -116,6 +120,7 @@ export default function MapApp() {
       {mapMode === "pins" && (
         <LayerRail
           onOpenFriends={() => setFriendsOpen(true)}
+          onOpenCreators={() => setCreatorsOpen(true)}
           onOpenTravelers={() => setTravelersOpen(true)}
         />
       )}
@@ -167,7 +172,34 @@ export default function MapApp() {
       </button>
       )}
 
-      {/* Flight-film recording indicator */}
+      {/* Offline film render: full-screen cover — the camera is jumping frame
+          by frame underneath, which is not a show anyone should watch. */}
+      {flightProgress != null && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-5 bg-paper/85 backdrop-blur-xl">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" className="animate-pulse text-accent">
+            <path
+              d="M21 15.5v-2.2l-8-5V3.6a1.5 1.5 0 0 0-3 0v4.7l-8 5v2.2l8-2.4v4.9l-2.1 1.6v1.7l3.6-1.1 3.6 1.1v-1.7L13 18v-4.9z"
+              fill="currentColor"
+            />
+          </svg>
+          <div className="font-display text-xl">Rendering your flight film…</div>
+          <div className="h-1.5 w-64 overflow-hidden rounded-full bg-line">
+            <div
+              className="h-full rounded-full bg-accent transition-[width] duration-200"
+              style={{ width: `${Math.round(flightProgress * 100)}%` }}
+            />
+          </div>
+          <div className="tnum text-sm text-ink-3">{Math.round(flightProgress * 100)}%</div>
+          <button
+            onClick={() => cancelFlightRender()}
+            className="rounded-full bg-paper-2 px-5 py-2 text-sm font-medium text-ink-2 ring-1 ring-line"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
+      {/* Flight-film recording indicator (realtime fallback path) */}
       {flightRecording && (
         <div className="fixed left-1/2 top-16 z-30 flex -translate-x-1/2 animate-fade items-center gap-2 rounded-full bg-ink/90 px-4 py-2 text-sm text-paper shadow-float backdrop-blur sm:top-20">
           <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-red-500" />
@@ -214,7 +246,22 @@ export default function MapApp() {
             if (window.innerWidth < 640 && !useStore.getState().tripDraft) setMapMode("pins");
           }}
           onOpenGuide={setGuideTripId}
+          onViewRoute={setActiveTripId}
         />
+      )}
+
+      {/* Phones, trips mode: the AI route guide waits behind one small button
+          instead of popping over the freshly framed route. */}
+      {mapMode === "trips" && activeTripId && !guideTripId && !tripsOpen && (
+        <button
+          onClick={() => setGuideTripId(activeTripId)}
+          className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-ink/90 px-4 py-2.5 text-sm font-semibold text-paper shadow-float backdrop-blur sm:hidden"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-accent-2">
+            <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
+          </svg>
+          Route guide
+        </button>
       )}
       {guideTrip && (
         <TripGuidePanel
