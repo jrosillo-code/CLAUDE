@@ -37,6 +37,9 @@ export default function MapApp() {
   const [guideTripId, setGuideTripId] = useState<string | null>(null);
   // Phones: the trip whose route is on screen — powers the floating guide button.
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
+  // Set in the same tick as a View-route tap: that panel close must NOT exit
+  // trips mode (the whole point is showing the threaded route on the map).
+  const viewRouteJustTappedRef = useRef(false);
   const trips = useStore((s) => s.trips);
   const startAddPin = useStore((s) => s.startAddPin);
   const tripDraft = useStore((s) => s.tripDraft);
@@ -241,12 +244,22 @@ export default function MapApp() {
           onClose={() => {
             setTripsOpen(false);
             // Phones have no trips-mode banner — closing the panel is the exit.
-            // Unless a draft just started: "Plan a trip" closes the panel so the
-            // map can take stops, and leaving trips mode would kill the thread.
-            if (window.innerWidth < 640 && !useStore.getState().tripDraft) setMapMode("pins");
+            // Exceptions: a draft just started (map takes stops) or View route
+            // was tapped (map shows the threaded route) — both need trips mode.
+            if (
+              window.innerWidth < 640 &&
+              !useStore.getState().tripDraft &&
+              !viewRouteJustTappedRef.current
+            ) {
+              setMapMode("pins");
+            }
+            viewRouteJustTappedRef.current = false;
           }}
           onOpenGuide={setGuideTripId}
-          onViewRoute={setActiveTripId}
+          onViewRoute={(id) => {
+            viewRouteJustTappedRef.current = true;
+            setActiveTripId(id);
+          }}
         />
       )}
 
