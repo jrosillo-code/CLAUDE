@@ -50,17 +50,18 @@ export default function MapApp() {
   const flightProgress = useStore((s) => s.flightProgress);
   const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
 
-  // Phones: when a trip draft ends, land somewhere sensible — the trips panel
-  // if it was saved (see the new route), the pins map if it was abandoned.
+  // When a trip draft ends, land somewhere sensible: saving reopens the
+  // trips panel (see the new route in the list); abandoning it on a phone
+  // returns to the pins map (desktop keeps the trips banner to exit).
   const hadDraftRef = useRef(false);
   const tripsAtDraftStartRef = useRef(0);
   useEffect(() => {
     if (tripDraft && !hadDraftRef.current) tripsAtDraftStartRef.current = trips.length;
     const had = hadDraftRef.current;
     hadDraftRef.current = !!tripDraft;
-    if (had && !tripDraft && window.innerWidth < 640) {
+    if (had && !tripDraft) {
       if (trips.length > tripsAtDraftStartRef.current) setTripsOpen(true);
-      else setMapMode("pins");
+      else if (window.innerWidth < 640) setMapMode("pins");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tripDraft, trips.length]);
