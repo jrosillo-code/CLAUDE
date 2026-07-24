@@ -15,6 +15,7 @@ import type {
 } from "./types";
 import type { ThemeId } from "./themes";
 import { THEMES } from "./themes";
+import type { OverlayId } from "./overlays";
 import {
   CURRENT_USER_ID,
   friendships as seedFriendships,
@@ -114,6 +115,15 @@ interface WaypointState {
   setShowStadiums: (v: boolean) => void;
   selectedLandmarkId: string | null;
   selectLandmark: (id: string | null) => void;
+  /** A tapped overlay feature (airport / station / stadium) → info card. */
+  selectedOverlay: {
+    kind: OverlayId;
+    title: string;
+    subtitle: string;
+    lat: number;
+    lng: number;
+  } | null;
+  selectOverlay: (v: WaypointState["selectedOverlay"]) => void;
   setTerrain3d: (v: boolean) => void;
 
   // Theme (UI chrome + globe palette). Persisted to localStorage.
@@ -169,8 +179,9 @@ interface WaypointState {
   cancelAddPin: () => void;
 
   // Camera intents — components read these to move the map.
-  flyTo: { lng: number; lat: number; zoom?: number; nonce: number } | null;
-  requestFlyTo: (lng: number, lat: number, zoom?: number) => void;
+  flyTo: { lng: number; lat: number; zoom?: number; flat?: boolean; nonce: number } | null;
+  /** `flat` forces a straight-overhead (no-tilt) arrival — used for pin drops. */
+  requestFlyTo: (lng: number, lat: number, zoom?: number, opts?: { flat?: boolean }) => void;
   fitBoundsTo: { w: number; s: number; e: number; n: number; nonce: number } | null;
   requestFitBounds: (b: { w: number; s: number; e: number; n: number }) => void;
   /** Recap flight film: run this year's flyover while recording a video. */
@@ -432,7 +443,9 @@ export const useStore = create<WaypointState>((set, get) => ({
   showStadiums: false,
   setShowStadiums: (v) => set({ showStadiums: v }),
   selectedLandmarkId: null,
-  selectLandmark: (id) => set({ selectedLandmarkId: id }),
+  selectLandmark: (id) => set({ selectedLandmarkId: id, selectedOverlay: null }),
+  selectedOverlay: null,
+  selectOverlay: (v) => set({ selectedOverlay: v, selectedLandmarkId: null, selectedPinId: null }),
 
   theme: "daylight",
   setTheme: (t) => {
@@ -631,15 +644,15 @@ export const useStore = create<WaypointState>((set, get) => ({
   },
 
   selectedPinId: null,
-  selectPin: (id) => set({ selectedPinId: id, addDraft: null }),
+  selectPin: (id) => set({ selectedPinId: id, addDraft: null, selectedOverlay: null }),
 
   addDraft: null,
   startAddPin: (d) => set({ addDraft: d, selectedPinId: null }),
   cancelAddPin: () => set({ addDraft: null }),
 
   flyTo: null,
-  requestFlyTo: (lng, lat, zoom) =>
-    set({ flyTo: { lng, lat, zoom, nonce: ++flyNonce } }),
+  requestFlyTo: (lng, lat, zoom, opts) =>
+    set({ flyTo: { lng, lat, zoom, flat: opts?.flat, nonce: ++flyNonce } }),
   fitBoundsTo: null,
   requestFitBounds: (b) => set({ fitBoundsTo: { ...b, nonce: ++flyNonce } }),
 

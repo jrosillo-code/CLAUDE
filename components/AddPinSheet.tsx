@@ -88,7 +88,7 @@ export default function AddPinSheet() {
       media: mediaItems,
       rating: rating ?? undefined,
     });
-    requestFlyTo(pin.lng, pin.lat, 7);
+    requestFlyTo(pin.lng, pin.lat, 7, { flat: true });
   }
 
   return (

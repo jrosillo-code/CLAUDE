@@ -88,7 +88,7 @@ export default function BasemapToggle() {
               <RowToggle icon={iconLandmarks} label="Landmarks" active={showLandmarks} onClick={() => setShowLandmarks(!showLandmarks)} />
               <RowToggle icon={iconAirport} label="Airports" active={showAirports} onClick={() => setShowAirports(!showAirports)} />
               <RowToggle icon={iconTrain} label="Train stations" active={showStations} onClick={() => setShowStations(!showStations)} />
-              <RowToggle icon={iconStadium} label="Stadiums & arenas" active={showStadiums} onClick={() => setShowStadiums(!showStadiums)} />
+              <RowToggle icon={iconStadium} label="Stadiums" active={showStadiums} onClick={() => setShowStadiums(!showStadiums)} />
               <RowToggle
                 icon={iconSaved}
                 label={`Saved${savedCount > 0 ? ` · ${savedCount}` : ""}`}

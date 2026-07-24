@@ -18,6 +18,7 @@ import TripGuidePanel from "./TripGuidePanel";
 import TripDraftBar from "./TripDraftBar";
 import TopSpotsPanel from "./TopSpotsPanel";
 import LandmarkCard from "./LandmarkCard";
+import OverlayCard from "./OverlayCard";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
 import { cancelFlightRender } from "@/lib/renderFlight";
@@ -219,6 +220,7 @@ export default function MapApp() {
       )}
 
       {mapMode === "pins" && !selectedPinId && <LandmarkCard />}
+      {mapMode === "pins" && !selectedPinId && <OverlayCard />}
       {selectedPinId && <PinSheet />}
       {addDraft && <AddPinSheet />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}

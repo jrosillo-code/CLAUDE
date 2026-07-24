@@ -13,7 +13,7 @@ import {
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
-import { OVERLAYS, type OverlayId } from "@/lib/overlays";
+import { ICON_MINZOOM, OVERLAYS, type OverlayId } from "@/lib/overlays";
 import { visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
 import { createFlightRecorder } from "@/lib/recordFlight";
@@ -61,6 +61,93 @@ function landmarkIconImage(glyph: string, color: string): ImageData {
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(glyph, s / 2, s / 2 + 2);
+  return ctx.getImageData(0, 0, s, s);
+}
+
+// White disc + a monochrome plane / train / stadium glyph in the overlay's
+// color. Same visual language as the landmark pins.
+function overlayIconImage(kind: "plane" | "train" | "stadium", color: string): ImageData {
+  const s = 56;
+  const cx = s / 2;
+  const cy = s / 2;
+  const canvas = document.createElement("canvas");
+  canvas.width = s;
+  canvas.height = s;
+  const ctx = canvas.getContext("2d")!;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+  ctx.fillStyle = "#fffdf8";
+  ctx.fill();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = color;
+  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.strokeStyle = color;
+  ctx.lineJoin = "round";
+  ctx.lineCap = "round";
+  if (kind === "plane") {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(Math.PI / 4); // point up-right, like the flight-film jet
+    ctx.beginPath();
+    ctx.moveTo(0, -13);
+    ctx.lineTo(2.4, -3);
+    ctx.lineTo(13, 3);
+    ctx.lineTo(13, 6);
+    ctx.lineTo(2.4, 4);
+    ctx.lineTo(2, 11);
+    ctx.lineTo(5.5, 14);
+    ctx.lineTo(5.5, 16);
+    ctx.lineTo(0, 13.5);
+    ctx.lineTo(-5.5, 16);
+    ctx.lineTo(-5.5, 14);
+    ctx.lineTo(-2, 11);
+    ctx.lineTo(-2.4, 4);
+    ctx.lineTo(-13, 6);
+    ctx.lineTo(-13, 3);
+    ctx.lineTo(-2.4, -3);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  } else if (kind === "train") {
+    // rounded body with a window band and two legs
+    const w = 18;
+    const h = 22;
+    const x = cx - w / 2;
+    const y = cy - h / 2 - 1;
+    const r = 6;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = "#fffdf8";
+    ctx.fillRect(x + 3, y + 4, w - 6, 7);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x + 5, y + h - 5, 1.6, 0, Math.PI * 2);
+    ctx.arc(x + w - 5, y + h - 5, 1.6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x + 3, y + h + 3);
+    ctx.lineTo(x, y + h + 6);
+    ctx.moveTo(x + w - 3, y + h + 3);
+    ctx.lineTo(x + w, y + h + 6);
+    ctx.stroke();
+  } else {
+    // stadium: concentric ellipse ring + inner field
+    ctx.lineWidth = 3.4;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, 15, 10, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, 7, 4.2, 0, 0, Math.PI * 2);
+    ctx.stroke();
+  }
   return ctx.getImageData(0, 0, s, s);
 }
 
@@ -182,6 +269,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
   // Fetched GeoJSON, kept across style reloads so a theme switch doesn't refetch.
   const overlayDataRef = useRef<Partial<Record<OverlayId, unknown>>>({});
   const overlayFetchingRef = useRef<Partial<Record<OverlayId, boolean>>>({});
+  const selectOverlay = useStore((s) => s.selectOverlay);
+  const selectOverlayRef = useRef(selectOverlay);
+  selectOverlayRef.current = selectOverlay;
   const userLocationRef = useRef(userLocation);
   userLocationRef.current = userLocation;
   // Ghost only the saved pins that aren't already on the map normally.
@@ -363,7 +453,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           id: LM_LAYER,
           type: "symbol",
           source: LM_SOURCE,
-          minzoom: 2.1,
+          minzoom: 1.05, // stay visible even when the globe is fully zoomed out
           layout: {
             "icon-image": ["concat", "lm-", ["get", "category"]],
             "icon-size": 1,
@@ -389,18 +479,16 @@ export default function MapCanvas({ placing, onPick }: Props) {
   }
 
   // Worldwide reference overlays (airports / stations / stadiums). Each is
-  // lazy-fetched the first time its toggle turns on, then added as a zoom-gated
-  // circle + label layer. Re-runs on every style.load (setStyle wipes layers).
+  // lazy-fetched the first time its toggle turns on, then added as an icon +
+  // label symbol layer. Re-runs on every style.load (setStyle wipes layers).
   function syncOverlays(map: maplibregl.Map) {
     for (const ov of OVERLAYS) {
       const src = `wp-ov-${ov.id}`;
       const dotLyr = `wp-ov-${ov.id}-dot`;
-      const txtLyr = `wp-ov-${ov.id}-txt`;
       const on = overlayFlagsRef.current[ov.id] && modeRef.current === "pins";
       if (!on) {
         try {
           if (map.getLayer(dotLyr)) map.setLayoutProperty(dotLyr, "visibility", "none");
-          if (map.getLayer(txtLyr)) map.setLayoutProperty(txtLyr, "visibility", "none");
         } catch {
           /* layer not ready */
         }
@@ -425,41 +513,28 @@ export default function MapCanvas({ placing, onPick }: Props) {
         continue;
       }
       try {
+        const iconName = `ov-icon-${ov.id}`;
+        if (!map.hasImage(iconName)) {
+          map.addImage(iconName, overlayIconImage(ov.icon, ov.color), { pixelRatio: 2 });
+        }
         if (!map.getSource(src)) {
           map.addSource(src, { type: "geojson", data: data as GeoJSON.FeatureCollection });
         }
         if (!map.getLayer(dotLyr)) {
           map.addLayer({
             id: dotLyr,
-            type: "circle",
-            source: src,
-            minzoom: ov.minzoom,
-            paint: {
-              "circle-color": ov.color,
-              "circle-radius": [
-                "interpolate",
-                ["linear"],
-                ["zoom"],
-                ov.minzoom, 2.2,
-                ov.minzoom + 4, 4.5,
-                12, 7,
-              ],
-              "circle-stroke-color": "#ffffff",
-              "circle-stroke-width": 1.3,
-              "circle-opacity": 0.92,
-            },
-          });
-        }
-        if (!map.getLayer(txtLyr)) {
-          map.addLayer({
-            id: txtLyr,
             type: "symbol",
             source: src,
-            minzoom: ov.labelMinzoom,
+            minzoom: ICON_MINZOOM,
             layout: {
-              "text-field": ["get", ov.labelField],
+              "icon-image": iconName,
+              "icon-size": ["interpolate", ["linear"], ["zoom"], 2, 0.32, 6, 0.5, 12, 0.72],
+              "icon-allow-overlap": false,
+              "icon-padding": 1,
+              // Label appears only from labelMinzoom up; icons show at all zooms.
+              "text-field": ["step", ["zoom"], "", ov.labelMinzoom, ["get", ov.labelField]],
               "text-size": 11,
-              "text-offset": [0, 0.9],
+              "text-offset": [0, 1.1],
               "text-anchor": "top",
               "text-allow-overlap": false,
               "text-optional": true,
@@ -470,9 +545,39 @@ export default function MapCanvas({ placing, onPick }: Props) {
               "text-halo-width": 1.5,
             },
           });
+          map.on("click", dotLyr, (e) => {
+            const f = e.features?.[0];
+            if (!f || placingRef.current) return;
+            const props = (f.properties ?? {}) as Record<string, unknown>;
+            const geo = f.geometry as GeoJSON.Point;
+            const [lng, lat] = geo.coordinates;
+            let subtitle = ov.singular;
+            if (ov.id === "airports" && props.iata) subtitle = `${ov.singular} · ${props.iata}`;
+            if (ov.id === "stadiums") {
+              const cap = Number(props.cap);
+              const bits = [ov.singular];
+              if (props.city) bits.push(String(props.city));
+              if (cap > 0) bits.push(`${cap.toLocaleString()} seats`);
+              subtitle = bits.join(" · ");
+            }
+            selectOverlayRef.current({
+              kind: ov.id,
+              title: String(props.name ?? ov.singular),
+              subtitle,
+              lat,
+              lng,
+            });
+            map.flyTo({
+              center: [lng, lat],
+              zoom: Math.max(map.getZoom(), ov.id === "airports" ? 8 : 12),
+              pitch: 0,
+              duration: 700,
+            });
+          });
+          map.on("mouseenter", dotLyr, () => (map.getCanvas().style.cursor = "pointer"));
+          map.on("mouseleave", dotLyr, () => (map.getCanvas().style.cursor = ""));
         }
         map.setLayoutProperty(dotLyr, "visibility", "visible");
-        map.setLayoutProperty(txtLyr, "visibility", "visible");
       } catch {
         /* style mid-swap */
       }
@@ -885,7 +990,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
     map.flyTo({
       center: [flyTo.lng, flyTo.lat],
       zoom: flyTo.zoom ?? 9,
-      pitch: (flyTo.zoom ?? 9) >= 6 ? 45 : 0, // tilt into a 3D view up close
+      // Straight overhead for pin drops; a gentle tilt for other close-ups.
+      pitch: flyTo.flat ? 0 : (flyTo.zoom ?? 9) >= 6 ? 45 : 0,
+      bearing: flyTo.flat ? 0 : undefined,
       duration: 1600,
       essential: true,
     });
