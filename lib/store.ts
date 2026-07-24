@@ -212,6 +212,8 @@ interface WaypointState {
   setMySocials: (socials: UserSocials) => void;
   /** Swap your profile picture — updates everywhere your avatar renders. */
   setMyAvatar: (dataUrl: string) => void;
+  /** Edit profile: display name, bio, home city. */
+  setMyProfile: (p: { displayName: string; bio: string; homeCity: string }) => void;
 
   // ── Creator application ──
   creatorApplied: boolean;
@@ -319,11 +321,14 @@ export const useStore = create<WaypointState>((set, get) => ({
     let creatorApplied = false;
     let savedSocials: UserSocials | null = null;
     let savedAvatar: string | null = null;
+    let savedProfile: { displayName: string; bio: string; homeCity: string } | null = null;
     try {
       creatorApplied = !!window.localStorage.getItem("wp-creator-app");
       const rawSocials = window.localStorage.getItem("wp-socials");
       if (rawSocials) savedSocials = JSON.parse(rawSocials) as UserSocials;
       savedAvatar = window.localStorage.getItem("wp-avatar");
+      const rawProfile = window.localStorage.getItem("wp-profile");
+      if (rawProfile) savedProfile = JSON.parse(rawProfile) as typeof savedProfile;
     } catch {
       /* ignore */
     }
@@ -332,13 +337,14 @@ export const useStore = create<WaypointState>((set, get) => ({
       sessionReady: true,
       creatorApplied,
       users:
-        savedSocials || savedAvatar
+        savedSocials || savedAvatar || savedProfile
           ? s.users.map((u) =>
               u.id === s.viewerId
                 ? {
                     ...u,
                     ...(savedSocials ? { socials: savedSocials } : {}),
                     ...(savedAvatar ? { avatarUrl: savedAvatar } : {}),
+                    ...(savedProfile ?? {}),
                   }
                 : u
             )
@@ -746,6 +752,25 @@ export const useStore = create<WaypointState>((set, get) => ({
       }
     }
   },
+
+  setMyProfile: (p) =>
+    set((s) => {
+      if (backendEnabled) backend.syncProfile(s.viewerId, p);
+      else {
+        try {
+          window.localStorage.setItem("wp-profile", JSON.stringify(p));
+        } catch {
+          /* private mode — keep it for this session anyway */
+        }
+      }
+      return {
+        users: s.users.map((u) =>
+          u.id === s.viewerId
+            ? { ...u, displayName: p.displayName, bio: p.bio, homeCity: p.homeCity }
+            : u
+        ),
+      };
+    }),
 
   notifications: [...seedNotifications],
   markNotificationRead: (id) =>

@@ -45,9 +45,13 @@ export default function ProfileView({ handle }: { handle: string }) {
   const cancelFriendRequest = useStore((s) => s.cancelFriendRequest);
   const setMySocials = useStore((s) => s.setMySocials);
   const setMyAvatar = useStore((s) => s.setMyAvatar);
+  const setMyProfile = useStore((s) => s.setMyProfile);
   const [tab, setTab] = useState<Tab>("top");
-  const [editingSocials, setEditingSocials] = useState(false);
+  const [editingProfile, setEditingProfile] = useState(false);
   const [socialsDraft, setSocialsDraft] = useState<UserSocials>({});
+  const [nameDraft, setNameDraft] = useState("");
+  const [bioDraft, setBioDraft] = useState("");
+  const [cityDraft, setCityDraft] = useState("");
   const [statView, setStatView] = useState<"pins" | "countries" | "friends" | null>(null);
   const [recapOpen, setRecapOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
@@ -192,7 +196,9 @@ export default function ProfileView({ handle }: { handle: string }) {
               ))}
             </div>
           )}
-          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-2">{user.bio}</p>
+          {user.bio && (
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-2">{user.bio}</p>
+          )}
 
           {/* Recap + import lead the card; socials sit right underneath. */}
           {isMe && (
@@ -211,35 +217,80 @@ export default function ProfileView({ handle }: { handle: string }) {
               </button>
             </div>
           )}
-          {(isMe || (user.socials && Object.values(user.socials).some(Boolean))) && (
+          {user.socials && Object.values(user.socials).some(Boolean) && (
             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
               <SocialLinks socials={user.socials} />
-              {isMe && (
-                <button
-                  onClick={() => {
-                    setSocialsDraft(user.socials ?? {});
-                    setEditingSocials(true);
-                  }}
-                  className="rounded-full bg-paper-2 px-3 py-1.5 text-xs font-medium text-ink-3 ring-1 ring-line transition-colors hover:text-ink"
-                >
-                  {user.socials && Object.values(user.socials).some(Boolean)
-                    ? "Edit socials"
-                    : "+ Connect socials"}
-                </button>
-              )}
             </div>
           )}
         </div>
 
+        {/* Edit profile — pencil in the card's corner. Opens the full editor:
+            picture (tap the avatar), name, description, city, socials. */}
+        {isMe && !editingProfile && (
+          <button
+            onClick={() => {
+              setNameDraft(user.displayName);
+              setBioDraft(user.bio ?? "");
+              setCityDraft(user.homeCity ?? "");
+              setSocialsDraft(user.socials ?? {});
+              setEditingProfile(true);
+            }}
+            title="Edit profile"
+            aria-label="Edit profile"
+            className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-paper-2 text-ink-2 ring-1 ring-line transition-colors hover:text-ink"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+              <path d="m14.5 7.5 3 3" stroke="currentColor" strokeWidth="1.8" />
+            </svg>
+          </button>
+        )}
         </div>{/* /identity card */}
 
-        {/* Socials editor (own profile) */}
-        {isMe && editingSocials && (
-          <div className="mx-auto mt-5 max-w-md rounded-2xl border border-line bg-paper-2/60 p-4">
+        {/* Profile editor (own profile) */}
+        {isMe && editingProfile && (
+          <div className="animate-fade mx-auto mt-5 max-w-md rounded-2xl border border-line bg-paper/85 p-4 shadow-float backdrop-blur">
             <div className="text-xs font-semibold uppercase tracking-wide text-ink-3">
-              Connect your socials
+              Edit profile
             </div>
+            <p className="mt-1.5 text-xs text-ink-3">
+              To change your photo, tap the camera on your profile picture above.
+            </p>
             <div className="mt-3 space-y-2">
+              <label className="flex items-center gap-2 text-sm">
+                <span className="w-24 shrink-0 text-ink-3">Name</span>
+                <input
+                  value={nameDraft}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  placeholder="Your name"
+                  className="w-full rounded-xl bg-paper px-3 py-2 text-sm outline-none ring-1 ring-line focus:ring-ink/30"
+                />
+              </label>
+              <label className="flex items-center gap-2 text-sm">
+                <span className="w-24 shrink-0 text-ink-3">Home city</span>
+                <input
+                  value={cityDraft}
+                  onChange={(e) => setCityDraft(e.target.value)}
+                  placeholder="Lisbon, Portugal"
+                  className="w-full rounded-xl bg-paper px-3 py-2 text-sm outline-none ring-1 ring-line focus:ring-ink/30"
+                />
+              </label>
+              <label className="flex items-start gap-2 text-sm">
+                <span className="w-24 shrink-0 pt-2 text-ink-3">About you</span>
+                <textarea
+                  value={bioDraft}
+                  onChange={(e) => setBioDraft(e.target.value)}
+                  placeholder="A line or two about your travels…"
+                  rows={3}
+                  maxLength={280}
+                  className="w-full resize-none rounded-xl bg-paper px-3 py-2 text-sm outline-none ring-1 ring-line focus:ring-ink/30"
+                />
+              </label>
+            </div>
+            <div className="mt-4 text-xs font-semibold uppercase tracking-wide text-ink-3">
+              Socials
+            </div>
+            <div className="mt-2 space-y-2">
               {SOCIAL_NETWORKS.map(({ key, label }) => (
                 <label key={key} className="flex items-center gap-2 text-sm">
                   <span className="w-24 shrink-0 text-ink-3">{label}</span>
@@ -255,17 +306,25 @@ export default function ProfileView({ handle }: { handle: string }) {
                 </label>
               ))}
             </div>
-            <div className="mt-3 flex justify-end gap-2">
+            <div className="mt-4 flex justify-end gap-2">
               <button
-                onClick={() => setEditingSocials(false)}
+                onClick={() => setEditingProfile(false)}
                 className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-ink-2 ring-1 ring-line"
               >
                 Cancel
               </button>
               <button
                 onClick={() => {
+                  const name = nameDraft.trim();
+                  if (name) {
+                    setMyProfile({
+                      displayName: name,
+                      bio: bioDraft.trim(),
+                      homeCity: cityDraft.trim(),
+                    });
+                  }
                   setMySocials(socialsDraft);
-                  setEditingSocials(false);
+                  setEditingProfile(false);
                 }}
                 className="rounded-full bg-ink px-4 py-2 text-xs font-semibold text-paper"
               >

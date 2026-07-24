@@ -76,11 +76,17 @@ const landmarksFC: GeoJSON.FeatureCollection = {
 // are reachable. Lets a repeat theme switch jump straight to its final style.
 const styleProbeCache = new Map<string, boolean>();
 
-// Request counter already consumed. Module scope on purpose: MapCanvas
-// unmounts when navigating to a profile, and on return the effect re-runs
-// with the store's old counter value — without this marker the last
-// recording would replay itself.
+// Request counters already consumed. Module scope on purpose: MapCanvas
+// unmounts when navigating to a profile, and on return the effects re-run
+// with the store's old values — without these markers the last recording,
+// fly-to, or country fit would replay itself (returning from the You page
+// used to dive straight back onto the last searched pin).
 let recapFlightConsumed = 0;
+let flyToConsumed = 0;
+let fitBoundsConsumed = 0;
+// Same reason: the welcome fit-to-your-pins should happen once per session,
+// not every time the map remounts.
+let didFitViewerOnce = false;
 
 export default function MapCanvas({ placing, onPick }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -97,7 +103,6 @@ export default function MapCanvas({ placing, onPick }: Props) {
   );
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
   const readyRef = useRef(false);
-  const didInitialFit = useRef(false);
   const styleSeqRef = useRef(0);
 
   const visiblePins = useVisiblePins();
@@ -764,7 +769,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
   // ---- Fly-to intent from the store ----
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !flyTo) return;
+    if (!map || !flyTo || flyTo.nonce === flyToConsumed) return;
+    flyToConsumed = flyTo.nonce;
     map.flyTo({
       center: [flyTo.lng, flyTo.lat],
       zoom: flyTo.zoom ?? 9,
@@ -867,7 +873,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
   // ---- Fit-bounds intent (country Focus) ----
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !fitBoundsTo) return;
+    if (!map || !fitBoundsTo || fitBoundsTo.nonce === fitBoundsConsumed) return;
+    fitBoundsConsumed = fitBoundsTo.nonce;
     try {
       map.fitBounds(
         [
@@ -890,7 +897,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   }, [fitBoundsTo?.nonce]);
 
   function fitToViewer() {
-    if (didInitialFit.current) return;
+    if (didFitViewerOnce) return;
     const viewerId = useStore.getState().viewerId;
     const own = pinsRef.current.filter((p) => p.userId === viewerId);
     const pts = own.length ? own : pinsRef.current;
@@ -902,7 +909,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       maxZoom: 5.5,
       duration: 2800,
     });
-    didInitialFit.current = true;
+    didFitViewerOnce = true;
   }
 
   // ---- Marker rendering ----

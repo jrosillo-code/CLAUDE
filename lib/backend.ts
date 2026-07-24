@@ -464,6 +464,17 @@ export function syncSocials(userId: string, socials: UserSocials): void {
     .then(({ error }) => error && log("socials")(error));
 }
 
+export function syncProfile(
+  userId: string,
+  p: { displayName: string; bio: string; homeCity: string }
+): void {
+  void supabase!
+    .from("users")
+    .update({ display_name: p.displayName, bio: p.bio, home_city: p.homeCity })
+    .eq("id", userId)
+    .then(({ error }) => error && log("profile")(error));
+}
+
 export function syncApplyCreator(userId: string, activities: ActivitySlug[], link: string): void {
   void supabase!
     .from("creator_applications")

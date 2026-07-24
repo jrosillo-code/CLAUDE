@@ -18,9 +18,7 @@ import TripGuidePanel from "./TripGuidePanel";
 import TripDraftBar from "./TripDraftBar";
 import TopSpotsPanel from "./TopSpotsPanel";
 import LandmarkCard from "./LandmarkCard";
-import EmptyHint from "./EmptyHint";
 import { useStore } from "@/lib/store";
-import { useVisiblePins } from "@/lib/hooks";
 import { reverseGeocode } from "@/lib/geocode";
 import { cancelFlightRender } from "@/lib/renderFlight";
 
@@ -50,7 +48,6 @@ export default function MapApp() {
   const selectedPinId = useStore((s) => s.selectedPinId);
   const flightRecording = useStore((s) => s.flightRecording);
   const flightProgress = useStore((s) => s.flightProgress);
-  const visible = useVisiblePins();
   const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
 
   // Phones: when a trip draft ends, land somewhere sensible — the trips panel
@@ -224,8 +221,6 @@ export default function MapApp() {
           Finding that place…
         </div>
       )}
-
-      {visible.length === 0 && !addDraft && mapMode === "pins" && <EmptyHint />}
 
       {mapMode === "pins" && !selectedPinId && <LandmarkCard />}
       {selectedPinId && <PinSheet />}
