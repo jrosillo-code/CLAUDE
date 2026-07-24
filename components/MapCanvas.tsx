@@ -13,7 +13,7 @@ import {
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
-import { thumbUrl, visibleTrips } from "@/lib/data";
+import { visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
 import { createFlightRecorder } from "@/lib/recordFlight";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
@@ -711,7 +711,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
           pinId: p.id,
           ownerId: p.userId,
           color: p.owner.color,
-          photo: thumbUrl(p) ?? p.owner.avatarUrl,
+          // The needle head wears the owner's face, not the pin's photo — the
+          // map reads as WHO at a glance; photos live in the pin sheet.
+          photo: p.owner.avatarUrl,
         },
         geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },
       }))
@@ -1088,10 +1090,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
           `wl-${p.id}`,
           p.lng,
           p.lat,
-          `${thumbUrl(p) ?? ""}|wish`,
+          `${p.owner.avatarUrl}|wish`,
           () =>
             needleEl({
-              photo: thumbUrl(p) ?? p.owner.avatarUrl,
+              photo: p.owner.avatarUrl,
               ring: "#8a8f98",
               scale: 0.92,
               stacked: false,
