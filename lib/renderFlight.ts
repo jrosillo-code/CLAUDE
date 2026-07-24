@@ -226,12 +226,23 @@ export async function renderFlightFilm(
   const copyCtx = mapCopy.getContext("2d");
   const snapshot = () => {
     try {
+      // Clear first: outside the globe the GL canvas is transparent, and
+      // stale pixels from earlier (larger) globes would otherwise pile up
+      // into outward rings during the pull-back.
+      copyCtx?.clearRect(0, 0, srcW, srcH);
       copyCtx?.drawImage(mapCanvas, 0, 0, srcW, srcH);
     } catch {
       /* keep previous frame */
     }
   };
   map.on("render", snapshot);
+
+  // In the app, the page shows through the map's transparent surroundings;
+  // the film has no page, so paint the same backdrop under every frame.
+  const spaceBg =
+    getComputedStyle(document.documentElement).getPropertyValue("--color-paper").trim() ||
+    getComputedStyle(document.body).backgroundColor ||
+    "#f5f2ec";
 
   try {
     cleanupMap();
@@ -317,6 +328,8 @@ export async function renderFlightFilm(
       await settleFrame(map, 2000);
       if (cancelled) break;
 
+      ctx.fillStyle = spaceBg;
+      ctx.fillRect(0, 0, W, H);
       ctx.drawImage(mapCopy, 0, 0, W, H);
       const k = W / mapCanvas.clientWidth;
 
