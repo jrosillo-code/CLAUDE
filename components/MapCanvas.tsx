@@ -721,9 +721,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
 
+    // Honor the current basemap on (re)mount — returning from the profile page
+    // remounts this component, and defaulting to the street style here would
+    // silently flip Satellite back to Map.
+    const initialSatellite = useStore.getState().basemap === "satellite";
+    if (initialSatellite) terrainBrokenRef.current = false;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: bundledWorldStyle(themeRef.current),
+      style: initialSatellite ? satelliteStyle() : bundledWorldStyle(themeRef.current),
       center: [10, 25],
       zoom: 1.6,
       minZoom: 1.05, // never shrink the planet to a dot
