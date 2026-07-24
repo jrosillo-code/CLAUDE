@@ -73,7 +73,7 @@ layer), and write-through hooks in `lib/store.ts`. Without env keys the app runs
 seeded in-memory demo; with them, auth + data + storage are live. To turn it on:
 
 1. **Create a project** at [supabase.com](https://supabase.com) (free tier is fine).
-2. **Run the migrations** `supabase/migrations/0001…0008` in order:
+2. **Run the migrations** `supabase/migrations/0001…0011` in order:
    ```bash
    supabase link --project-ref <your-ref> && supabase db push
    ```
