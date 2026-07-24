@@ -320,6 +320,26 @@ export function syncUpdatePin(pin: Pin): void {
     .then(({ error }) => error && log("updatePin")(error));
 }
 
+/** Replace a pin's photos/videos wholesale (edit flow). */
+export function syncReplacePinMedia(pinId: string, media: Pin["media"]): void {
+  const sb = supabase!;
+  void (async () => {
+    await sb.from("pin_photos").delete().eq("pin_id", pinId);
+    if (media.length) {
+      const { error } = await sb.from("pin_photos").insert(
+        media.map((m, i) => ({
+          id: m.id,
+          pin_id: pinId,
+          storage_path: m.url,
+          kind: m.kind,
+          sort_order: i,
+        }))
+      );
+      if (error) log("updatePin media")(error);
+    }
+  })();
+}
+
 export function syncDeletePin(pinId: string): void {
   void supabase!
     .from("pins")

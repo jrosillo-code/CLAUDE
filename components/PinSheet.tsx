@@ -10,6 +10,11 @@ import type { PinMedia } from "@/lib/types";
 import { appleMapsDirectionsUrl, googleMapsDirectionsUrl } from "@/lib/directions";
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 import { RatingBadge, RatingScale } from "./RatingScale";
+import { backendEnabled } from "@/lib/supabase";
+import { uploadPinMedia } from "@/lib/backend";
+import { downscaleImage } from "@/lib/image";
+import { useViewer } from "@/lib/hooks";
+import { SAMPLE_VIDEOS, photo } from "@/lib/seed";
 
 // Immersive pin view: a large modal with a photo collage (click any photo to
 // open it full-screen), the story of the place, likes/saves, and who else has
@@ -28,11 +33,45 @@ export default function PinSheet() {
   const ratePin = useStore((s) => s.ratePin);
   const updatePin = useStore((s) => s.updatePin);
   const deletePin = useStore((s) => s.deletePin);
+  const viewer = useViewer();
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editNote, setEditNote] = useState("");
   const [editVisibility, setEditVisibility] = useState<"public" | "friends" | "private">("friends");
+  const [editMedia, setEditMedia] = useState<PinMedia[]>([]);
+  const [uploadingEdit, setUploadingEdit] = useState(0);
   const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const newMediaId = () =>
+    typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `m-${Date.now()}-${Math.round(Math.random() * 1e6)}`;
+
+  async function handleEditFiles(files: FileList | null) {
+    if (!files) return;
+    for (const file of Array.from(files).slice(0, 8 - editMedia.length)) {
+      const isVideo = file.type.startsWith("video/");
+      setUploadingEdit((n) => n + 1);
+      try {
+        if (isVideo) {
+          const url = backendEnabled
+            ? await uploadPinMedia(viewer.id, file, file.name.split(".").pop() || "mp4")
+            : URL.createObjectURL(file);
+          if (url) setEditMedia((p) => [...p, { id: newMediaId(), kind: "video" as const, url }].slice(0, 8));
+        } else {
+          const dataUrl = await downscaleImage(file, 1600);
+          let url: string | null = dataUrl;
+          if (backendEnabled) {
+            const blob = await (await fetch(dataUrl)).blob();
+            url = await uploadPinMedia(viewer.id, blob, "jpg");
+          }
+          if (url) setEditMedia((p) => [...p, { id: newMediaId(), kind: "photo" as const, url }].slice(0, 8));
+        }
+      } finally {
+        setUploadingEdit((n) => n - 1);
+      }
+    }
+  }
 
   const [lightbox, setLightbox] = useState<number | null>(null);
 
@@ -233,6 +272,7 @@ export default function PinSheet() {
                       setEditTitle(pin.title);
                       setEditNote(pin.note);
                       setEditVisibility(pin.visibility);
+                      setEditMedia(pin.media);
                       setEditing(true);
                       setConfirmDelete(false);
                     }}
@@ -260,7 +300,67 @@ export default function PinSheet() {
 
               {isOwner && editing && (
                 <div className="mt-6 rounded-2xl border border-line bg-paper-2/60 p-4">
-                  <label className="text-xs font-medium uppercase tracking-wide text-ink-3">Title</label>
+                  <label className="text-xs font-medium uppercase tracking-wide text-ink-3">Photos &amp; videos</label>
+                  <div className="no-scrollbar mt-2 flex gap-2 overflow-x-auto">
+                    {editMedia.map((m, i) => (
+                      <div key={m.id} className="relative h-20 w-20 shrink-0">
+                        {m.kind === "video" ? (
+                          <div className="h-full w-full overflow-hidden rounded-xl bg-ink">
+                            <video src={m.url} muted playsInline preload="metadata" className="h-full w-full object-cover opacity-80" />
+                            <span className="absolute inset-0 grid place-items-center text-paper">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z" /></svg>
+                            </span>
+                          </div>
+                        ) : (
+                          <img src={m.url} alt="" className="h-full w-full rounded-xl object-cover" />
+                        )}
+                        <button
+                          onClick={() => setEditMedia((p) => p.filter((_, j) => j !== i))}
+                          aria-label="Remove"
+                          className="absolute -right-1.5 -top-1.5 grid h-6 w-6 place-items-center rounded-full bg-ink text-paper shadow ring-2 ring-paper"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
+                        </button>
+                      </div>
+                    ))}
+                    {editMedia.length < 8 && (
+                      <label
+                        title="Add photos or videos"
+                        className="grid h-20 w-20 shrink-0 cursor-pointer place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
+                      >
+                        {uploadingEdit > 0 ? (
+                          <span className="h-5 w-5 animate-spin rounded-full border-2 border-line border-t-ink-2" />
+                        ) : (
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*,video/*"
+                          multiple
+                          className="hidden"
+                          onChange={(e) => {
+                            void handleEditFiles(e.target.files);
+                            e.target.value = "";
+                          }}
+                        />
+                      </label>
+                    )}
+                    {!backendEnabled && editMedia.length < 8 && (
+                      <button
+                        onClick={() =>
+                          setEditMedia((p) =>
+                            [...p, { id: newMediaId(), kind: "photo" as const, url: photo(`edit-${Date.now()}-${p.length}`, 1200, 800) }].slice(0, 8)
+                          )
+                        }
+                        title="Add a sample photo (demo)"
+                        className="grid h-20 w-20 shrink-0 place-items-center rounded-xl border-2 border-dashed border-line text-ink-3 hover:border-ink-3 hover:text-ink-2"
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="14" rx="2.5" stroke="currentColor" strokeWidth="1.8" /><path d="m4 16 4.5-4.5 3.5 3.5 3-3 5 5" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /><circle cx="9" cy="9.5" r="1.4" fill="currentColor" /></svg>
+                      </button>
+                    )}
+                  </div>
+
+                  <label className="mt-3 block text-xs font-medium uppercase tracking-wide text-ink-3">Title</label>
                   <input
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
@@ -300,6 +400,7 @@ export default function PinSheet() {
                           title: editTitle.trim() || pin.title,
                           note: editNote.trim(),
                           visibility: editVisibility,
+                          media: editMedia,
                         });
                         setEditing(false);
                       }}

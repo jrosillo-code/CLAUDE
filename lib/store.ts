@@ -203,7 +203,7 @@ interface WaypointState {
     createdAt?: string;
   }) => Pin;
   /** Edit your own pin (title, note, visibility, rating). */
-  updatePin: (pinId: string, patch: Partial<Pick<Pin, "title" | "note" | "visibility" | "rating">>) => void;
+  updatePin: (pinId: string, patch: Partial<Pick<Pin, "title" | "note" | "visibility" | "rating" | "media">>) => void;
   /** Delete your own pin everywhere. */
   deletePin: (pinId: string) => void;
   /** Set (or clear with null) your own 1–10 score on a pin you own. */
@@ -686,7 +686,11 @@ export const useStore = create<WaypointState>((set, get) => ({
       const pins = s.pins.map((p) => {
         if (p.id !== pinId || p.userId !== s.viewerId) return p;
         const next = { ...p, ...patch };
-        if (backendEnabled) backend.syncUpdatePin(next);
+        if (backendEnabled) {
+          backend.syncUpdatePin(next);
+          // Media lives in its own table — replace it only when it changed.
+          if (patch.media !== undefined) backend.syncReplacePinMedia(pinId, next.media);
+        }
         return next;
       });
       return { pins };
