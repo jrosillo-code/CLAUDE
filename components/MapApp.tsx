@@ -110,11 +110,6 @@ export default function MapApp() {
       <TopBar
         onOpenActivity={() => setActivityOpen(true)}
         onOpenFeed={() => setFeedOpen(true)}
-        tripsActive={mapMode === "trips"}
-        onOpenTrips={() => {
-          setMapMode("trips");
-          setTripsOpen(true);
-        }}
       />
       {mapMode === "pins" && (
         <LayerRail

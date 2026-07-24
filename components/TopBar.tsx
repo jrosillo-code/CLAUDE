@@ -9,15 +9,11 @@ import WaypointLogo from "./Logo";
 import { FocusButton } from "./LayerRail";
 
 export default function TopBar({
-  onOpenTrips,
   onOpenActivity,
   onOpenFeed,
-  tripsActive,
 }: {
-  onOpenTrips: () => void;
   onOpenActivity: () => void;
   onOpenFeed: () => void;
-  tripsActive: boolean;
 }) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
@@ -159,23 +155,9 @@ export default function TopBar({
       </div>
     </header>
 
-    {/* Bottom-right column above the add-pin FAB. Phones: Trips + Focus.
-        Desktop: just the Focus icon, centered over the big blue plus —
-        Trips lives under Travelers in the left rail there. */}
+    {/* Focus floats above the add-pin FAB on every breakpoint — Trips lives
+        with Travelers in the left column now. */}
     <div className="fixed z-30 flex flex-col items-center gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:right-[18px] sm:bottom-24 sm:right-4 sm:w-14">
-      <button
-        onClick={onOpenTrips}
-        title="Trips"
-        className={`grid h-9 w-9 place-items-center rounded-full shadow-float backdrop-blur sm:hidden ${
-          tripsActive ? "bg-ink text-paper" : "bg-paper/85"
-        }`}
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent-2">
-          <circle cx="5" cy="19" r="2.4" fill="currentColor" />
-          <circle cx="19" cy="5" r="2.4" fill="currentColor" />
-          <path d="M6.8 17.2C10 14 8.5 11 12 8.5c2.4-1.7 4-1.5 5.4-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="0.5 3.4" />
-        </svg>
-      </button>
       <FocusButton bubbleLeft />
     </div>
     </>
