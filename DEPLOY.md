@@ -26,10 +26,9 @@ site is a PWA; phones install it from the browser).
 
 1. [vercel.com](https://vercel.com) → **Add New → Project** → import the
    GitHub repo `jrosillo-code/CLAUDE`. Next.js is auto-detected; default
-   build settings are correct.
-2. **Settings → Git → Production Branch**: set to `claude/build-app-h6ndnb`
-   (the `main` branch only holds the initial README).
-3. **Settings → Environment Variables** — add these, then (re)deploy:
+   build settings are correct, and `main` (the default production branch)
+   carries the app.
+2. **Settings → Environment Variables** — add these, then (re)deploy:
 
    | Variable | Value | Required? |
    |---|---|---|
@@ -39,7 +38,7 @@ site is a PWA; phones install it from the browser).
    | `ANTHROPIC_API_KEY` | console.anthropic.com | no — real AI route guides instead of the demo brief |
    | `NEXT_PUBLIC_MAP_STYLE` | any MapLibre style URL | no — default is keyless OpenFreeMap |
 
-4. Note your deploy URL (e.g. `waypoint-beta.vercel.app`). A custom domain is
+3. Note your deploy URL (e.g. `waypoint-beta.vercel.app`). A custom domain is
    Settings → Domains, later, optional.
 
 ## 3 · Point Supabase back at the site (2 min — magic links break without it)
