@@ -135,6 +135,12 @@ export async function renderFlightFilm(
   const plan = buildFlightPlan(stops);
   const assets = loadFlightAssets(accent, avatarUrl);
 
+  // Great-circle distance along the route, for the end card.
+  let routeKm = 0;
+  for (let i = 1; i < stops.length; i++) routeKm += arcDeg(stops[i - 1], stops[i]) * 111.19;
+  routeKm = Math.round(routeKm);
+  const kmLabel = routeKm >= 1000 ? `${Math.round(routeKm / 1000)}k` : String(routeKm);
+
   // When each stop is reached, in film time — drives dot pop-ins and pulses.
   const frameMs = 1000 / FPS;
   const stopArriveMs = plan.stopFracs.map((f, si) => {
@@ -452,41 +458,95 @@ export async function renderFlightFilm(
         drawFlightOverlay(ctx, { x: px * k, y: py * k, k, heading, altitude, accent, assets });
       }
 
-      // Title card over the opening hold.
-      const titleA = ramp(t, 100, 450) * (1 - ramp(t, HOLD0_MS - 380, HOLD0_MS - 80));
+      // Title card over the opening hold — Modern Grotesque: a tracked
+      // kicker, a big tight year, and a single accent tick. A gentle rise
+      // + fade as it settles in.
+      const titleA = ramp(t, 100, 480) * (1 - ramp(t, HOLD0_MS - 380, HOLD0_MS - 60));
       if (titleA > 0.01) {
         ctx.globalAlpha = titleA;
         ctx.textAlign = "center";
-        ctx.shadowColor = "rgba(255,255,255,.95)";
-        ctx.shadowBlur = 22 * k;
-        ctx.fillStyle = inkText;
-        ctx.font = `700 ${Math.round(56 * k)}px ${fontStack}`;
-        ctx.fillText(`${year}`, W / 2, H * 0.42);
+        const midY = H * 0.44 + (1 - titleA) * 14 * k; // rise-in
+        // kicker
+        ctx.shadowColor = "rgba(255,255,255,.9)";
+        ctx.shadowBlur = 12 * k;
         ctx.fillStyle = accent;
-        ctx.font = `600 ${Math.round(14 * k)}px ${fontStack}`;
-        ctx.fillText("A  Y E A R  I N  T R A V E L", W / 2, H * 0.42 + 34 * k);
+        ctx.font = `700 ${Math.round(15 * k)}px ${fontStack}`;
+        ctx.letterSpacing = `${7 * k}px`;
+        ctx.fillText("YEAR IN TRAVEL", W / 2 + 3.5 * k, midY - 60 * k);
+        ctx.letterSpacing = "0px";
+        // year — big and tight
+        ctx.shadowColor = "rgba(255,255,255,.96)";
+        ctx.shadowBlur = 28 * k;
+        ctx.fillStyle = inkText;
+        ctx.font = `800 ${Math.round(94 * k)}px ${fontStack}`;
+        ctx.letterSpacing = `${-3 * k}px`;
+        ctx.fillText(`${year}`, W / 2, midY + 22 * k);
+        ctx.letterSpacing = "0px";
         ctx.shadowBlur = 0;
+        // accent tick
+        ctx.fillStyle = accent;
+        ctx.fillRect(W / 2 - 28 * k, midY + 46 * k, 56 * k, 4 * k);
         ctx.globalAlpha = 1;
       }
 
       // End card: the year's numbers fade in over the settled world.
       const endStart = plan.totalMs + PULLBACK_MS;
-      const endA = ramp(t, endStart + 200, endStart + 750);
+      const endA = ramp(t, endStart + 200, endStart + 780);
       if (endA > 0.01) {
         ctx.globalAlpha = endA;
         ctx.textAlign = "center";
-        ctx.shadowColor = "rgba(255,255,255,.95)";
-        ctx.shadowBlur = 18 * k;
+        const midY = H * 0.82 + (1 - endA) * 12 * k; // rise-in
+        const cells: [string, string][] = [
+          [String(stats.places), stats.places === 1 ? "PLACE" : "PLACES"],
+          [String(stats.countries), stats.countries === 1 ? "COUNTRY" : "COUNTRIES"],
+          [kmLabel, "KM"],
+        ];
+        const numFont = `800 ${Math.round(52 * k)}px ${fontStack}`;
+        const labFont = `600 ${Math.round(13 * k)}px ${fontStack}`;
+        const gap = 52 * k;
+        ctx.letterSpacing = "0px";
+        ctx.font = numFont;
+        const cw = cells.map((c) => ctx.measureText(c[0]).width);
+        const totalW = cw.reduce((a, b) => a + b, 0) + gap * (cells.length - 1);
+        let x = W / 2 - totalW / 2;
+        cells.forEach((c, i) => {
+          const cellCx = x + cw[i] / 2;
+          // number
+          ctx.shadowColor = "rgba(255,255,255,.96)";
+          ctx.shadowBlur = 20 * k;
+          ctx.fillStyle = inkText;
+          ctx.font = numFont;
+          ctx.letterSpacing = `${-2 * k}px`;
+          ctx.fillText(c[0], cellCx, midY);
+          ctx.letterSpacing = "0px";
+          // label
+          ctx.shadowBlur = 10 * k;
+          ctx.fillStyle = accent;
+          ctx.font = labFont;
+          ctx.letterSpacing = `${3 * k}px`;
+          ctx.fillText(c[1], cellCx + 1.5 * k, midY + 27 * k);
+          ctx.letterSpacing = "0px";
+          ctx.shadowBlur = 0;
+          // divider
+          if (i < cells.length - 1) {
+            const dx = x + cw[i] + gap / 2;
+            ctx.strokeStyle = "rgba(24,26,32,.26)";
+            ctx.lineWidth = 1.4 * k;
+            ctx.beginPath();
+            ctx.moveTo(dx, midY - 40 * k);
+            ctx.lineTo(dx, midY + 4 * k);
+            ctx.stroke();
+          }
+          x += cw[i] + gap;
+        });
+        // wordmark
+        ctx.shadowColor = "rgba(255,255,255,.9)";
+        ctx.shadowBlur = 12 * k;
         ctx.fillStyle = inkText;
-        ctx.font = `700 ${Math.round(24 * k)}px ${fontStack}`;
-        ctx.fillText(
-          `${stats.places} ${stats.places === 1 ? "place" : "places"} · ${stats.countries} ${stats.countries === 1 ? "country" : "countries"}`,
-          W / 2,
-          H * 0.84
-        );
-        ctx.fillStyle = accent;
-        ctx.font = `600 ${Math.round(12 * k)}px ${fontStack}`;
-        ctx.fillText(`W A Y P O I N T  ·  ${year}`, W / 2, H * 0.84 + 26 * k);
+        ctx.font = `700 ${Math.round(19 * k)}px ${fontStack}`;
+        ctx.letterSpacing = `${5 * k}px`;
+        ctx.fillText(`WAYPOINT ${year}`, W / 2 + 2.5 * k, midY + 76 * k);
+        ctx.letterSpacing = "0px";
         ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
       } else {
