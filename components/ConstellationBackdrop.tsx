@@ -7,6 +7,12 @@ import { useEffect, useRef } from "react";
 // twinkle softly; faint segments trace the coasts like constellation lines;
 // and one golden thread arcs from continent to continent with a slow pulse
 // traveling along it. Everything drifts gently, like the map is breathing.
+//
+// Two compositions share the data:
+//  · Desktop — the map cover-fills the viewport (the original look).
+//  · Phones — cover-scaling only ever showed a smeared crop, so instead the
+//    WHOLE world renders as a fitted constellation band in the upper middle,
+//    floating in a sparse ambient starfield that fills the rest of the sky.
 
 interface Star {
   lng: number;
@@ -15,6 +21,14 @@ interface Star {
   bright: boolean;
   ring: number; // ring id — segments only connect within a ring
   idx: number;
+}
+
+interface AmbientStar {
+  x: number; // 0..1 of canvas
+  y: number;
+  phase: number;
+  r: number;
+  accent: boolean;
 }
 
 // The thread's waypoints: continent hearts, in travel order.
@@ -71,6 +85,24 @@ async function loadStars(): Promise<Star[]> {
   return stars;
 }
 
+const fract = (x: number) => x - Math.floor(x);
+
+/** Deterministic scatter for the phone sky — no Math.random so it never pops
+ *  between frames or renders. */
+function makeAmbient(count: number): AmbientStar[] {
+  const out: AmbientStar[] = [];
+  for (let i = 1; i <= count; i++) {
+    out.push({
+      x: fract(Math.sin(i * 12.9898) * 43758.5453),
+      y: fract(Math.sin(i * 78.233) * 12543.217),
+      phase: fract(Math.sin(i * 3.7) * 9871.3) * 6.28318,
+      r: 0.7 + fract(Math.sin(i * 41.17) * 7919.77) * 1.1,
+      accent: i % 9 === 0,
+    });
+  }
+  return out;
+}
+
 export default function ConstellationBackdrop() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -81,6 +113,7 @@ export default function ConstellationBackdrop() {
     if (!ctx) return;
 
     let stars: Star[] = [];
+    let ambient: AmbientStar[] = [];
     let raf = 0;
     let disposed = false;
     let w = 0;
@@ -108,6 +141,7 @@ export default function ConstellationBackdrop() {
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ambient = makeAmbient(Math.round((w * h) / 8000));
     };
     resize();
     // Debounced: mobile browsers fire a resize storm while the URL bar
@@ -119,13 +153,14 @@ export default function ConstellationBackdrop() {
     };
     window.addEventListener("resize", onResize);
 
-    // Equirectangular, scaled to cover, nudged toward the inhabited world.
-    const project = (lng: number, lat: number, drift: number): [number, number] => {
-      const scale = Math.max(w / 360, h / 150) * 1.08;
-      const cx = w / 2 + drift;
-      const cy = h / 2;
-      return [cx + (lng - 12) * scale, cy - (lat - 18) * scale];
-    };
+    // Frame-scoped projection state (set at the top of draw).
+    let pScale = 1;
+    let pCx = 0;
+    let pCy = 0;
+    const project = (lng: number, lat: number): [number, number] => [
+      pCx + (lng - 12) * pScale,
+      pCy - (lat - 18) * pScale,
+    ];
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -140,11 +175,15 @@ export default function ConstellationBackdrop() {
       lastFrame = ms;
       const t = ms / 1000;
       const drift = reduced ? 0 : Math.sin(t * 0.07) * 10;
-      // Cover-scaling zooms hard on tall narrow screens; everything measured
-      // in pixels (segment reach, star size, thread arc) scales with it so a
-      // phone shows the same constellation, just closer — not shredded dots.
-      const scale = Math.max(w / 360, h / 150) * 1.08;
-      const sz = Math.min(1.5, Math.max(1, scale / 4.5));
+
+      const mobile = w < 640;
+      // Desktop covers the viewport; phones fit the world by width and let it
+      // float as a band — measured elements scale with the projection.
+      pScale = mobile ? (w / 360) * 1.06 : Math.max(w / 360, h / 150) * 1.08;
+      const sz = mobile ? 1 : Math.min(1.5, Math.max(1, pScale / 4.5));
+      pCx = w / 2 + (mobile ? drift * 0.4 : drift);
+      pCy = mobile ? h * 0.4 : h / 2;
+
       ctx.clearRect(0, 0, w, h);
 
       // Daylight only: a cool sky wash from the top so the constellation sits
@@ -159,27 +198,42 @@ export default function ConstellationBackdrop() {
         ctx.fillRect(0, 0, w, h);
       }
 
+      // Phones: a sparse ambient starfield fills the sky around the world band.
+      if (mobile) {
+        for (const a of ambient) {
+          const tw = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.7 + a.phase);
+          ctx.globalAlpha = (a.accent ? 0.25 : dark ? 0.1 : 0.14) + 0.18 * tw;
+          ctx.fillStyle = a.accent ? accent : inkColor;
+          ctx.beginPath();
+          ctx.arc(a.x * w, a.y * h, a.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
       // Constellation lines — consecutive coastline stars, faint.
       ctx.lineWidth = 1;
       ctx.strokeStyle = inkColor;
-      ctx.globalAlpha = dark ? 0.07 : 0.15;
+      ctx.globalAlpha = dark ? 0.07 : mobile ? 0.12 : 0.15;
       ctx.beginPath();
       for (let i = 1; i < stars.length; i++) {
         const a = stars[i - 1];
         const b = stars[i];
         if (a.ring !== b.ring || b.idx !== a.idx + 1) continue;
-        const [x1, y1] = project(a.lng, a.lat, drift);
-        const [x2, y2] = project(b.lng, b.lat, drift);
+        const [x1, y1] = project(a.lng, a.lat);
+        const [x2, y2] = project(b.lng, b.lat);
         if ((x1 < -40 && x2 < -40) || (x1 > w + 40 && x2 > w + 40)) continue;
-        if (Math.hypot(x2 - x1, y2 - y1) > scale * 17) continue;
+        if (Math.hypot(x2 - x1, y2 - y1) > pScale * 17) continue;
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
       }
       ctx.stroke();
 
-      // Stars — twinkling coastline points.
-      for (const s of stars) {
-        const [x, y] = project(s.lng, s.lat, drift);
+      // Stars — twinkling coastline points. The fitted phone band is dense, so
+      // it keeps every accent star but only every third of the dust.
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        if (mobile && !s.bright && i % 3 !== 0) continue;
+        const [x, y] = project(s.lng, s.lat);
         if (x < -10 || x > w + 10 || y < -10 || y > h + 10) continue;
         const tw = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.9 + s.phase);
         if (s.bright) {
@@ -197,19 +251,19 @@ export default function ConstellationBackdrop() {
           ctx.globalAlpha = dark ? 0.35 + 0.4 * tw : 0.55 + 0.4 * tw;
           ctx.fillStyle = accent;
           ctx.beginPath();
-          ctx.arc(x, y, (dark ? 1.9 : 2.2) * sz, 0, Math.PI * 2);
+          ctx.arc(x, y, (mobile ? 1.7 : dark ? 1.9 : 2.2) * sz, 0, Math.PI * 2);
           ctx.fill();
         } else {
-          ctx.globalAlpha = dark ? 0.16 + 0.22 * tw : 0.3 + 0.3 * tw;
+          ctx.globalAlpha = dark ? 0.16 + 0.22 * tw : mobile ? 0.26 + 0.24 * tw : 0.3 + 0.3 * tw;
           ctx.fillStyle = inkColor;
           ctx.beginPath();
-          ctx.arc(x, y, (dark ? 1.15 : 1.35) * sz, 0, Math.PI * 2);
+          ctx.arc(x, y, (mobile ? 0.95 : dark ? 1.15 : 1.35) * sz, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
       // The thread — a soft curve stitched continent to continent…
-      const pts = THREAD.map(([lng, lat]) => project(lng, lat, drift));
+      const pts = THREAD.map(([lng, lat]) => project(lng, lat));
       ctx.globalAlpha = dark ? 0.28 : 0.5;
       ctx.strokeStyle = accent;
       ctx.lineWidth = (dark ? 1.4 : 1.6) * sz;
@@ -217,10 +271,10 @@ export default function ConstellationBackdrop() {
       ctx.lineCap = "round";
       ctx.beginPath();
       ctx.moveTo(pts[0][0], pts[0][1]);
+      const lift = mobile ? Math.max(24, pScale * 14) : pScale * 14;
       for (let i = 1; i < pts.length; i++) {
         const [px, py] = pts[i - 1];
         const [x, y] = pts[i];
-        const lift = scale * 14;
         ctx.quadraticCurveTo(px, py - lift, (px + x) / 2, (py + y) / 2 - lift / 2);
         ctx.quadraticCurveTo(x, y - lift / 2, x, y);
       }
@@ -234,8 +288,9 @@ export default function ConstellationBackdrop() {
         const f = seg - i;
         const [x1, y1] = pts[i];
         const [x2, y2] = pts[i + 1];
+        const arcLift = mobile ? Math.max(18, pScale * 10) : pScale * 10;
         const px = x1 + (x2 - x1) * f;
-        const py = y1 + (y2 - y1) * f - Math.sin(f * Math.PI) * scale * 10;
+        const py = y1 + (y2 - y1) * f - Math.sin(f * Math.PI) * arcLift;
         const glow = ctx.createRadialGradient(px, py, 0, px, py, 14 * sz);
         glow.addColorStop(0, accent);
         glow.addColorStop(1, "transparent");
