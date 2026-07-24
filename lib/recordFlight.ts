@@ -2,11 +2,12 @@ import type maplibregl from "maplibre-gl";
 import type { FlyoverFrame } from "./flyover";
 
 // The flight film: records the journey flyover into a downloadable video,
-// entirely client-side. The map's WebGL canvas streams into a compositing
-// canvas (the plane is a DOM marker, invisible to the GL canvas, so it gets
-// redrawn onto the composite each frame), and MediaRecorder captures that.
-// Requires the map to be created with preserveDrawingBuffer so drawImage can
-// read the GL canvas between renders.
+// entirely client-side. The map's WebGL canvas is copied on the map's own
+// "render" event — synchronously after each GL draw, while the buffer is
+// still valid — so the map does NOT need preserveDrawingBuffer (which costs
+// frame rate all the time for a feature used rarely). A 60fps compositing
+// canvas layers the plane + avatar over that copy, and MediaRecorder
+// captures the composite.
 
 export interface FlightRecorder {
   /** Wire to the flyover's onFrame — keeps the overlay's plane in sync. */
@@ -64,15 +65,31 @@ export function createFlightRecorder(
   avatar.onload = () => (avatarOk = true);
   avatar.src = avatarUrl;
 
-  const stream = rec.captureStream(30);
+  const stream = rec.captureStream(60);
   const chunks: Blob[] = [];
   const recorder = new MediaRecorder(stream, {
     mimeType: mime,
-    videoBitsPerSecond: 8_000_000,
+    videoBitsPerSecond: 14_000_000,
   });
   recorder.ondataavailable = (e) => {
     if (e.data.size > 0) chunks.push(e.data);
   };
+
+  // Snapshot the GL canvas right after each map render, while its buffer is
+  // guaranteed intact — no preserveDrawingBuffer needed.
+  const mapCopy = document.createElement("canvas");
+  mapCopy.width = mapCanvas.width;
+  mapCopy.height = mapCanvas.height;
+  const copyCtx = mapCopy.getContext("2d");
+  const snapshot = () => {
+    try {
+      copyCtx?.drawImage(mapCanvas, 0, 0, mapCopy.width, mapCopy.height);
+    } catch {
+      /* keep the previous frame */
+    }
+  };
+  map.on("render", snapshot);
+  snapshot();
 
   let frame: FlyoverFrame | null = null;
   let raf = 0;
@@ -82,11 +99,7 @@ export function createFlightRecorder(
     if (stopped) return;
     // Device-pixel ratio between the GL canvas and CSS coordinates.
     const k = mapCanvas.width / mapCanvas.clientWidth;
-    try {
-      ctx.drawImage(mapCanvas, 0, 0, rec.width, rec.height);
-    } catch {
-      /* GL canvas momentarily unreadable — keep last frame */
-    }
+    ctx.drawImage(mapCopy, 0, 0, rec.width, rec.height);
     if (frame) {
       const p = map.project([frame.lng, frame.lat]);
       const x = p.x * k;
@@ -159,6 +172,7 @@ export function createFlightRecorder(
       if (stopped) return;
       stopped = true;
       cancelAnimationFrame(raf);
+      map.off("render", snapshot);
       recorder.onstop = () => {
         if (!completed || chunks.length === 0) {
           onDone(false);

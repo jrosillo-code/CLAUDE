@@ -139,7 +139,7 @@ export default function ConstellationBackdrop() {
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ambient = makeAmbient(Math.round((w * h) / 8000));
+      ambient = makeAmbient(Math.round((w * h) / 14000));
     };
     resize();
     // Debounced: mobile browsers fire a resize storm while the URL bar
@@ -196,12 +196,12 @@ export default function ConstellationBackdrop() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // Phones: a sparse ambient starfield fills the sky around the world band.
-      // Ink-only dust — colored dots out in the void read as stray pixels.
+      // Phones: a whisper of ambient dust around the world band. Ink-only,
+      // few, faint — anything more read as stray pixels.
       if (mobile) {
         for (const a of ambient) {
           const tw = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.7 + a.phase);
-          ctx.globalAlpha = (dark ? 0.08 : 0.12) + 0.16 * tw;
+          ctx.globalAlpha = (dark ? 0.06 : 0.09) + 0.12 * tw;
           ctx.fillStyle = inkColor;
           ctx.beginPath();
           ctx.arc(a.x * w, a.y * h, a.r, 0, Math.PI * 2);
@@ -236,8 +236,10 @@ export default function ConstellationBackdrop() {
         if (x < -10 || x > w + 10 || y < -10 || y > h + 10) continue;
         const tw = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.9 + s.phase);
         if (s.bright) {
-          if (!dark) {
-            // A soft halo lifts the accent stars off the light paper.
+          // Phones go monochrome — dozens of blue points across a small band
+          // read as noise. Blue belongs to the thread alone there; desktop
+          // keeps its accent stars and halos.
+          if (!dark && !mobile) {
             const halo = ctx.createRadialGradient(x, y, 0, x, y, 7 * sz);
             halo.addColorStop(0, accent);
             halo.addColorStop(1, "transparent");
@@ -247,10 +249,14 @@ export default function ConstellationBackdrop() {
             ctx.arc(x, y, 7 * sz, 0, Math.PI * 2);
             ctx.fill();
           }
-          ctx.globalAlpha = dark ? 0.35 + 0.4 * tw : 0.55 + 0.4 * tw;
-          ctx.fillStyle = accent;
+          ctx.globalAlpha = mobile
+            ? 0.35 + 0.3 * tw
+            : dark
+              ? 0.35 + 0.4 * tw
+              : 0.55 + 0.4 * tw;
+          ctx.fillStyle = mobile ? inkColor : accent;
           ctx.beginPath();
-          ctx.arc(x, y, (mobile ? 1.7 : dark ? 1.9 : 2.2) * sz, 0, Math.PI * 2);
+          ctx.arc(x, y, (mobile ? 1.5 : dark ? 1.9 : 2.2) * sz, 0, Math.PI * 2);
           ctx.fill();
         } else {
           ctx.globalAlpha = dark ? 0.16 + 0.22 * tw : mobile ? 0.26 + 0.24 * tw : 0.3 + 0.3 * tw;
@@ -325,10 +331,13 @@ export default function ConstellationBackdrop() {
   }, []);
 
   return (
+    // Sized to the LARGE viewport (lvh): the canvas already extends under the
+    // browser bars, so their collapse during scroll never resizes it — that
+    // resize was the visible mid-scroll glitch on phones.
     <canvas
       ref={canvasRef}
       aria-hidden
-      className="pointer-events-none fixed inset-0 h-full w-full"
+      className="pointer-events-none fixed inset-x-0 top-0 h-[100lvh] w-full"
     />
   );
 }

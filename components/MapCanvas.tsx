@@ -32,6 +32,7 @@ type ClusterProps = {
   ownerId?: string;
   color?: string;
   photo?: string;
+  year?: string;
 };
 
 const DEM_SOURCE = "waypoint-dem";
@@ -74,6 +75,13 @@ const landmarksFC: GeoJSON.FeatureCollection = {
 // are reachable. Lets a repeat theme switch jump straight to its final style.
 const styleProbeCache = new Map<string, boolean>();
 
+// Request counters already consumed. Module scope on purpose: MapCanvas
+// unmounts when navigating to a profile, and on return the effects re-run
+// with the store's old counter values — without these markers the last
+// flyover/recording would replay itself.
+let flyoverConsumed = 0;
+let recapFlightConsumed = 0;
+
 export default function MapCanvas({ placing, onPick }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -84,7 +92,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
     key: string;
     clusters: ReturnType<Supercluster["getClusters"]>;
   } | null>(null);
-  const leavesCacheRef = useRef(new Map<number, { head?: string; twin?: string }>());
+  const leavesCacheRef = useRef(
+    new Map<number, { head?: string; twin?: string; headYear?: string }>()
+  );
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
   const readyRef = useRef(false);
   const didInitialFit = useRef(false);
@@ -507,8 +517,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
       pitch: 0,
       maxPitch: 75,
       attributionControl: false,
-      // Lets the flight-film recorder drawImage() the GL canvas between frames.
-      canvasContextAttributes: { preserveDrawingBuffer: true },
+      // No cross-fade on newly loaded tiles/labels: the fade window reads as
+      // a white flash when panning fast or right after launch.
+      fadeDuration: 0,
     });
     mapRef.current = map;
 
@@ -714,6 +725,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           // The needle head wears the owner's face, not the pin's photo — the
           // map reads as WHO at a glance; photos live in the pin sheet.
           photo: p.owner.avatarUrl,
+          year: (p.startedOn ?? p.createdAt).slice(0, 4),
         },
         geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },
       }))
@@ -768,7 +780,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
   // ---- Journey flyover (Waypoint logo tap): your pins as a flight ----
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !flyoverReq || !readyRef.current) return;
+    if (!map || !flyoverReq || flyoverReq === flyoverConsumed || !readyRef.current) return;
+    flyoverConsumed = flyoverReq;
     const st = useStore.getState();
     const own = st.pins
       .filter((p) => p.userId === st.viewerId)
@@ -791,7 +804,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
 
   // ---- Recap flight film: this year's journey, recorded to a video ----
   useEffect(() => {
-    if (!recapFlightReq) return;
+    if (!recapFlightReq || recapFlightReq === recapFlightConsumed) return;
+    recapFlightConsumed = recapFlightReq;
     let cancelled = false;
     let cancelFlight: (() => void) | null = null;
     // The request usually arrives right after navigating from the profile —
@@ -1027,13 +1041,16 @@ export default function MapCanvas({ placing, onPick }: Props) {
         // leaf 1's the stacked twin — so a pair reads as "two pins here".
         let headPhoto = props.photo;
         let twinPhoto: string | undefined;
+        let headYear = props.year;
         if (props.cluster && props.cluster_id != null) {
           let duo = leavesCacheRef.current.get(props.cluster_id);
           if (!duo) {
             try {
               const leaves = index.getLeaves(props.cluster_id, 2);
+              const lead = leaves[0]?.properties as ClusterProps | undefined;
               duo = {
-                head: (leaves[0]?.properties as ClusterProps | undefined)?.photo,
+                head: lead?.photo,
+                headYear: lead?.year,
                 twin: (leaves[1]?.properties as ClusterProps | undefined)?.photo,
               };
             } catch {
@@ -1043,8 +1060,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
           }
           headPhoto = duo.head ?? headPhoto;
           twinPhoto = duo.twin;
+          headYear = duo.headYear;
         }
-        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
+        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${headYear ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
         upsert(
           key,
           lng,
@@ -1058,6 +1076,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
               stacked: !!props.cluster,
               ghost: false,
               twinPhoto,
+              year: headYear,
             }),
           selected ? "5" : "1",
           (ev) => {
@@ -1090,7 +1109,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           `wl-${p.id}`,
           p.lng,
           p.lat,
-          `${p.owner.avatarUrl}|wish`,
+          `${p.owner.avatarUrl}|${(p.startedOn ?? p.createdAt).slice(0, 4)}|wish`,
           () =>
             needleEl({
               photo: p.owner.avatarUrl,
@@ -1098,6 +1117,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
               scale: 0.92,
               stacked: false,
               ghost: true,
+              year: (p.startedOn ?? p.createdAt).slice(0, 4),
             }),
           "0",
           (ev) => {
@@ -1179,8 +1199,10 @@ function needleEl(opts: {
   ghost: boolean;
   /** Cluster twin: the second pin's photo, so the pair reads as two pins. */
   twinPhoto?: string;
+  /** Travel year — worn as a tiny badge at the base of the head. */
+  year?: string;
 }): HTMLDivElement {
-  const { photo, ring, scale, stacked, ghost, twinPhoto } = opts;
+  const { photo, ring, scale, stacked, ghost, twinPhoto, year } = opts;
   const headSize = Math.round(26 * scale);
   const stickHeight = Math.round(20 * scale);
   const width = headSize + 14; // room for the stacked twin
@@ -1204,15 +1226,21 @@ function needleEl(opts: {
     if (src) head.style.backgroundImage = `url("${src}")`;
     group.appendChild(head);
 
-    // The little specular highlight from the reference pin.
-    const gleam = document.createElement("div");
-    gleam.style.cssText = `position:absolute;left:calc(50% + ${Math.round(h * 0.14)}px);top:${headSize - h + Math.round(h * 0.14)}px;width:${Math.round(h * 0.22)}px;height:${Math.round(h * 0.22)}px;border-radius:9999px;background:rgba(255,255,255,.55);pointer-events:none;`;
-    group.appendChild(gleam);
     return group;
   };
 
   if (stacked) wrap.appendChild(needle(Math.round(headSize * 0.34), -2, 0.55, true));
   wrap.appendChild(needle(0, 0, 1, false));
+
+  // The travel year, worn like a tiny luggage tag at the base of the head
+  // (replaces the old specular gleam, which read as a stray white dot on
+  // avatar faces).
+  if (year) {
+    const tag = document.createElement("div");
+    tag.textContent = `’${year.slice(2)}`;
+    tag.style.cssText = `position:absolute;left:50%;top:${headSize - 4}px;transform:translateX(-50%);font-size:7px;font-weight:700;line-height:10px;padding:0 3.5px;border-radius:5px;background:rgba(255,255,255,.94);color:#2a3446;box-shadow:0 1px 2px rgba(0,0,0,.25);pointer-events:none;letter-spacing:.02em;`;
+    wrap.appendChild(tag);
+  }
   return wrap;
 }
 
