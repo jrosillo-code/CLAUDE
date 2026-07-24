@@ -163,6 +163,11 @@ interface WaypointState {
   /** Journey flyover: tapping the Waypoint logo replays your pins as a flight. */
   flyoverReq: number;
   requestFlyover: () => void;
+  /** Recap flight film: run this year's flyover while recording a video. */
+  recapFlightReq: number;
+  requestRecapFlight: () => void;
+  flightRecording: boolean;
+  setFlightRecording: (b: boolean) => void;
 
   // Current viewport (updated by the map on move-end) — powers "Top spots in
   // this area". At planet scale it covers the whole world.
@@ -562,6 +567,10 @@ export const useStore = create<WaypointState>((set, get) => ({
 
   flyoverReq: 0,
   requestFlyover: () => set((s) => ({ flyoverReq: s.flyoverReq + 1 })),
+  recapFlightReq: 0,
+  requestRecapFlight: () => set((s) => ({ recapFlightReq: s.recapFlightReq + 1 })),
+  flightRecording: false,
+  setFlightRecording: (b) => set({ flightRecording: b }),
 
   viewBounds: null,
   setViewBounds: (b) => set({ viewBounds: b }),

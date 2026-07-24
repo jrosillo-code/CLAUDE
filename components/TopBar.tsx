@@ -6,6 +6,7 @@ import { useStore } from "@/lib/store";
 import { useViewer } from "@/lib/hooks";
 import { searchPlaces, type GeoResult } from "@/lib/geocode";
 import WaypointLogo from "./Logo";
+import { FocusButton } from "./LayerRail";
 
 export default function TopBar({
   onOpenCreators,
@@ -100,7 +101,7 @@ export default function TopBar({
           )}
         </div>
         {open && results.length > 0 && (
-          <ul className="absolute mt-2 w-full overflow-hidden rounded-2xl bg-paper shadow-float">
+          <ul className="absolute z-10 mt-2 max-h-[55dvh] w-full overflow-y-auto rounded-2xl bg-paper shadow-float max-sm:fixed max-sm:inset-x-2 max-sm:top-[52px] max-sm:mt-0 max-sm:w-auto">
             {results.map((r, i) => (
               <li key={i}>
                 <button
@@ -192,7 +193,7 @@ export default function TopBar({
 
     {/* Phones: Trips + Creators live above the add-pin FAB, mirroring the
         Travelers/Focus/Layers column on the left — search gets the top. */}
-    <div className="fixed bottom-[72px] right-[18px] z-30 flex flex-col gap-2 sm:hidden">
+    <div className="fixed bottom-[calc(72px+env(safe-area-inset-bottom))] right-[18px] z-30 flex flex-col gap-2 sm:hidden">
       <button
         onClick={onOpenTrips}
         title="Trips"
@@ -206,18 +207,7 @@ export default function TopBar({
           <path d="M6.8 17.2C10 14 8.5 11 12 8.5c2.4-1.7 4-1.5 5.4-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="0.5 3.4" />
         </svg>
       </button>
-      <button
-        onClick={onOpenCreators}
-        title="Creators"
-        className="grid h-9 w-9 place-items-center rounded-full bg-paper/85 shadow-float backdrop-blur"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent">
-          <path
-            d="M12 2.5 14.3 5l3.4-.3.6 3.3 3 1.6-1.4 3.1 1.4 3.1-3 1.6-.6 3.3-3.4-.3L12 22.7 9.7 20l-3.4.3-.6-3.3-3-1.6 1.4-3.1L2.7 9.2l3-1.6.6-3.3 3.4.3z"
-            fill="currentColor"
-          />
-        </svg>
-      </button>
+      <FocusButton bubbleLeft />
     </div>
     </>
   );

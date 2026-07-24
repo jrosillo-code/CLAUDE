@@ -76,6 +76,11 @@ body {
 :is(button, a).rounded-full {
   border-radius: 14px;
 }
+/* Tactile press-down on every pill button. The independent `scale` property
+   leaves Tailwind's translate transforms (centered pills) untouched. */
+:is(button, a).rounded-full:active {
+  scale: 0.96;
+}
 [class*="bg-paper/8"],
 [class*="bg-paper/9"] {
   background: color-mix(in srgb, var(--color-paper) 58%, transparent);
@@ -94,22 +99,22 @@ body {
   bottom: 88px;
 }
 /* Phones: pinch and rotate gestures replace the zoom/compass buttons — hide
-   them so the screen stays clean. Attribution stays, tucked above the FAB. */
+   them so the screen stays clean. */
 @media (max-width: 639px) {
-  .maplibregl-ctrl-bottom-right {
-    bottom: 76px;
-  }
   .maplibregl-ctrl-bottom-right .maplibregl-ctrl-group {
     display: none;
   }
+  /* 16px inputs: anything smaller makes iOS Safari zoom the page on focus. */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }
+/* No floating ⓘ on the map — the OpenStreetMap credit lives in the Layers
+   controls instead, so the license credit stays present in-app. */
 .maplibregl-ctrl-attrib {
-  background: rgba(243, 245, 248, 0.75) !important;
-  border-radius: 8px 0 0 0;
-  font-size: 10px;
-}
-.maplibregl-ctrl-attrib-button {
-  opacity: 0.6;
+  display: none !important;
 }
 /* Round the zoom/compass control to match the app's soft chrome. */
 .maplibregl-ctrl-group {

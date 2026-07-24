@@ -77,7 +77,7 @@ export default function PinSheet() {
 
       {/* Modal */}
       <div className="pointer-events-none fixed inset-0 z-40 flex items-end justify-center sm:items-center sm:p-6">
-        <div className="animate-sheet pointer-events-auto flex max-h-[94vh] w-full flex-col overflow-hidden rounded-t-[22px] bg-paper shadow-float sm:max-h-[88vh] sm:max-w-4xl sm:rounded-[22px]">
+        <div className="animate-sheet pointer-events-auto flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[22px] bg-paper shadow-float sm:max-h-[88dvh] sm:max-w-4xl sm:rounded-[22px]">
           <div className="scroll-thin overflow-y-auto">
             {/* Collage */}
             <div className="relative">
@@ -327,14 +327,14 @@ export default function PinSheet() {
               controls
               autoPlay
               playsInline
-              className="max-h-[88vh] max-w-[92vw] rounded-lg shadow-float"
+              className="max-h-[88dvh] max-w-[92vw] rounded-lg shadow-float"
               onClick={(e) => e.stopPropagation()}
             />
           ) : (
             <img
               src={pin.media[lightbox].url}
               alt=""
-              className="max-h-[88vh] max-w-[92vw] rounded-lg object-contain shadow-float"
+              className="max-h-[88dvh] max-w-[92vw] rounded-lg object-contain shadow-float"
               onClick={(e) => e.stopPropagation()}
             />
           )}

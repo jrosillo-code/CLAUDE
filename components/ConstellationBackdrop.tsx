@@ -28,7 +28,6 @@ interface AmbientStar {
   y: number;
   phase: number;
   r: number;
-  accent: boolean;
 }
 
 // The thread's waypoints: continent hearts, in travel order.
@@ -96,8 +95,7 @@ function makeAmbient(count: number): AmbientStar[] {
       x: fract(Math.sin(i * 12.9898) * 43758.5453),
       y: fract(Math.sin(i * 78.233) * 12543.217),
       phase: fract(Math.sin(i * 3.7) * 9871.3) * 6.28318,
-      r: 0.7 + fract(Math.sin(i * 41.17) * 7919.77) * 1.1,
-      accent: i % 9 === 0,
+      r: 0.7 + fract(Math.sin(i * 41.17) * 7919.77) * 1.0,
     });
   }
   return out;
@@ -199,11 +197,12 @@ export default function ConstellationBackdrop() {
       }
 
       // Phones: a sparse ambient starfield fills the sky around the world band.
+      // Ink-only dust — colored dots out in the void read as stray pixels.
       if (mobile) {
         for (const a of ambient) {
           const tw = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.7 + a.phase);
-          ctx.globalAlpha = (a.accent ? 0.25 : dark ? 0.1 : 0.14) + 0.18 * tw;
-          ctx.fillStyle = a.accent ? accent : inkColor;
+          ctx.globalAlpha = (dark ? 0.08 : 0.12) + 0.16 * tw;
+          ctx.fillStyle = inkColor;
           ctx.beginPath();
           ctx.arc(a.x * w, a.y * h, a.r, 0, Math.PI * 2);
           ctx.fill();

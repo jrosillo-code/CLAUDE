@@ -24,6 +24,20 @@ interface Stop {
   lat: number;
 }
 
+export interface FlyoverFrame {
+  lng: number;
+  lat: number;
+  heading: number;
+  altitude: number; // 1..~1.22 mid-leg scale
+}
+
+export interface FlyoverOpts {
+  /** Fires every animation frame with the plane's current state. */
+  onFrame?: (f: FlyoverFrame) => void;
+  /** Fires exactly once when the flyover ends; true if it ran to completion. */
+  onEnd?: (completed: boolean) => void;
+}
+
 function vec(lng: number, lat: number): [number, number, number] {
   const φ = (lat * Math.PI) / 180;
   const λ = (lng * Math.PI) / 180;
@@ -146,11 +160,16 @@ export function startFlyover(
   LngLatBoundsCtor: typeof maplibregl.LngLatBounds,
   stops: Stop[],
   avatarUrl: string,
-  accent: string
+  accent: string,
+  opts: FlyoverOpts = {}
 ): () => void {
-  if (stops.length === 0) return () => {};
+  if (stops.length === 0) {
+    opts.onEnd?.(false);
+    return () => {};
+  }
 
   let disposed = false;
+  let completed = false;
   let raf = 0;
   const timers: ReturnType<typeof setTimeout>[] = [];
   const later = (fn: () => void, ms: number) => {
@@ -190,6 +209,7 @@ export function startFlyover(
     interactionEvents.forEach((e) => map.off(e, onInteract));
     if (markerAdded) marker.remove();
     cleanupMap();
+    opts.onEnd?.(completed);
   }
 
   interactionEvents.forEach((e) => map.on(e, onInteract));
@@ -279,6 +299,7 @@ export function startFlyover(
     }
     marker.setLngLat([path[0].lng, path[0].lat]).addTo(map);
     markerAdded = true;
+    opts.onFrame?.({ lng: path[0].lng, lat: path[0].lat, heading: 0, altitude: 1 });
 
     let leg = 0;
     let phase: "fly" | "pause" = "pause";
@@ -333,6 +354,7 @@ export function startFlyover(
         }
         const altitude = 1 + 0.22 * Math.sin(f * Math.PI);
         plane.style.transform = `rotate(${headingDeg ?? 0}deg) scale(${altitude})`;
+        opts.onFrame?.({ lng, lat, heading: headingDeg ?? 0, altitude });
         // The camera rides the plane — the globe does the moving — and eases
         // out a touch on long hauls, like gaining altitude.
         const zoomOut = legMs[leg] > 1800 ? 0.45 : 0.15;
@@ -359,6 +381,7 @@ export function startFlyover(
   };
 
   const finish = () => {
+    completed = true;
     // Land, settle the full route to a steady glow, then pull back to frame
     // the whole journey; the thread lingers a beat before the cleanup.
     try {

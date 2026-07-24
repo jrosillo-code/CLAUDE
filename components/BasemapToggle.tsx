@@ -107,10 +107,19 @@ export default function BasemapToggle() {
             <span>Theme</span>
           </Chip>
         </div>
+        {/* The map's data credit lives here now instead of a floating ⓘ. */}
+        <a
+          href="https://www.openstreetmap.org/copyright"
+          target="_blank"
+          rel="noreferrer"
+          className="pl-1 text-[9px] text-ink-3/70 hover:text-ink-3"
+        >
+          © OpenStreetMap contributors
+        </a>
       </div>
 
       {/* ── Phones: one Layers button, one card ── */}
-      <div className={`fixed bottom-4 left-3 sm:hidden ${mobileOpen ? "z-40" : "z-30"}`}>
+      <div className={`fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-3 sm:hidden ${mobileOpen ? "z-40" : "z-30"}`}>
         {mobileOpen && (
           <>
             <button
@@ -136,6 +145,14 @@ export default function BasemapToggle() {
               </div>
 
               <div className="mt-2.5 flex items-center gap-1.5 px-1">{themeSwatches}</div>
+              <a
+                href="https://www.openstreetmap.org/copyright"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 block px-1 text-[9px] text-ink-3/70"
+              >
+                © OpenStreetMap contributors
+              </a>
             </div>
           </>
         )}

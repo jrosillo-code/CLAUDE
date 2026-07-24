@@ -28,6 +28,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  // Lets env(safe-area-inset-*) report real values on notched phones.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

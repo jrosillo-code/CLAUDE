@@ -38,6 +38,7 @@ export default function MapApp() {
   const addTripStop = useStore((s) => s.addTripStop);
   const addDraft = useStore((s) => s.addDraft);
   const selectedPinId = useStore((s) => s.selectedPinId);
+  const flightRecording = useStore((s) => s.flightRecording);
   const visible = useVisiblePins();
   const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
 
@@ -107,7 +108,12 @@ export default function MapApp() {
           setTripsOpen(true);
         }}
       />
-      {mapMode === "pins" && <LayerRail onOpenFriends={() => setFriendsOpen(true)} />}
+      {mapMode === "pins" && (
+        <LayerRail
+          onOpenFriends={() => setFriendsOpen(true)}
+          onOpenCreators={() => setCreatorsOpen(true)}
+        />
+      )}
 
       {/* Trips-mode banner: trips are their own map — exit back to pins */}
       {/* Desktop only — phones exit trips mode by closing the panel instead */}
@@ -129,7 +135,7 @@ export default function MapApp() {
       {!tripDraft && mapMode === "pins" && (
       <button
         onClick={() => setTopSpotsOpen(true)}
-        className="fixed z-30 flex items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:bottom-4 max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:px-3 max-sm:py-2 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2"
+        className="fixed z-30 flex items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:bottom-[calc(1rem+env(safe-area-inset-bottom))] max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:px-3 max-sm:py-2 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2"
       >
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="text-accent">
           <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
@@ -146,7 +152,7 @@ export default function MapApp() {
       <button
         onClick={() => setPlacing((p) => !p)}
         aria-label={placing ? "Cancel placing pin" : "Add a pin"}
-        className={`fixed z-30 grid place-items-center rounded-full shadow-float transition-colors max-sm:bottom-4 max-sm:right-3 max-sm:h-12 max-sm:w-12 sm:bottom-6 sm:right-4 sm:h-14 sm:w-14 ${
+        className={`fixed z-30 grid place-items-center rounded-full shadow-float transition-colors max-sm:bottom-[calc(1rem+env(safe-area-inset-bottom))] max-sm:right-3 max-sm:h-12 max-sm:w-12 sm:bottom-6 sm:right-4 sm:h-14 sm:w-14 ${
           placing ? "bg-ink text-paper" : "bg-accent text-paper"
         }`}
       >
@@ -154,6 +160,14 @@ export default function MapApp() {
           <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
         </svg>
       </button>
+      )}
+
+      {/* Flight-film recording indicator */}
+      {flightRecording && (
+        <div className="fixed left-1/2 top-16 z-30 flex -translate-x-1/2 animate-fade items-center gap-2 rounded-full bg-ink/90 px-4 py-2 text-sm text-paper shadow-float backdrop-blur sm:top-20">
+          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-red-500" />
+          Recording your flight film — touching the map cancels
+        </div>
       )}
 
       {/* Placing hint banner */}

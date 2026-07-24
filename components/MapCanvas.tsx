@@ -15,6 +15,7 @@ import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
 import { thumbUrl, visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
+import { createFlightRecorder } from "@/lib/recordFlight";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
 
@@ -95,6 +96,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const flyTo = useStore((s) => s.flyTo);
   const fitBoundsTo = useStore((s) => s.fitBoundsTo);
   const flyoverReq = useStore((s) => s.flyoverReq);
+  const recapFlightReq = useStore((s) => s.recapFlightReq);
   const basemap = useStore((s) => s.basemap);
   const terrain3d = useStore((s) => s.terrain3d);
   const themeId = useStore((s) => s.theme);
@@ -505,6 +507,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
       pitch: 0,
       maxPitch: 75,
       attributionControl: false,
+      // Lets the flight-film recorder drawImage() the GL canvas between frames.
+      canvasContextAttributes: { preserveDrawingBuffer: true },
     });
     mapRef.current = map;
 
@@ -782,6 +786,58 @@ export default function MapCanvas({ placing, onPick }: Props) {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flyoverReq]);
+
+  // ---- Recap flight film: this year's journey, recorded to a video ----
+  useEffect(() => {
+    if (!recapFlightReq) return;
+    let cancelled = false;
+    let cancelFlight: (() => void) | null = null;
+    // The request usually arrives right after navigating from the profile —
+    // wait for the map to finish coming up before takeoff.
+    const tryStart = (attempt: number) => {
+      if (cancelled) return;
+      const map = mapRef.current;
+      if (!map || !readyRef.current) {
+        if (attempt < 40) setTimeout(() => tryStart(attempt + 1), 250);
+        return;
+      }
+      const st = useStore.getState();
+      const me = st.users.find((u) => u.id === st.viewerId);
+      const year = new Date().getFullYear();
+      const when = (p: { startedOn?: string; createdAt: string }) => p.startedOn ?? p.createdAt;
+      const mine = st.pins
+        .filter((p) => p.userId === st.viewerId)
+        .sort((a, b) => when(a).localeCompare(when(b)));
+      const yearPins = mine.filter((p) => new Date(when(p)).getFullYear() === year);
+      // Home base (the oldest pin) leads, then this year's travels in order.
+      const route = yearPins.length
+        ? [mine[0], ...yearPins.filter((p) => p.id !== mine[0].id)]
+        : mine;
+      if (!me || route.length < 2) return;
+      const accent =
+        getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
+        "#0a84ff";
+      st.setFlightRecording(true);
+      const recorder = createFlightRecorder(map, me.avatarUrl, accent, year, () => {
+        useStore.getState().setFlightRecording(false);
+      });
+      cancelFlight = startFlyover(
+        map,
+        maplibregl.Marker,
+        maplibregl.LngLatBounds,
+        route.map((p) => ({ lng: p.lng, lat: p.lat })),
+        me.avatarUrl,
+        accent,
+        { onFrame: recorder.handleFrame, onEnd: recorder.end }
+      );
+    };
+    tryStart(0);
+    return () => {
+      cancelled = true;
+      cancelFlight?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recapFlightReq]);
 
   // ---- Fit-bounds intent (country Focus) ----
   useEffect(() => {

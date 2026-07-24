@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Sheet from "./Sheet";
 import { useStore } from "@/lib/store";
 import { LANDMARKS } from "@/lib/landmarks";
@@ -9,15 +10,17 @@ import type { Pin } from "@/lib/types";
 // Year in travel: a Wrapped-style recap computed from your own pins, with a
 // downloadable share card. All client-side, all from data already loaded.
 export default function RecapSheet({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
   const pins = useStore((s) => s.pins);
   const viewerId = useStore((s) => s.viewerId);
   const likeCounts = useStore((s) => s.likeCounts);
   const users = useStore((s) => s.users);
+  const requestRecapFlight = useStore((s) => s.requestRecapFlight);
 
   const viewer = users.find((u) => u.id === viewerId);
   const year = new Date().getFullYear();
-  const mine = pins
-    .filter((p) => p.userId === viewerId)
+  const allMine = pins.filter((p) => p.userId === viewerId);
+  const mine = allMine
     .filter((p) => new Date(p.startedOn ?? p.createdAt).getFullYear() === year)
     .sort(
       (a, b) =>
@@ -157,6 +160,29 @@ export default function RecapSheet({ onClose }: { onClose: () => void }) {
             >
               Download share card ↓
             </button>
+          </>
+        )}
+
+        {/* The flight film: replays the journey on the map while recording it,
+            then downloads the video. With no pins this year it flies the whole
+            journey instead, so the button works year-round. */}
+        {allMine.length >= 2 && (
+          <>
+            <button
+              onClick={() => {
+                requestRecapFlight();
+                onClose();
+                router.push("/");
+              }}
+              className="mt-2 w-full rounded-full bg-ink py-3 text-sm font-semibold text-paper"
+            >
+              🎬 Save your flight film
+            </button>
+            <p className="mt-1.5 text-center text-xs text-ink-3">
+              {mine.length
+                ? `Flies from your home base through every ${year} pin and downloads the video.`
+                : "Flies your whole journey pin to pin and downloads the video."}
+            </p>
           </>
         )}
       </div>

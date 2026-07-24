@@ -9,7 +9,13 @@ import WorldProgress from "./WorldProgress";
 
 // Me / individual friends / Everyone toggles (plan §6). Collapses to a pill on
 // mobile; expands to a left rail of avatars.
-export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void }) {
+export default function LayerRail({
+  onOpenFriends,
+  onOpenCreators,
+}: {
+  onOpenFriends: () => void;
+  onOpenCreators: () => void;
+}) {
   const [open, setOpen] = useState(false);
   const viewer = useViewer();
   const friends = useFriends();
@@ -39,7 +45,7 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
     [...follows].every((id) => activeUserIds!.has(id));
 
   return (
-    <div className={`fixed flex flex-col gap-2 max-sm:bottom-[72px] max-sm:left-[18px] sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-40" : "z-30"}`}>
+    <div className={`fixed flex flex-col gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:left-[18px] sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-40" : "z-30"}`}>
       <div className="max-sm:relative sm:w-[220px] sm:rounded-3xl sm:bg-paper/90 sm:p-2 sm:shadow-float sm:backdrop-blur">
         <button
           onClick={() => setOpen((o) => !o)}
@@ -158,7 +164,24 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
         </div>
       </div>
 
-      <FocusButton />
+      {/* Phones: Creators rides with Travelers — people together on the left;
+          Focus moved to the right column beside Trips. */}
+      <button
+        onClick={onOpenCreators}
+        title="Creators"
+        className="grid h-9 w-9 place-items-center rounded-full bg-paper/85 shadow-float backdrop-blur sm:hidden"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent">
+          <path
+            d="M12 2.5 14.3 5l3.4-.3.6 3.3 3 1.6-1.4 3.1 1.4 3.1-3 1.6-.6 3.3-3.4-.3L12 22.7 9.7 20l-3.4.3-.6-3.3-3-1.6 1.4-3.1L2.7 9.2l3-1.6.6-3.3 3.4.3z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+
+      <div className="max-sm:hidden">
+        <FocusButton />
+      </div>
     </div>
   );
 }
@@ -166,7 +189,9 @@ export default function LayerRail({ onOpenFriends }: { onOpenFriends: () => void
 // "Focus": frames the country you're standing in. Asks for location permission,
 // finds your country offline via the bundled geometry, and fits the map to it —
 // correct framing whether that's Afghanistan or Fiji.
-function FocusButton() {
+// `bubbleLeft`: the phone feedback bubble opens leftwards when the button sits
+// in the right-edge column.
+export function FocusButton({ bubbleLeft = false }: { bubbleLeft?: boolean }) {
   const requestFitBounds = useStore((s) => s.requestFitBounds);
   const requestFlyTo = useStore((s) => s.requestFlyTo);
   const setUserLocation = useStore((s) => s.setUserLocation);
@@ -226,7 +251,11 @@ function FocusButton() {
       {/* Phones hide the inline label, so feedback floats beside the icon —
           without this, a denied location permission looked like a dead button. */}
       {(state !== "idle" || countryName) && (
-        <span className="pointer-events-none absolute left-11 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ink/90 px-3 py-1.5 font-sans text-xs font-medium text-paper shadow-float sm:hidden">
+        <span
+          className={`pointer-events-none absolute top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ink/90 px-3 py-1.5 font-sans text-xs font-medium text-paper shadow-float sm:hidden ${
+            bubbleLeft ? "right-11" : "left-11"
+          }`}
+        >
           {state === "off" ? "Location unavailable — allow access" : label}
         </span>
       )}
