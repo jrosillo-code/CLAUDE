@@ -13,9 +13,11 @@ import WorldProgress from "./WorldProgress";
 export default function TravelersSheet({
   onClose,
   onOpenFriends,
+  onOpenCreators,
 }: {
   onClose: () => void;
   onOpenFriends: () => void;
+  onOpenCreators: () => void;
 }) {
   const viewer = useViewer();
   const friends = useFriends();
@@ -94,6 +96,26 @@ export default function TravelersSheet({
               {pendingIncoming}
             </span>
           )}
+        </button>
+
+        {/* Creators merged in: discovery lives here, not as its own map button */}
+        <button
+          onClick={() => {
+            onClose();
+            onOpenCreators();
+          }}
+          className="mt-1 flex w-full items-center gap-2.5 rounded-xl px-2 py-2 text-sm text-ink-2 hover:bg-paper-2"
+        >
+          <span className="grid h-8 w-8 place-items-center rounded-full border-2 border-dashed border-line text-accent">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 2.5 14.3 5l3.4-.3.6 3.3 3 1.6-1.4 3.1 1.4 3.1-3 1.6-.6 3.3-3.4-.3L12 22.7 9.7 20l-3.4.3-.6-3.3-3-1.6 1.4-3.1L2.7 9.2l3-1.6.6-3.3 3.4.3z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+          Add creators
+          <span className="ml-auto text-xs text-ink-3">browse ›</span>
         </button>
 
         <div className="mt-1 px-1">

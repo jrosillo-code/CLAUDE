@@ -11,11 +11,9 @@ import WorldProgress from "./WorldProgress";
 // mobile; expands to a left rail of avatars.
 export default function LayerRail({
   onOpenFriends,
-  onOpenCreators,
   onOpenTravelers,
 }: {
   onOpenFriends: () => void;
-  onOpenCreators: () => void;
   /** Phones open the full Travelers sheet instead of the floating popover. */
   onOpenTravelers: () => void;
 }) {
@@ -144,21 +142,6 @@ export default function LayerRail({
           )}
         </div>
       </div>
-
-      {/* Phones: Creators rides with Travelers — people together on the left;
-          Focus moved to the right column beside Trips. */}
-      <button
-        onClick={onOpenCreators}
-        title="Creators"
-        className="grid h-9 w-9 place-items-center rounded-full bg-paper/85 shadow-float backdrop-blur sm:hidden"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-accent">
-          <path
-            d="M12 2.5 14.3 5l3.4-.3.6 3.3 3 1.6-1.4 3.1 1.4 3.1-3 1.6-.6 3.3-3.4-.3L12 22.7 9.7 20l-3.4.3-.6-3.3-3-1.6 1.4-3.1L2.7 9.2l3-1.6.6-3.3 3.4.3z"
-            fill="currentColor"
-          />
-        </svg>
-      </button>
 
       <div className="max-sm:hidden">
         <FocusButton />

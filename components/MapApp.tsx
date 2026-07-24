@@ -116,7 +116,6 @@ export default function MapApp() {
       {mapMode === "pins" && (
         <LayerRail
           onOpenFriends={() => setFriendsOpen(true)}
-          onOpenCreators={() => setCreatorsOpen(true)}
           onOpenTravelers={() => setTravelersOpen(true)}
         />
       )}
@@ -199,6 +198,7 @@ export default function MapApp() {
         <TravelersSheet
           onClose={() => setTravelersOpen(false)}
           onOpenFriends={() => setFriendsOpen(true)}
+          onOpenCreators={() => setCreatorsOpen(true)}
         />
       )}
       {feedOpen && <PinFeed onClose={() => setFeedOpen(false)} />}
