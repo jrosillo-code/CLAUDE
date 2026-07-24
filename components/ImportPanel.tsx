@@ -77,6 +77,9 @@ export default function ImportPanel({ onClose }: { onClose: () => void }) {
         visibility: "friends",
         media: [],
         dates: c.when ? [c.when.slice(0, 10), c.when.slice(0, 10)] : undefined,
+        // Backdate to the actual visit so an import doesn't flood friends'
+        // feeds as 30 "just now" pins, and the year tags read true.
+        createdAt: c.when,
       });
     }
     setImportedCount(chosen.length);

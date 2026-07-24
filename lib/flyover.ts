@@ -115,6 +115,21 @@ function revealGradient(
   return ["interpolate", ["linear"], ["line-progress"], ...flat];
 }
 
+/** The jet artwork — one source of truth for the DOM marker and the video
+ *  recorder's canvas overlay. */
+export function jetSvgMarkup(accent: string, gid: string, size: number): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8fd8ff"/>
+        <stop offset="1" stop-color="${accent}"/>
+      </linearGradient>
+    </defs>
+    <path d="M21 15.5v-2.2l-8-5V3.6a1.5 1.5 0 0 0-3 0v4.7l-8 5v2.2l8-2.4v4.9l-2.1 1.6v1.7l3.6-1.1 3.6 1.1v-1.7L13 18v-4.9z"
+      fill="url(#${gid})" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round"/>
+  </svg>`;
+}
+
 function planeEl(avatarUrl: string, accent: string) {
   const el = document.createElement("div");
   el.style.cssText = "position:relative;width:46px;height:46px;pointer-events:none;z-index:5;";
@@ -125,20 +140,10 @@ function planeEl(avatarUrl: string, accent: string) {
   halo.style.cssText = `position:absolute;left:50%;top:50%;width:42px;height:42px;border-radius:50%;background:${hexToRgba(accent, 0.3)};transform:translate(-50%,-50%);`;
   el.appendChild(halo);
 
-  const gid = `wpjet-${Math.random().toString(36).slice(2, 8)}`;
   const plane = document.createElement("div");
   plane.style.cssText =
     "position:absolute;inset:0;display:grid;place-items:center;will-change:transform;filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));";
-  plane.innerHTML = `<svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-    <defs>
-      <linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#8fd8ff"/>
-        <stop offset="1" stop-color="${accent}"/>
-      </linearGradient>
-    </defs>
-    <path d="M21 15.5v-2.2l-8-5V3.6a1.5 1.5 0 0 0-3 0v4.7l-8 5v2.2l8-2.4v4.9l-2.1 1.6v1.7l3.6-1.1 3.6 1.1v-1.7L13 18v-4.9z"
-      fill="url(#${gid})" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round"/>
-  </svg>`;
+  plane.innerHTML = jetSvgMarkup(accent, `wpjet-${Math.random().toString(36).slice(2, 8)}`, 36);
   const avatar = document.createElement("img");
   avatar.src = avatarUrl;
   avatar.alt = "";

@@ -33,6 +33,10 @@ import * as backend from "./backend";
 // backend and every mutation writes through; otherwise the seeded demo world
 // is used and everything stays in-memory.
 let authListenerBound = false;
+// Live subscription plumbing (backend mode): one channel per signed-in user,
+// world reloads debounced so a burst of events costs one fetch.
+let unsubscribeRealtime: (() => void) | null = null;
+let realtimeTimer: ReturnType<typeof setTimeout> | null = null;
 
 function followsFor(viewerId: string): Set<string> {
   return new Set(
@@ -183,6 +187,8 @@ interface WaypointState {
     media: { kind: "photo" | "video"; url: string }[];
     dates?: [string, string];
     rating?: number;
+    /** Backdated posts (Takeout import) — keeps the feed and year tags honest. */
+    createdAt?: string;
   }) => Pin;
   /** Edit your own pin (title, note, visibility, rating). */
   updatePin: (pinId: string, patch: Partial<Pick<Pin, "title" | "note" | "visibility" | "rating">>) => void;
@@ -255,6 +261,30 @@ export const useStore = create<WaypointState>((set, get) => ({
           ),
           activeUserIds: null,
         }));
+
+        // Realtime: likes, friend requests, and fresh pins land without a
+        // reload — any relevant server change reloads the world (debounced).
+        unsubscribeRealtime?.();
+        unsubscribeRealtime = backend.subscribeRealtime(userId, () => {
+          if (realtimeTimer) clearTimeout(realtimeTimer);
+          realtimeTimer = setTimeout(async () => {
+            realtimeTimer = null;
+            const w = await backend.loadWorld(userId);
+            if (!w || get().viewerId !== userId) return;
+            set({
+              users: w.users,
+              pins: w.pins,
+              friendships: w.friendships,
+              trips: w.trips,
+              topPlaces: w.topPlaces,
+              likeCounts: w.likeCounts,
+              likedPinIds: w.likedPinIds,
+              savedPinIds: w.savedPinIds,
+              follows: w.follows,
+              notifications: w.notifications,
+            });
+          }, 700);
+        });
       };
       void supabase!.auth.getSession().then(({ data }) => {
         const u = data.session?.user;
@@ -322,6 +352,9 @@ export const useStore = create<WaypointState>((set, get) => ({
     set({ session, viewerId: CURRENT_USER_ID });
   },
   signOut: () => {
+    unsubscribeRealtime?.();
+    unsubscribeRealtime = null;
+    if (realtimeTimer) clearTimeout(realtimeTimer);
     if (backendEnabled) void supabase!.auth.signOut();
     try {
       window.localStorage.removeItem("wp-session");
@@ -591,7 +624,7 @@ export const useStore = create<WaypointState>((set, get) => ({
         url: m.url,
       })),
       rating: input.rating,
-      createdAt: new Date().toISOString(),
+      createdAt: input.createdAt ?? new Date().toISOString(),
     };
     if (backendEnabled) backend.syncAddPin(pin);
     set((s) => ({ pins: [...s.pins, pin], addDraft: null, selectedPinId: id }));

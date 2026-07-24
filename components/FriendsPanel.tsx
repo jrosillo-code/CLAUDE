@@ -56,7 +56,7 @@ export default function FriendsPanel({ onClose }: { onClose: () => void }) {
     <Sheet onClose={onClose}>
       <div className="border-b border-line px-5 pb-3 pt-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-display text-2xl">Travelers</h2>
+          <h2 className="font-display text-2xl">Friends</h2>
           <button onClick={onClose} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-full hover:bg-paper-2">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
           </button>

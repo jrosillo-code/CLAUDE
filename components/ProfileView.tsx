@@ -136,7 +136,7 @@ export default function ProfileView({ handle }: { handle: string }) {
         Map
       </Link>
 
-      <div className="relative z-10 mx-auto max-w-2xl px-5 pt-20 sm:px-6 sm:pt-24">
+      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-20 sm:px-6 sm:pt-24">
         {/* Identity card — frosted glass floating over the constellation. */}
         <div className="rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:px-8">
         <div className="flex flex-col items-center text-center">

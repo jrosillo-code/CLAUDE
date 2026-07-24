@@ -1,5 +1,5 @@
 import type maplibregl from "maplibre-gl";
-import type { FlyoverFrame } from "./flyover";
+import { jetSvgMarkup, type FlyoverFrame } from "./flyover";
 
 // The flight film: records the journey flyover into a downloadable video,
 // entirely client-side. The map's WebGL canvas is copied on the map's own
@@ -28,15 +28,10 @@ function pickMime(): string | undefined {
 }
 
 function jetImage(accent: string): HTMLImageElement {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 24 24" fill="none">
-    <defs><linearGradient id="j" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#8fd8ff"/><stop offset="1" stop-color="${accent}"/>
-    </linearGradient></defs>
-    <path d="M21 15.5v-2.2l-8-5V3.6a1.5 1.5 0 0 0-3 0v4.7l-8 5v2.2l8-2.4v4.9l-2.1 1.6v1.7l3.6-1.1 3.6 1.1v-1.7L13 18v-4.9z"
-      fill="url(#j)" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round"/>
-  </svg>`;
   const img = new Image();
-  img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
+    jetSvgMarkup(accent, "wpjet-rec", 72)
+  )}`;
   return img;
 }
 

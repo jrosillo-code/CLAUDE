@@ -246,6 +246,31 @@ export async function ensureProfile(userId: string, email: string | undefined): 
 
 // ── write-through mutations (fire and forget) ──────────────────────────────
 
+/**
+ * Live wire: whenever anything social changes server-side (a like lands, a
+ * friend request arrives, someone drops a pin), poke the callback. The store
+ * debounces and reloads the world — coarse but correct, and the payloads stay
+ * RLS-scoped because the reload runs as the viewer.
+ */
+export function subscribeRealtime(viewerId: string, onWorldChange: () => void): () => void {
+  if (!supabase) return () => {};
+  const sb = supabase;
+  const ch = sb
+    .channel(`wp-live-${viewerId}`)
+    .on(
+      "postgres_changes",
+      { event: "*", schema: "public", table: "notifications", filter: `user_id=eq.${viewerId}` },
+      onWorldChange
+    )
+    .on("postgres_changes", { event: "*", schema: "public", table: "friendships" }, onWorldChange)
+    .on("postgres_changes", { event: "*", schema: "public", table: "pins" }, onWorldChange)
+    .on("postgres_changes", { event: "*", schema: "public", table: "pin_likes" }, onWorldChange)
+    .subscribe();
+  return () => {
+    void sb.removeChannel(ch);
+  };
+}
+
 export function syncAddPin(pin: Pin): void {
   const sb = supabase!;
   void (async () => {
@@ -264,6 +289,7 @@ export function syncAddPin(pin: Pin): void {
       visibility: pin.visibility,
       rating: pin.rating ?? null,
       activities: pin.activities ?? [],
+      created_at: pin.createdAt, // honors backdated imports
     });
     if (error) return log("addPin")(error);
     if (pin.media.length) {
