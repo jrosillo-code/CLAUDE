@@ -15,6 +15,16 @@ export default function LoginScreen() {
   const [linkSent, setLinkSent] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
+  // Live mode shows an OAuth button only when that provider is actually
+  // configured in Supabase (set NEXT_PUBLIC_OAUTH_PROVIDERS="google,apple"
+  // once credentials are added). A disabled provider can't be caught in JS:
+  // the authorize endpoint navigates the whole page to a raw JSON 400.
+  const oauthProviders = (process.env.NEXT_PUBLIC_OAUTH_PROVIDERS ?? "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase());
+  const showApple = !backendEnabled || oauthProviders.includes("apple");
+  const showGoogle = !backendEnabled || oauthProviders.includes("google");
+
   // Live backend → real Supabase auth; otherwise the local demo session.
   async function oauth(provider: "apple" | "google") {
     if (!backendEnabled) return signIn(provider);
@@ -68,28 +78,38 @@ export default function LoginScreen() {
         </div>
 
         {/* Providers */}
-        <div className="mt-9 space-y-2.5">
-          <button
-            onClick={() => oauth("apple")}
-            className="flex w-full items-center justify-center gap-2.5 rounded-full bg-ink py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
-          >
-            <AppleLogo />
-            Continue with Apple
-          </button>
-          <button
-            onClick={() => oauth("google")}
-            className="flex w-full items-center justify-center gap-2.5 rounded-full bg-paper py-3 text-[15px] font-semibold text-ink ring-1 ring-line transition-colors hover:bg-paper-2"
-          >
-            <GoogleLogo />
-            Continue with Google
-          </button>
-        </div>
+        {(showApple || showGoogle) && (
+          <div className="mt-9 space-y-2.5">
+            {showApple && (
+              <button
+                onClick={() => oauth("apple")}
+                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-ink py-3 text-[15px] font-semibold text-paper transition-opacity hover:opacity-90"
+              >
+                <AppleLogo />
+                Continue with Apple
+              </button>
+            )}
+            {showGoogle && (
+              <button
+                onClick={() => oauth("google")}
+                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-paper py-3 text-[15px] font-semibold text-ink ring-1 ring-line transition-colors hover:bg-paper-2"
+              >
+                <GoogleLogo />
+                Continue with Google
+              </button>
+            )}
+          </div>
+        )}
 
-        <div className="my-6 flex items-center gap-3">
-          <span className="h-px flex-1 bg-line" />
-          <span className="text-xs uppercase tracking-wider text-ink-3">or</span>
-          <span className="h-px flex-1 bg-line" />
-        </div>
+        {showApple || showGoogle ? (
+          <div className="my-6 flex items-center gap-3">
+            <span className="h-px flex-1 bg-line" />
+            <span className="text-xs uppercase tracking-wider text-ink-3">or</span>
+            <span className="h-px flex-1 bg-line" />
+          </div>
+        ) : (
+          <div className="mt-9" />
+        )}
 
         {/* Email magic link */}
         {linkSent ? (

@@ -37,6 +37,7 @@ site is a PWA; phones install it from the browser).
    | `NEXT_PUBLIC_GEOAPIFY_KEY` | free key from geoapify.com | no — better search + route-guide lookups |
    | `ANTHROPIC_API_KEY` | console.anthropic.com | no — real AI route guides instead of the demo brief |
    | `NEXT_PUBLIC_MAP_STYLE` | any MapLibre style URL | no — default is keyless OpenFreeMap |
+   | `NEXT_PUBLIC_OAUTH_PROVIDERS` | e.g. `google,apple` | no — shows those login buttons once you add the providers' credentials in Supabase; unset = email-only |
 
 3. Note your deploy URL (e.g. `waypoint-beta.vercel.app`). A custom domain is
    Settings → Domains, later, optional.
