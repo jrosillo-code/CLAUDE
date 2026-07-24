@@ -815,11 +815,15 @@ export default function MapCanvas({ placing, onPick }: Props) {
         getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
         "#0a84ff";
       const stops = route.map((p) => ({ lng: p.lng, lat: p.lat }));
+      const stats = {
+        places: route.length,
+        countries: new Set(route.map((p) => p.countryCode).filter(Boolean)).size,
+      };
       void (async () => {
         // Preferred path: deterministic offline render — every frame waits
         // for its tiles, timestamps are exact, playback is butter.
         st.setFlightProgress(0);
-        const result = await renderFlightFilm(map, maplibregl, stops, me.avatarUrl, accent, year, (p) =>
+        const result = await renderFlightFilm(map, maplibregl, stops, me.avatarUrl, accent, year, stats, (p) =>
           useStore.getState().setFlightProgress(p)
         );
         useStore.getState().setFlightProgress(null);

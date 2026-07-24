@@ -29,6 +29,9 @@ export interface FlightState {
 export interface FlightPlan {
   path: Stop[];
   lineCoords: [number, number][];
+  /** Cumulative trail fraction at every lineCoords vertex — lets the film
+   *  renderer draw the revealed portion of the trail itself. */
+  lineFracs: number[];
   /** Trail fraction at which each stop is reached — drives stop markers. */
   stopFracs: number[];
   /** Duration through landing + settle (pull-back is the renderer's coda). */
@@ -36,7 +39,8 @@ export interface FlightPlan {
   stateAt(t: number): FlightState;
 }
 
-const HOLD0_MS = 600;
+/** Opening hold — long enough for the film's title card to breathe. */
+export const HOLD0_MS = 1400;
 const SETTLE_MS = 900;
 
 function bearing(a: [number, number], b: [number, number]): number {
@@ -164,5 +168,5 @@ export function buildFlightPlan(stops: Stop[]): FlightPlan {
     };
   };
 
-  return { path, lineCoords, stopFracs, totalMs, stateAt };
+  return { path, lineCoords, lineFracs: cumFrac, stopFracs, totalMs, stateAt };
 }

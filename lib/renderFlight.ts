@@ -4,15 +4,8 @@ import {
   Muxer as WebMMuxer,
 } from "webm-muxer";
 import type maplibregl from "maplibre-gl";
-import { buildFlightPlan } from "./flightPlan";
-import {
-  CRUISE_ZOOM,
-  TRAIL_GLOW,
-  TRAIL_LYR,
-  TRAIL_SRC,
-  trailGradients,
-  type Stop,
-} from "./flyover";
+import { HOLD0_MS, buildFlightPlan } from "./flightPlan";
+import { CRUISE_ZOOM, arcDeg, type Stop } from "./flyover";
 import {
   downloadBlob,
   drawFlightOverlay,
@@ -22,22 +15,20 @@ import {
 
 // The flight film, rendered like a film: frame by frame on a deterministic
 // clock. For every output frame the camera is placed exactly, THEN we wait
-// for the map to finish loading and drawing that view, THEN the frame is
-// composited and encoded with an explicit timestamp (WebCodecs → mp4-muxer).
-// Two problems disappear by construction:
-//   · half-loaded/white map in the film — a frame is only captured once the
-//     map reports idle for that exact camera;
-//   · choppiness — output timestamps are i/fps regardless of how long each
-//     frame took to render, so playback is constant-rate smooth on any device.
-// This is the approach used by maplibre-gl-video-export and browser-side
-// renderers like Remotion. Falls back to the realtime recorder when WebCodecs
-// H.264 isn't available (see recordFlight.ts).
+// for the map's tiles for that view, THEN the frame is composited and encoded
+// with an explicit timestamp (WebCodecs → mp4/webm muxer).
+//
+// The map contributes ONLY the basemap. Trail, stops, plane, title and end
+// cards are all drawn straight into the composite — no GL layers, no GeoJSON
+// worker round-trips, nothing that can race a fast GPU and produce trail-less
+// frames (which is exactly what happened on real phones). What the composite
+// draws is what every device gets.
 
 export type RenderResult = "saved" | "cancelled" | "unsupported" | "failed";
 
 const FPS = 30;
 const PULLBACK_MS = 1800;
-const HOLD_END_MS = 700;
+const HOLD_END_MS = 2200;
 const CANCEL_EVENT = "wp-flight-render-cancel";
 
 /** Fire this event (the progress overlay's Cancel button does) to abort. */
@@ -45,9 +36,8 @@ export function cancelFlightRender(): void {
   window.dispatchEvent(new Event(CANCEL_EVENT));
 }
 
-/** Resolves once the current camera's view is fully loaded AND drawn at least
- *  once. Forces a repaint so unchanged frames (pauses, holds) settle in one
- *  render tick instead of waiting out a timeout. */
+/** Resolves once the current camera's tiles are loaded and drawn at least
+ *  once. One render tick when the cache is warm; idle-wait only on misses. */
 function settleFrame(map: maplibregl.Map, timeoutMs: number): Promise<void> {
   return new Promise((resolve) => {
     let done = false;
@@ -59,23 +49,10 @@ function settleFrame(map: maplibregl.Map, timeoutMs: number): Promise<void> {
       resolve();
     };
     const to = setTimeout(finish, timeoutMs);
-    const trailReady = () => {
-      // The trail's GeoJSON is tiled in a worker — a fast GPU can otherwise
-      // outrun it and capture trail-less frames.
-      try {
-        return map.isSourceLoaded(TRAIL_SRC);
-      } catch {
-        return true;
-      }
-    };
     map.once("render", () => {
-      // Tile requests for this camera have been issued by now. areTilesLoaded
-      // is the cheap per-frame truth; loaded() is also false during our own
-      // camera/paint churn, which forced a slow idle-wait on nearly every
-      // frame and multiplied the render time several times over.
       let ready = false;
       try {
-        ready = map.areTilesLoaded() && trailReady();
+        ready = map.areTilesLoaded();
       } catch {
         ready = false;
       }
@@ -121,6 +98,13 @@ async function pickCodec(width: number, height: number): Promise<CodecChoice | n
   return null;
 }
 
+const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
+/** 0 before a, 1 after b, smooth in between. */
+const ramp = (t: number, a: number, b: number) => {
+  const f = clamp01((t - a) / (b - a));
+  return f * f * (3 - 2 * f);
+};
+
 export async function renderFlightFilm(
   map: maplibregl.Map,
   // The maplibre module itself — its setNow/restoreNow drive the library's
@@ -132,6 +116,7 @@ export async function renderFlightFilm(
   avatarUrl: string,
   accent: string,
   year: number,
+  stats: { places: number; countries: number },
   onProgress: (fraction: number) => void
 ): Promise<RenderResult> {
   if (stops.length < 2) return "failed";
@@ -148,8 +133,17 @@ export async function renderFlightFilm(
   if (!choice) return "unsupported";
 
   const plan = buildFlightPlan(stops);
-  const grads = trailGradients(accent);
   const assets = loadFlightAssets(accent, avatarUrl);
+
+  // When each stop is reached, in film time — drives dot pop-ins and pulses.
+  const frameMs = 1000 / FPS;
+  const stopArriveMs = plan.stopFracs.map((f, si) => {
+    if (si === 0) return 0;
+    for (let t = 0; t <= plan.totalMs; t += frameMs) {
+      if (plan.stateAt(t).frac >= f - 1e-6) return t;
+    }
+    return plan.totalMs;
+  });
 
   // Where the pull-back lands: the whole journey in frame.
   let west = Infinity, south = Infinity, east = -Infinity, north = -Infinity;
@@ -181,16 +175,6 @@ export async function renderFlightFilm(
   let cancelled = false;
   const onCancel = () => (cancelled = true);
   window.addEventListener(CANCEL_EVENT, onCancel);
-
-  const cleanupMap = () => {
-    try {
-      if (map.getLayer(TRAIL_LYR)) map.removeLayer(TRAIL_LYR);
-      if (map.getLayer(TRAIL_GLOW)) map.removeLayer(TRAIL_GLOW);
-      if (map.getSource(TRAIL_SRC)) map.removeSource(TRAIL_SRC);
-    } catch {
-      /* style may have changed */
-    }
-  };
 
   const work = document.createElement("canvas");
   work.width = W;
@@ -225,9 +209,7 @@ export async function renderFlightFilm(
     error: () => (encodeFailed = true),
   });
   const encCfg = { codec: choice.codec, width: W, height: H, bitrate: 10_000_000, framerate: FPS };
-  // Ask for the GPU encoder outright where it exists — encoding becomes a
-  // rounding error instead of a real cost. Silently keep the default (which
-  // may still pick hardware) elsewhere.
+  // Ask for the GPU encoder outright where it exists.
   let preferHw = false;
   try {
     preferHw =
@@ -239,8 +221,7 @@ export async function renderFlightFilm(
   encoder.configure(preferHw ? { ...encCfg, hardwareAcceleration: "prefer-hardware" } : encCfg);
 
   // The GL canvas is only safely readable right after a draw — snapshot it on
-  // every render event (same trick as the realtime recorder) and composite
-  // from the snapshot, never from the live GL canvas.
+  // every render event and composite from the snapshot.
   const mapCopy = document.createElement("canvas");
   mapCopy.width = srcW;
   mapCopy.height = srcH;
@@ -265,38 +246,101 @@ export async function renderFlightFilm(
     getComputedStyle(document.body).backgroundColor ||
     "#f5f2ec";
 
+  // Cinematic vignette — precomputed once.
+  const vignette = ctx.createRadialGradient(
+    W / 2, H / 2, Math.min(W, H) * 0.52,
+    W / 2, H / 2, Math.max(W, H) * 0.78
+  );
+  vignette.addColorStop(0, "rgba(12,16,28,0)");
+  vignette.addColorStop(1, "rgba(12,16,28,0.16)");
+
+  const inkText = "#181a20";
+  const fontStack = "-apple-system, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif";
+
+  // ── The trail, drawn by hand ───────────────────────────────────────────
+  // Screen-projects the revealed portion of the route each frame and strokes
+  // it as a comet: soft accent glow, steady tail, bright head. Points on the
+  // globe's far side are culled; antimeridian jumps break the pen.
+  const drawTrail = (headFrac: number, k: number, settled: number) => {
+    if (headFrac <= 1e-4) return;
+    const c = map.getCenter();
+    const cam = { lng: c.lng, lat: c.lat };
+    type Pt = { x: number; y: number; f: number } | null;
+    const pts: Pt[] = [];
+    const push = (lng: number, lat: number, f: number) => {
+      if (arcDeg({ lng, lat }, cam) > 80) {
+        pts.push(null);
+        return;
+      }
+      const p = map.project([lng, lat]);
+      pts.push({ x: p.x * k, y: p.y * k, f });
+    };
+    const { lineCoords, lineFracs } = plan;
+    for (let i = 0; i < lineCoords.length; i++) {
+      const f = lineFracs[i];
+      if (f >= headFrac) {
+        const f0 = lineFracs[i - 1] ?? 0;
+        const tt = (headFrac - f0) / Math.max(1e-9, f - f0);
+        push(
+          lineCoords[i - 1][0] + (lineCoords[i][0] - lineCoords[i - 1][0]) * tt,
+          lineCoords[i - 1][1] + (lineCoords[i][1] - lineCoords[i - 1][1]) * tt,
+          headFrac
+        );
+        break;
+      }
+      push(lineCoords[i][0], lineCoords[i][1], f);
+    }
+
+    const stroke = (fromF: number, toF: number, width: number, alpha: number) => {
+      ctx.lineWidth = width;
+      ctx.strokeStyle = accent;
+      ctx.globalAlpha = alpha;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.beginPath();
+      let pen = false;
+      let prev: Pt = null;
+      for (const p of pts) {
+        if (!p || p.f < fromF) {
+          pen = false;
+          prev = p;
+          continue;
+        }
+        if (p.f > toF) break;
+        if (pen && prev && Math.abs(p.x - prev.x) > W / 3) pen = false;
+        if (!pen) {
+          ctx.moveTo(p.x, p.y);
+          pen = true;
+        } else ctx.lineTo(p.x, p.y);
+        prev = p;
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    };
+
+    // Glow, then tail, then the comet head brightening toward the plane.
+    stroke(0, headFrac, 9 * k, 0.08 + 0.05 * settled);
+    stroke(0, headFrac, 4.6 * k, 0.13 + 0.07 * settled);
+    stroke(0, headFrac, 2.2 * k, 0.38 + 0.42 * settled);
+    if (settled < 1) {
+      const HEAD = 0.1;
+      const slices = 7;
+      for (let s = 0; s < slices; s++) {
+        const a = headFrac - HEAD * (1 - s / slices);
+        const b = headFrac - HEAD * (1 - (s + 1) / slices);
+        const glowT = s / (slices - 1);
+        stroke(Math.max(0, a), Math.max(0, b), (2.4 + 1.1 * glowT) * k, 0.45 + 0.55 * glowT);
+      }
+    }
+  };
+
   try {
-    cleanupMap();
-    map.addSource(TRAIL_SRC, {
-      type: "geojson",
-      lineMetrics: true,
-      data: {
-        type: "Feature",
-        properties: {},
-        geometry: { type: "LineString", coordinates: plan.lineCoords },
-      },
-    });
-    map.addLayer({
-      id: TRAIL_GLOW,
-      type: "line",
-      source: TRAIL_SRC,
-      layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-width": 8, "line-blur": 5, "line-gradient": grads.glow(0) as never },
-    });
-    map.addLayer({
-      id: TRAIL_LYR,
-      type: "line",
-      source: TRAIL_SRC,
-      layout: { "line-cap": "round", "line-join": "round" },
-      paint: { "line-width": 2.5, "line-gradient": grads.core(0) as never },
-    });
-
-    // Let the trail's worker round-trip finish before the first frame.
+    // First view + tile-cache warm-up along the whole route (each leg's
+    // cruise and zoomed-out midsection, then the pull-back view), so capture
+    // frames almost never stop for the network.
+    const s0 = plan.stateAt(0);
+    map.jumpTo({ center: [s0.lng, s0.lat], zoom: s0.zoom, bearing: 0, pitch: 0 });
     await settleFrame(map, 4000);
-
-    // Warm the tile cache along the whole route first — each leg's cruise and
-    // zoomed-out midsection plus the final pull-back view. Capture frames then
-    // run at full speed instead of each stopping to wait for the network.
     for (let wt = 0; wt <= plan.totalMs && !cancelled; wt += 600) {
       const s = plan.stateAt(wt);
       map.jumpTo({ center: [s.lng, s.lat], zoom: s.zoom, bearing: 0, pitch: 0 });
@@ -308,9 +352,8 @@ export async function renderFlightFilm(
       await settleFrame(map, 900);
     }
 
-    let lastFrac = -1;
-    let settledSet = false;
     const easeInOutQ = (f: number) => f * f * (3 - 2 * f);
+    let lastCamKey = "";
 
     for (let i = 0; i < frames; i++) {
       if (cancelled || encodeFailed) break;
@@ -320,67 +363,83 @@ export async function renderFlightFilm(
 
       let planeVisible = false;
       let fracNow = 1;
+      let settled = 0;
       let px = 0, py = 0, heading = 0, altitude = 1;
+      let camLng: number, camLat: number, camZoom: number;
 
       if (t <= plan.totalMs) {
         const s = plan.stateAt(t);
-        map.jumpTo({ center: [s.lng, s.lat], zoom: s.zoom, bearing: 0, pitch: 0 });
-        if (Math.abs(s.frac - lastFrac) > 0.0004) {
-          lastFrac = s.frac;
-          map.setPaintProperty(TRAIL_LYR, "line-gradient", grads.core(s.frac) as never);
-          map.setPaintProperty(TRAIL_GLOW, "line-gradient", grads.glow(s.frac) as never);
-        }
+        camLng = s.lng;
+        camLat = s.lat;
+        camZoom = s.zoom;
         planeVisible = s.phase !== "settle";
+        settled = s.phase === "settle" ? 1 : 0;
         fracNow = s.frac;
         heading = s.heading;
         altitude = s.altitude;
-        const p = map.project([s.lng, s.lat]);
-        px = p.x;
-        py = p.y;
       } else {
-        // Coda: settle the trail, pull back to frame the journey, hold.
-        if (!settledSet) {
-          settledSet = true;
-          map.setPaintProperty(TRAIL_LYR, "line-gradient", grads.settledCore as never);
-          map.setPaintProperty(TRAIL_GLOW, "line-gradient", grads.settledGlow as never);
-        }
+        // Coda: pull back to frame the journey, trail settles to steady.
         const p = Math.min(1, (t - plan.totalMs) / PULLBACK_MS);
         const e = easeInOutQ(p);
         const last = plan.path[plan.path.length - 1];
-        map.jumpTo({
-          center: [
-            last.lng + (endCenter.lng - last.lng) * e,
-            last.lat + (endCenter.lat - last.lat) * e,
-          ],
-          zoom: CRUISE_ZOOM + (endZoom - CRUISE_ZOOM) * e,
-          bearing: 0,
-          pitch: 0,
-        });
+        camLng = last.lng + (endCenter.lng - last.lng) * e;
+        camLat = last.lat + (endCenter.lat - last.lat) * e;
+        camZoom = CRUISE_ZOOM + (endZoom - CRUISE_ZOOM) * e;
+        settled = 1;
       }
 
-      // The contract that keeps the film clean: no capture until this exact
-      // view is fully loaded and drawn.
-      await settleFrame(map, 2000);
+      // Holds and pauses repeat the same camera — reuse the last snapshot
+      // instead of forcing a repaint + settle for an identical view.
+      const camKey = `${camLng.toFixed(6)},${camLat.toFixed(6)},${camZoom.toFixed(4)}`;
+      if (camKey !== lastCamKey) {
+        map.jumpTo({ center: [camLng, camLat], zoom: camZoom, bearing: 0, pitch: 0 });
+        await settleFrame(map, 2000);
+        lastCamKey = camKey;
+      }
       if (cancelled) break;
 
+      if (planeVisible) {
+        const p = map.project([camLng, camLat]);
+        px = p.x;
+        py = p.y;
+      }
+
+      const k = W / mapCanvas.clientWidth;
       ctx.fillStyle = spaceBg;
       ctx.fillRect(0, 0, W, H);
       ctx.drawImage(mapCopy, 0, 0, W, H);
-      const k = W / mapCanvas.clientWidth;
+      ctx.fillStyle = vignette;
+      ctx.fillRect(0, 0, W, H);
 
-      // The journey's stops, drawn into the film (the app's pin needles are
-      // DOM elements the GL canvas can't see). Upcoming stops wait as faint
-      // rings; the plane lights each one up as it arrives.
+      drawTrail(fracNow, k, settled);
+
+      // Stops: faint ring while upcoming; pop + pulse as the plane arrives.
       for (let si = 0; si < plan.path.length; si++) {
-        const visited = plan.stopFracs[si] <= fracNow + 0.002;
+        const arrive = stopArriveMs[si];
+        const visited = t >= arrive - 1;
         const sp = map.project([plan.path[si].lng, plan.path[si].lat]);
         const sx = sp.x * k;
         const sy = sp.y * k;
-        if (sx < -20 || sy < -20 || sx > W + 20 || sy > H + 20) continue;
+        if (sx < -40 || sy < -40 || sx > W + 40 || sy > H + 40) continue;
+        if (arcDeg(plan.path[si], { lng: camLng, lat: camLat }) > 80) continue;
+        const age = t - arrive;
+        if (visited && age < 750) {
+          // arrival pulse ring
+          const pf = age / 750;
+          ctx.beginPath();
+          ctx.arc(sx, sy, (6 + 22 * easeInOutQ(pf)) * k, 0, Math.PI * 2);
+          ctx.strokeStyle = accent;
+          ctx.globalAlpha = 0.55 * (1 - pf);
+          ctx.lineWidth = 2 * k;
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+        const pop = visited ? Math.min(1, age / 240) : 0;
+        const r = visited ? (4.2 + 2.2 * (pop < 1 ? 1.25 * pop : 1)) * k : 4.5 * k;
         ctx.beginPath();
-        ctx.arc(sx, sy, (visited ? 6 : 4.5) * k, 0, Math.PI * 2);
-        ctx.fillStyle = visited ? accent : "rgba(255,255,255,.7)";
-        ctx.shadowColor = "rgba(0,0,0,.3)";
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        ctx.fillStyle = visited ? accent : "rgba(255,255,255,.75)";
+        ctx.shadowColor = "rgba(0,0,0,.28)";
         ctx.shadowBlur = 4 * k;
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -392,7 +451,47 @@ export async function renderFlightFilm(
       if (planeVisible) {
         drawFlightOverlay(ctx, { x: px * k, y: py * k, k, heading, altitude, accent, assets });
       }
-      drawWatermark(ctx, W, H, k, year);
+
+      // Title card over the opening hold.
+      const titleA = ramp(t, 100, 450) * (1 - ramp(t, HOLD0_MS - 380, HOLD0_MS - 80));
+      if (titleA > 0.01) {
+        ctx.globalAlpha = titleA;
+        ctx.textAlign = "center";
+        ctx.shadowColor = "rgba(255,255,255,.95)";
+        ctx.shadowBlur = 22 * k;
+        ctx.fillStyle = inkText;
+        ctx.font = `700 ${Math.round(56 * k)}px ${fontStack}`;
+        ctx.fillText(`${year}`, W / 2, H * 0.42);
+        ctx.fillStyle = accent;
+        ctx.font = `600 ${Math.round(14 * k)}px ${fontStack}`;
+        ctx.fillText("A  Y E A R  I N  T R A V E L", W / 2, H * 0.42 + 34 * k);
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      }
+
+      // End card: the year's numbers fade in over the settled world.
+      const endStart = plan.totalMs + PULLBACK_MS;
+      const endA = ramp(t, endStart + 200, endStart + 750);
+      if (endA > 0.01) {
+        ctx.globalAlpha = endA;
+        ctx.textAlign = "center";
+        ctx.shadowColor = "rgba(255,255,255,.95)";
+        ctx.shadowBlur = 18 * k;
+        ctx.fillStyle = inkText;
+        ctx.font = `700 ${Math.round(24 * k)}px ${fontStack}`;
+        ctx.fillText(
+          `${stats.places} ${stats.places === 1 ? "place" : "places"} · ${stats.countries} ${stats.countries === 1 ? "country" : "countries"}`,
+          W / 2,
+          H * 0.84
+        );
+        ctx.fillStyle = accent;
+        ctx.font = `600 ${Math.round(12 * k)}px ${fontStack}`;
+        ctx.fillText(`W A Y P O I N T  ·  ${year}`, W / 2, H * 0.84 + 26 * k);
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      } else {
+        drawWatermark(ctx, W, H, k, year);
+      }
 
       const frame = new VideoFrame(work, {
         timestamp: Math.round((i * 1_000_000) / FPS),
@@ -441,7 +540,6 @@ export async function renderFlightFilm(
     }
     window.removeEventListener(CANCEL_EVENT, onCancel);
     map.off("render", snapshot);
-    cleanupMap();
     map.jumpTo({
       center: saved.center,
       zoom: saved.zoom,
