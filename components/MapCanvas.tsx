@@ -997,7 +997,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
       zoom: flyTo.zoom ?? 9,
       // Straight overhead for pin drops; a gentle tilt for other close-ups.
       pitch: flyTo.flat ? 0 : (flyTo.zoom ?? 9) >= 6 ? 45 : 0,
-      bearing: flyTo.flat ? 0 : undefined,
+      // Only set bearing on a flat move — passing `bearing: undefined` makes
+      // MapLibre call setBearing(undefined), which corrupts the globe matrix
+      // and crashes ("Cannot read properties of null") right after a search.
+      ...(flyTo.flat ? { bearing: 0 } : {}),
       duration: 1600,
       essential: true,
     });
