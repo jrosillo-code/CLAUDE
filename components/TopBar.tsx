@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useViewer } from "@/lib/hooks";
+import { computeCrossings } from "@/lib/crossings";
 import { searchPlaces, type GeoResult } from "@/lib/geocode";
 import WaypointLogo from "./Logo";
 import { FocusButton } from "./LayerRail";
@@ -11,13 +12,28 @@ import { FocusButton } from "./LayerRail";
 export default function TopBar({
   onOpenActivity,
   onOpenFeed,
+  onOpenCrossings,
 }: {
   onOpenActivity: () => void;
   onOpenFeed: () => void;
+  onOpenCrossings: () => void;
 }) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
   const unread = useStore((s) => s.notifications.filter((n) => !n.read).length);
+
+  // Crossings badge: how many "your paths cross" moments are live right now.
+  const viewerId = useStore((s) => s.viewerId);
+  const users = useStore((s) => s.users);
+  const pins = useStore((s) => s.pins);
+  const trips = useStore((s) => s.trips);
+  const friendships = useStore((s) => s.friendships);
+  const follows = useStore((s) => s.follows);
+  const savedPinIds = useStore((s) => s.savedPinIds);
+  const crossingCount = useMemo(
+    () => computeCrossings({ viewerId, users, pins, trips, friendships, follows, savedPinIds }).length,
+    [viewerId, users, pins, trips, friendships, follows, savedPinIds]
+  );
 
   const [q, setQ] = useState("");
   const [results, setResults] = useState<GeoResult[]>([]);
@@ -121,6 +137,25 @@ export default function TopBar({
       </div>
 
       <div className="ml-auto flex min-w-0 shrink-0 items-center justify-end gap-1.5 sm:ml-0 sm:flex-1 sm:basis-0 sm:gap-2">
+        {/* Crossings — where your plans meet the people you trust */}
+        <button
+          onClick={onOpenCrossings}
+          className="relative grid h-9 w-9 place-items-center rounded-full bg-paper/85 shadow-float backdrop-blur"
+          title="Crossings"
+          aria-label="Crossings"
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.7" />
+            <path d="M14.8 9.2 11 11l-1.8 3.8L13 13z" fill="currentColor" />
+            <path d="M12 3v2M12 19v2M3 12h2M19 12h2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+          </svg>
+          {crossingCount > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 grid place-items-center rounded-full bg-accent px-1 text-[9px] font-bold text-paper" style={{ height: 18, minWidth: 18 }}>
+              {crossingCount}
+            </span>
+          )}
+        </button>
+
         {/* Activity bell */}
         <button
           onClick={onOpenActivity}

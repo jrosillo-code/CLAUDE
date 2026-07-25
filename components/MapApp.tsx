@@ -19,6 +19,7 @@ import TripDraftBar from "./TripDraftBar";
 import TopSpotsPanel from "./TopSpotsPanel";
 import LandmarkCard from "./LandmarkCard";
 import OverlayCard from "./OverlayCard";
+import CrossingsPanel from "./CrossingsPanel";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
 import { cancelFlightRender } from "@/lib/renderFlight";
@@ -30,6 +31,7 @@ export default function MapApp() {
   const [friendsOpen, setFriendsOpen] = useState(false);
   const [travelersOpen, setTravelersOpen] = useState(false);
   const [feedOpen, setFeedOpen] = useState(false);
+  const [crossingsOpen, setCrossingsOpen] = useState(false);
   const [activityOpen, setActivityOpen] = useState(false);
   const [topSpotsOpen, setTopSpotsOpen] = useState(false);
   const [tripsOpen, setTripsOpen] = useState(false);
@@ -112,6 +114,7 @@ export default function MapApp() {
       <TopBar
         onOpenActivity={() => setActivityOpen(true)}
         onOpenFeed={() => setFeedOpen(true)}
+        onOpenCrossings={() => setCrossingsOpen(true)}
       />
       {mapMode === "pins" && (
         <LayerRail
@@ -233,6 +236,7 @@ export default function MapApp() {
         />
       )}
       {feedOpen && <PinFeed onClose={() => setFeedOpen(false)} />}
+      {crossingsOpen && <CrossingsPanel onClose={() => setCrossingsOpen(false)} />}
       {activityOpen && <ActivityPanel onClose={() => setActivityOpen(false)} />}
       {topSpotsOpen && <TopSpotsPanel onClose={() => setTopSpotsOpen(false)} />}
       {tripsOpen && (

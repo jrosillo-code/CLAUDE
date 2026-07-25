@@ -378,6 +378,19 @@ export const seedTrips: Trip[] = [
     ],
     createdAt: new Date(2025, 6, 12).toISOString(),
   },
+  {
+    // Leo road-trips the same coast you're planning — a "paths crossing" demo.
+    id: "trip-3",
+    userId: "u-leo",
+    title: "Coast chase",
+    visibility: "friends",
+    stops: [
+      { id: "trip-3-s1", lng: -9.4175, lat: 38.9636, placeName: "Ericeira" },
+      { id: "trip-3-s2", lng: -9.3812, lat: 39.3558, placeName: "Peniche" },
+      { id: "trip-3-s3", lng: -8.6291, lat: 41.1579, placeName: "Porto" },
+    ],
+    createdAt: new Date(2025, 6, 20).toISOString(),
+  },
 ];
 
 // Who the demo viewer already follows (creators). Following a creator overlays
