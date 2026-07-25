@@ -124,7 +124,7 @@ export default function ProfileView({ handle }: { handle: string }) {
   function openPin(pinId: string, lng: number, lat: number) {
     selectPin(pinId);
     router.push("/");
-    setTimeout(() => requestFlyTo(lng, lat, 8), 60);
+    setTimeout(() => requestFlyTo(lng, lat, 8, { flat: true }), 60);
   }
 
   return (

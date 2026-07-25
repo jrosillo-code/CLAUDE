@@ -27,6 +27,8 @@ export default function BasemapToggle() {
   const setShowWishlist = useStore((s) => s.setShowWishlist);
   const savedCount = useStore((s) => s.savedPinIds.size);
   const [open, setOpen] = useState(false);
+  const extrasCount = [showLandmarks, showAirports, showStations, showStadiums].filter(Boolean).length;
+  const [extrasOpen, setExtrasOpen] = useState(extrasCount > 0);
 
   const icon3d = (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -85,16 +87,40 @@ export default function BasemapToggle() {
 
             <div className="mt-2 space-y-0.5">
               <RowToggle icon={icon3d} label="3D terrain" active={terrain3d} onClick={() => setTerrain3d(!terrain3d)} />
-              <RowToggle icon={iconLandmarks} label="Landmarks" active={showLandmarks} onClick={() => setShowLandmarks(!showLandmarks)} />
-              <RowToggle icon={iconAirport} label="Airports" active={showAirports} onClick={() => setShowAirports(!showAirports)} />
-              <RowToggle icon={iconTrain} label="Train stations" active={showStations} onClick={() => setShowStations(!showStations)} />
-              <RowToggle icon={iconStadium} label="Stadiums" active={showStadiums} onClick={() => setShowStadiums(!showStadiums)} />
               <RowToggle
                 icon={iconSaved}
                 label={`Saved${savedCount > 0 ? ` · ${savedCount}` : ""}`}
                 active={showWishlist}
                 onClick={() => setShowWishlist(!showWishlist)}
               />
+
+              {/* Extras — the reference overlays, folded away so the card stays
+                  tidy; the badge shows how many are on. */}
+              <button
+                onClick={() => setExtrasOpen((o) => !o)}
+                className="flex w-full items-center gap-2.5 rounded-xl px-2 py-2 text-sm hover:bg-paper-2"
+              >
+                <span className={`grid h-7 w-7 place-items-center rounded-full ${extrasCount ? "bg-ink text-paper" : "bg-paper-2 text-ink-2"}`}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" opacity=".55" /><circle cx="12" cy="12" r="8.5" stroke="currentColor" strokeWidth="1.8" /></svg>
+                </span>
+                <span className={extrasOpen || extrasCount ? "text-ink" : "text-ink-2"}>Extras</span>
+                {extrasCount > 0 && (
+                  <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-paper">
+                    {extrasCount}
+                  </span>
+                )}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className={`ml-auto text-ink-3 transition-transform ${extrasOpen ? "rotate-180" : ""}`}>
+                  <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              {extrasOpen && (
+                <div className="space-y-0.5 border-l border-line pl-2 ml-3.5">
+                  <RowToggle icon={iconLandmarks} label="Landmarks" active={showLandmarks} onClick={() => setShowLandmarks(!showLandmarks)} />
+                  <RowToggle icon={iconAirport} label="Airports" active={showAirports} onClick={() => setShowAirports(!showAirports)} />
+                  <RowToggle icon={iconTrain} label="Train stations" active={showStations} onClick={() => setShowStations(!showStations)} />
+                  <RowToggle icon={iconStadium} label="Stadiums" active={showStadiums} onClick={() => setShowStadiums(!showStadiums)} />
+                </div>
+              )}
             </div>
 
             <div className="mt-2.5 flex items-center gap-1.5 px-1">

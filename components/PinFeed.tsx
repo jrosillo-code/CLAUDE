@@ -44,7 +44,7 @@ export default function PinFeed({ onClose }: { onClose: () => void }) {
     // If the owner's layer is toggled off the pin wouldn't render — widen.
     if (activeUserIds && !activeUserIds.has(p.userId)) showEveryone();
     onClose();
-    requestFlyTo(p.lng, p.lat, 7);
+    requestFlyTo(p.lng, p.lat, 7, { flat: true });
   }
 
   return (

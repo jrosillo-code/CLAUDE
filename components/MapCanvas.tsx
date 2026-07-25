@@ -1333,7 +1333,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
               map.flyTo({
                 center: [lng, lat],
                 zoom: Math.max(map.getZoom(), 6),
-                pitch: 45,
+                pitch: 0, // straight overhead, no tilt
+                bearing: 0,
                 duration: 800,
               });
             }
