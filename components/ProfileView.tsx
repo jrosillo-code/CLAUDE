@@ -19,6 +19,7 @@ import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 import SocialLinks, { SOCIAL_NETWORKS } from "./SocialLinks";
 import RecapSheet from "./RecapSheet";
 import ImportPanel from "./ImportPanel";
+import GuidePanel from "./GuidePanel";
 import ConstellationBackdrop from "./ConstellationBackdrop";
 import PassportCard from "./PassportCard";
 import { backendEnabled } from "@/lib/supabase";
@@ -55,6 +56,7 @@ export default function ProfileView({ handle }: { handle: string }) {
   const [statView, setStatView] = useState<"pins" | "countries" | "friends" | null>(null);
   const [recapOpen, setRecapOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
 
   const user = users.find((u) => u.handle === handle);
   if (!user) {
@@ -208,6 +210,12 @@ export default function ProfileView({ handle }: { handle: string }) {
                 className="rounded-full bg-ink px-5 py-2 text-sm font-semibold text-paper"
               >
                 🎁 {new Date().getFullYear()} recap
+              </button>
+              <button
+                onClick={() => setGuideOpen(true)}
+                className="rounded-full bg-paper-2 px-5 py-2 text-sm font-semibold text-ink-2 ring-1 ring-line"
+              >
+                📍 City guides
               </button>
               <button
                 onClick={() => setImportOpen(true)}
@@ -593,6 +601,7 @@ export default function ProfileView({ handle }: { handle: string }) {
 
       {recapOpen && <RecapSheet onClose={() => setRecapOpen(false)} />}
       {importOpen && <ImportPanel onClose={() => setImportOpen(false)} />}
+      {guideOpen && <GuidePanel onClose={() => setGuideOpen(false)} />}
     </div>
   );
 }
