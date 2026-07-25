@@ -63,12 +63,15 @@ export default function TopBar({
     return () => clearTimeout(t);
   }, [q]);
 
+  const setSearchedPlace = useStore((s) => s.setSearchedPlace);
   function pick(r: GeoResult) {
     suppressSearchRef.current = true;
     setOpen(false);
     setResults([]);
     setQ(r.placeName);
     requestFlyTo(r.lng, r.lat, 9);
+    // Surface the trust-graph card: who you trust has been here.
+    setSearchedPlace({ name: r.placeName, lat: r.lat, lng: r.lng });
   }
 
   return (

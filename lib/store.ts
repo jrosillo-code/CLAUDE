@@ -124,6 +124,10 @@ interface WaypointState {
     lng: number;
   } | null;
   selectOverlay: (v: WaypointState["selectedOverlay"]) => void;
+  /** The place from the last search pick — powers the "who you trust has been
+   *  here" trust-graph card. */
+  searchedPlace: { name: string; lat: number; lng: number } | null;
+  setSearchedPlace: (v: WaypointState["searchedPlace"]) => void;
   setTerrain3d: (v: boolean) => void;
 
   // Theme (UI chrome + globe palette). Persisted to localStorage.
@@ -443,9 +447,11 @@ export const useStore = create<WaypointState>((set, get) => ({
   showStadiums: false,
   setShowStadiums: (v) => set({ showStadiums: v }),
   selectedLandmarkId: null,
-  selectLandmark: (id) => set({ selectedLandmarkId: id, selectedOverlay: null }),
+  selectLandmark: (id) => set({ selectedLandmarkId: id, selectedOverlay: null, searchedPlace: null }),
   selectedOverlay: null,
-  selectOverlay: (v) => set({ selectedOverlay: v, selectedLandmarkId: null, selectedPinId: null }),
+  selectOverlay: (v) => set({ selectedOverlay: v, selectedLandmarkId: null, selectedPinId: null, searchedPlace: null }),
+  searchedPlace: null,
+  setSearchedPlace: (v) => set({ searchedPlace: v, selectedPinId: null, selectedLandmarkId: null, selectedOverlay: null }),
 
   theme: "daylight",
   setTheme: (t) => {
@@ -644,7 +650,7 @@ export const useStore = create<WaypointState>((set, get) => ({
   },
 
   selectedPinId: null,
-  selectPin: (id) => set({ selectedPinId: id, addDraft: null, selectedOverlay: null }),
+  selectPin: (id) => set({ selectedPinId: id, addDraft: null, selectedOverlay: null, searchedPlace: null }),
 
   addDraft: null,
   startAddPin: (d) => set({ addDraft: d, selectedPinId: null }),

@@ -20,6 +20,7 @@ import TopSpotsPanel from "./TopSpotsPanel";
 import LandmarkCard from "./LandmarkCard";
 import OverlayCard from "./OverlayCard";
 import CrossingsPanel from "./CrossingsPanel";
+import SearchPlaceCard from "./SearchPlaceCard";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
 import { cancelFlightRender } from "@/lib/renderFlight";
@@ -224,6 +225,7 @@ export default function MapApp() {
 
       {mapMode === "pins" && !selectedPinId && <LandmarkCard />}
       {mapMode === "pins" && !selectedPinId && <OverlayCard />}
+      {mapMode === "pins" && !selectedPinId && <SearchPlaceCard />}
       {selectedPinId && <PinSheet />}
       {addDraft && <AddPinSheet />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}
