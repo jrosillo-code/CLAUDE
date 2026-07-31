@@ -292,6 +292,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
   // region OUTSIDE the globe silhouette, so it never touches the planet.
   const spaceRef = useRef<HTMLDivElement>(null);
   const spaceModeRef = useRef<"stars" | "sun" | "none">("none");
+  const sunElRef = useRef<HTMLDivElement | null>(null);
+  const sunRafRef = useRef<number | null>(null);
+  const lastSilRef = useRef<{ cx: number; cy: number; r: number } | null>(null);
 
   // The blue you-are-here dot, like Apple/Google Maps. If location permission
   // is already granted we follow the device silently; otherwise the dot
@@ -932,7 +935,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
       if (spaceModeRef.current === "stars") buildSpace();
     };
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+      stopSunLoop();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basemap, themeId]);
 
@@ -1193,15 +1199,18 @@ export default function MapCanvas({ placing, onPick }: Props) {
     spaceModeRef.current = mode;
     if (mode === "sun") {
       host.style.background = "transparent";
-      // A sun that slowly arcs from the upper-left to the upper-right; the space
-      // mask hides it where it crosses the globe, so it reads as passing behind
-      // the planet. Its glow fades to transparent, leaving the rest of the light
-      // sky untouched. (Motion + geometry live in the .wp-sun CSS.)
+      // A sun anchored to the globe: startSunLoop() moves it each frame so it
+      // rises on the planet's left, passes behind it (hidden by the space mask),
+      // and sets on the right — the same on phone and desktop.
       const sun = document.createElement("div");
       sun.className = "wp-sun";
       host.replaceChildren(sun);
+      sunElRef.current = sun;
+      startSunLoop();
       return;
     }
+    stopSunLoop();
+    sunElRef.current = null;
     host.style.background = "transparent";
     if (mode === "none") {
       host.replaceChildren();
@@ -1259,10 +1268,54 @@ export default function MapCanvas({ placing, onPick }: Props) {
     host.replaceChildren(...canvases);
   }
 
+  // The sun rides an arc anchored to the globe (not the viewport), so it behaves
+  // identically on a phone's small centred planet and a desktop's large one. It
+  // sweeps left→right; the middle of the sweep sits inside the silhouette and is
+  // hidden by the space mask, reading as "behind the Earth". CSS can't anchor to
+  // the moving globe, so this runs a tiny rAF (one transform write per frame).
+  function stopSunLoop() {
+    if (sunRafRef.current != null) {
+      cancelAnimationFrame(sunRafRef.current);
+      sunRafRef.current = null;
+    }
+  }
+  function startSunLoop() {
+    stopSunLoop();
+    const PERIOD = 46000; // one full left→right pass
+    const BASE = 260; // half of the .wp-sun reference size (520px)
+    const tick = (now: number) => {
+      sunRafRef.current = requestAnimationFrame(tick);
+      const sun = sunElRef.current;
+      const host = spaceRef.current;
+      if (!sun || !host) return;
+      const sil = lastSilRef.current;
+      // Nothing to show when the planet fills the frame (host faded) or there's
+      // no visible space.
+      if (!sil || (parseFloat(host.style.opacity) || 0) <= 0.01) {
+        sun.style.opacity = "0";
+        return;
+      }
+      const p = (now % PERIOD) / PERIOD;
+      const s = 2 * p - 1; // -1 (left) … +1 (right)
+      const dx = s * 1.55 * sil.r;
+      const arc = 0.12 + 0.16 * (1 - s * s); // a touch higher through the middle
+      const x = sil.cx + dx;
+      const y = sil.cy - sil.r * arc;
+      const scale = sil.r / BASE;
+      // Fade in/out at the far edges so the wrap from right back to left is
+      // invisible.
+      const edge = Math.min(1, (1 - Math.abs(s)) / 0.1);
+      sun.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${scale.toFixed(3)})`;
+      sun.style.opacity = Math.max(0, edge).toFixed(3);
+    };
+    sunRafRef.current = requestAnimationFrame(tick);
+  }
+
   // Per-frame: clip the overlay to true space (just outside the globe edge, past
   // the atmosphere halo) and fade it out as the planet fills the frame.
   function updateSpace(sil: { cx: number; cy: number; r: number } | null, zoom: number) {
     const host = spaceRef.current;
+    lastSilRef.current = sil;
     if (!host) return;
     if (!sil || spaceModeRef.current === "none") {
       host.style.opacity = "0";

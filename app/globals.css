@@ -286,19 +286,12 @@ body {
   will-change: opacity;
 }
 
-/* The sun's CENTRE is animated (the element is centred on its own origin via
-   negative margins), so translate(Xvw, Yvh) places the glow at exactly that
-   viewport point. It rises in the top-left, climbs behind the globe over the
-   top, and sets in the top-right. */
-@keyframes wp-sun-arc {
-  0% { transform: translate(4vw, 10vh); opacity: 0; }
-  14% { transform: translate(16vw, 2vh); opacity: 1; }
-  50% { transform: translate(50vw, -10vh); opacity: 1; }
-  86% { transform: translate(84vw, 2vh); opacity: 1; }
-  100% { transform: translate(96vw, 10vh); opacity: 0; }
-}
+/* The sun is a soft glow centred on its own origin (negative margins), sized to
+   a fixed 520px reference; MapCanvas drives its position + scale each frame so
+   it rises on the globe's left, passes behind the planet, and sets on the
+   right — anchored to the globe, so it reads the same on phone and desktop. */
 .wp-sun {
-  --sun-d: min(125vw, 880px);
+  --sun-d: 520px;
   position: absolute;
   top: 0;
   left: 0;
@@ -306,6 +299,7 @@ body {
   height: var(--sun-d);
   margin-left: calc(var(--sun-d) / -2);
   margin-top: calc(var(--sun-d) / -2);
+  opacity: 0;
   background: radial-gradient(
     circle at 50% 50%,
     rgba(255, 247, 218, 0.98) 0%,
@@ -313,14 +307,5 @@ body {
     rgba(255, 214, 150, 0.24) 40%,
     rgba(255, 214, 150, 0) 62%
   );
-  animation: wp-sun-arc 40s ease-in-out infinite;
   will-change: transform, opacity;
-}
-
-/* These are gentle, ambient, non-flashing effects the app intentionally shows
-   as part of its identity, so they keep playing under "reduce motion" — just a
-   touch calmer (slower drift, softer twinkle) for that preference. */
-@media (prefers-reduced-motion: reduce) {
-  .wp-star-layer { animation-duration: 8s; }
-  .wp-sun { animation-duration: 70s; }
 }
