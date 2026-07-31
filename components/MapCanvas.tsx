@@ -1192,11 +1192,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
     const mode = spaceModeFor();
     spaceModeRef.current = mode;
     if (mode === "sun") {
-      host.replaceChildren();
-      // A sun in the upper-right whose glow fades to transparent, so the rest
-      // of the light sky shows through untouched.
-      host.style.background =
-        "radial-gradient(40% 36% at 84% 12%, rgba(255,247,218,0.98) 0%, rgba(255,232,178,0.7) 24%, rgba(255,214,150,0.26) 46%, rgba(255,214,150,0) 68%)";
+      host.style.background = "transparent";
+      // A sun that slowly arcs from the upper-left to the upper-right; the space
+      // mask hides it where it crosses the globe, so it reads as passing behind
+      // the planet. Its glow fades to transparent, leaving the rest of the light
+      // sky untouched. (Motion + geometry live in the .wp-sun CSS.)
+      const sun = document.createElement("div");
+      sun.className = "wp-sun";
+      host.replaceChildren(sun);
       return;
     }
     host.style.background = "transparent";
@@ -1204,19 +1207,34 @@ export default function MapCanvas({ placing, onPick }: Props) {
       host.replaceChildren();
       return;
     }
-    // Stars: a static scatter drawn once to a canvas (twinkle-free keeps it
-    // cheap and calm). A fixed seed makes the sky stable across repaints.
+    // Stars: three layered canvases, each cross-dimming on a slow, out-of-phase
+    // CSS animation, so the field twinkles without any per-frame JS. Stars are
+    // dealt round-robin across the layers, so neighbours dim out of sync and it
+    // reads as individual twinkle rather than one collective pulse. A fixed seed
+    // keeps the sky stable across repaints.
     const w = host.clientWidth || window.innerWidth;
     const h = host.clientHeight || window.innerHeight;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const cv = document.createElement("canvas");
-    cv.width = Math.round(w * dpr);
-    cv.height = Math.round(h * dpr);
-    cv.style.width = "100%";
-    cv.style.height = "100%";
-    const ctx = cv.getContext("2d");
-    if (!ctx) return;
-    ctx.scale(dpr, dpr);
+    const LAYERS = 3;
+    const durations = ["4.6s", "6.1s", "7.7s"];
+    const delays = ["0s", "-2.1s", "-4.3s"];
+    const canvases: HTMLCanvasElement[] = [];
+    const ctxs: CanvasRenderingContext2D[] = [];
+    for (let l = 0; l < LAYERS; l++) {
+      const cv = document.createElement("canvas");
+      cv.width = Math.round(w * dpr);
+      cv.height = Math.round(h * dpr);
+      cv.className = "wp-star-layer";
+      cv.style.cssText = "position:absolute;inset:0;width:100%;height:100%";
+      cv.style.animationDuration = durations[l];
+      cv.style.animationDelay = delays[l];
+      const c = cv.getContext("2d");
+      if (!c) continue;
+      c.scale(dpr, dpr);
+      canvases.push(cv);
+      ctxs.push(c);
+    }
+    if (!ctxs.length) return;
     const n = Math.round((w * h) / 4600);
     let seed = 20260731;
     const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
@@ -1226,6 +1244,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       const bright = rnd() < 0.08;
       const r = bright ? rnd() * 1.4 + 1.1 : rnd() * 0.9 + 0.3;
       const a = rnd() * 0.5 + (bright ? 0.5 : 0.3);
+      const ctx = ctxs[i % ctxs.length];
       if (bright) {
         ctx.beginPath();
         ctx.arc(x, y, r * 2.8, 0, Math.PI * 2);
@@ -1237,7 +1256,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       ctx.fillStyle = `rgba(255,255,255,${a})`;
       ctx.fill();
     }
-    host.replaceChildren(cv);
+    host.replaceChildren(...canvases);
   }
 
   // Per-frame: clip the overlay to true space (just outside the globe edge, past

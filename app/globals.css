@@ -269,3 +269,55 @@ body {
 .wp-loc-pulse {
   animation: wp-loc-pulse 2.4s ease-out infinite;
 }
+
+/* Space around the globe (MapCanvas): stars that slowly twinkle, and a sun that
+   arcs from the upper-left to the upper-right. Both live inside an overlay that
+   is masked to the region outside the planet, so the sun appears to pass BEHIND
+   the Earth as it crosses. Motion is CSS-only (no per-frame JS) and pauses for
+   users who prefer reduced motion. */
+@keyframes wp-twinkle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.wp-star-layer {
+  animation-name: wp-twinkle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: opacity;
+}
+
+/* The sun's CENTRE is animated (the element is centred on its own origin via
+   negative margins), so translate(Xvw, Yvh) places the glow at exactly that
+   viewport point. It rises in the top-left, climbs behind the globe over the
+   top, and sets in the top-right. */
+@keyframes wp-sun-arc {
+  0% { transform: translate(4vw, 10vh); opacity: 0; }
+  14% { transform: translate(16vw, 2vh); opacity: 1; }
+  50% { transform: translate(50vw, -10vh); opacity: 1; }
+  86% { transform: translate(84vw, 2vh); opacity: 1; }
+  100% { transform: translate(96vw, 10vh); opacity: 0; }
+}
+.wp-sun {
+  --sun-d: min(125vw, 880px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--sun-d);
+  height: var(--sun-d);
+  margin-left: calc(var(--sun-d) / -2);
+  margin-top: calc(var(--sun-d) / -2);
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 247, 218, 0.98) 0%,
+    rgba(255, 232, 178, 0.7) 20%,
+    rgba(255, 214, 150, 0.24) 40%,
+    rgba(255, 214, 150, 0) 62%
+  );
+  animation: wp-sun-arc 60s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-star-layer { animation: none; opacity: 0.85; }
+  .wp-sun { animation: none; transform: translate(86vw, 4vh); opacity: 1; }
+}
