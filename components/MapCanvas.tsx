@@ -287,6 +287,12 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const wishlistRef = useRef<{ show: boolean; pins: PinWithOwner[] }>({ show: false, pins: [] });
   wishlistRef.current = { show: showWishlist, pins: wishlistPins };
 
+  // Decorative "space" around the globe — a starfield on dark/satellite, a warm
+  // sun glow on the light themes. Painted by an overlay that's masked to the
+  // region OUTSIDE the globe silhouette, so it never touches the planet.
+  const spaceRef = useRef<HTMLDivElement>(null);
+  const spaceModeRef = useRef<"stars" | "sun" | "none">("none");
+
   // The blue you-are-here dot, like Apple/Google Maps. If location permission
   // is already granted we follow the device silently; otherwise the dot
   // appears after the first feature that asks (Focus, Top spots near me).
@@ -917,6 +923,19 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basemap, themeId]);
 
+  // Repaint the space overlay (stars vs. sun) when the theme or basemap changes,
+  // and regenerate the starfield on resize so it always covers the viewport.
+  useEffect(() => {
+    buildSpace();
+    if (readyRef.current) render();
+    const onResize = () => {
+      if (spaceModeRef.current === "stars") buildSpace();
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [basemap, themeId]);
+
   // ---- Toggle terrain relief ----
   useEffect(() => {
     const map = mapRef.current;
@@ -1157,6 +1176,88 @@ export default function MapCanvas({ placing, onPick }: Props) {
     });
   }
 
+  // Which flavour of space suits the current look: dark themes and satellite
+  // read as night (stars); the light themes get a warm sun.
+  function spaceModeFor(): "stars" | "sun" | "none" {
+    if (themeRef.current.darkUI) return "stars";
+    if (useStore.getState().basemap === "satellite") return "stars";
+    return "sun";
+  }
+
+  // (Re)paint the overlay's content for the current mode. Cheap — runs only on
+  // theme/basemap changes and on resize, never per frame.
+  function buildSpace() {
+    const host = spaceRef.current;
+    if (!host) return;
+    const mode = spaceModeFor();
+    spaceModeRef.current = mode;
+    if (mode === "sun") {
+      host.replaceChildren();
+      // A sun in the upper-right whose glow fades to transparent, so the rest
+      // of the light sky shows through untouched.
+      host.style.background =
+        "radial-gradient(40% 36% at 84% 12%, rgba(255,247,218,0.98) 0%, rgba(255,232,178,0.7) 24%, rgba(255,214,150,0.26) 46%, rgba(255,214,150,0) 68%)";
+      return;
+    }
+    host.style.background = "transparent";
+    if (mode === "none") {
+      host.replaceChildren();
+      return;
+    }
+    // Stars: a static scatter drawn once to a canvas (twinkle-free keeps it
+    // cheap and calm). A fixed seed makes the sky stable across repaints.
+    const w = host.clientWidth || window.innerWidth;
+    const h = host.clientHeight || window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cv = document.createElement("canvas");
+    cv.width = Math.round(w * dpr);
+    cv.height = Math.round(h * dpr);
+    cv.style.width = "100%";
+    cv.style.height = "100%";
+    const ctx = cv.getContext("2d");
+    if (!ctx) return;
+    ctx.scale(dpr, dpr);
+    const n = Math.round((w * h) / 4600);
+    let seed = 20260731;
+    const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+    for (let i = 0; i < n; i++) {
+      const x = rnd() * w;
+      const y = rnd() * h;
+      const bright = rnd() < 0.08;
+      const r = bright ? rnd() * 1.4 + 1.1 : rnd() * 0.9 + 0.3;
+      const a = rnd() * 0.5 + (bright ? 0.5 : 0.3);
+      if (bright) {
+        ctx.beginPath();
+        ctx.arc(x, y, r * 2.8, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(198,216,255,${a * 0.14})`;
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${a})`;
+      ctx.fill();
+    }
+    host.replaceChildren(cv);
+  }
+
+  // Per-frame: clip the overlay to true space (just outside the globe edge, past
+  // the atmosphere halo) and fade it out as the planet fills the frame.
+  function updateSpace(sil: { cx: number; cy: number; r: number } | null, zoom: number) {
+    const host = spaceRef.current;
+    if (!host) return;
+    if (!sil || spaceModeRef.current === "none") {
+      host.style.opacity = "0";
+      return;
+    }
+    const inner = sil.r * 1.02;
+    const outer = sil.r * 1.16;
+    const mask = `radial-gradient(circle at ${sil.cx.toFixed(1)}px ${sil.cy.toFixed(1)}px, transparent ${inner.toFixed(1)}px, black ${outer.toFixed(1)}px)`;
+    host.style.setProperty("-webkit-mask-image", mask);
+    host.style.setProperty("mask-image", mask);
+    const op = zoom >= 4.8 ? 0 : zoom <= 3 ? 1 : (4.8 - zoom) / 1.8;
+    host.style.opacity = op.toFixed(3);
+  }
+
   function render() {
     const map = mapRef.current;
     const index = clusterRef.current;
@@ -1217,6 +1318,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
         silhouette = null;
       }
     }
+
+    // Stars / sun live in the space outside this silhouette; fade out when the
+    // planet fills the frame (no visible space to decorate).
+    updateSpace(silhouette, zoomNow);
 
     const next = new Set<string>();
 
@@ -1430,11 +1535,22 @@ export default function MapCanvas({ placing, onPick }: Props) {
   // Inline width/height guarantee the map has real dimensions at init even if a
   // utility class doesn't resolve — MapLibre renders nothing into a 0-height box.
   return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0"
-      style={{ width: "100%", height: "100%" }}
-    />
+    <>
+      <div
+        ref={containerRef}
+        className="absolute inset-0"
+        style={{ width: "100%", height: "100%" }}
+      />
+      {/* Decorative space around the globe: masked to the region outside the
+          planet, stars on night/satellite and a warm sun on the light themes.
+          Never intercepts input; fades out as the planet fills the frame. */}
+      <div
+        ref={spaceRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1]"
+        style={{ opacity: 0 }}
+      />
+    </>
   );
 }
 
