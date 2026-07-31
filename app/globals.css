@@ -276,7 +276,7 @@ body {
    the Earth as it crosses. Motion is CSS-only (no per-frame JS) and pauses for
    users who prefer reduced motion. */
 @keyframes wp-twinkle {
-  0%, 100% { opacity: 0.5; }
+  0%, 100% { opacity: 0.35; }
   50% { opacity: 1; }
 }
 .wp-star-layer {
@@ -313,11 +313,14 @@ body {
     rgba(255, 214, 150, 0.24) 40%,
     rgba(255, 214, 150, 0) 62%
   );
-  animation: wp-sun-arc 60s ease-in-out infinite;
+  animation: wp-sun-arc 40s ease-in-out infinite;
   will-change: transform, opacity;
 }
 
+/* These are gentle, ambient, non-flashing effects the app intentionally shows
+   as part of its identity, so they keep playing under "reduce motion" — just a
+   touch calmer (slower drift, softer twinkle) for that preference. */
 @media (prefers-reduced-motion: reduce) {
-  .wp-star-layer { animation: none; opacity: 0.85; }
-  .wp-sun { animation: none; transform: translate(86vw, 4vh); opacity: 1; }
+  .wp-star-layer { animation-duration: 8s; }
+  .wp-sun { animation-duration: 70s; }
 }
