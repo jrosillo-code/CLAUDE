@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useStore } from "@/lib/store";
 import LoginScreen from "./LoginScreen";
+import WaypointLogo from "./Logo";
 
 // Wraps a page: restores the persisted session, shows the login screen when
 // signed out, renders children when signed in.
@@ -19,10 +20,9 @@ export default function AuthGate({ children }: { children: React.ReactNode }) {
     // Splash while the session is read (one frame, avoids a login flash).
     return (
       <div className="grid min-h-dvh place-items-center bg-paper">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" className="animate-pulse text-accent">
-          <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-          <path d="m15.5 8.5-2.2 5.3-5.3 2.2 2.2-5.3z" fill="currentColor" />
-        </svg>
+        <div className="animate-pulse">
+          <WaypointLogo size={44} />
+        </div>
       </div>
     );
   }
