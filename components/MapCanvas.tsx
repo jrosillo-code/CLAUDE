@@ -784,8 +784,12 @@ export default function MapCanvas({ placing, onPick }: Props) {
     map.on("load", initOnce);
     requestAnimationFrame(() => map.resize());
 
-    // Kick the online-style upgrade probe for the initial theme.
-    {
+    // Kick the online-style upgrade probe for the initial theme — but ONLY when
+    // the active basemap is the street map. On satellite this probe would fetch
+    // the reachable street style and swap it in on top of the imagery, silently
+    // flipping Satellite back to Map when returning from the profile page (the
+    // sandbox never saw it because the remote host is blocked there).
+    if (!initialSatellite) {
       const seq = ++styleSeqRef.current;
       const remote = themeRef.current.remoteStyle;
       if (remote) {
