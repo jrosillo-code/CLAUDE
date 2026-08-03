@@ -6,6 +6,7 @@
 // optimistic local state stands and the next full load reconciles.
 
 import { supabase } from "./supabase";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 import type {
   ActivitySlug,
   AppNotification,
@@ -255,27 +256,42 @@ export async function ensureProfile(userId: string, email: string | undefined): 
 export function subscribeRealtime(viewerId: string, onWorldChange: () => void): () => void {
   if (!supabase) return () => {};
   const sb = supabase;
-  // The socket must present the viewer's JWT: realtime evaluates RLS per
-  // subscriber, and an anonymous socket only clears the public policies —
-  // which is why pin events arrived while notifications/friendships (both
-  // auth.uid()-scoped) stayed silent. setAuth also updates already-joined
-  // channels, so resolving after subscribe() below is fine.
+  // Order matters: realtime binds each postgres_changes listener with the
+  // claims the socket holds AT SUBSCRIBE TIME. Joining as anon and calling
+  // setAuth afterwards upgrades the socket but not the already-bound
+  // listeners — RLS then filters the auth.uid()-scoped tables
+  // (notifications, friendships) to silence. So: token first, then join.
+  let ch: RealtimeChannel | null = null;
+  let cancelled = false;
   void sb.auth.getSession().then(({ data }) => {
-    if (data.session?.access_token) sb.realtime.setAuth(data.session.access_token);
+    if (cancelled) return;
+    const token = data.session?.access_token;
+    if (token) sb.realtime.setAuth(token);
+    const tap = (label: string) => (payload: unknown) => {
+      console.info(`[waypoint] realtime event: ${label}`, payload && (payload as { eventType?: string }).eventType);
+      onWorldChange();
+    };
+    ch = sb
+      .channel(`wp-live-${viewerId}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "notifications", filter: `user_id=eq.${viewerId}` },
+        tap("notifications")
+      )
+      .on("postgres_changes", { event: "*", schema: "public", table: "friendships" }, tap("friendships"))
+      .on("postgres_changes", { event: "*", schema: "public", table: "pins" }, tap("pins"))
+      .on("postgres_changes", { event: "*", schema: "public", table: "pin_likes" }, tap("pin_likes"))
+      .subscribe((status, err) => {
+        // Leave this breadcrumb in production: it's the first thing to check
+        // when "realtime doesn't work" — SUBSCRIBED means the channel joined;
+        // CHANNEL_ERROR/TIMED_OUT points at server config (publication,
+        // realtime availability) rather than this client.
+        console.info(`[waypoint] realtime channel: ${status}${err ? ` — ${err.message}` : ""}`);
+      });
   });
-  const ch = sb
-    .channel(`wp-live-${viewerId}`)
-    .on(
-      "postgres_changes",
-      { event: "*", schema: "public", table: "notifications", filter: `user_id=eq.${viewerId}` },
-      onWorldChange
-    )
-    .on("postgres_changes", { event: "*", schema: "public", table: "friendships" }, onWorldChange)
-    .on("postgres_changes", { event: "*", schema: "public", table: "pins" }, onWorldChange)
-    .on("postgres_changes", { event: "*", schema: "public", table: "pin_likes" }, onWorldChange)
-    .subscribe();
   return () => {
-    void sb.removeChannel(ch);
+    cancelled = true;
+    if (ch) void sb.removeChannel(ch);
   };
 }
 
