@@ -133,7 +133,7 @@ interface WaypointState {
   // Theme (UI chrome + globe palette). Persisted to localStorage.
   theme: ThemeId;
   setTheme: (t: ThemeId) => void;
-  /** UI accent: glass blue (default) or the Waymark logo's warm terracotta. */
+  /** UI accent: Waymark terracotta (default) or glass blue. */
   accent: "blue" | "warm";
   setAccent: (a: "blue" | "warm") => void;
 
@@ -467,7 +467,7 @@ export const useStore = create<WaypointState>((set, get) => ({
     }
   },
 
-  accent: "blue",
+  accent: "warm",
   setAccent: (a) => {
     set({ accent: a });
     try {

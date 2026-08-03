@@ -17,7 +17,7 @@ export default function ThemeManager() {
       const saved = window.localStorage.getItem("wp-theme") as ThemeId | null;
       if (saved && saved !== theme && THEMES[saved]) setTheme(saved);
       const savedAccent = window.localStorage.getItem("wp-accent");
-      if (savedAccent === "warm") setAccent("warm");
+      if (savedAccent === "blue") setAccent("blue");
     } catch {
       /* private mode */
     }
@@ -29,7 +29,7 @@ export default function ThemeManager() {
   }, [theme]);
 
   useEffect(() => {
-    if (accent === "warm") document.documentElement.dataset.accent = "warm";
+    if (accent === "blue") document.documentElement.dataset.accent = "blue";
     else delete document.documentElement.dataset.accent;
   }, [accent]);
 

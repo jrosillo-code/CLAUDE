@@ -188,7 +188,7 @@ export default function TopBar({
             src={viewer.avatarUrl}
             alt=""
             className="h-7 w-7 rounded-full object-cover ring-2 sm:h-8 sm:w-8"
-            style={{ ["--tw-ring-color" as string]: viewer.color }}
+            style={{ ["--tw-ring-color" as string]: "var(--color-accent)" }}
           />
           <span className="hidden text-sm font-medium sm:block">Me</span>
         </Link>

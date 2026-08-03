@@ -155,8 +155,8 @@ export default function BasemapToggle() {
               </span>
               {(
                 [
-                  { id: "blue", color: "#0a84ff", label: "Glass blue" },
                   { id: "warm", color: "#c65d3b", label: "Waymark terracotta" },
+                  { id: "blue", color: "#0a84ff", label: "Glass blue" },
                 ] as const
               ).map((a) => (
                 <button

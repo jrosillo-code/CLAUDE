@@ -44,7 +44,7 @@ export default function RootLayout({
             light-mode flash when the user prefers Midnight. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{document.documentElement.dataset.theme=localStorage.getItem("wp-theme")==="midnight"?"dark":"light";if(localStorage.getItem("wp-accent")==="warm")document.documentElement.dataset.accent="warm"}catch(e){}`,
+            __html: `try{document.documentElement.dataset.theme=localStorage.getItem("wp-theme")==="midnight"?"dark":"light";if(localStorage.getItem("wp-accent")==="blue")document.documentElement.dataset.accent="blue"}catch(e){}`,
           }}
         />
       </head>

@@ -153,7 +153,7 @@ export default function ProfileView({ handle }: { handle: string }) {
                 src={user.avatarUrl}
                 alt=""
                 className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28"
-                style={{ boxShadow: `0 0 0 3px var(--color-paper), 0 0 0 6px ${user.color}` }}
+                style={{ boxShadow: `0 0 0 3px var(--color-paper), 0 0 0 6px var(--color-accent)` }}
               />
               <span className="absolute bottom-0 right-0 grid h-8 w-8 place-items-center rounded-full bg-ink text-paper shadow-float transition-transform group-hover:scale-110">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -177,7 +177,7 @@ export default function ProfileView({ handle }: { handle: string }) {
               src={user.avatarUrl}
               alt=""
               className="h-24 w-24 rounded-full object-cover sm:h-28 sm:w-28"
-              style={{ boxShadow: `0 0 0 3px var(--color-paper), 0 0 0 6px ${user.color}` }}
+              style={{ boxShadow: `0 0 0 3px var(--color-paper), 0 0 0 6px var(--color-accent)` }}
             />
           )}
           <div className="mt-4 flex items-center justify-center gap-2">
