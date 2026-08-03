@@ -330,6 +330,29 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLocation]);
 
+  // The live accent as a hex, for MapLibre paint props that can't read CSS
+  // vars (the trip thread). DOM markers use var(--color-accent) directly.
+  function accentHex() {
+    try {
+      return (
+        getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
+        themeRef.current.pinColor
+      );
+    } catch {
+      return themeRef.current.pinColor;
+    }
+  }
+
+  // Re-paint the trip thread when the accent toggles (a frame later, so the
+  // data-accent attribute has landed and accentHex() reads the new value).
+  const accentChoice = useStore((s) => s.accent);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !readyRef.current) return;
+    requestAnimationFrame(() => syncTripThreads(map));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accentChoice]);
+
   // Apply the "planet" chrome — globe projection, themed atmosphere, and 3D
   // terrain — after any style (re)load, since setStyle wipes sources/terrain.
   function applyGlobeChrome(map: maplibregl.Map) {
@@ -630,7 +653,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
     if (draft && draft.stops.length >= 2) {
       features.push({
         type: "Feature",
-        properties: { color: themeRef.current.pinColor, dash: 1 },
+        properties: { color: accentHex(), dash: 1 },
         geometry: { type: "LineString", coordinates: draft.stops.map((s) => [s.lng, s.lat]) },
       });
     }
@@ -1452,7 +1475,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
     };
 
     const inTripsMode = modeRef.current === "trips";
-    const ringColor = themeRef.current.pinColor;
+    // Live accent variable: pins follow the Layers-card accent toggle (and the
+    // dark-mode lift) with zero marker rebuilds.
+    const ringColor = "var(--color-accent)";
 
     // Pin map: needle pins (photo ball head on a thin stick), theme-colored
     // ring. Clusters render as a stacked pair of needles — no count badge.
