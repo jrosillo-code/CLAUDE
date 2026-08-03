@@ -120,7 +120,7 @@ export default function ConstellationBackdrop() {
 
     const css = () => getComputedStyle(document.documentElement);
     let inkColor = css().getPropertyValue("--color-ink").trim() || "#0b1220";
-    let accent = css().getPropertyValue("--color-accent").trim() || "#c65d3b";
+    let accent = css().getPropertyValue("--color-accent").trim() || "#0a84ff";
     // Light mode needs more presence: on near-white paper the same alphas that
     // shimmer on Midnight read as almost blank, so daylight gets a sky wash,
     // stronger lines/stars, and halos on the bright ones. Midnight is untouched.

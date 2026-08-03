@@ -133,6 +133,9 @@ interface WaypointState {
   // Theme (UI chrome + globe palette). Persisted to localStorage.
   theme: ThemeId;
   setTheme: (t: ThemeId) => void;
+  /** UI accent: glass blue (default) or the Waymark logo's warm terracotta. */
+  accent: "blue" | "warm";
+  setAccent: (a: "blue" | "warm") => void;
 
   // Social: likes, saves ("favorite for later"), creator follows.
   likeCounts: Record<string, number>;
@@ -459,6 +462,16 @@ export const useStore = create<WaypointState>((set, get) => ({
     set({ theme: t });
     try {
       window.localStorage.setItem("wp-theme", t);
+    } catch {
+      /* SSR / private mode */
+    }
+  },
+
+  accent: "blue",
+  setAccent: (a) => {
+    set({ accent: a });
+    try {
+      window.localStorage.setItem("wp-accent", a);
     } catch {
       /* SSR / private mode */
     }

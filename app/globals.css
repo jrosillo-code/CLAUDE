@@ -15,8 +15,8 @@
   --color-ink-2: #3d4759;
   --color-ink-3: #8a94a6;
   --color-line: #dde3ec;
-  --color-accent: #c65d3b; /* Waymark terracotta — the logo's colour */
-  --color-accent-2: #d98e3f; /* warm amber companion */
+  --color-accent: #0a84ff; /* glass blue (default) */
+  --color-accent-2: #30b0c7; /* cyan */
 
   --font-display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
@@ -39,9 +39,21 @@
   --color-ink-2: #b4bccb;
   --color-ink-3: #79839a;
   --color-line: #262d3a;
-  --color-accent: #e0714b; /* terracotta, lifted for dark grounds */
-  --color-accent-2: #e8a45c;
+  --color-accent: #409cff;
+  --color-accent-2: #45c1d8;
   --shadow-float: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 30px -8px rgba(0, 0, 0, 0.6);
+}
+
+/* Optional warm accent — the Waymark logo's terracotta, toggled from the
+   Layers card (data-accent on <html>, persisted as wp-accent). Blue stays the
+   default; this swaps every accent-driven button/badge/link to the logo hue. */
+:root[data-accent="warm"] {
+  --color-accent: #c65d3b;
+  --color-accent-2: #d98e3f;
+}
+:root[data-theme="dark"][data-accent="warm"] {
+  --color-accent: #e0714b; /* lifted for dark grounds */
+  --color-accent-2: #e8a45c;
 }
 
 * {

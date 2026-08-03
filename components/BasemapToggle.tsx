@@ -15,6 +15,8 @@ export default function BasemapToggle() {
   const setTerrain3d = useStore((s) => s.setTerrain3d);
   const theme = useStore((s) => s.theme);
   const setTheme = useStore((s) => s.setTheme);
+  const accent = useStore((s) => s.accent);
+  const setAccent = useStore((s) => s.setAccent);
   const showLandmarks = useStore((s) => s.showLandmarks);
   const setShowLandmarks = useStore((s) => s.setShowLandmarks);
   const showAirports = useStore((s) => s.showAirports);
@@ -143,6 +145,31 @@ export default function BasemapToggle() {
                   />
                 );
               })}
+            </div>
+
+            {/* Accent: glass blue (default) or the Waymark logo's terracotta —
+                every accent-driven button/badge/link follows. */}
+            <div className="mt-2 flex items-center gap-1.5 px-1">
+              <span className="mr-0.5 text-[10px] font-semibold uppercase tracking-wider text-ink-3">
+                Accent
+              </span>
+              {(
+                [
+                  { id: "blue", color: "#0a84ff", label: "Glass blue" },
+                  { id: "warm", color: "#c65d3b", label: "Waymark terracotta" },
+                ] as const
+              ).map((a) => (
+                <button
+                  key={a.id}
+                  onClick={() => setAccent(a.id)}
+                  title={a.label}
+                  aria-label={`${a.label} accent`}
+                  className={`h-6 w-6 rounded-full transition-transform ${
+                    accent === a.id ? "scale-110 ring-2 ring-ink" : "hover:scale-105"
+                  }`}
+                  style={{ background: a.color, boxShadow: "inset 0 0 0 1px rgba(0,0,0,.12)" }}
+                />
+              ))}
             </div>
 
             <a
