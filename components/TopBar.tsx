@@ -69,8 +69,9 @@ export default function TopBar({
     setOpen(false);
     setResults([]);
     setQ(r.placeName);
-    // Overhead, no tilt — same camera as clicking a pin.
-    requestFlyTo(r.lng, r.lat, 9, { flat: true });
+    // Overhead, no tilt — and land at the zoom that fits the result: a stadium
+    // goes to street level, a city frames the city, a country the country.
+    requestFlyTo(r.lng, r.lat, r.zoom, { flat: true });
     // Surface the trust-graph card: who you trust has been here.
     setSearchedPlace({ name: r.placeName, lat: r.lat, lng: r.lng });
   }

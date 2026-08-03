@@ -15,6 +15,28 @@ export interface GeoResult {
   lat: number;
   /** Broad kind, drives the result icon: place | poi | address. */
   kind: "place" | "poi" | "address";
+  /** Sensible landing zoom for this result: a country frames the country, a
+   *  stadium lands right on the stadium. */
+  zoom: number;
+}
+
+// How close the camera should land for a picked result. POIs (stadiums, museums,
+// restaurants) need street level — flying a stadium to city zoom made pin
+// placement impossible.
+function zoomFor(kind: GeoResult["kind"], t: string): number {
+  if (kind === "poi") return 16.5;
+  if (kind === "address") return 15.5;
+  switch (t) {
+    case "country": return 4.5;
+    case "state": case "region": case "province": return 6;
+    case "county": return 8;
+    case "city": return 11;
+    case "town": return 12.5;
+    case "village": case "hamlet": return 13.5;
+    case "suburb": case "neighbourhood": case "district": case "quarter": return 13.5;
+    case "island": return 10;
+    default: return 9.5;
+  }
 }
 
 const NOMINATIM = "https://nominatim.openstreetmap.org";
@@ -48,12 +70,15 @@ export async function searchPlaces(query: string, signal?: AbortSignal): Promise
   for (const r of [...geoapify, ...photon, ...nominatim]) if (!isDupe(r)) merged.push(r);
 
   // Rank: exact-name matches first, then places (cities/countries) over POIs
-  // over bare addresses/streets; each engine's own order breaks ties.
+  // over bare addresses/streets; each engine's own order breaks ties. A name
+  // that CONTAINS the query also ranks up — "santiago bernabeu" must surface
+  // "Estadio Santiago Bernabéu".
   const target = norm(q);
   const score = (r: GeoResult, i: number) => {
     let s = i;
     if (norm(r.placeName) === target) s -= 100;
     else if (norm(r.placeName).startsWith(target)) s -= 40;
+    else if (norm(r.placeName).includes(target)) s -= 30;
     if (r.kind === "place") s -= 20;
     if (r.kind === "address") s += 25;
     return s;
@@ -122,6 +147,7 @@ async function geoapifySearch(q: string, signal?: AbortSignal): Promise<(GeoResu
           lng,
           lat,
           kind,
+          zoom: zoomFor(kind, t),
           dedupe: p.place_id ?? `${name}@${lat.toFixed(2)}`,
         };
       });
@@ -181,6 +207,7 @@ async function photonSearch(q: string, signal?: AbortSignal): Promise<(GeoResult
           lng,
           lat,
           kind,
+          zoom: zoomFor(kind, p.osm_value ?? p.type ?? ""),
           dedupe: p.osm_id ? `${p.osm_type ?? ""}${p.osm_id}` : `${p.name}@${lat.toFixed(2)}`,
         };
       });
@@ -242,6 +269,7 @@ async function nominatimSearch(q: string, signal?: AbortSignal): Promise<(GeoRes
           lng: parseFloat(r.lon),
           lat: parseFloat(r.lat),
           kind,
+          zoom: zoomFor(kind, r.addresstype ?? ""),
           dedupe: r.osm_id ? `${(r.osm_type ?? "").charAt(0).toUpperCase()}${r.osm_id}` : `${name}@${parseFloat(r.lat).toFixed(2)}`,
         };
       });
@@ -270,6 +298,7 @@ export async function reverseGeocode(lng: number, lat: number): Promise<GeoResul
           lng: parseFloat(data.lon),
           lat: parseFloat(data.lat),
           kind: "place",
+          zoom: 9.5,
         };
       }
     }
@@ -283,5 +312,6 @@ export async function reverseGeocode(lng: number, lat: number): Promise<GeoResul
     lng,
     lat,
     kind: "place",
+    zoom: 9.5,
   };
 }

@@ -1,7 +1,7 @@
-// The Waypoint mark — "Horizon": a map pin holding a sunset over a single
-// ridge. Pared to three shapes (sky, sun, hill) so it stays legible from a
-// 96px hero down to a 16px favicon. Inline SVG so it's crisp at every size;
-// app/icon.svg is the same drawing for the favicon.
+// The Waypoint mark — "Waymark": a map pin with a compass rose cut clean out of
+// its centre (true negative space via a mask, so the star shows whatever is
+// behind the mark). One accent colour, crisp from a 96px hero down to a 16px
+// favicon. app/icon.svg is the same drawing for the favicon.
 export default function WaypointLogo({ size = 24 }: { size?: number }) {
   return (
     <svg
@@ -12,22 +12,15 @@ export default function WaypointLogo({ size = 24 }: { size?: number }) {
       aria-hidden
     >
       <defs>
-        <clipPath id="wp-pin">
-          <path d="M50 120 C33 92 12 73 12 45 A38 38 0 1 1 88 45 C88 73 67 92 50 120 Z" />
-        </clipPath>
-        <linearGradient id="wp-sky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#f6b258" />
-          <stop offset="1" stopColor="#df6f33" />
-        </linearGradient>
+        <mask id="wp-wm" maskUnits="userSpaceOnUse">
+          <rect width="100" height="125" fill="#000" />
+          {/* Pin body (shown) */}
+          <path d="M50 120 C33 92 12 73 12 45 A38 38 0 1 1 88 45 C88 73 67 92 50 120 Z" fill="#fff" />
+          {/* Compass rose (cut out) */}
+          <path d="M50 21 L58.5 36.5 L74 45 L58.5 53.5 L50 69 L41.5 53.5 L26 45 L41.5 36.5 Z" fill="#000" />
+        </mask>
       </defs>
-      <g clipPath="url(#wp-pin)">
-        {/* Sunset sky */}
-        <rect width="100" height="125" fill="url(#wp-sky)" />
-        {/* Sun */}
-        <circle cx="50" cy="50" r="17" fill="#fbe9c0" />
-        {/* Foreground ridge */}
-        <path d="M0 80 C24 68 44 70 58 80 C72 90 86 86 100 76 L100 125 L0 125 Z" fill="#b8462a" />
-      </g>
+      <rect width="100" height="125" fill="#c65d3b" mask="url(#wp-wm)" />
     </svg>
   );
 }
