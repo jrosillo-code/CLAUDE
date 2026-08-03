@@ -255,6 +255,14 @@ export async function ensureProfile(userId: string, email: string | undefined): 
 export function subscribeRealtime(viewerId: string, onWorldChange: () => void): () => void {
   if (!supabase) return () => {};
   const sb = supabase;
+  // The socket must present the viewer's JWT: realtime evaluates RLS per
+  // subscriber, and an anonymous socket only clears the public policies —
+  // which is why pin events arrived while notifications/friendships (both
+  // auth.uid()-scoped) stayed silent. setAuth also updates already-joined
+  // channels, so resolving after subscribe() below is fine.
+  void sb.auth.getSession().then(({ data }) => {
+    if (data.session?.access_token) sb.realtime.setAuth(data.session.access_token);
+  });
   const ch = sb
     .channel(`wp-live-${viewerId}`)
     .on(
@@ -409,11 +417,34 @@ export function syncFollow(creatorId: string, followerId: string, following: boo
 }
 
 export function syncSendFriendRequest(viewerId: string, userId: string): void {
-  void supabase!
+  const sb = supabase!;
+  const p = pair(viewerId, userId);
+  void sb
     .from("friendships")
-    .insert({ ...pair(viewerId, userId), status: "pending", requested_by: viewerId })
-    .then(({ error }) => error && log("sendFriendRequest")(error));
-  notify(userId, viewerId, "friend_request");
+    .insert({ ...p, status: "pending", requested_by: viewerId })
+    .then(({ error }) => {
+      if (!error) {
+        notify(userId, viewerId, "friend_request");
+        return;
+      }
+      if (error.code === "23505") {
+        // Requests crossed in the air: their row landed first. Both sides
+        // want in — upgrade THEIR pending request to accepted (guards keep
+        // this a no-op if the row is ours or already accepted).
+        void sb
+          .from("friendships")
+          .update({ status: "accepted" })
+          .match(p)
+          .eq("status", "pending")
+          .neq("requested_by", viewerId)
+          .then(({ error: e2 }) => {
+            if (e2) log("sendFriendRequest/crossed")(e2);
+            else notify(userId, viewerId, "friend_accept");
+          });
+        return;
+      }
+      log("sendFriendRequest")(error);
+    });
 }
 
 export function syncRespondFriendRequest(viewerId: string, userId: string, accept: boolean): void {

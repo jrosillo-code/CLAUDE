@@ -337,6 +337,9 @@ export const useStore = create<WaypointState>((set, get) => ({
       if (!authListenerBound) {
         authListenerBound = true;
         supabase!.auth.onAuthStateChange((event, session) => {
+          // Keep the realtime socket's JWT fresh — RLS-scoped subscriptions
+          // (notifications, friendships) go silent once the token expires.
+          if (session?.access_token) supabase!.realtime.setAuth(session.access_token);
           if (event === "SIGNED_IN" && session?.user) {
             void applyAuthUser(session.user.id, session.user.email);
           } else if (event === "SIGNED_OUT") {
@@ -755,12 +758,19 @@ export const useStore = create<WaypointState>((set, get) => ({
   sendFriendRequest: (userId) =>
     set((s) => {
       if (userId === s.viewerId) return {};
-      const exists = s.friendships.some(
+      const edge = s.friendships.find(
         (f) =>
           (f.userA === s.viewerId && f.userB === userId) ||
           (f.userA === userId && f.userB === s.viewerId)
       );
-      if (exists) return {};
+      // Crossed requests: they already asked us. Sending ours means both
+      // sides want in — accept the standing request instead of stacking a
+      // second one.
+      if (edge?.status === "pending" && edge.requestedBy === userId) {
+        if (backendEnabled) backend.syncRespondFriendRequest(s.viewerId, userId, true);
+        return { friendships: respondLocal(s.friendships, s.viewerId, userId, true) };
+      }
+      if (edge) return {};
       if (backendEnabled) backend.syncSendFriendRequest(s.viewerId, userId);
       return {
         friendships: [
