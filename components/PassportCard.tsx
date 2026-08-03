@@ -56,7 +56,7 @@ export default function PassportCard({ pins }: { pins: Pin[] }) {
     const draw = (features: GeoFeature[], visited: Set<string>) => {
       if (disposed) return;
       const css = getComputedStyle(document.documentElement);
-      const accent = css.getPropertyValue("--color-accent").trim() || "#0a84ff";
+      const accent = css.getPropertyValue("--color-accent").trim() || "#c65d3b";
       const ink = css.getPropertyValue("--color-ink").trim() || "#0b1220";
       const paper = css.getPropertyValue("--color-paper").trim() || "#f3f5f8";
 

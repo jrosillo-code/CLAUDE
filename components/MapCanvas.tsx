@@ -1068,7 +1068,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       if (!me || route.length < 2) return;
       const accent =
         getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
-        "#0a84ff";
+        "#c65d3b";
       const stops = route.map((p) => ({ lng: p.lng, lat: p.lat }));
       const stats = {
         places: route.length,
