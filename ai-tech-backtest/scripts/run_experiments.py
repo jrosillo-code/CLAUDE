@@ -47,8 +47,12 @@ def main() -> int:
 
     if args.data_mode == "real":
         from aitb.data.quality import require_gate
+        from aitb.freeze import registry_freeze_record, verify_freeze
         gate = require_gate()          # hard stop without a passing gate
         log.info("real-data gate: %s", gate["status"])
+        # The first real run may only execute the FROZEN specification: any
+        # drift in configs or strategy/engine/ranking code aborts here.
+        freeze_doc = verify_freeze()
         md = load_market_data(mode="real")
     else:
         md = load_market_data(args.provider, mode="synthetic")
@@ -57,6 +61,30 @@ def main() -> int:
     scens = {k: v for k, v in scens.items() if k in args.scenarios.split(",")}
     registry = ExperimentRegistry.for_mode(args.data_mode)
     spec = load_yaml("experiments.yaml")
+
+    if args.data_mode == "real":
+        # Record which freeze governs these runs, freeze the holdout
+        # selection, and log the single sanctioned holdout access. Dev and
+        # holdout metrics are computed in one pass — legitimate because the
+        # specification was hashed before any real result existed.
+        from aitb.holdout import freeze_selection, record_holdout_access, holdout_status
+        from aitb.config import load_backtest_config
+        existing_ids = ({r.get("id") for r in registry.load().to_dict("records")}
+                        if registry.path.exists() else set())
+        frecord = registry_freeze_record(freeze_doc, "real")
+        if frecord["id"] not in existing_ids:
+            registry.append(frecord)
+        hs = holdout_status("real")
+        if not hs["access_log"]:
+            all_specs = [{"family": fam, "entries": spec.get(fam, [])}
+                         for fam in sorted(spec)]
+            freeze_selection(all_specs, "real",
+                             holdout_start=str(load_backtest_config().holdout_months))
+            record_holdout_access(
+                "real", "first frozen real study — single-pass dev+holdout "
+                        f"evaluation under freeze {freeze_doc['hash'][:12]}")
+        elif hs.get("compromised"):
+            log.warning("HOLDOUT IS MARKED COMPROMISED — reports will say so")
 
     # In real mode, skip families whose required data did not pass coverage.
     skip_families: set[str] = set()

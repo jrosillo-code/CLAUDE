@@ -35,7 +35,9 @@ log = get_logger("make_report")
 def write_unavailable_stub(rep_dir, reason: str) -> int:
     """Real-data report placeholder — never populated with synthetic numbers."""
     rep_dir.mkdir(parents=True, exist_ok=True)
-    (rep_dir / "research_report.html").write_text(f"""<!DOCTYPE html>
+    for name in ("research_report_full.html", "research_report.html",
+                 "decision_brief.html"):
+        (rep_dir / name).write_text(f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>Real-data report — UNAVAILABLE</title></head>
 <body style="font-family:sans-serif;max-width:800px;margin:3rem auto">
 <h1>Real-data research report: UNAVAILABLE</h1>
@@ -185,7 +187,41 @@ with spec, data version, git commit and timestamp.</li>
                                                        "best_year", "worst_year"))})
 
     # ---- 5. Ranking table ------------------------------------------------
-    sections.append({"title": "5. Strategy ranking (all families, base costs)",
+    if args.data_mode == "real":
+        from aitb.tiers import assign_tier
+        rec_by_strat = {r["strategy"]: r for r in ok.to_dict("records")}
+        tiers = {}
+        for strat in ranking["strategy"]:
+            rec = rec_by_strat.get(strat, {})
+            tiers[strat] = assign_tier(rec, gate)
+        ranking["tier"] = ranking["strategy"].map(lambda x: tiers.get(x, ("C", ""))[0])
+        ranking["tier_reason"] = ranking["strategy"].map(lambda x: tiers.get(x, ("C", ""))[1])
+        ranking.to_csv(RES / "strategy_ranking.csv", index=False)  # re-export w/ tiers
+        drop = ["cost_fragile"]
+        tier_html = ""
+        for tier, blurb in (("A", "higher confidence — complete adjusted histories, "
+                                  "no revised-macro or event-timing dependence"),
+                            ("B", "limited confidence — revised macro, partial "
+                                  "fundamentals, or survivorship-limited universes"),):
+            sub = ranking[(ranking["tier"] == tier)].drop(columns=drop, errors="ignore")
+            tier_html += (f"<h3>Tier {tier} ({blurb})</h3>"
+                          + (df_to_html(sub, pct_cols=("dev_cagr", "holdout_cagr", "max_drawdown"))
+                             if len(sub) else "<p>None.</p>"))
+        tier_c = ranking[ranking["tier"] == "C"]
+        dep_df = df[df["status"].isin(["deprecated", "failed"])] if "status" in df.columns else None
+        tier_html += "<h3>Tier C (unavailable — not comparable, not ranked)</h3>"
+        if len(tier_c):
+            tier_html += df_to_html(tier_c[["strategy", "family", "tier_reason"]])
+        if dep_df is not None and len(dep_df):
+            cols = [c for c in ("strategy", "family", "status", "reason", "error") if c in dep_df.columns]
+            tier_html += df_to_html(dep_df[cols])
+        sections.append({"title": "5. Strategy ranking by evidence tier (base costs)",
+                         "html": tier_html
+                         + """<p class='note'>Tiers are never mixed in one
+leaderboard. Verdicts are relative to the best simple diversified benchmark
+within the same data mode.</p>"""})
+    else:
+        sections.append({"title": "5. Strategy ranking (all families, base costs)",
                      "html": df_to_html(ranking.drop(columns=["cost_fragile"], errors="ignore"),
                                         pct_cols=("dev_cagr", "holdout_cagr", "max_drawdown"))
                      + f"""<p class="note">Verdicts are RELATIVE: an active strategy is a
@@ -341,7 +377,8 @@ synthetic) performance does not predict future results.</p>"""})
         provider=("real-store" if args.data_mode == "real" else args.provider),
         span=f"{md.calendar[0].date()} – {md.calendar[-1].date()}",
         git=_git_commit(), warnings=warnings,
-        out_path=REP / "research_report.html")
+        out_path=REP / ("research_report_full.html" if args.data_mode == "real"
+                        else "research_report.html"))
 
     # Markdown summary export
     md_lines = ["# Strategy research summary\n",

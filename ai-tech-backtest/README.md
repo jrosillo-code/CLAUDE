@@ -36,6 +36,45 @@ market-data hosts (Stooq, Yahoo, FRED, SEC EDGAR, Tiingo, Polygon — verified
 `reports/real/` contains an explicit UNAVAILABLE placeholder, not synthetic
 numbers. See `data/real_data_manifest.md` for exactly what to run elsewhere.
 
+## The first frozen real-data study (one command)
+
+The first real run is governed by a **research freeze**
+(`configs/research_freeze_v1.json`): every strategy grid, benchmark, cost
+scenario, split, ranking rule, rejection rule and the fingerprints of the code
+that implements them, hashed before any real result exists. Real-mode
+experiment runs verify the hash and abort on any drift — no tuning is possible
+during the first study. The commit carrying the freeze is tagged
+`pre-real-data-freeze-v1`.
+
+On a network-enabled macOS/Linux machine:
+
+```bash
+./scripts/run_first_real_study.sh          # optionally: --start 1998-01-01
+```
+
+This validates the environment, verifies the freeze, downloads (resumable),
+imports with checksum verification, runs the quality gate (hard stop on FAIL
+with recovery instructions), executes the frozen study, and produces:
+
+* `reports/real/research_report_full.html` — full methodology + diagnostics,
+  with strategies separated into **evidence tiers** (A: complete adjusted
+  histories, no revised-macro/event dependence · B: revised macro, partial
+  fundamentals, survivorship-limited universes · C: unavailable — never mixed
+  in one leaderboard);
+* `reports/real/decision_brief.html` — did anything survive, what supports
+  it, what invalidates it, and a decision capped at **paper-trade / do
+  nothing** (the brief is structurally incapable of recommending live
+  trading);
+* `first_real_study_<stamp>.tar.gz` — shareable bundle: reports, registry,
+  quality gate, reconciliation, capacity, holdout log, environment
+  fingerprint, freeze file. No API keys, no licensed raw data.
+
+Holdout discipline: the runner freezes the selection, logs the single
+sanctioned holdout access, and every later access flips a public
+`compromised` flag that reports must display. The prospective paper-trading
+protocol (`docs/prospective_testing_protocol.md`) is frozen alongside and
+applies unchanged to any survivor.
+
 ## The real-data workflow
 
 ```bash
