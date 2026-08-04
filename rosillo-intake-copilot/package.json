@@ -1,0 +1,26 @@
+{
+  "name": "rosillo-intake-copilot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Rosillo Intake Copilot — synthetic-data internal prototype for insurance intake triage. SYNTHETIC DATA ONLY.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p packages/domain && tsc -p packages/ai && tsc -p packages/database && tsc -p apps/web",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:migrate": "node --import tsx packages/database/src/bin/migrate.ts",
+    "db:seed": "node --import tsx packages/database/src/bin/seed.ts",
+    "evaluate": "node --import tsx packages/ai/src/evaluation/bin/run.ts",
+    "dev": "npm run dev -w apps/web",
+    "build": "npm run build -w apps/web"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

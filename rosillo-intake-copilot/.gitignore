@@ -1,0 +1,11 @@
+node_modules/
+.next/
+*.tsbuildinfo
+.env
+.env.local
+*.local.db
+data/*.db
+data/*.db-journal
+evaluation-reports/*.json
+evaluation-reports/*.md
+!evaluation-reports/.gitkeep
