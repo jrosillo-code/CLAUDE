@@ -34,7 +34,7 @@ class QualityGrowth(Strategy):
         rev = pit_fundamental_panel(md, "revenue", "ttm")
         fcf = pit_fundamental_panel(md, "fcf", "ttm")
         cols = [c for c in mask.columns if c in growth.columns]
-        margin = fcf[cols] / rev[cols].replace(0, pd.NA)
+        margin = fcf[cols] / rev[cols].replace(0.0, float("nan"))
 
         m = mask[cols]
         z = (p["w_growth"] * xs_zscore(growth[cols], m)
@@ -68,7 +68,7 @@ class ValuationAwareGrowth(Strategy):
         cols = [c for c in mask.columns if c in growth.columns and c in ps.columns]
         m = mask[cols]
 
-        margin = (fcf[cols] / rev[cols].replace(0, pd.NA)).astype(float)
+        margin = (fcf[cols] / rev[cols].replace(0.0, float("nan"))).astype(float)
         z = xs_zscore(growth[cols], m) + 0.5 * xs_zscore(margin, m)
         # Own-history valuation percentile (trailing 3y), NaN-safe.
         ps_pct = ps[cols].rolling(p["history_days"], min_periods=252).rank(pct=True)

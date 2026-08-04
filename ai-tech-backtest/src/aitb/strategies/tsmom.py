@@ -31,8 +31,8 @@ class TrendFollowCash(Strategy):
         tickers = md.universe.baskets[p["basket"]] if p["basket"] else None
         mask = investable_mask(md, tickers)
         trend_on = above_sma(md.adj_close[mask.columns], p["sma_window"]).where(mask, 0.0)
-        n_universe = mask.sum(axis=1).replace(0, pd.NA)
-        w = trend_on.div(n_universe, axis=0).astype(float).fillna(0.0)
+        n_universe = mask.sum(axis=1).astype(float).replace(0.0, float("nan"))
+        w = trend_on.div(n_universe, axis=0).fillna(0.0)
         fb = p["fallback"]
         if fb and fb in md.adj_close.columns:
             w[fb] = ((1 - w.sum(axis=1)).clip(lower=0.0)
