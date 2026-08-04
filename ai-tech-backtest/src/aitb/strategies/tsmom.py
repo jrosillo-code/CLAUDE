@@ -79,7 +79,9 @@ class DualMomentum(Strategy):
         p = self.params
         etfs = [t for t in ("QQQ", "XLK", "SOXX", "IGV") if t in md.adj_close.columns]
         mom = momentum(md.adj_close[etfs], p["lookback_days"])
-        best = mom.idxmax(axis=1)
+        valid = mom.notna().any(axis=1)
+        best = pd.Series(pd.NA, index=mom.index, dtype=object)
+        best[valid] = mom[valid].idxmax(axis=1)
         best_mom = mom.max(axis=1)
         w = pd.DataFrame(0.0, index=md.calendar, columns=etfs + [p["fallback"]])
         for t in etfs:

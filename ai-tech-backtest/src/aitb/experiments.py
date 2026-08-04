@@ -103,9 +103,9 @@ def run_experiment(md: MarketData,
                     n_trades=-1, cost_scenario=scen_name, meta={"cached": True})
                 continue
 
-        if weights is None:
-            weights = strategy.build(md)   # weights are cost-independent
         try:
+            if weights is None:
+                weights = strategy.build(md)   # weights are cost-independent
             res = run_backtest(md, weights, scen, name=strategy.name,
                                initial_capital=bt_cfg.initial_capital)
         except Exception as exc:

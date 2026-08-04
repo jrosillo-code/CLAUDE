@@ -146,11 +146,14 @@ with spec, data version, git commit and timestamp.</li>
     sections.append({"title": "5. Strategy ranking (all families, base costs)",
                      "html": df_to_html(ranking.drop(columns=["cost_fragile"], errors="ignore"),
                                         pct_cols=("dev_cagr", "holdout_cagr", "max_drawdown"))
-                     + """<p class="note">Verdicts: <span class="robust">robust_candidate</span>
-(score &gt; 2, positive holdout Sharpe, survives stressed costs) ·
-<span class="inconclusive">inconclusive</span> ·
-<span class="rejected">rejected</span>. Development metrics are in-sample for
-grid-selected variants; holdout is the untouched final window.</p>"""})
+                     + f"""<p class="note">Verdicts are RELATIVE: an active strategy is a
+<span class="robust">robust_candidate</span> only if its composite score beats the best
+simple diversified benchmark (hurdle = {ranking.attrs.get('benchmark_hurdle', float('nan')):.2f})
+by a margin, with positive holdout Sharpe and no cost fragility; otherwise
+<span class="inconclusive">inconclusive</span> or <span class="rejected">rejected</span>.
+Single-company buy &amp; hold rows are labeled benchmark — picking the eventual
+mega-winner ex post is not an investable alternative. Development metrics are
+in-sample for grid-selected variants; holdout is the untouched final window.</p>"""})
 
     # ---- 6. Equity / drawdown / rolling charts for the top strategies ----
     top_names = ranking[ranking["family"] != "benchmark"].head(6)["strategy"].tolist()

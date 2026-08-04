@@ -205,7 +205,7 @@ def concentration_diagnostics(weights: pd.DataFrame,
     """How much of the P&L comes from a single name? (fragility indicator)"""
     contrib = (weights.shift(1) * asset_returns.reindex(weights.index)).sum()
     total = contrib.sum()
-    if total == 0 or not np.isfinite(total):
+    if total == 0 or not np.isfinite(total) or contrib.abs().isna().all():
         return {"top_name_share": np.nan, "top_name": ""}
     top = contrib.abs().idxmax()
     return {"top_name_share": float(contrib[top] / total), "top_name": str(top)}

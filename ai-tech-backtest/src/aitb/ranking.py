@@ -101,11 +101,27 @@ def rank_experiments(registry_df: pd.DataFrame,
 
     out = out.sort_values("score", ascending=False).reset_index(drop=True)
 
+    # The hurdle for active strategies is RELATIVE: the best score among the
+    # simple, diversified benchmarks (index ETFs, equal/cap-weight universes,
+    # the 200dma baseline, 12-1 momentum). Single-company buy & hold is
+    # excluded from the hurdle — picking the one mega-winner ex post is not a
+    # fair alternative anyone could have chosen ex ante.
+    etf_bh = {f"BuyAndHold(ticker={t})" for t in ("SPY", "QQQ", "XLK", "SOXX", "SMH", "IGV")}
+    is_bench = out["family"] == "benchmark"
+    diversified = is_bench & (~out["strategy"].str.startswith("BuyAndHold(")
+                              | out["strategy"].isin(etf_bh))
+    hurdle = out.loc[diversified, "score"].max() if diversified.any() else 0.0
+    margin = 0.25
+
     def verdict(row) -> str:
-        if row["score"] > 2.0 and row["holdout_sharpe"] > 0 and not row.get("cost_fragile", False):
+        if row["family"] == "benchmark":
+            return "benchmark"
+        if (row["score"] > hurdle + margin and row["holdout_sharpe"] > 0
+                and not row.get("cost_fragile", False)):
             return "robust_candidate"
-        if row["score"] > 0.5:
+        if row["score"] > hurdle - 1.0 and row["holdout_sharpe"] > 0:
             return "inconclusive"
         return "rejected"
     out["verdict"] = out.apply(verdict, axis=1)
+    out.attrs["benchmark_hurdle"] = float(hurdle)
     return out
