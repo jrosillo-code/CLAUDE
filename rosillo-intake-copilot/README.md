@@ -20,14 +20,20 @@ Governing specification: [`docs/Rosillo_Intake_Copilot_Claude_Code_Spec.pdf`](do
 npm install
 cp .env.example .env
 npm run db:migrate     # create the SQLite schema
-npm run db:seed        # load synthetic customers, policies, and the 12 starter cases
+npm run db:seed        # load synthetic customers, policies, and the 19 labelled cases
 npm run dev            # http://localhost:3000 — log in as any synthetic user
 ```
 
 ```bash
-npm test               # unit + integration tests (deterministic, mock AI provider)
+./scripts/setup.sh     # one command: install → migrate → seed → typecheck → tests → build → e2e → evaluation
+```
+
+```bash
+npm test               # unit + integration + security tests (deterministic, mock AI provider)
+npm run test:e2e       # Playwright end-to-end suite (production build + fresh e2e database)
 npm run typecheck
-npm run evaluate       # run the labelled synthetic evaluation suite, writes a report
+npm run evaluate       # labelled synthetic evaluation (19 cases incl. 7 adversarial) with hard quality gates
+npm run audit          # dependency / vulnerability scan (production tree)
 ```
 
 Default synthetic users (password `demo` for all — prototype-only auth, see ADR-0004):
@@ -49,10 +55,20 @@ rosillo-intake-copilot/
   packages/ai/         AIProvider interface, deterministic mock provider, Anthropic provider,
                        prompt registry, output validation/repair, evaluation harness
   packages/database/   SQLite (Drizzle) schema, migrations, repositories, seed scripts
-  fixtures/            Synthetic emails, attachments, and expected labels (12 starter cases)
-  docs/                Spec PDF and architecture decision records
+  fixtures/            Synthetic emails, attachments, and expected labels (19 labelled cases,
+                       12 starter + 7 adversarial)
+  docs/                Spec PDF, ADRs, threat model, architecture/data-flow diagrams,
+                       operations, deployment, guided demo, implementation status
   tests/integration/   Cross-package pipeline tests
+  tests/security/      Dedicated security suite (schema, injection, traversal, secrets)
+  tests/e2e/           Playwright end-to-end + security-probe specs
 ```
+
+Key documents: [DEMO.md](docs/DEMO.md) (guided demonstration and "what this
+prototype does not do") · [THREAT_MODEL.md](docs/THREAT_MODEL.md) ·
+[ARCHITECTURE.md](docs/ARCHITECTURE.md) · [OPERATIONS.md](docs/OPERATIONS.md) ·
+[DEPLOYMENT.md](docs/DEPLOYMENT.md) ·
+[IMPLEMENTATION_STATUS.md](docs/IMPLEMENTATION_STATUS.md)
 
 ## Safety boundaries (non-negotiable)
 
@@ -69,5 +85,7 @@ rosillo-intake-copilot/
 ## Milestones
 
 Built milestone-by-milestone per the spec (section 16): M0 foundation → M1 case workspace →
-M2 deterministic analysis → M3 live AI analysis → M4 human review → M5 evaluation & hardening.
-See `docs/architecture-decisions/` for the key choices and deviations.
+M2 deterministic analysis → M3 live AI analysis → M4 human review → M5 evaluation & hardening —
+all complete; see [docs/IMPLEMENTATION_STATUS.md](docs/IMPLEMENTATION_STATUS.md) for the
+verification snapshot and `docs/architecture-decisions/` for the key choices and deviations
+(ADR-0005 covers the deferred-OCR extraction seam).

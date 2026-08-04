@@ -17,7 +17,8 @@
     "dev": "npm run dev -w apps/web",
     "build": "npm run build -w apps/web",
     "test:e2e": "playwright test",
-    "audit": "npm audit --omit=dev"
+    "audit": "npm audit --omit=dev",
+    "setup": "./scripts/setup.sh"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
