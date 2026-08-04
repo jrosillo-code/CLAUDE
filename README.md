@@ -62,6 +62,22 @@ research behind them):
 - **Clone trip** — any friend's trip in the Trips panel has a *Clone trip* button: their
   stops become your editable draft ("Leo's Coast chase"), ready to tweak and save. The
   honest version of "turn a Reel into an itinerary" — your source is someone you trust.
+- **The 60-second debrief** — mark a trip completed (Trips panel) and a short post-trip
+  interview opens: at most five questions, one per screen, resumable, done in under a
+  minute. Questions are **adaptive** (`lib/interview.ts`): anything the graph already
+  knows is never asked — a Top-5 pin on the route skips "what was your favorite?" and
+  "would you return?". Each answer can anchor to a specific pin or the whole trip, is
+  stored **verbatim** with the question as asked, and carries its own visibility
+  (private / friends / public — drafts are always owner-only, enforced by RLS in
+  `supabase/migrations/0013_reflections.sql`). Answers then feed the rest of the layer as
+  quoted, attributed evidence: Ask-your-friends surfaces them as quote cards ("Frida,
+  after 'Silver Coast run': …"), and Don't-miss treats a pin-anchored *don't miss* as an
+  endorsement (even below the rating bar) and a pin-anchored *skip* as a demotion — an
+  explicit skip beats an implicit rating, but never silently hides an explicitly
+  endorsed place. Nothing is ever paraphrased into fact: the words shown are the words
+  saved. Text input today; every answer records `source: "text" | "voice"` and capture
+  goes through one input component, so voice transcription drops in without changing the
+  flow. Run the tests with `npm test`.
 
 ## Architecture
 

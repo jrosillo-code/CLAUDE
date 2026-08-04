@@ -26,6 +26,8 @@ export default function SearchPlaceCard() {
   const addTripStop = useStore((s) => s.addTripStop);
 
   const topPlaces = useStore((s) => s.topPlaces);
+  const reflections = useStore((s) => s.reflections);
+  const trips = useStore((s) => s.trips);
 
   // The regret minimizer at the moment of intent: friend-endorsed spots in the
   // wider area (day-trip range) you haven't been to yet. Max three, honest.
@@ -39,8 +41,10 @@ export default function SearchPlaceCard() {
       friendships,
       follows,
       topPlaces,
+      reflections,
+      trips,
     });
-  }, [place, pins, users, friendships, follows, topPlaces, viewerId]);
+  }, [place, pins, users, friendships, follows, topPlaces, reflections, trips, viewerId]);
 
   const tips = useMemo<PinWithOwner[]>(() => {
     if (!place) return [];

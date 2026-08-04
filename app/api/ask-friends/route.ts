@@ -26,12 +26,25 @@ interface EvidenceTrip {
   stops: string[];
 }
 
+interface EvidenceQuote {
+  friend: string;
+  question: string;
+  answer: string;
+  scale: string | null;
+  about: string;
+}
+
 export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json({ source: "none" });
   }
 
-  let body: { question?: string; pins?: EvidencePin[]; trips?: EvidenceTrip[] };
+  let body: {
+    question?: string;
+    pins?: EvidencePin[];
+    trips?: EvidenceTrip[];
+    quotes?: EvidenceQuote[];
+  };
   try {
     body = await req.json();
   } catch {
@@ -40,7 +53,8 @@ export async function POST(req: Request) {
   const question = (body.question ?? "").slice(0, 300).trim();
   const pins = (body.pins ?? []).slice(0, 10);
   const trips = (body.trips ?? []).slice(0, 4);
-  if (!question || (pins.length === 0 && trips.length === 0)) {
+  const quotes = (body.quotes ?? []).slice(0, 6);
+  if (!question || (pins.length === 0 && trips.length === 0 && quotes.length === 0)) {
     return NextResponse.json({ source: "none" });
   }
 
@@ -54,6 +68,12 @@ export async function POST(req: Request) {
   const tripLines = trips.map(
     (t) => `- ${t.friend}'s trip "${t.title}": ${t.stops.join(" → ")}`,
   );
+  const quoteLines = quotes.map(
+    (q) =>
+      `- ${q.friend}, asked "${q.question}" about ${q.about}` +
+      (q.scale ? ` [answered: ${q.scale}]` : "") +
+      `: "${q.answer}"`,
+  );
 
   try {
     const client = new Anthropic();
@@ -63,6 +83,8 @@ export async function POST(req: Request) {
       system:
         "You answer a traveler's question using ONLY their friends' real travel records, provided below. " +
         "Write 2-4 conversational sentences, mentioning friends by first name with their actual ratings and quotes. " +
+        "Debrief answers are the friends' exact words: when you use one, quote it verbatim inside quotation " +
+        "marks with the friend's name — never reword it or present a paraphrase as something they said. " +
         "Never invent places, opinions or facts beyond the evidence. If the evidence only partly answers the " +
         "question, say so plainly. No markdown, no lists — just the answer.",
       messages: [
@@ -70,7 +92,8 @@ export async function POST(req: Request) {
           role: "user",
           content:
             `Question: ${question}\n\nFriends' pins:\n${pinLines.join("\n") || "(none)"}\n\n` +
-            `Friends' planned trips:\n${tripLines.join("\n") || "(none)"}`,
+            `Friends' planned trips:\n${tripLines.join("\n") || "(none)"}\n\n` +
+            `Friends' post-trip debrief answers (verbatim):\n${quoteLines.join("\n") || "(none)"}`,
         },
       ],
     });

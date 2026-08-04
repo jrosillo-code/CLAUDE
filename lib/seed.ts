@@ -5,6 +5,7 @@ import type {
   PinMedia,
   TopPlace,
   Trip,
+  TripReflection,
   User,
 } from "./types";
 
@@ -377,6 +378,7 @@ export const seedTrips: Trip[] = [
       { id: "trip-2-s3", lng: 13.7522, lat: 45.6495, placeName: "Trieste" },
     ],
     createdAt: new Date(2025, 6, 12).toISOString(),
+    completedOn: new Date(2025, 7, 30).toISOString(),
   },
   {
     // Leo road-trips the same coast you're planning — a "paths crossing" demo.
@@ -390,6 +392,87 @@ export const seedTrips: Trip[] = [
       { id: "trip-3-s3", lng: -8.6291, lat: 41.1579, placeName: "Porto" },
     ],
     createdAt: new Date(2025, 6, 20).toISOString(),
+    completedOn: new Date(2026, 5, 14).toISOString(),
+  },
+];
+
+// Post-trip debriefs: friends' verbatim answers to the 60-second interview.
+// These quotes surface — attributed and unedited — in Ask-your-friends and
+// Don't-miss. Note the adaptive skips baked in: Cervinia is #3 in Maria's Top
+// 5, so her debrief was never asked "favorite?" or "would you return?"; Leo's
+// 9/10 Ericeira pin skipped "favorite?" but "return?" was still open.
+export const seedReflections: TripReflection[] = [
+  {
+    id: "refl-trip-2-u-maria",
+    tripId: "trip-2",
+    userId: "u-maria",
+    visibility: "friends",
+    status: "complete",
+    createdAt: new Date(2025, 8, 1).toISOString(),
+    updatedAt: new Date(2025, 8, 1).toISOString(),
+    answers: [
+      {
+        questionId: "dont_miss",
+        prompt: "What would you tell a friend not to miss?",
+        text: "Run (or even just walk) the balcony trail above Cervinia at 7am before the lifts open — you get the Matterhorn completely to yourself.",
+        pinId: pinIdFor("u-maria", "Cervinia"),
+        source: "text",
+      },
+      {
+        questionId: "skip",
+        prompt: "What would you skip next time?",
+        text: "Trento as an overnight. Lovely for two hours, then you're done — sleep in the mountains instead and pass through for lunch.",
+        pinId: null,
+        source: "text",
+      },
+      {
+        questionId: "surprise",
+        prompt: "What surprised you?",
+        text: "Trieste doesn't feel Italian at all — it's a Habsburg port city with the best coffee culture I've found outside Lisbon.",
+        pinId: null,
+        source: "text",
+      },
+    ],
+  },
+  {
+    id: "refl-trip-3-u-leo",
+    tripId: "trip-3",
+    userId: "u-leo",
+    visibility: "friends",
+    status: "complete",
+    createdAt: new Date(2026, 5, 16).toISOString(),
+    updatedAt: new Date(2026, 5, 16).toISOString(),
+    answers: [
+      {
+        questionId: "dont_miss",
+        prompt: "What would you tell a friend not to miss?",
+        text: "Coxos at first light on a clean swell. Park at the top, coffee at the kiosk, and don't tell anyone else.",
+        pinId: pinIdFor("u-leo", "Ericeira"),
+        source: "text",
+      },
+      {
+        questionId: "skip",
+        prompt: "What would you skip next time?",
+        text: "Peniche on a weekend — the Baleal parking is a zoo and the same waves are empty 20 minutes north.",
+        pinId: null,
+        source: "text",
+      },
+      {
+        questionId: "surprise",
+        prompt: "What surprised you?",
+        text: "Porto's river mouth has a proper beach break at Matosinhos — I surfed a city wave and ate michelin-level francesinha the same afternoon.",
+        pinId: pinIdFor("u-leo", "Porto"),
+        source: "text",
+      },
+      {
+        questionId: "return",
+        prompt: "Would you go back?",
+        text: "Every autumn until I can't paddle.",
+        pinId: null,
+        scale: "yes",
+        source: "text",
+      },
+    ],
   },
 ];
 

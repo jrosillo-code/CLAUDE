@@ -26,6 +26,7 @@ export default function AskPanel({
   const follows = useStore((s) => s.follows);
   const topPlaces = useStore((s) => s.topPlaces);
   const trips = useStore((s) => s.trips);
+  const reflections = useStore((s) => s.reflections);
   const likeCounts = useStore((s) => s.likeCounts);
   const viewerId = useStore((s) => s.viewerId);
   const selectPin = useStore((s) => s.selectPin);
@@ -72,6 +73,7 @@ export default function AskPanel({
       topPlaces,
       trips,
       likeCounts,
+      reflections,
     });
     setAnswer(a);
     setAiText(null);
@@ -225,6 +227,46 @@ export default function AskPanel({
                 </div>
               )}
             </div>
+
+            {/* Debrief quotes: friends' exact words, attributed to trip/pin */}
+            {answer.quotes.map((qc) => (
+              <button
+                key={`${qc.reflection.id}-${qc.answer.questionId}`}
+                onClick={() => {
+                  if (qc.pin) openPin(qc.pin.id, qc.pin.lng, qc.pin.lat);
+                  else if (qc.trip) viewTrip(qc.trip.id);
+                }}
+                className="w-full rounded-2xl border border-line bg-paper-2/60 p-3.5 text-left transition-colors hover:bg-paper-2"
+              >
+                <div className="flex items-center gap-2">
+                  <img
+                    src={qc.owner.avatarUrl}
+                    alt=""
+                    className="h-6 w-6 rounded-full object-cover ring-2"
+                    style={{ ["--tw-ring-color" as string]: qc.owner.color }}
+                  />
+                  <span className="min-w-0 truncate text-sm font-medium">
+                    {qc.owner.displayName}
+                  </span>
+                  <span className="min-w-0 truncate text-xs text-ink-3">
+                    {qc.pin ? `on ${qc.pin.placeName}` : qc.trip ? `after “${qc.trip.title}”` : ""}
+                  </span>
+                  {qc.answer.scale && (
+                    <span className="ml-auto shrink-0 rounded-full bg-ink px-2 py-0.5 text-[10px] font-bold capitalize text-paper">
+                      {qc.answer.scale}
+                    </span>
+                  )}
+                </div>
+                <div className="mt-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-3">
+                  {qc.answer.prompt}
+                </div>
+                {qc.answer.text && (
+                  <p className="mt-1 border-l-2 border-accent/50 pl-2.5 text-sm italic leading-relaxed text-ink-2">
+                    “{qc.answer.text}”
+                  </p>
+                )}
+              </button>
+            ))}
 
             {/* Evidence: real pins behind every claim */}
             {answer.evidence.map((e) => {

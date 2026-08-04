@@ -12,12 +12,15 @@ export default function TripsPanel({
   onClose,
   onOpenGuide,
   onViewRoute,
+  onOpenDebrief,
 }: {
   onClose: () => void;
   onOpenGuide: (tripId: string) => void;
   /** Phones: View route shows the threaded map itself (no guide popup);
    *  the AI guide waits behind a small floating button instead. */
   onViewRoute?: (tripId: string) => void;
+  /** Open the 60-second post-trip debrief for one of the viewer's trips. */
+  onOpenDebrief: (tripId: string) => void;
 }) {
   const trips = useStore((s) => s.trips);
   const users = useStore((s) => s.users);
@@ -29,6 +32,8 @@ export default function TripsPanel({
   const renameTrip = useStore((s) => s.renameTrip);
   const startTripDraft = useStore((s) => s.startTripDraft);
   const cloneTripToDraft = useStore((s) => s.cloneTripToDraft);
+  const completeTrip = useStore((s) => s.completeTrip);
+  const reflections = useStore((s) => s.reflections);
   const requestFitBounds = useStore((s) => s.requestFitBounds);
 
   const list = visibleTrips(trips, friendships, viewerId);
@@ -203,6 +208,51 @@ export default function TripsPanel({
                   </button>
                 )}
               </div>
+              {/* Post-trip debrief: marking a trip done is the cue for the
+                  60-second interview; the answers power Ask & Don't-miss. */}
+              {mine && (() => {
+                const refl = reflections.find(
+                  (r) => r.tripId === t.id && r.userId === viewerId
+                );
+                if (!t.completedOn) {
+                  return (
+                    <button
+                      onClick={() => {
+                        completeTrip(t.id);
+                        onOpenDebrief(t.id);
+                        onClose();
+                      }}
+                      className="mt-2 w-full rounded-full bg-paper py-2 text-xs font-semibold text-ink-2 ring-1 ring-line transition-colors hover:bg-paper-2"
+                    >
+                      ✓ Mark trip completed
+                    </button>
+                  );
+                }
+                if (refl?.status === "complete") {
+                  return (
+                    <button
+                      onClick={() => {
+                        onOpenDebrief(t.id);
+                        onClose();
+                      }}
+                      className="mt-2 w-full rounded-full bg-paper py-2 text-xs font-semibold text-ink-3 ring-1 ring-line transition-colors hover:bg-paper-2"
+                    >
+                      Debrief saved ✓ — view or edit
+                    </button>
+                  );
+                }
+                return (
+                  <button
+                    onClick={() => {
+                      onOpenDebrief(t.id);
+                      onClose();
+                    }}
+                    className="mt-2 w-full rounded-full bg-accent py-2 text-xs font-semibold text-paper"
+                  >
+                    {refl ? "Resume your 60-second debrief" : "60-second debrief — help your friends"}
+                  </button>
+                );
+              })()}
               {/* Turn-by-turn hand-off: current location through every stop in order */}
               <div className="mt-2 flex gap-2">
                 <a

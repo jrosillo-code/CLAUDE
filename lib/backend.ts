@@ -11,8 +11,10 @@ import type {
   ActivitySlug,
   AppNotification,
   Friendship,
+  InterviewQuestionId,
   Pin,
   Trip,
+  TripReflection,
   TripStop,
   User,
   UserSocials,
@@ -72,7 +74,46 @@ interface TripRow {
   title: string;
   visibility: "friends" | "private";
   created_at: string | null;
+  completed_on?: string | null;
   trip_stops: { id: string; lng: number | null; lat: number | null; place_name: string | null; sort_order: number }[];
+}
+
+interface ReflectionRow {
+  id: string;
+  trip_id: string;
+  user_id: string;
+  visibility: Visibility;
+  status: "draft" | "complete";
+  created_at: string;
+  updated_at: string;
+  reflection_answers: {
+    question_id: InterviewQuestionId;
+    prompt: string;
+    text: string;
+    pin_id: string | null;
+    scale: "yes" | "maybe" | "no" | null;
+    source: "text" | "voice";
+  }[];
+}
+
+function toReflection(r: ReflectionRow): TripReflection {
+  return {
+    id: r.id,
+    tripId: r.trip_id,
+    userId: r.user_id,
+    visibility: r.visibility,
+    status: r.status,
+    createdAt: r.created_at,
+    updatedAt: r.updated_at,
+    answers: (r.reflection_answers ?? []).map((a) => ({
+      questionId: a.question_id,
+      prompt: a.prompt,
+      text: a.text,
+      pinId: a.pin_id,
+      scale: a.scale ?? undefined,
+      source: a.source,
+    })),
+  };
 }
 
 // ── mappers ────────────────────────────────────────────────────────────────
@@ -137,6 +178,7 @@ export interface World {
   pins: Pin[];
   friendships: Friendship[];
   trips: Trip[];
+  reflections: TripReflection[];
   likeCounts: Record<string, number>;
   likedPinIds: Set<string>;
   savedPinIds: Set<string>;
@@ -149,7 +191,7 @@ export interface World {
 export async function loadWorld(viewerId: string): Promise<World | null> {
   const sb = supabase!;
   try {
-    const [usersQ, pinsQ, friendsQ, tripsQ, likesQ, savesQ, followsQ, notifQ, topQ] = await Promise.all([
+    const [usersQ, pinsQ, friendsQ, tripsQ, reflQ, likesQ, savesQ, followsQ, notifQ, topQ] = await Promise.all([
       sb.from("users").select("*"),
       sb
         .from("pins")
@@ -157,6 +199,7 @@ export async function loadWorld(viewerId: string): Promise<World | null> {
         .order("created_at", { ascending: true }),
       sb.from("friendships").select("*"),
       sb.from("trips").select("*, trip_stops(*)"),
+      sb.from("trip_reflections").select("*, reflection_answers(*)"),
       sb.from("pin_likes").select("pin_id").eq("user_id", viewerId),
       sb.from("pin_saves").select("pin_id").eq("user_id", viewerId),
       sb.from("follows").select("creator_id").eq("follower_id", viewerId),
@@ -192,10 +235,12 @@ export async function loadWorld(viewerId: string): Promise<World | null> {
         title: t.title,
         visibility: t.visibility,
         createdAt: t.created_at ?? new Date().toISOString(),
+        completedOn: t.completed_on ?? undefined,
         stops: (t.trip_stops ?? [])
           .sort((a, b) => a.sort_order - b.sort_order)
           .map((s): TripStop => ({ id: s.id, lng: s.lng ?? 0, lat: s.lat ?? 0, placeName: s.place_name ?? "" })),
       })),
+      reflections: ((reflQ.data ?? []) as unknown as ReflectionRow[]).map(toReflection),
       likeCounts,
       likedPinIds: new Set((likesQ.data ?? []).map((r) => r.pin_id as string)),
       savedPinIds: new Set((savesQ.data ?? []).map((r) => r.pin_id as string)),
@@ -512,6 +557,53 @@ export function syncDeleteTrip(tripId: string): void {
     .delete()
     .eq("id", tripId)
     .then(({ error }) => error && log("deleteTrip")(error));
+}
+
+export function syncCompleteTrip(tripId: string, completedOn: string): void {
+  void supabase!
+    .from("trips")
+    .update({ completed_on: completedOn })
+    .eq("id", tripId)
+    .then(({ error }) => error && log("completeTrip")(error));
+}
+
+/** Upsert a whole debrief — reflection row + its answers, wholesale (small set). */
+export function syncSaveReflection(r: TripReflection): void {
+  const sb = supabase!;
+  void (async () => {
+    const { error } = await sb.from("trip_reflections").upsert({
+      id: r.id,
+      trip_id: r.tripId,
+      user_id: r.userId,
+      visibility: r.visibility,
+      status: r.status,
+      updated_at: r.updatedAt,
+    });
+    if (error) return log("saveReflection")(error);
+    await sb.from("reflection_answers").delete().eq("reflection_id", r.id);
+    if (!r.answers.length) return;
+    const { error: ansErr } = await sb.from("reflection_answers").insert(
+      r.answers.map((a, i) => ({
+        reflection_id: r.id,
+        question_id: a.questionId,
+        prompt: a.prompt,
+        text: a.text,
+        pin_id: a.pinId,
+        scale: a.scale ?? null,
+        source: a.source,
+        sort_order: i,
+      }))
+    );
+    if (ansErr) log("saveReflection answers")(ansErr);
+  })();
+}
+
+export function syncDeleteReflection(reflectionId: string): void {
+  void supabase!
+    .from("trip_reflections")
+    .delete()
+    .eq("id", reflectionId)
+    .then(({ error }) => error && log("deleteReflection")(error));
 }
 
 /** Replace the viewer's Top 5 rows wholesale (small set, simplest correct). */

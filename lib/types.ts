@@ -110,6 +110,49 @@ export interface Trip {
   visibility: "friends" | "private";
   stops: TripStop[];
   createdAt: string;
+  /** Set when the owner marks the trip finished — unlocks the debrief. */
+  completedOn?: string;
+}
+
+// ── Post-trip debrief (the 60-second interview) ─────────────────────────────
+
+export type InterviewQuestionId =
+  | "favorite" // What was your favorite place?
+  | "dont_miss" // What would you tell a friend not to miss?
+  | "skip" // What would you skip next time?
+  | "surprise" // What surprised you?
+  | "return"; // Would you go back?
+
+/**
+ * One answered question. The user's words are stored VERBATIM — they are
+ * quoted as evidence in Ask-your-friends and Don't-miss, never paraphrased.
+ */
+export interface ReflectionAnswer {
+  questionId: InterviewQuestionId;
+  /** The question exactly as it was asked (survives future copy changes). */
+  prompt: string;
+  /** The user's own words, untouched. */
+  text: string;
+  /** Anchor: a specific pin, or null = the trip as a whole. */
+  pinId: string | null;
+  /** Structured extra for "would you return?" — filters without text-mining. */
+  scale?: "yes" | "maybe" | "no";
+  /** How the answer was captured. Voice transcription lands here later. */
+  source: "text" | "voice";
+}
+
+/** A trip's debrief. `draft` = started, resumable; `complete` = submitted. */
+export interface TripReflection {
+  id: string;
+  tripId: string;
+  userId: string;
+  /** Own visibility, independent of the trip's (a private trip can still
+   *  yield public advice — and the reverse). */
+  visibility: Visibility;
+  status: "draft" | "complete";
+  answers: ReflectionAnswer[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TopPlace {

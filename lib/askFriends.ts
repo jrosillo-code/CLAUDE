@@ -1,5 +1,6 @@
-import type { Friendship, Pin, PinWithOwner, TopPlace, Trip, User } from "./types";
+import type { Friendship, Pin, PinWithOwner, TopPlace, Trip, TripReflection, User } from "./types";
 import { acceptedFriendIds, canView } from "./data";
+import { quotesFor, type QuoteWithContext } from "./interview";
 
 // "Ask your friends": answer travel questions from the trust graph alone —
 // friends' and followed creators' pins, ratings, Top 5s, notes and trips.
@@ -34,6 +35,8 @@ export interface AskAnswer {
   text: string;
   evidence: AskEvidence[];
   trips: AskTripHit[];
+  /** Verbatim debrief answers that match — friends' own words, attributed. */
+  quotes: QuoteWithContext[];
   /** Friends (or creators) with at least one matching pin, best first. */
   people: User[];
   /** True when nothing in the graph matched the question. */
@@ -105,11 +108,14 @@ export interface AskInputs {
   topPlaces: TopPlace[];
   trips: Trip[];
   likeCounts: Record<string, number>;
+  /** Post-trip debriefs — verbatim answers become quotable evidence. */
+  reflections?: TripReflection[];
 }
 
 export function askFriends(inputs: AskInputs): AskAnswer {
   const { question, viewerId, users, pins, friendships, follows, topPlaces, trips, likeCounts } =
     inputs;
+  const reflections = inputs.reflections ?? [];
   const tokens = tokenize(question);
   const friendIds = acceptedFriendIds(friendships, viewerId);
   const trusted = new Set<string>([...friendIds, ...follows]);
@@ -271,6 +277,64 @@ export function askFriends(inputs: AskInputs): AskAnswer {
     }
   }
 
+  // Debrief quotes: friends' verbatim interview answers. A quote matches when
+  // the question's tokens hit its text, its anchored pin's place/country, or
+  // its trip's title/stops — under the same anchoring rule as pins, so a
+  // "Portugal" question never surfaces an Alps quote.
+  // Ask is a trust surface: only people you're connected to speak here, even
+  // though a `public` debrief is world-readable elsewhere.
+  const allQuotes = quotesFor(reflections, friendships, viewerId, users, trips, pins).filter(
+    (qc) => qc.owner.id !== viewerId && trusted.has(qc.owner.id)
+  );
+  // Stops carry no country — borrow it from any pin at the same place so a
+  // "Portugal" question can find a quote from a Lisbon–Porto trip.
+  const countryWordsByPlace = new Map<string, Set<string>>();
+  for (const p of pins) {
+    const key = p.placeName.toLowerCase();
+    if (!countryWordsByPlace.has(key)) {
+      countryWordsByPlace.set(
+        key,
+        new Set([...wordSet(countryName(p.countryCode)), p.countryCode.toLowerCase()])
+      );
+    }
+  }
+  const quoteHits: { q: QuoteWithContext; score: number }[] = [];
+  for (const qc of allQuotes) {
+    const textWords = wordSet(qc.answer.text);
+    const anchorWords = new Set<string>();
+    if (qc.pin) {
+      for (const w of wordSet(qc.pin.placeName)) anchorWords.add(w);
+      for (const w of wordSet(countryName(qc.pin.countryCode))) anchorWords.add(w);
+    }
+    if (qc.trip) {
+      for (const w of wordSet(qc.trip.title)) anchorWords.add(w);
+      for (const s of qc.trip.stops) {
+        for (const w of wordSet(s.placeName)) anchorWords.add(w);
+        for (const w of countryWordsByPlace.get(s.placeName.toLowerCase()) ?? []) anchorWords.add(w);
+      }
+    }
+    let score = 0;
+    let anchored = false;
+    for (const t of tokens) {
+      if (hasTok(anchorWords, t)) {
+        score += 25;
+        anchored = true;
+      } else if (hasTok(textWords, t)) {
+        score += 8;
+      }
+    }
+    if (score === 0) continue;
+    if (anchorTokens.size > 0 && !anchored) continue;
+    // Question intent bonus: "skip"/"miss"-type questions prefer the matching
+    // debrief question ("what would you skip?" → skip answers first).
+    if (tokens.includes("skip") && qc.answer.questionId === "skip") score += 15;
+    if ((tokens.includes("miss") || tokens.includes("missed")) && qc.answer.questionId === "dont_miss")
+      score += 15;
+    quoteHits.push({ q: qc, score });
+  }
+  quoteHits.sort((a, b) => b.score - a.score);
+  const quotes = quoteHits.slice(0, 4).map((h) => h.q);
+
   // People, best evidence first, deduped.
   const people: User[] = [];
   const seen = new Set<string>();
@@ -280,13 +344,20 @@ export function askFriends(inputs: AskInputs): AskAnswer {
       seen.add(e.pin.userId);
     }
   }
+  for (const qc of quotes) {
+    if (!seen.has(qc.owner.id)) {
+      people.push(qc.owner);
+      seen.add(qc.owner.id);
+    }
+  }
 
   return {
-    text: composeAnswer(question, best, tripHits, broadFallback),
+    text: composeAnswer(question, best, tripHits, quotes, broadFallback),
     evidence: best,
     trips: tripHits,
+    quotes,
     people,
-    empty: best.length === 0 && tripHits.length === 0,
+    empty: best.length === 0 && tripHits.length === 0 && quotes.length === 0,
   };
 }
 
@@ -298,19 +369,22 @@ function composeAnswer(
   question: string,
   best: AskEvidence[],
   tripHits: AskTripHit[],
+  quotes: QuoteWithContext[],
   broadFallback: boolean
 ): string {
-  if (best.length === 0 && tripHits.length === 0) {
+  if (best.length === 0 && tripHits.length === 0 && quotes.length === 0) {
     return "No one you're connected with has been there yet — you'd be the first. Try a nearby region, or ask about a country.";
   }
 
   const parts: string[] = [];
-  if (broadFallback) {
+  if (broadFallback && quotes.length === 0) {
     parts.push(
       "Nothing in your circle matches that exactly, but here's what the people you trust rate highest:"
     );
   } else {
-    const names = [...new Set(best.map((e) => firstName(e.pin.owner)))];
+    const names = [
+      ...new Set([...best.map((e) => firstName(e.pin.owner)), ...quotes.map((q) => firstName(q.owner))]),
+    ];
     const who =
       names.length === 1
         ? names[0]
@@ -320,7 +394,13 @@ function composeAnswer(
     parts.push(`From your circle, ${who} can answer that.`);
   }
 
-  for (const e of best.slice(0, 3)) {
+  // Debrief quotes lead — they're the richest, most recent signal.
+  for (const qc of quotes.slice(0, 2)) {
+    const where = qc.pin ? ` about ${qc.pin.placeName}` : qc.trip ? ` after "${qc.trip.title}"` : "";
+    parts.push(`${firstName(qc.owner)}${where}: "${qc.answer.text}"`);
+  }
+
+  for (const e of best.slice(0, quotes.length ? 2 : 3)) {
     const name = firstName(e.pin.owner);
     const rating = e.pin.rating != null ? ` rated it ${e.pin.rating}/10` : " has been";
     const top = e.topRank ? ` — it's #${e.topRank} in ${name}'s Top 5` : "";
@@ -356,6 +436,14 @@ export function evidenceForApi(a: AskAnswer) {
       friend: t.owner.displayName,
       title: t.trip.title,
       stops: t.trip.stops.map((s) => s.placeName),
+    })),
+    // Verbatim debrief answers — the model may quote these, never reword them.
+    quotes: a.quotes.map((q) => ({
+      friend: q.owner.displayName,
+      question: q.answer.prompt,
+      answer: q.answer.text,
+      scale: q.answer.scale ?? null,
+      about: q.pin?.placeName ?? (q.trip ? `the trip "${q.trip.title}"` : "their trip"),
     })),
   };
 }

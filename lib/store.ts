@@ -6,8 +6,10 @@ import type {
   AppNotification,
   Friendship,
   Pin,
+  ReflectionAnswer,
   TopPlace,
   Trip,
+  TripReflection,
   TripStop,
   User,
   UserSocials,
@@ -23,6 +25,7 @@ import {
   seedFollows,
   seedLikeCounts,
   seedNotifications,
+  seedReflections,
   seedTrips,
   topPlaces as seedTopPlaces,
   users as seedUsers,
@@ -158,6 +161,23 @@ interface WaypointState {
   startTripDraft: () => void;
   /** Fork a friend's trip into your own draft — their stops, your route now. */
   cloneTripToDraft: (tripId: string) => boolean;
+  /** Mark your trip finished — the cue for the 60-second debrief. */
+  completeTrip: (tripId: string) => void;
+
+  // ── Post-trip debriefs (reflections) ──
+  reflections: TripReflection[];
+  /** Get-or-create the viewer's draft debrief for a trip; returns its id. */
+  startReflection: (tripId: string) => string | null;
+  /** Save one answer verbatim (replaces an earlier answer to the same question). */
+  saveReflectionAnswer: (reflectionId: string, answer: ReflectionAnswer) => void;
+  /** Drop one answered question from a debrief (edit flow). */
+  removeReflectionAnswer: (reflectionId: string, questionId: ReflectionAnswer["questionId"]) => void;
+  setReflectionVisibility: (reflectionId: string, v: Visibility) => void;
+  /** Submit the debrief — it becomes evidence for Ask and Don't-miss. */
+  completeReflection: (reflectionId: string) => void;
+  /** Reopen a submitted debrief for editing. */
+  reopenReflection: (reflectionId: string) => void;
+  deleteReflection: (reflectionId: string) => void;
   cancelTripDraft: () => void;
   setTripDraftTitle: (t: string) => void;
   setTripDraftVisibility: (v: "friends" | "private") => void;
@@ -295,6 +315,7 @@ export const useStore = create<WaypointState>((set, get) => ({
           pins: world?.pins ?? [],
           friendships: world?.friendships ?? [],
           trips: world?.trips ?? [],
+          reflections: world?.reflections ?? [],
           topPlaces: world?.topPlaces ?? [],
           likeCounts: world?.likeCounts ?? {},
           likedPinIds: world?.likedPinIds ?? new Set(),
@@ -321,6 +342,7 @@ export const useStore = create<WaypointState>((set, get) => ({
               pins: w.pins,
               friendships: w.friendships,
               trips: w.trips,
+              reflections: w.reflections,
               topPlaces: w.topPlaces,
               likeCounts: w.likeCounts,
               likedPinIds: w.likedPinIds,
@@ -647,6 +669,122 @@ export const useStore = create<WaypointState>((set, get) => ({
     });
     return true;
   },
+  completeTrip: (tripId) =>
+    set((s) => {
+      const trip = s.trips.find((t) => t.id === tripId && t.userId === s.viewerId);
+      if (!trip || trip.completedOn) return {};
+      const completedOn = new Date().toISOString();
+      if (backendEnabled) backend.syncCompleteTrip(tripId, completedOn);
+      return {
+        trips: s.trips.map((t) => (t.id === tripId ? { ...t, completedOn } : t)),
+      };
+    }),
+
+  reflections: [...seedReflections],
+  startReflection: (tripId) => {
+    const s = get();
+    const trip = s.trips.find((t) => t.id === tripId && t.userId === s.viewerId);
+    if (!trip) return null;
+    const existing = s.reflections.find(
+      (r) => r.tripId === tripId && r.userId === s.viewerId
+    );
+    if (existing) return existing.id;
+    const now = new Date().toISOString();
+    const reflection: TripReflection = {
+      id: backendEnabled ? crypto.randomUUID() : `refl-${tripId}-${s.viewerId}`,
+      tripId,
+      userId: s.viewerId,
+      visibility: "friends",
+      status: "draft",
+      answers: [],
+      createdAt: now,
+      updatedAt: now,
+    };
+    if (backendEnabled) backend.syncSaveReflection(reflection);
+    set({ reflections: [...s.reflections, reflection] });
+    return reflection.id;
+  },
+  saveReflectionAnswer: (reflectionId, answer) =>
+    set((s) => {
+      if (!answer.text.trim() && !answer.scale) return {};
+      const reflections = s.reflections.map((r) => {
+        if (r.id !== reflectionId || r.userId !== s.viewerId) return r;
+        const next: TripReflection = {
+          ...r,
+          answers: [
+            ...r.answers.filter((a) => a.questionId !== answer.questionId),
+            answer,
+          ],
+          updatedAt: new Date().toISOString(),
+        };
+        if (backendEnabled) backend.syncSaveReflection(next);
+        return next;
+      });
+      return { reflections };
+    }),
+  removeReflectionAnswer: (reflectionId, questionId) =>
+    set((s) => {
+      const reflections = s.reflections.map((r) => {
+        if (r.id !== reflectionId || r.userId !== s.viewerId) return r;
+        const next: TripReflection = {
+          ...r,
+          answers: r.answers.filter((a) => a.questionId !== questionId),
+          updatedAt: new Date().toISOString(),
+        };
+        if (backendEnabled) backend.syncSaveReflection(next);
+        return next;
+      });
+      return { reflections };
+    }),
+  setReflectionVisibility: (reflectionId, v) =>
+    set((s) => {
+      const reflections = s.reflections.map((r) => {
+        if (r.id !== reflectionId || r.userId !== s.viewerId) return r;
+        const next: TripReflection = { ...r, visibility: v, updatedAt: new Date().toISOString() };
+        if (backendEnabled) backend.syncSaveReflection(next);
+        return next;
+      });
+      return { reflections };
+    }),
+  completeReflection: (reflectionId) =>
+    set((s) => {
+      const reflections = s.reflections.map((r) => {
+        if (r.id !== reflectionId || r.userId !== s.viewerId) return r;
+        const next: TripReflection = {
+          ...r,
+          status: "complete" as const,
+          updatedAt: new Date().toISOString(),
+        };
+        if (backendEnabled) backend.syncSaveReflection(next);
+        return next;
+      });
+      return { reflections };
+    }),
+  reopenReflection: (reflectionId) =>
+    set((s) => {
+      const reflections = s.reflections.map((r) => {
+        if (r.id !== reflectionId || r.userId !== s.viewerId) return r;
+        const next: TripReflection = {
+          ...r,
+          status: "draft" as const,
+          updatedAt: new Date().toISOString(),
+        };
+        if (backendEnabled) backend.syncSaveReflection(next);
+        return next;
+      });
+      return { reflections };
+    }),
+  deleteReflection: (reflectionId) =>
+    set((s) => {
+      if (!s.reflections.some((r) => r.id === reflectionId && r.userId === s.viewerId)) return {};
+      if (backendEnabled) backend.syncDeleteReflection(reflectionId);
+      return {
+        reflections: s.reflections.filter(
+          (r) => !(r.id === reflectionId && r.userId === s.viewerId)
+        ),
+      };
+    }),
+
   cancelTripDraft: () => set({ tripDraft: null }),
   setTripDraftTitle: (t) =>
     set((s) => (s.tripDraft ? { tripDraft: { ...s.tripDraft, title: t } } : {})),

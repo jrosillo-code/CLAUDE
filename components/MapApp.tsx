@@ -22,6 +22,7 @@ import OverlayCard from "./OverlayCard";
 import CrossingsPanel from "./CrossingsPanel";
 import SearchPlaceCard from "./SearchPlaceCard";
 import AskPanel from "./AskPanel";
+import ReflectionSheet from "./ReflectionSheet";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
 import { cancelFlightRender } from "@/lib/renderFlight";
@@ -40,6 +41,9 @@ export default function MapApp() {
   // Ask-your-friends: null = closed; a string (possibly empty) opens the panel
   // with that question pre-asked.
   const [askQuestion, setAskQuestion] = useState<string | null>(null);
+  // The 60-second post-trip debrief, opened after "Mark trip completed" or
+  // from a trip card's debrief button.
+  const [debriefTripId, setDebriefTripId] = useState<string | null>(null);
   const [guideTripId, setGuideTripId] = useState<string | null>(null);
   // Phones: the trip whose route is on screen — powers the floating guide button.
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
@@ -270,7 +274,11 @@ export default function MapApp() {
             viewRouteJustTappedRef.current = true;
             setActiveTripId(id);
           }}
+          onOpenDebrief={setDebriefTripId}
         />
+      )}
+      {debriefTripId && (
+        <ReflectionSheet tripId={debriefTripId} onClose={() => setDebriefTripId(null)} />
       )}
 
       {/* Phones, trips mode: the AI route guide waits behind one small button
