@@ -11,147 +11,180 @@ owning the leading AI/technology companies?**
 
 ---
 
-## ⚠️ Data reality in this repository
+## Data modes: real vs synthetic (strictly separated)
 
-The execution environment in which this project was built **blocks all
-market-data hosts** (Stooq, Yahoo, FRED, Tiingo, Polygon, Alpha Vantage, SEC
-EDGAR were all tested and denied by the egress policy). Therefore:
+The system runs in exactly one of two modes; they share code but nothing else:
 
-* The full provider-adapter data layer is implemented and ready
-  (`stooq`, `yahoo`, `fred` adapters), but **could not be exercised here**.
-* All shipped results are produced by a **deterministic synthetic provider**
-  (`src/aitb/data/synthetic.py`) that generates a regime-realistic stylized
-  history (dot-com boom/bust, GFC, QE bull, COVID, 2022 bear, AI rally),
-  honors real IPO/delisting dates, and includes delisted names.
-* Synthetic results **demonstrate the machinery** — signal timing, accounting,
-  cost modeling, validation, reporting. They say nothing about actual markets.
+| | `--data-mode real` | `--data-mode synthetic` |
+|---|---|---|
+| Data source | canonical validated store `data/real/` only | deterministic generator (or cached free providers) |
+| Calendar | NYSE sessions (`exchange_calendars`, holidays + 9/11/Sandy closures) | plain business days |
+| Results | `results/real/` | `results/synthetic/` |
+| Reports | `reports/real/` | `reports/synthetic/` |
+| Missing data | **hard failure** — never substituted | n/a |
+| Gate | requires a passing `validate_real_data.py` run for the exact current store contents (fingerprinted) | none, but every output carries a synthetic warning |
 
-To produce real results, run in a networked environment:
+Real and synthetic experiments live in separate registries and the ranking
+code **refuses** to rank across modes (tested). Reports are labeled with their
+mode in the title and header.
 
-```bash
-python scripts/run_all.py --provider stooq     # free, no key, split-adjusted only
-python scripts/run_all.py --provider yahoo     # free fallback, total-return series
-```
+### Current status of real data in this repository
 
-## Installation
+**NO REAL DATA HAS BEEN ACQUIRED.** The build environment blocks all
+market-data hosts (Stooq, Yahoo, FRED, SEC EDGAR, Tiingo, Polygon — verified
+2026-08-04). Everything up to the download step is implemented and tested;
+`reports/real/` contains an explicit UNAVAILABLE placeholder, not synthetic
+numbers. See `data/real_data_manifest.md` for exactly what to run elsewhere.
 
-```bash
-cd ai-tech-backtest
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"          # Python >= 3.11
-cp .env.example .env             # optional: add API keys for paid providers
-```
-
-## Reproducing every major result
+## The real-data workflow
 
 ```bash
-python scripts/run_all.py                     # tests -> data -> experiments ->
-                                              # robustness -> companies -> report
-# or phase by phase:
-python -m pytest tests/ -q                    # 34 tests incl. bias regression tests
-python scripts/download_data.py               # build/validate/cache dataset
-python scripts/run_experiments.py             # full grid × cost scenarios (resumable)
-python scripts/run_robustness.py              # walk-forward, bootstrap, DSR, MC
-python scripts/run_company_analysis.py        # own-it vs trade-it per company
-python scripts/make_report.py                 # HTML report + CSV/MD/parquet exports
+# 1. On any network-enabled machine (only step that needs internet):
+python scripts/download_real_data.py --providers yahoo stooq fred sec \
+       --start 1998-01-01 --output data/export_bundle
+#    -> portable bundle: per-provider parquet + manifest + sha256 checksums,
+#       resumable, rate-limited, per-symbol failure log
+
+# 2. Import (verifies checksums, normalizes schemas, reconciles providers,
+#    trims rows outside IPO/delisting windows, records provider metadata):
+python scripts/import_data_bundle.py --input data/export_bundle
+#    or, for your own CSV/JSON/Parquet files: see data/import/README.md
+python scripts/import_data_bundle.py --loose
+
+# 3. Validate — MANDATORY. Writes the quality gate (PASS FOR RESEARCH /
+#    PASS WITH LIMITATIONS / FAIL — DO NOT BACKTEST). Real-mode runs refuse
+#    to start without a passing gate for the current store fingerprint:
+python scripts/validate_real_data.py
+
+# 4. Research run + report:
+python scripts/run_all.py --data-mode real
 ```
 
-Outputs: `reports/research_report.html`, `reports/summary.md`,
-`results/strategy_ranking.csv`, `results/experiments.jsonl` (append-only
-registry), `results/curves/*.parquet` (equity curves),
-`results/robustness/*`, `results/company_analysis.csv`.
+Other commands:
+
+```bash
+python scripts/run_experiments.py --data-mode real --families benchmarks   # one family
+python scripts/run_experiments.py --data-mode real --families riskmanaged  # one family
+python scripts/run_robustness.py  --data-mode real                         # walk-forward, DSR, bootstrap
+python scripts/run_capacity.py    --data-mode real --top 5                 # $100k..$100M scaling
+python scripts/run_company_analysis.py --data-mode real                    # own-it vs trade-it
+python scripts/make_report.py     --data-mode real                         # report only
+python scripts/run_all.py         --data-mode synthetic                    # offline demonstration
+python -m pytest tests/ -q                                                 # 64 tests
+```
+
+Reproduce a specific experiment: look up its record in
+`results/<mode>/experiments.jsonl` (each has a stable `id`, full `spec`,
+provider, git commit); `aitb.strategies.from_spec(record["spec"])` rebuilds
+the exact strategy object.
 
 ## Architecture
 
 ```
 ai-tech-backtest/
-  configs/            universe.yaml (PIT universe + baskets), costs.yaml,
-                      backtest.yaml (conventions/splits), experiments.yaml (grids)
+  configs/
+    universe.yaml          PIT universe + theme baskets + target_holdings
+    security_master.yaml   permanent sids, ticker histories (FB→META,
+                           SUNW→JAVA), successors (XLNX→AMD, EMC→DELL)
+    costs.yaml             zero/low/base/stressed scenarios
+    backtest.yaml          conventions, splits, regime windows
+    experiments.yaml       grids with core/exploratory/deprecated status +
+                           stated hypotheses + deprecation reasons
   src/aitb/
-    config.py         typed config loading
+    calendar.py            NYSE session calendar (real) / b-days (synthetic)
+    config.py              typed config + per-mode results/reports dirs
     data/
-      providers.py    provider adapters (stooq/yahoo/fred) + registry
-      synthetic.py    deterministic offline market generator
-      store.py        parquet cache, metadata, incremental updates
-      validation.py   gap/duplicate/jump/stale/OHLC checks
-      loader.py       aligned panels; PIT fundamentals accessor
-    universe.py       point-in-time investable mask (IPO/seasoning/liquidity/delist)
-    features.py       causal signal building blocks (momentum, RSI, PIT factors…)
-    portfolio.py      weighting schemes, caps, vol targeting, schedules
-    costs.py          bps + √participation impact + borrow model
-    backtest/engine.py  next-open execution engine (see conventions below)
-    metrics.py        full performance/risk metric set
-    validation.py     walk-forward, block bootstrap, PSR/DSR, MC, sensitivity
-    experiments.py    append-only experiment registry + runner (resumable)
-    ranking.py        composite score + robust/inconclusive/rejected verdicts
-    reporting.py      charts + self-contained HTML report
-    strategies/       benchmark, tsmom, xsmom, meanrev, breakout, fundamental,
-                      regime, riskmanaged, ml families
-  scripts/            phase entry points (run_all.py reproduces everything)
-  tests/              unit + integration + bias-regression tests
+      providers.py         stooq / yahoo / fred adapters
+      providers_ext.py     tiingo / alphavantage / SEC EDGAR companyfacts
+                           (point-in-time fundamentals w/ filing dates)
+      synthetic.py         deterministic offline generator (tests/demos ONLY)
+      store.py             synthetic-mode parquet cache
+      realstore.py         canonical real store + metadata + checksums
+      import_bundle.py     bundle/loose import, schema normalization,
+                           cross-provider reconciliation (flag, never average)
+      quality.py           validation gate: PASS / PASS WITH LIMITATIONS / FAIL
+      security_master.py   symbol resolution by date; gap-refusing stitching
+      loader.py            mode-gated panel assembly; PIT fundamentals accessor
+      validation.py (data) gap/duplicate/jump/stale/OHLC checks
+    universe.py            point-in-time investable mask
+    features.py            causal signal building blocks
+    portfolio.py           weighting schemes, caps, vol targeting, schedules
+    costs.py               bps + √participation impact + borrow model
+    backtest/engine.py     next-open execution engine
+    metrics.py             performance/risk metrics
+    validation.py          walk-forward, block+stationary bootstrap, PSR/DSR,
+                           MC, NVDA/top-N dependence, pre/post-2023 splits,
+                           leave-one-year-out
+    tax.py                 approximate taxable/deferred overlay (documented
+                           approximation — turnover-based, no lot accounting)
+    holdout.py             holdout lock: freeze-before-look, access log,
+                           compromise flag surfaced in reports
+    experiments.py         append-only per-mode registry + runner
+    ranking.py             composite score, relative benchmark hurdle,
+                           refuses cross-mode ranking
+    reporting.py           charts + self-contained HTML reports
+    strategies/            benchmark, tsmom, xsmom, meanrev, breakout,
+                           fundamental, regime, riskmanaged (incl. combined
+                           TrendPlusVolTarget with hysteresis), ml
+  scripts/                 download_real_data, import_data_bundle,
+                           validate_real_data, run_experiments, run_robustness,
+                           run_capacity, run_company_analysis, make_report,
+                           run_all, download_data (synthetic)
+  data/real_data_manifest.md   exact commands + datasets still required
+  data/import/README.md        user-supplied file formats
+  tests/                   64 tests incl. bias-regression, mode-separation,
+                           calendar, symbol-change, gate, holdout, tax
 ```
 
 ## Methodology and bias prevention
 
 | Bias | Countermeasure |
 |---|---|
-| Look-ahead | Signals dated T fill at the **open of T+1**; the engine lags all weights by one bar structurally. Regression test: a perfect-foresight signal cannot beat buy & hold. |
-| Data leakage in features | All features are trailing; test asserts truncated-data signals equal full-data signals on the overlap. |
-| Fundamental leakage | Quarterly rows enter panels only at their **publication date** (40–60 day lags), never the fiscal period end. |
-| Survivorship | Universe config keeps delisted names (SUNW, EMC, YHOO, MXIM, XLNX); the investable mask trades them until delisting; IPOs enter after a 126-day seasoning window. |
-| Unrealistic fills | Cost scenarios (zero/low/base/stressed): commission + half-spread + slippage + √participation impact vs trailing ADV; 5%-of-ADV participation cap; borrow on shorts; delisting liquidation at doubled cost. |
-| Overfitting / multiple testing | Untouched chronological holdout; walk-forward parameter selection on trailing data only; moving-block bootstrap CIs; probabilistic Sharpe; **deflated Sharpe over each family's full trial battery**; parameter-sensitivity tables; every failed variant stays in the registry. |
-| Cherry-picking | Composite ranking penalizes turnover, single-name P&L concentration, complexity, regime concentration and IS→OOS degradation; verdicts are three-way (robust / inconclusive / rejected) and the report has a mandatory failure-analysis section. |
+| Look-ahead | Signals dated T fill at the **open of T+1**, structurally. Regression test: perfect-foresight signals cannot beat buy & hold. |
+| Feature leakage | All features trailing; truncation test proves it. |
+| Fundamental leakage | Quarterly rows enter only at publication/filing date. EDGAR adapter uses SEC `filed` dates; the gate **fails fatally** if any `published < period_end`. |
+| Survivorship | PIT universe with IPO seasoning and delisting enforcement; delisted names retained; importer trims vendor rows outside listing windows; remaining current-constituent bias is disclosed by the gate, not hidden. |
+| Symbol traps | Security master with dated ticker spans; stitching refuses gaps/overlaps that would fabricate returns (FB→META, SUNW→JAVA tested). |
+| Bad data | Import-time schema validation; cross-provider return reconciliation (differences flagged, never averaged); OHLC/jump/stale/gap checks; NYSE-session gap detection; checksummed transport. |
+| Unrealistic fills | Cost scenarios + √participation impact vs trailing ADV; 5%-of-ADV cap; borrow on shorts; capacity analysis at $100k–$100M. |
+| Overfitting / multiple testing | Untouched holdout with a **lock** (freeze-specs-then-look, access log, public compromise flag); walk-forward selection; block + stationary bootstrap; PSR/deflated Sharpe over full trial batteries; parameter sensitivity; every failed AND deprecated variant stays in the registry with reasons. |
+| Winner/regime dependence | Per-strategy NVDA share, top-1/3/5 contribution shares, pre/post-2023 splits, leave-one-year-out — recorded on every experiment. |
+| Taxes | Optional overlay comparing taxable vs deferred outcomes; high-turnover edges are re-judged after estimated taxes. |
 
-### Execution convention
+### Series roles (documented convention)
 
-Signals are computed from data through the close of day **T**; orders execute
-at the open of **T+1**. Prices used for fills and marks are ratio-adjusted
-(dividends embedded), with raw close retained separately — adjusted and
-unadjusted series are never mixed silently.
+Signals use total-return `adj_close`; fills and marks use ratio-adjusted OHLC
+(`adj_close/close × raw OHLC`), so dividends are embedded continuously in the
+price path; raw `close` is retained and never silently mixed. Stooq data is
+split-adjusted only — the importer records this per ticker and the gate
+reports the affected names as a limitation.
 
 ## Data sources
 
-| Source | Status | Licensing notes |
+| Source | Status | Notes / licensing |
 |---|---|---|
-| Synthetic | default here | n/a — deterministic, seeded, clearly labeled |
-| Stooq | adapter ready | free EOD CSV; split-adjusted, **no dividends**; personal/research use |
-| Yahoo Finance | adapter ready | unofficial endpoint; fallback only; no redistribution |
-| FRED | adapter ready | public-domain macro (fed funds, yields, CPI, VIX, spreads) |
-| Tiingo / Polygon / Alpha Vantage / FMP / EODHD / Nasdaq Data Link | keys in `.env` | paid tiers for dividends, delistings, fundamentals, intraday |
-| SEC EDGAR | planned module | free; point-in-time filings for real PIT fundamentals |
+| Yahoo Finance | adapter ready | unofficial endpoint; total-return adjclose; fallback-quality |
+| Stooq | adapter ready | free EOD; split-adjusted only (no dividends); research use |
+| FRED | adapter ready | public domain; revised series, not vintages (disclosed) |
+| SEC EDGAR | adapter ready | public domain; PIT fundamentals via companyfacts + filing dates; set `SEC_USER_AGENT` |
+| Tiingo | adapter ready | key in `.env`; total-return quality + dividends/splits |
+| Alpha Vantage | adapter ready | key in `.env`; heavily rate-limited free tier |
+| Polygon / FMP / EODHD / Nasdaq Data Link | planned | subclass `PriceProvider`; nothing else changes |
+| Synthetic | active here | deterministic; tests/demos/offline dev ONLY |
 
-Free sources cannot supply delisted-name history or point-in-time
-fundamentals; those require a paid provider (add an adapter by subclassing
-`PriceProvider` — nothing else changes).
-
-## Strategy families implemented
-
-* **Benchmarks** — ETF buy & hold; equal-weight and cap-weight universes;
-  QQQ 200-day SMA; 12-1 momentum baseline; per-company buy & hold.
-* **Time-series momentum** — per-name SMA trend w/ Treasury fallback,
-  absolute momentum vs cash hurdle, dual momentum across tech ETFs.
-* **Cross-sectional momentum** — top-N total/risk-adjusted/relative-vs-QQQ,
-  multiple weightings and rebalance frequencies.
-* **Mean reversion** — RSI(2), 5-day reversal, Bollinger reversion, all with
-  uptrend + liquidity filters (evaluated skeptically under stressed costs).
-* **Breakout** — Donchian with/without regime filter, vol-compression breakout.
-* **Fundamental (PIT)** — quality/growth composite; valuation-aware growth
-  using each stock's own P/S history.
-* **Regime allocation** — stacked risk flags (trend, VIX, rates, breadth,
-  credit), semis-leadership rotation.
-* **Risk-managed buy & hold** — vol targeting, drawdown de-risking,
-  inverse-vol weighting on AI baskets.
-* **ML** — walk-forward ridge cross-sectional ranker with purge gap,
-  train-only scaling, fixed seeds (kept deliberately simple/explainable).
+**Free-data gaps** (disclosed in every real report): no delisted-name history,
+no historical index constituents, no macro vintages, no earnings timestamps.
+Paid sources (CRSP, Norgate, EODHD) fix these; their files can be dropped into
+`data/import/`.
 
 ## Limitations (read before believing any number)
 
-* Synthetic data in this environment — see the warning above.
-* Business-day calendar without exchange holidays.
-* No intraday data; no options data; borrow costs are scenario constants.
-* Free providers lack dividends (Stooq) or delistings (all of them).
-* Regime windows in `backtest.yaml` are descriptive labels, not tradable
-  signals.
-* Tax analysis is not implemented (flagged as next step); active strategies'
-  after-tax hurdle vs buy & hold is materially higher than the pre-tax one.
+* No real data could be acquired in this environment — all shipped result
+  artifacts are synthetic-mode demonstrations of the machinery.
+* The real universe will be partially current-constituent biased until a
+  delisted-history source is imported (the gate labels this).
+* Macro strategies using CPI/UNRATE carry revision look-ahead; excluded from
+  the first real run by default.
+* Tax module is a documented approximation (no lot accounting).
+* Earnings-event strategies stay disabled until timestamped event data exists.
+* Borrow costs are scenario constants; no options data; no intraday data.

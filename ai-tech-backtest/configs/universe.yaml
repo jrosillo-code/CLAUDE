@@ -88,3 +88,7 @@ baskets:
   cybersecurity:   [CRWD, PANW, FTNT]
   dc_infrastructure: [ANET, SMCI, DELL, VRT, CEG, VST]
   megacap_ai:      [NVDA, MSFT, GOOGL, AMZN, META, AAPL, AVGO, TSLA]
+  # Shortlist of companies the user is likely to own — the §"buy it or trade
+  # it" portfolio comparisons run over this basket.
+  target_holdings: [NVDA, MSFT, GOOGL, AMZN, META, AVGO, AMD, TSM, ASML, ARM,
+                    PLTR, ORCL, CRWD, PANW, ANET, MU, VRT, CEG]

@@ -34,7 +34,11 @@ log = get_logger("run_robustness")
 
 
 def main() -> int:
-    registry = ExperimentRegistry()
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--data-mode", default="synthetic", choices=["synthetic", "real"])
+    args = ap.parse_args()
+    registry = ExperimentRegistry.for_mode(args.data_mode)
     df = registry.load()
     if df.empty:
         log.error("no experiments found — run scripts/run_experiments.py first")
@@ -42,7 +46,7 @@ def main() -> int:
     ok = df[(df["status"] == "ok") & (df["scenario"] == "base")].copy()
     ok["dev_sharpe"] = ok["metrics_dev"].map(lambda m: (m or {}).get("sharpe"))
 
-    out_dir = RESULTS_DIR / "robustness"
+    out_dir = registry.root / "robustness"
     out_dir.mkdir(parents=True, exist_ok=True)
     bt_cfg = load_backtest_config()
     dev_end = None

@@ -200,6 +200,90 @@ def strategy_correlation(returns: dict[str, pd.Series]) -> pd.DataFrame:
     return pd.DataFrame(returns).corr()
 
 
+def stationary_bootstrap_ci(r: pd.Series, stat=sharpe, n_boot: int = 2000,
+                            mean_block: int = 21, seed: int = 0,
+                            level: float = 0.90) -> tuple[float, float, float]:
+    """Politis–Romano stationary bootstrap: geometric block lengths (mean
+    `mean_block`), wrap-around resampling. Complements the fixed-block
+    bootstrap; run both and compare (block-length sensitivity)."""
+    x = r.dropna().to_numpy()
+    n = len(x)
+    if n < 2 * mean_block:
+        return np.nan, np.nan, np.nan
+    rng = np.random.default_rng(seed)
+    p = 1.0 / mean_block
+    out = np.empty(n_boot)
+    for b in range(n_boot):
+        idx = np.empty(n, dtype=int)
+        idx[0] = rng.integers(n)
+        restarts = rng.random(n) < p
+        steps = rng.integers(n, size=n)
+        for t in range(1, n):
+            idx[t] = steps[t] if restarts[t] else (idx[t - 1] + 1) % n
+        out[b] = stat(pd.Series(x[idx]))
+    out = out[np.isfinite(out)]
+    if not len(out):
+        return np.nan, np.nan, np.nan
+    a = (1 - level) / 2
+    return float(stat(pd.Series(x))), float(np.quantile(out, a)), float(np.quantile(out, 1 - a))
+
+
+def contribution_shares(weights: pd.DataFrame, asset_returns: pd.DataFrame,
+                        top_n: int = 5) -> dict:
+    """P&L share of the top 1/3/5 contributors and of NVDA specifically."""
+    contrib = (weights.shift(1) * asset_returns.reindex(weights.index)).sum()
+    contrib = contrib[np.isfinite(contrib)]
+    total = contrib.sum()
+    if total == 0 or contrib.empty:
+        return {}
+    ranked = contrib.sort_values(ascending=False)
+    out = {
+        "top1_share": float(ranked.iloc[:1].sum() / total),
+        "top3_share": float(ranked.iloc[:3].sum() / total),
+        "top5_share": float(ranked.iloc[:top_n].sum() / total),
+        "top_contributors": list(ranked.index[:top_n]),
+    }
+    if "NVDA" in contrib.index:
+        out["nvda_share"] = float(contrib["NVDA"] / total)
+    return out
+
+
+def period_split_metrics(r: pd.Series, split_date: str = "2023-01-01",
+                         bench: pd.Series | None = None) -> dict:
+    """Metrics before/after a date — the post-2022 AI-rally dependence test."""
+    pre, post = r.loc[:split_date], r.loc[split_date:]
+    out = {}
+    for label, seg in (("pre", pre), ("post", post)):
+        if len(seg) < 60:
+            continue
+        out[label] = {"cagr": cagr(seg), "sharpe": sharpe(seg), "max_dd": _mdd(seg)}
+        if bench is not None:
+            bseg = bench.reindex(seg.index).dropna()
+            if len(bseg) > 60:
+                out[label]["excess_cagr"] = cagr(seg) - cagr(bseg)
+    if "pre" in out and "post" in out:
+        post_only = out["post"]["sharpe"] > 0.5 and out["pre"]["sharpe"] <= 0.0
+        out["ai_rally_dependent"] = bool(post_only)
+    return out
+
+
+def leave_one_year_out(r: pd.Series, stat=sharpe) -> dict:
+    """Stat when each calendar year is removed — a strategy carried by one
+    year is fragile."""
+    years = sorted(set(r.dropna().index.year))
+    if len(years) < 4:
+        return {}
+    vals = {}
+    for y in years:
+        vals[y] = stat(r[r.index.year != y])
+    s = pd.Series(vals)
+    full = stat(r)
+    return {"full": float(full), "min": float(s.min()), "max": float(s.max()),
+            "worst_year_removed": int(s.idxmax()),  # removing it helps most
+            "most_supportive_year": int(s.idxmin()),
+            "range": float(s.max() - s.min())}
+
+
 def concentration_diagnostics(weights: pd.DataFrame,
                               asset_returns: pd.DataFrame) -> dict[str, float]:
     """How much of the P&L comes from a single name? (fragility indicator)"""

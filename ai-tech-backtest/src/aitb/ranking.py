@@ -84,6 +84,12 @@ def rank_experiments(registry_df: pd.DataFrame,
                      scenario: str = "base") -> pd.DataFrame:
     """Rank all OK experiments run under `scenario`, plus cost-robustness
     columns comparing against the stressed scenario when present."""
+    if "data_mode" in registry_df.columns:
+        modes = set(registry_df["data_mode"].dropna().unique())
+        if len(modes) > 1:
+            raise ValueError(
+                f"refusing to rank across data modes {sorted(modes)} — real and "
+                "synthetic experiments live in separate registries by design")
     ok = registry_df[registry_df["status"] == "ok"]
     base = ok[ok["scenario"] == scenario]
     rows = [score_record(rec) for rec in base.to_dict("records")]

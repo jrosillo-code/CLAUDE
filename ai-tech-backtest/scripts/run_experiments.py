@@ -20,19 +20,10 @@ sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 from aitb.config import load_cost_scenarios, load_yaml
 from aitb.data.loader import load_market_data
 from aitb.experiments import ExperimentRegistry, run_experiment
-from aitb.strategies import (benchmarks, breakout, fundamental, meanrev, ml,
-                             regime, riskmanaged, tsmom, xsmom)
+from aitb.strategies import STRATEGY_CLASSES as CLASSES
 from aitb.utils import get_logger
 
 log = get_logger("run_experiments")
-
-CLASSES = {}
-for mod in (benchmarks, tsmom, xsmom, meanrev, breakout, fundamental, regime,
-            riskmanaged, ml):
-    for name in dir(mod):
-        obj = getattr(mod, name)
-        if isinstance(obj, type) and hasattr(obj, "build") and name != "Strategy":
-            CLASSES[name] = obj
 
 
 def expand_grid(entry: dict):
@@ -46,27 +37,72 @@ def expand_grid(entry: dict):
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--provider", default="synthetic")
+    ap.add_argument("--provider", default="synthetic",
+                    help="synthetic-mode provider (ignored in real mode)")
+    ap.add_argument("--data-mode", default="synthetic", choices=["synthetic", "real"])
     ap.add_argument("--families", default="",
                     help="comma-separated subset of families to run")
     ap.add_argument("--scenarios", default="zero,base,stressed")
     args = ap.parse_args()
 
-    md = load_market_data(args.provider)
+    if args.data_mode == "real":
+        from aitb.data.quality import require_gate
+        gate = require_gate()          # hard stop without a passing gate
+        log.info("real-data gate: %s", gate["status"])
+        md = load_market_data(mode="real")
+    else:
+        md = load_market_data(args.provider, mode="synthetic")
+
     scens = load_cost_scenarios()
     scens = {k: v for k, v in scens.items() if k in args.scenarios.split(",")}
-    registry = ExperimentRegistry()
+    registry = ExperimentRegistry.for_mode(args.data_mode)
     spec = load_yaml("experiments.yaml")
+
+    # In real mode, skip families whose required data did not pass coverage.
+    skip_families: set[str] = set()
+    if args.data_mode == "real":
+        if md.fundamentals.empty:
+            skip_families.add("fundamental")
+            log.warning("skipping 'fundamental' family: no validated real fundamentals")
+        if "VIXCLS" not in md.macro.columns:
+            skip_families.add("regime")
+            log.warning("skipping 'regime' family: no VIX series in real store")
 
     families = args.families.split(",") if args.families else list(spec)
     n = 0
+    deprecated_logged = {r.get("id") for r in
+                         (registry.load().to_dict("records") if registry.path.exists() else [])}
     for family in families:
+        if family in skip_families:
+            continue
         for entry in spec.get(family, []):
+            if entry.get("status") == "deprecated":
+                # Deprecated variants are never run but stay visible in the
+                # registry with their reason (research-integrity requirement).
+                from datetime import datetime, timezone
+                from aitb.utils import stable_hash
+                dep_id = "dep_" + stable_hash({"class": entry["class"],
+                                               "grid": entry.get("grid", {}),
+                                               "mode": args.data_mode})
+                if dep_id not in deprecated_logged:
+                    registry.append({
+                        "id": dep_id, "status": "deprecated",
+                        "strategy": entry["class"], "family": family,
+                        "spec": {"class": entry["class"], "family": family,
+                                 "params": entry.get("grid", {})},
+                        "reason": entry.get("reason", "unspecified"),
+                        "data_mode": args.data_mode, "scenario": "n/a",
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                    })
+                continue
             for strat in expand_grid(entry):
                 run_experiment(md, strat, scens, registry,
-                               notes=f"family_group={family}")
+                               notes=(f"family_group={family};mode={args.data_mode};"
+                                      f"status={entry.get('status', 'exploratory')};"
+                                      f"hypothesis={entry.get('hypothesis', '')}"))
                 n += 1
-    log.info("completed %d strategy variants × %d scenarios", n, len(scens))
+    log.info("completed %d strategy variants × %d scenarios [%s mode]",
+             n, len(scens), args.data_mode)
     return 0
 
 

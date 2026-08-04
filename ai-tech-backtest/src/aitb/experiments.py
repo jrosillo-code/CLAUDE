@@ -21,7 +21,8 @@ from .data.loader import MarketData
 from .metrics import summary
 from .strategies.base import Strategy
 from .utils import get_logger, stable_hash
-from .validation import (Split, concentration_diagnostics, make_split,
+from .validation import (Split, concentration_diagnostics, contribution_shares,
+                         leave_one_year_out, make_split, period_split_metrics,
                          probabilistic_sharpe, slice_dev, slice_holdout,
                          subperiod_table)
 
@@ -38,11 +39,20 @@ def _git_commit() -> str:
 
 
 class ExperimentRegistry:
+    """Append-only registry. Real and synthetic runs use DIFFERENT roots
+    (results/real vs results/synthetic) and must never share one — construct
+    via ``ExperimentRegistry.for_mode(mode)``."""
+
     def __init__(self, root: Path | None = None):
-        self.root = root or RESULTS_DIR
+        self.root = root or (RESULTS_DIR / "synthetic")
         self.root.mkdir(parents=True, exist_ok=True)
         (self.root / "curves").mkdir(exist_ok=True)
         self.path = self.root / "experiments.jsonl"
+
+    @classmethod
+    def for_mode(cls, mode: str) -> "ExperimentRegistry":
+        from .config import results_dir
+        return cls(results_dir(mode))
 
     def existing_ids(self) -> set[str]:
         if not self.path.exists():
@@ -66,7 +76,7 @@ class ExperimentRegistry:
 
 def experiment_id(strategy: Strategy, md: MarketData, scenario: str) -> str:
     return stable_hash({"spec": strategy.spec(), "provider": md.provider_name,
-                        "scenario": scenario,
+                        "data_mode": md.data_mode, "scenario": scenario,
                         "data_span": [str(md.calendar[0]), str(md.calendar[-1])]})
 
 
@@ -113,7 +123,8 @@ def run_experiment(md: MarketData,
             registry.append({
                 "id": exp_id, "status": "failed", "error": str(exc),
                 "spec": strategy.spec(), "scenario": scen_name,
-                "provider": md.provider_name, "git": _git_commit(),
+                "provider": md.provider_name, "data_mode": md.data_mode,
+                "git": _git_commit(),
                 "timestamp": datetime.now(timezone.utc).isoformat(), "notes": notes,
             })
             continue
@@ -133,6 +144,7 @@ def run_experiment(md: MarketData,
             "hypothesis": strategy.hypothesis,
             "scenario": scen_name,
             "provider": md.provider_name,
+            "data_mode": md.data_mode,
             "universe_hash": stable_hash([s.ticker for s in md.universe.securities]),
             "split": {"dev_end": str(split.dev_end.date()),
                       "holdout_start": str(split.holdout_start.date()),
@@ -145,6 +157,10 @@ def run_experiment(md: MarketData,
             "total_costs": res.total_costs,
             "concentration": concentration_diagnostics(
                 res.weights, md.adj_close.pct_change()) if not res.weights.empty else {},
+            "contributions": contribution_shares(
+                res.weights, md.adj_close.pct_change()) if not res.weights.empty else {},
+            "period_split_2023": period_split_metrics(res.returns, "2023-01-01", bench),
+            "leave_one_year_out": leave_one_year_out(res.returns),
             "subperiods": subperiod_table(res.returns, bt_cfg.subperiods).to_dict("records"),
             "git": _git_commit(),
             "timestamp": datetime.now(timezone.utc).isoformat(),

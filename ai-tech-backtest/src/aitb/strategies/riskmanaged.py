@@ -21,15 +21,69 @@ class VolTargetedBasket(Strategy):
     hypothesis = "Constant-risk sizing improves compounding vs constant-dollar."
 
     def __init__(self, basket: str = "megacap_ai", target_vol: float = 0.25,
+                 vol_window: int = 63, fallback: str = "IEF",
+                 rebalance: str = "W-FRI"):
+        super().__init__(basket=basket, target_vol=target_vol,
+                         vol_window=vol_window, fallback=fallback,
+                         rebalance=rebalance)
+
+    def build(self, md: MarketData) -> pd.DataFrame:
+        p = self.params
+        mask = investable_mask(md, md.universe.baskets[p["basket"]])
+        w = equal_weight(mask)
+        w = vol_target(w, md.adj_close[mask.columns], p["target_vol"],
+                       window=p["vol_window"])
+        fb = p["fallback"]
+        if fb in md.adj_close.columns:
+            w[fb] = ((1 - w.sum(axis=1)).clip(lower=0.0)
+                     * md.adj_close[fb].notna()).fillna(0.0)
+        return rebalance_schedule(w, p["rebalance"])
+
+
+class TrendPlusVolTarget(Strategy):
+    """Combined overlay: QQQ 200-day trend gates GROSS exposure (with
+    hysteresis to cut whipsaw), volatility targeting scales it, remainder in
+    Treasuries. Exposure changes are gradual, not binary."""
+    family = "riskmanaged"
+    hypothesis = ("Trend removes the deep left tail; vol targeting smooths the "
+                  "path — the two address different failure modes.")
+
+    def __init__(self, basket: str = "megacap_ai", target_vol: float = 0.20,
+                 vol_window: int = 63, trend_window: int = 200,
+                 hysteresis: float = 0.02, min_exposure: float = 0.2,
                  fallback: str = "IEF", rebalance: str = "W-FRI"):
         super().__init__(basket=basket, target_vol=target_vol,
+                         vol_window=vol_window, trend_window=trend_window,
+                         hysteresis=hysteresis, min_exposure=min_exposure,
                          fallback=fallback, rebalance=rebalance)
 
     def build(self, md: MarketData) -> pd.DataFrame:
         p = self.params
         mask = investable_mask(md, md.universe.baskets[p["basket"]])
         w = equal_weight(mask)
-        w = vol_target(w, md.adj_close[mask.columns], p["target_vol"])
+        w = vol_target(w, md.adj_close[mask.columns], p["target_vol"],
+                       window=p["vol_window"])
+
+        # Hysteresis trend gate on QQQ: off only below (1-h)*SMA, back on
+        # only above (1+h)*SMA — the band suppresses whipsaw at the line.
+        q = md.adj_close["QQQ"]
+        sma = q.rolling(p["trend_window"]).mean()
+        upper, lower = sma * (1 + p["hysteresis"]), sma * (1 - p["hysteresis"])
+        state = np.ones(len(q))
+        on = True
+        qv, uv, lv = q.to_numpy(), upper.to_numpy(), lower.to_numpy()
+        for i in range(len(q)):
+            if np.isnan(uv[i]):
+                state[i] = 1.0
+                continue
+            if on and qv[i] < lv[i]:
+                on = False
+            elif not on and qv[i] > uv[i]:
+                on = True
+            state[i] = 1.0 if on else p["min_exposure"]
+        gate = pd.Series(state, index=q.index)
+
+        w = w.mul(gate, axis=0)
         fb = p["fallback"]
         if fb in md.adj_close.columns:
             w[fb] = ((1 - w.sum(axis=1)).clip(lower=0.0)

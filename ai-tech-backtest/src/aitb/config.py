@@ -19,6 +19,26 @@ DATA_DIR = Path(os.environ.get("AITB_DATA_DIR", PROJECT_ROOT / "data"))
 RESULTS_DIR = Path(os.environ.get("AITB_RESULTS_DIR", PROJECT_ROOT / "results"))
 REPORTS_DIR = Path(os.environ.get("AITB_REPORTS_DIR", PROJECT_ROOT / "reports"))
 
+# ---------------------------------------------------------------- data modes --
+# 'real' and 'synthetic' runs are fully separated: distinct data roots,
+# result registries and report directories. Nothing may cross between them —
+# the loader enforces the data side, the registry/report paths the output side.
+DATA_MODES = ("real", "synthetic")
+REAL_DATA_DIR = DATA_DIR / "real"          # canonical validated real datasets
+IMPORT_DIR = DATA_DIR / "import"           # user-supplied bundles land here
+
+
+def results_dir(mode: str) -> Path:
+    if mode not in DATA_MODES:
+        raise ValueError(f"unknown data mode '{mode}'")
+    return RESULTS_DIR / mode
+
+
+def reports_dir(mode: str) -> Path:
+    if mode not in DATA_MODES:
+        raise ValueError(f"unknown data mode '{mode}'")
+    return REPORTS_DIR / mode
+
 
 def load_yaml(name: str) -> dict[str, Any]:
     with open(CONFIG_DIR / name) as fh:

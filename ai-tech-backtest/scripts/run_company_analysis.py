@@ -24,7 +24,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
 from aitb.backtest.engine import run_backtest
-from aitb.config import RESULTS_DIR, load_cost_scenarios
+from aitb.config import results_dir, load_cost_scenarios
 from aitb.data.loader import load_market_data
 from aitb.features import above_sma
 from aitb.metrics import ann_vol, cagr, max_drawdown, sharpe, summary
@@ -44,9 +44,15 @@ def trailing_return(r: pd.Series, years: int) -> float:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--provider", default="synthetic")
+    ap.add_argument("--data-mode", default="synthetic", choices=["synthetic", "real"])
     args = ap.parse_args()
 
-    md = load_market_data(args.provider)
+    if args.data_mode == "real":
+        from aitb.data.quality import require_gate
+        require_gate()
+        md = load_market_data(mode="real")
+    else:
+        md = load_market_data(args.provider, mode="synthetic")
     scens = load_cost_scenarios()
     qqq = md.adj_close["QQQ"].pct_change()
 
@@ -106,10 +112,11 @@ def main() -> int:
                  f"{100 * row.get('overlay_cagr_base', float('nan')):.1f}%%")
 
     out = pd.DataFrame(rows)
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    out.to_csv(RESULTS_DIR / "company_analysis.csv", index=False)
-    out.to_parquet(RESULTS_DIR / "company_analysis.parquet")
-    log.info("wrote %d company rows to %s", len(out), RESULTS_DIR / "company_analysis.csv")
+    rdir = results_dir(args.data_mode)
+    rdir.mkdir(parents=True, exist_ok=True)
+    out.to_csv(rdir / "company_analysis.csv", index=False)
+    out.to_parquet(rdir / "company_analysis.parquet")
+    log.info("wrote %d company rows to %s", len(out), rdir / "company_analysis.csv")
     return 0
 
 

@@ -17,7 +17,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from aitb.config import REPORTS_DIR, RESULTS_DIR, load_backtest_config
+from aitb.config import load_backtest_config, reports_dir, results_dir
 from aitb.data.loader import load_market_data
 from aitb.experiments import ExperimentRegistry, _git_commit
 from aitb.metrics import summary as metric_summary
@@ -32,22 +32,64 @@ from aitb.validation import strategy_correlation, subperiod_table
 log = get_logger("make_report")
 
 
+def write_unavailable_stub(rep_dir, reason: str) -> int:
+    """Real-data report placeholder — never populated with synthetic numbers."""
+    rep_dir.mkdir(parents=True, exist_ok=True)
+    (rep_dir / "research_report.html").write_text(f"""<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Real-data report — UNAVAILABLE</title></head>
+<body style="font-family:sans-serif;max-width:800px;margin:3rem auto">
+<h1>Real-data research report: UNAVAILABLE</h1>
+<p><b>Reason:</b> {reason}</p>
+<p>This placeholder is intentional: synthetic results are never presented as
+real-market results. To produce this report, run in a network-enabled
+environment:</p>
+<pre>
+python scripts/download_real_data.py --providers yahoo stooq fred sec --start 1998-01-01 --output data/export_bundle
+python scripts/import_data_bundle.py --input data/export_bundle
+python scripts/validate_real_data.py
+python scripts/run_all.py --data-mode real
+</pre>
+<p>Required datasets: daily OHLCV + adjusted close for the configured universe
+and benchmarks; FRED macro series; SEC EDGAR fundamentals (optional but
+recommended). See data/real_data_manifest.md for the full list.</p>
+</body></html>""")
+    log.warning("real report unavailable: %s", reason)
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--provider", default="synthetic")
+    ap.add_argument("--data-mode", default="synthetic", choices=["synthetic", "real"])
     args = ap.parse_args()
 
-    md = load_market_data(args.provider)
-    registry = ExperimentRegistry()
+    RES = results_dir(args.data_mode)
+    REP = reports_dir(args.data_mode)
+    REP.mkdir(parents=True, exist_ok=True)
+
+    gate = None
+    if args.data_mode == "real":
+        from aitb.data.quality import require_gate
+        try:
+            gate = require_gate()
+        except Exception as exc:
+            return write_unavailable_stub(REP, str(exc))
+        md = load_market_data(mode="real")
+    else:
+        md = load_market_data(args.provider, mode="synthetic")
+
+    registry = ExperimentRegistry.for_mode(args.data_mode)
     df = registry.load()
     if df.empty:
+        if args.data_mode == "real":
+            return write_unavailable_stub(REP, "no real-data experiments have been run yet")
         log.error("registry empty — run experiments first")
         return 1
     bt_cfg = load_backtest_config()
 
     ranking = rank_experiments(df)
-    ranking.to_csv(RESULTS_DIR / "strategy_ranking.csv", index=False)
-    ranking.to_parquet(RESULTS_DIR / "strategy_ranking.parquet")
+    ranking.to_csv(RES / "strategy_ranking.csv", index=False)
+    ranking.to_parquet(RES / "strategy_ranking.parquet")
 
     ok = df[(df["status"] == "ok") & (df["scenario"] == "base")]
     curves: dict[str, pd.Series] = {}
@@ -200,7 +242,7 @@ in-sample for grid-selected variants; holdout is the untouched final window.</p>
         sens_html += img_tag(sensitivity_heatmap(
             gdf, "lookback", "top_n", "sharpe",
             "XSMomentumTopN — development Sharpe by parameter"))
-    rob_dir = RESULTS_DIR / "robustness"
+    rob_dir = RES / "robustness"
     fam_path = rob_dir / "family_summary.csv"
     if fam_path.exists():
         fam = pd.read_csv(fam_path)
@@ -234,7 +276,7 @@ in-sample for grid-selected variants; holdout is the untouched final window.</p>
     sections.append({"title": "10. Strategy correlation / redundancy", "html": corr_html})
 
     # ---- 11. Company analysis -------------------------------------------
-    comp_path = RESULTS_DIR / "company_analysis.csv"
+    comp_path = RES / "company_analysis.csv"
     comp_html = ""
     if comp_path.exists():
         comp = pd.read_csv(comp_path)
@@ -284,23 +326,34 @@ after-tax comparison of active vs buy-and-hold.</li>
 synthetic) performance does not predict future results.</p>"""})
 
     # ---- render ----------------------------------------------------------
+    if args.data_mode == "real" and gate is not None:
+        from aitb.holdout import holdout_status
+        hs = holdout_status("real")
+        warnings.insert(0,
+            f"REAL DATA MODE — quality gate: {gate['status']} (validated "
+            f"{gate.get('validated_at', '?')[:10]}). Limitations: "
+            + ("; ".join(gate.get("limitations", [])[:4]) or "none recorded")
+            + (". HOLDOUT COMPROMISED: accessed more than once or before freezing."
+               if hs.get("compromised") else ""))
     out = render_report(
-        "AI & Technology Strategy Research Report", sections,
-        provider=args.provider,
+        f"AI & Technology Strategy Research Report [{args.data_mode.upper()} DATA]",
+        sections,
+        provider=("real-store" if args.data_mode == "real" else args.provider),
         span=f"{md.calendar[0].date()} – {md.calendar[-1].date()}",
-        git=_git_commit(), warnings=warnings)
+        git=_git_commit(), warnings=warnings,
+        out_path=REP / "research_report.html")
 
     # Markdown summary export
     md_lines = ["# Strategy research summary\n",
                 f"Provider: {args.provider} (synthetic = demonstration data)\n",
                 "## Top strategies\n",
                 ranking.head(10).to_markdown(index=False), "\n"]
-    (REPORTS_DIR / "summary.md").write_text("\n".join(md_lines))
+    (REP / "summary.md").write_text("\n".join(md_lines))
     ok_export = ok.copy()
     for col in ("metrics_dev", "metrics_holdout", "spec", "split", "concentration", "subperiods"):
         if col in ok_export.columns:
             ok_export[col] = ok_export[col].map(str)
-    ok_export.to_csv(RESULTS_DIR / "experiments_export.csv", index=False)
+    ok_export.to_csv(RES / "experiments_export.csv", index=False)
     log.info("report: %s", out)
     return 0
 
