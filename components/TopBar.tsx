@@ -13,10 +13,13 @@ export default function TopBar({
   onOpenActivity,
   onOpenFeed,
   onOpenCrossings,
+  onAsk,
 }: {
   onOpenActivity: () => void;
   onOpenFeed: () => void;
   onOpenCrossings: () => void;
+  /** Open the Ask-your-friends panel, optionally with the typed question. */
+  onAsk: (question: string) => void;
 }) {
   const viewer = useViewer();
   const requestFlyTo = useStore((s) => s.requestFlyTo);
@@ -50,15 +53,18 @@ export default function TopBar({
     }
     if (q.trim().length < 2) {
       setResults([]);
+      setOpen(false);
       return;
     }
+    // Open right away: the "Ask your friends" row is useful before (and even
+    // without) any geocoder results.
+    setOpen(true);
     const t = setTimeout(async () => {
       abortRef.current?.abort();
       const ac = new AbortController();
       abortRef.current = ac;
       const r = await searchPlaces(q, ac.signal);
       setResults(r);
-      setOpen(true);
     }, 280);
     return () => clearTimeout(t);
   }, [q]);
@@ -116,8 +122,32 @@ export default function TopBar({
             </button>
           )}
         </div>
-        {open && results.length > 0 && (
+        {open && q.trim().length >= 2 && (
           <ul className="absolute z-10 mt-2 max-h-[55dvh] w-full overflow-y-auto rounded-2xl bg-paper shadow-float max-sm:fixed max-sm:inset-x-2 max-sm:top-[52px] max-sm:mt-0 max-sm:w-auto">
+            {/* Ask the trust graph instead of the geocoder */}
+            <li>
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  setResults([]);
+                  onAsk(q);
+                }}
+                className="flex w-full items-center gap-2.5 border-b border-line px-4 py-2.5 text-left text-sm hover:bg-paper-2"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="shrink-0 text-accent">
+                  <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
+                  <path d="M18.5 13c.6 2 1.3 2.9 3 3.2-1.7.3-2.4 1.2-3 3.2-.6-2-1.3-2.9-3-3.2 1.7-.3 2.4-1.2 3-3.2z" fill="currentColor" opacity=".7" />
+                </svg>
+                <span className="min-w-0">
+                  <span className="block truncate">
+                    Ask your friends <span className="text-ink-3">“{q}”</span>
+                  </span>
+                  <span className="block truncate text-xs text-ink-3">
+                    Answers from people you trust, not the internet
+                  </span>
+                </span>
+              </button>
+            </li>
             {results.map((r, i) => (
               <li key={i}>
                 <button

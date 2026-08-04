@@ -156,6 +156,8 @@ interface WaypointState {
   renameTrip: (id: string, title: string) => void;
   tripDraft: { title: string; visibility: "friends" | "private"; stops: TripStop[] } | null;
   startTripDraft: () => void;
+  /** Fork a friend's trip into your own draft — their stops, your route now. */
+  cloneTripToDraft: (tripId: string) => boolean;
   cancelTripDraft: () => void;
   setTripDraftTitle: (t: string) => void;
   setTripDraftVisibility: (v: "friends" | "private") => void;
@@ -621,6 +623,30 @@ export const useStore = create<WaypointState>((set, get) => ({
       selectedPinId: null,
       addDraft: null,
     }),
+  cloneTripToDraft: (tripId) => {
+    const s = get();
+    const source = s.trips.find((t) => t.id === tripId);
+    // Only trips the viewer can already see are cloneable (own or friends').
+    if (!source || source.stops.length === 0) return false;
+    const owner = s.users.find((u) => u.id === source.userId);
+    const first = owner?.displayName.split(" ")[0];
+    const title =
+      source.userId === s.viewerId || !first ? `${source.title} (copy)` : `${first}'s ${source.title}`;
+    set({
+      tripDraft: {
+        title,
+        visibility: "friends",
+        stops: source.stops.map((stop, i) => ({
+          ...stop,
+          id: backendEnabled ? crypto.randomUUID() : `clone-${tripId}-${i}`,
+        })),
+      },
+      mapMode: "trips",
+      selectedPinId: null,
+      addDraft: null,
+    });
+    return true;
+  },
   cancelTripDraft: () => set({ tripDraft: null }),
   setTripDraftTitle: (t) =>
     set((s) => (s.tripDraft ? { tripDraft: { ...s.tripDraft, title: t } } : {})),

@@ -21,6 +21,7 @@ import LandmarkCard from "./LandmarkCard";
 import OverlayCard from "./OverlayCard";
 import CrossingsPanel from "./CrossingsPanel";
 import SearchPlaceCard from "./SearchPlaceCard";
+import AskPanel from "./AskPanel";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
 import { cancelFlightRender } from "@/lib/renderFlight";
@@ -36,6 +37,9 @@ export default function MapApp() {
   const [activityOpen, setActivityOpen] = useState(false);
   const [topSpotsOpen, setTopSpotsOpen] = useState(false);
   const [tripsOpen, setTripsOpen] = useState(false);
+  // Ask-your-friends: null = closed; a string (possibly empty) opens the panel
+  // with that question pre-asked.
+  const [askQuestion, setAskQuestion] = useState<string | null>(null);
   const [guideTripId, setGuideTripId] = useState<string | null>(null);
   // Phones: the trip whose route is on screen — powers the floating guide button.
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
@@ -116,6 +120,7 @@ export default function MapApp() {
         onOpenActivity={() => setActivityOpen(true)}
         onOpenFeed={() => setFeedOpen(true)}
         onOpenCrossings={() => setCrossingsOpen(true)}
+        onAsk={(question) => setAskQuestion(question)}
       />
       {mapMode === "pins" && (
         <LayerRail
@@ -239,6 +244,9 @@ export default function MapApp() {
       )}
       {feedOpen && <PinFeed onClose={() => setFeedOpen(false)} />}
       {crossingsOpen && <CrossingsPanel onClose={() => setCrossingsOpen(false)} />}
+      {askQuestion !== null && (
+        <AskPanel initialQuestion={askQuestion} onClose={() => setAskQuestion(null)} />
+      )}
       {activityOpen && <ActivityPanel onClose={() => setActivityOpen(false)} />}
       {topSpotsOpen && <TopSpotsPanel onClose={() => setTopSpotsOpen(false)} />}
       {tripsOpen && (

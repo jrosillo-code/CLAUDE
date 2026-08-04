@@ -43,6 +43,26 @@ Mapped to the plan's build phases (§7):
 friends on the left rail; open a pin to see "who's also been here"; open a profile and drag
 the Top 5 to re-rank.
 
+## The trust-graph layer (new)
+
+Three features that compound the one dataset generic AI planners don't have — what the
+people you actually know thought (see `docs/idea-research-2026-08.md` for the market
+research behind them):
+
+- **Ask your friends** — type a question into the search bar ("Who's been to Japan?",
+  "Where do my friends surf?") and pick *Ask your friends*. Answers are built **only**
+  from your circle's pins, ratings, Top 5s and trips — every claim is a tappable card that
+  jumps to the friend's actual pin. Deterministic retrieval works keyless
+  (`lib/askFriends.ts`); with `ANTHROPIC_API_KEY` set, `/api/ask-friends` has Claude
+  rewrite the same evidence in a warmer voice (facts never come from the model).
+- **Don't leave without…** — search a place and the trust card now ends with up to
+  **three** friend-endorsed spots in day-trip range you haven't been to (Top-5 entries or
+  8+/10 ratings only), each with the friend's own words as the reason (`lib/regret.ts`).
+  Honest by design: no fake urgency, and when you've already covered the area it says so.
+- **Clone trip** — any friend's trip in the Trips panel has a *Clone trip* button: their
+  stops become your editable draft ("Leo's Coast chase"), ready to tweak and save. The
+  honest version of "turn a Reel into an itinerary" — your source is someone you trust.
+
 ## Architecture
 
 ```

@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useStore } from "@/lib/store";
 import { acceptedFriendIds, canView, coverUrl, distanceKm } from "@/lib/data";
+import { dontMissPicks } from "@/lib/regret";
 import type { PinWithOwner } from "@/lib/types";
 
 // The trust graph, at the moment of intent: right after you search a place,
@@ -24,6 +25,23 @@ export default function SearchPlaceCard() {
   const tripDraft = useStore((s) => s.tripDraft);
   const addTripStop = useStore((s) => s.addTripStop);
 
+  const topPlaces = useStore((s) => s.topPlaces);
+
+  // The regret minimizer at the moment of intent: friend-endorsed spots in the
+  // wider area (day-trip range) you haven't been to yet. Max three, honest.
+  const dontMiss = useMemo(() => {
+    if (!place) return { picks: [], alreadyCovered: false };
+    return dontMissPicks({
+      anchor: { lat: place.lat, lng: place.lng },
+      viewerId,
+      users,
+      pins,
+      friendships,
+      follows,
+      topPlaces,
+    });
+  }, [place, pins, users, friendships, follows, topPlaces, viewerId]);
+
   const tips = useMemo<PinWithOwner[]>(() => {
     if (!place) return [];
     const friendIds = acceptedFriendIds(friendships, viewerId);
@@ -42,7 +60,7 @@ export default function SearchPlaceCard() {
     return [...best.values()].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   }, [place, pins, users, friendships, follows, viewerId]);
 
-  if (!place || tips.length === 0) return null;
+  if (!place || (tips.length === 0 && dontMiss.picks.length === 0)) return null;
 
   return (
     <div className="fixed bottom-24 left-1/2 z-30 w-[min(92vw,420px)] -translate-x-1/2 sm:bottom-8">
@@ -50,7 +68,9 @@ export default function SearchPlaceCard() {
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <div className="text-[11px] font-semibold uppercase tracking-wider text-accent">
-              {tips.length} {tips.length === 1 ? "traveler you trust has" : "travelers you trust have"} been here
+              {tips.length > 0
+                ? `${tips.length} ${tips.length === 1 ? "traveler you trust has" : "travelers you trust have"} been here`
+                : "Your friends know this area"}
             </div>
             <h3 className="mt-0.5 truncate font-display text-lg leading-tight">{place.name}</h3>
           </div>
@@ -96,6 +116,51 @@ export default function SearchPlaceCard() {
             );
           })}
         </div>
+
+        {/* Don't miss: friend-endorsed spots in day-trip range you haven't
+            done. Capped at three, no fake urgency — just the real gap. */}
+        {dontMiss.picks.length > 0 && (
+          <div className="mt-3 border-t border-line pt-2.5">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-3">
+              Don&apos;t leave without
+            </div>
+            <div className="mt-1.5 space-y-1.5">
+              {dontMiss.picks.map((p) => (
+                <button
+                  key={p.pin.id}
+                  onClick={() => {
+                    selectPin(p.pin.id);
+                    requestFlyTo(p.pin.lng, p.pin.lat, 10, { flat: true });
+                  }}
+                  className="flex w-full items-center gap-2.5 rounded-xl bg-paper-2/60 p-2 text-left transition-colors hover:bg-paper-2"
+                >
+                  <img
+                    src={coverUrl(p.pin) || p.pin.owner.avatarUrl}
+                    alt=""
+                    className="h-9 w-9 shrink-0 rounded-lg object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-1.5 text-sm">
+                      <span className="truncate font-medium">{p.pin.placeName}</span>
+                      <span className="tnum shrink-0 text-[10px] text-ink-3">
+                        {p.distanceKm < 10
+                          ? `${p.distanceKm.toFixed(1)} km`
+                          : `${Math.round(p.distanceKm)} km`}
+                      </span>
+                    </div>
+                    <div className="mt-0.5 truncate text-[11px] text-ink-3">{p.reason}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        {dontMiss.alreadyCovered && (
+          <p className="mt-3 border-t border-line pt-2.5 text-[11px] leading-relaxed text-ink-3">
+            You&apos;ve already been to the spots your friends rate around here. Nothing you&apos;d
+            regret skipping.
+          </p>
+        )}
 
         {tripDraft && (
           <button

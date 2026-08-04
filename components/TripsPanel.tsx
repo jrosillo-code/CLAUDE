@@ -28,6 +28,7 @@ export default function TripsPanel({
   const deleteTrip = useStore((s) => s.deleteTrip);
   const renameTrip = useStore((s) => s.renameTrip);
   const startTripDraft = useStore((s) => s.startTripDraft);
+  const cloneTripToDraft = useStore((s) => s.cloneTripToDraft);
   const requestFitBounds = useStore((s) => s.requestFitBounds);
 
   const list = visibleTrips(trips, friendships, viewerId);
@@ -171,6 +172,28 @@ export default function TripsPanel({
                 >
                   View route
                 </button>
+                {/* Fork a friend's route: their stops become your editable
+                    draft — the honest version of "turn a Reel into a trip". */}
+                {!mine && (
+                  <button
+                    onClick={() => {
+                      if (!cloneTripToDraft(t.id)) return;
+                      const lngs = t.stops.map((s) => s.lng);
+                      const lats = t.stops.map((s) => s.lat);
+                      requestFitBounds({
+                        w: Math.min(...lngs) - 0.5,
+                        s: Math.min(...lats) - 0.5,
+                        e: Math.max(...lngs) + 0.5,
+                        n: Math.max(...lats) + 0.5,
+                      });
+                      onClose();
+                    }}
+                    title={`Copy ${owner?.displayName ?? "this"} route as your own draft`}
+                    className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-ink-2 ring-1 ring-line transition-colors hover:bg-paper-2"
+                  >
+                    Clone trip
+                  </button>
+                )}
                 {mine && (
                   <button
                     onClick={() => deleteTrip(t.id)}
