@@ -1,9 +1,17 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useStore } from "@/lib/store";
 import { acceptedFriendIds, canView, coverUrl, distanceKm } from "@/lib/data";
 import { dontMissPicks } from "@/lib/regret";
+import {
+  quoteStance,
+  quotesFor,
+  quotesNearPlace,
+  sortQuotesByPriority,
+  type QuoteWithContext,
+} from "@/lib/interview";
+import { track, trackOnce } from "@/lib/analytics";
 import type { PinWithOwner } from "@/lib/types";
 
 // The trust graph, at the moment of intent: right after you search a place,
@@ -24,6 +32,10 @@ export default function SearchPlaceCard() {
   const requestFlyTo = useStore((s) => s.requestFlyTo);
   const tripDraft = useStore((s) => s.tripDraft);
   const addTripStop = useStore((s) => s.addTripStop);
+  const setMapMode = useStore((s) => s.setMapMode);
+  const shownTripIds = useStore((s) => s.shownTripIds);
+  const toggleTripShown = useStore((s) => s.toggleTripShown);
+  const requestFitBounds = useStore((s) => s.requestFitBounds);
 
   const topPlaces = useStore((s) => s.topPlaces);
   const reflections = useStore((s) => s.reflections);
@@ -46,6 +58,57 @@ export default function SearchPlaceCard() {
     });
   }, [place, pins, users, friendships, follows, topPlaces, reflections, trips, viewerId]);
 
+  // "What friends said": authorized debrief quotes about this area, matched
+  // by geography. Trust surface — friends and followed creators only; a
+  // stranger's public debrief never appears here. Disagreement stays visible:
+  // endorsements and warnings render side by side, no consensus is invented.
+  const friendVoices = useMemo(() => {
+    if (!place) return { endorsements: [], warnings: [], neutral: [] };
+    const friendIds = acceptedFriendIds(friendships, viewerId);
+    const trusted = new Set<string>([...friendIds, ...follows]);
+    const near = quotesNearPlace(
+      quotesFor(reflections, friendships, viewerId, users, trips, pins).filter(
+        (q) => q.owner.id !== viewerId && trusted.has(q.owner.id) && q.answer.text.trim()
+      ),
+      { lat: place.lat, lng: place.lng }
+    );
+    const sorted = sortQuotesByPriority(near);
+    return {
+      endorsements: sorted.filter((q) => quoteStance(q.answer) === "endorsement"),
+      warnings: sorted.filter((q) => quoteStance(q.answer) === "warning"),
+      neutral: sorted.filter((q) => quoteStance(q.answer) === "neutral"),
+    };
+  }, [place, reflections, friendships, follows, users, trips, pins, viewerId]);
+
+  const voicesShown =
+    friendVoices.endorsements.length + friendVoices.warnings.length + friendVoices.neutral.length;
+
+  // Evidence provenance events (ids only, deduped per session).
+  useEffect(() => {
+    for (const q of [
+      ...friendVoices.endorsements,
+      ...friendVoices.warnings,
+      ...friendVoices.neutral,
+    ]) {
+      trackOnce("reflection_place_evidence", {
+        reflectionId: q.reflection.id,
+        ownerId: q.owner.id,
+        viewerId,
+        questionId: q.answer.questionId,
+      });
+    }
+    for (const p of dontMiss.picks) {
+      if (p.fromDebrief && p.sourceReflectionId) {
+        trackOnce("reflection_dontmiss_evidence", {
+          reflectionId: p.sourceReflectionId,
+          ownerId: p.sourceOwnerId,
+          pinId: p.pin.id,
+          viewerId,
+        });
+      }
+    }
+  }, [friendVoices, dontMiss, viewerId]);
+
   const tips = useMemo<PinWithOwner[]>(() => {
     if (!place) return [];
     const friendIds = acceptedFriendIds(friendships, viewerId);
@@ -64,7 +127,34 @@ export default function SearchPlaceCard() {
     return [...best.values()].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   }, [place, pins, users, friendships, follows, viewerId]);
 
-  if (!place || (tips.length === 0 && dontMiss.picks.length === 0)) return null;
+  if (!place || (tips.length === 0 && dontMiss.picks.length === 0 && voicesShown === 0))
+    return null;
+
+  function openQuote(q: QuoteWithContext) {
+    if (q.pin) {
+      track("reflection_pin_nav", {
+        reflectionId: q.reflection.id,
+        pinId: q.pin.id,
+        ownerId: q.owner.id,
+        viewerId,
+      });
+      selectPin(q.pin.id);
+      requestFlyTo(q.pin.lng, q.pin.lat, 10, { flat: true });
+    } else if (q.trip) {
+      const t = q.trip;
+      setMapMode("trips");
+      if (!shownTripIds.has(t.id)) toggleTripShown(t.id);
+      const lngs = t.stops.map((s) => s.lng);
+      const lats = t.stops.map((s) => s.lat);
+      requestFitBounds({
+        w: Math.min(...lngs) - 0.5,
+        s: Math.min(...lats) - 0.5,
+        e: Math.max(...lngs) + 0.5,
+        n: Math.max(...lats) + 0.5,
+      });
+      setSearchedPlace(null);
+    }
+  }
 
   return (
     <div className="fixed bottom-24 left-1/2 z-30 w-[min(92vw,420px)] -translate-x-1/2 sm:bottom-8">
@@ -159,6 +249,27 @@ export default function SearchPlaceCard() {
             </div>
           </div>
         )}
+        {/* What friends said: verbatim debrief quotes about this area, split
+            by stance. Mixed evidence stays mixed — both sides render. */}
+        {voicesShown > 0 && (
+          <div className="mt-3 border-t border-line pt-2.5">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-3">
+              What friends said
+            </div>
+            <div className="mt-1.5 space-y-1.5">
+              {friendVoices.endorsements.map((q) => (
+                <VoiceRow key={`e-${q.reflection.id}-${q.answer.questionId}`} q={q} stance="endorsement" onOpen={openQuote} />
+              ))}
+              {friendVoices.warnings.map((q) => (
+                <VoiceRow key={`w-${q.reflection.id}-${q.answer.questionId}`} q={q} stance="warning" onOpen={openQuote} />
+              ))}
+              {friendVoices.neutral.map((q) => (
+                <VoiceRow key={`n-${q.reflection.id}-${q.answer.questionId}`} q={q} stance="neutral" onOpen={openQuote} />
+              ))}
+            </div>
+          </div>
+        )}
+
         {dontMiss.alreadyCovered && (
           <p className="mt-3 border-t border-line pt-2.5 text-[11px] leading-relaxed text-ink-3">
             You&apos;ve already been to the spots your friends rate around here. Nothing you&apos;d
@@ -179,5 +290,49 @@ export default function SearchPlaceCard() {
         )}
       </div>
     </div>
+  );
+}
+
+// One friend's verbatim statement about the area, with its stance made
+// visible instead of averaged into a score.
+function VoiceRow({
+  q,
+  stance,
+  onOpen,
+}: {
+  q: QuoteWithContext;
+  stance: "endorsement" | "warning" | "neutral";
+  onOpen: (q: QuoteWithContext) => void;
+}) {
+  const first = q.owner.displayName.split(" ")[0];
+  const mark =
+    stance === "endorsement" ? (
+      <span className="mt-0.5 shrink-0 text-accent" title="Recommends">✓</span>
+    ) : stance === "warning" ? (
+      <span className="mt-0.5 shrink-0" title="Would skip">⚠️</span>
+    ) : (
+      <span className="mt-0.5 shrink-0 text-ink-3" title="Observation">✦</span>
+    );
+  return (
+    <button
+      onClick={() => onOpen(q)}
+      className="flex w-full items-start gap-2 rounded-xl bg-paper-2/60 p-2 text-left transition-colors hover:bg-paper-2"
+      title={
+        q.pin ? `Fly to ${q.pin.placeName}` : q.trip ? `View route: ${q.trip.title}` : undefined
+      }
+    >
+      {mark}
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs italic leading-relaxed text-ink-2">
+          “{q.answer.text}”
+        </span>
+        <span className="mt-0.5 block text-[11px] text-ink-3">
+          — {first}
+          {q.trip ? `, after “${q.trip.title}”` : ""}
+          {q.pin ? ` · ${q.pin.placeName} ↗` : ""}
+          {q.answer.scale ? ` · would return: ${q.answer.scale}` : ""}
+        </span>
+      </span>
+    </button>
   );
 }

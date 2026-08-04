@@ -1,14 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Sheet from "./Sheet";
 import { useStore } from "@/lib/store";
 import {
   attachOptions,
   questionsForTrip,
+  rewardLines,
   REFLECTION_VISIBILITY_LABEL,
   type InterviewQuestion,
 } from "@/lib/interview";
+import { track } from "@/lib/analytics";
 import type { ReflectionAnswer, Visibility } from "@/lib/types";
 
 // The 60-second debrief: one question per screen, tap-through, done before
@@ -56,6 +58,19 @@ export default function ReflectionSheet({
     reflection?.status === "complete" ? questions.length : firstOpen === -1 ? questions.length : firstOpen
   );
   const [confirmDelete, setConfirmDelete] = useState(false);
+  // After saving: the honest reward — where these exact answers now surface.
+  const [savedLines, setSavedLines] = useState<string[] | null>(null);
+
+  // Lifecycle events (ids only, never text): opened fresh vs resumed a draft.
+  useEffect(() => {
+    if (!trip || trip.userId !== viewerId) return;
+    if (reflection?.status === "draft" && reflection.answers.length > 0) {
+      track("debrief_resumed", { reflectionId: reflection.id, tripId, viewerId });
+    } else if (!reflection || reflection.status === "draft") {
+      track("debrief_started", { reflectionId: reflection?.id, tripId, viewerId });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!trip || trip.userId !== viewerId) return null;
   const done = step >= questions.length;
@@ -91,7 +106,11 @@ export default function ReflectionSheet({
     if (!id) return;
     setReflectionVisibility(id, visibility);
     completeReflection(id);
-    onClose();
+    track("debrief_completed", { reflectionId: id, tripId, viewerId });
+    const saved = useStore.getState().reflections.find((r) => r.id === id);
+    setSavedLines(
+      rewardLines({ answers: saved?.answers ?? [], visibility, trip: trip!, pins })
+    );
   }
 
   return (
@@ -136,7 +155,31 @@ export default function ReflectionSheet({
       </div>
 
       <div className="scroll-thin flex-1 overflow-y-auto px-5 py-5">
-        {q && (
+        {savedLines && (
+          <div className="animate-fade">
+            <div className="text-2xl">🌱</div>
+            <h3 className="mt-2 font-display text-xl">Saved — your words are working now</h3>
+            <ul className="mt-3 space-y-2">
+              {savedLines.map((line, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-2 rounded-2xl border border-line bg-paper-2/60 p-3 text-sm leading-relaxed text-ink-2"
+                >
+                  <span className="mt-px shrink-0 text-accent">✦</span>
+                  {line}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={onClose}
+              className="mt-4 w-full rounded-full bg-accent py-2.5 text-sm font-semibold text-paper"
+            >
+              Done
+            </button>
+          </div>
+        )}
+
+        {!savedLines && q && (
           <QuestionStep
             key={q.id}
             question={q}
@@ -148,7 +191,7 @@ export default function ReflectionSheet({
           />
         )}
 
-        {done && (
+        {!savedLines && done && (
           <FinishStep
             answers={reflection?.answers ?? []}
             questions={questions}

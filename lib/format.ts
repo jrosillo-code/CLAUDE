@@ -18,3 +18,13 @@ export function formatDates(start?: string, end?: string): string {
   if (s.y === e.y) return `${s.d} ${MONTHS[s.m - 1]} – ${e.d} ${MONTHS[e.m - 1]} ${s.y}`;
   return `${s.d} ${MONTHS[s.m - 1]} ${s.y} – ${e.d} ${MONTHS[e.m - 1]} ${e.y}`;
 }
+
+/** Country code → English name via Intl ("PT" → "Portugal"). */
+export function countryDisplayName(cc: string): string {
+  if (!cc) return "";
+  try {
+    return new Intl.DisplayNames(["en"], { type: "region" }).of(cc.toUpperCase()) ?? cc;
+  } catch {
+    return cc;
+  }
+}

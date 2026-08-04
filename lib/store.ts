@@ -32,6 +32,7 @@ import {
 } from "./seed";
 import { backendEnabled, supabase } from "./supabase";
 import * as backend from "./backend";
+import { track } from "./analytics";
 
 // When the Supabase env is configured the store hydrates from the real
 // backend and every mutation writes through; otherwise the seeded demo world
@@ -654,6 +655,18 @@ export const useStore = create<WaypointState>((set, get) => ({
     const first = owner?.displayName.split(" ")[0];
     const title =
       source.userId === s.viewerId || !first ? `${source.title} (copy)` : `${first}'s ${source.title}`;
+    // Contribution signal: the clone carried the owner's completed debrief.
+    const debrief = s.reflections.find(
+      (r) => r.tripId === tripId && r.userId === source.userId && r.status === "complete"
+    );
+    if (debrief && source.userId !== s.viewerId) {
+      track("trip_cloned_with_debrief", {
+        reflectionId: debrief.id,
+        tripId,
+        ownerId: source.userId,
+        viewerId: s.viewerId,
+      });
+    }
     set({
       tripDraft: {
         title,

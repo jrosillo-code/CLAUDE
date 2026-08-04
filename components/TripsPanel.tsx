@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Sheet from "./Sheet";
+import DebriefQuotes from "./DebriefQuotes";
 import { useStore } from "@/lib/store";
 import { visibleTrips } from "@/lib/data";
 import { appleMapsRouteUrl, googleMapsRouteUrl } from "@/lib/directions";
+import { contributionCount } from "@/lib/analytics";
 
 // Trips: planned routes — ordered stops stitched by a thread on the map.
 // Yours plus friends' shared ones. Never public: friends-only or private.
@@ -170,6 +172,11 @@ export default function TripsPanel({
                   </span>
                 ))}
               </div>
+              {/* A friend's finished trip speaks for itself: their debrief,
+                  in their words, right on the card. */}
+              {!mine && t.completedOn && (
+                <DebriefQuotes tripId={t.id} onNavigateToPin={onClose} />
+              )}
               <div className="mt-3 flex gap-2">
                 <button
                   onClick={() => viewTrip(t.id)}
@@ -229,6 +236,9 @@ export default function TripsPanel({
                   );
                 }
                 if (refl?.status === "complete") {
+                  // Reward signal, no engagement pressure: how often these
+                  // words did work for a friend (this device's log only).
+                  const cited = contributionCount(viewerId, refl.id);
                   return (
                     <button
                       onClick={() => {
@@ -238,6 +248,14 @@ export default function TripsPanel({
                       className="mt-2 w-full rounded-full bg-paper py-2 text-xs font-semibold text-ink-3 ring-1 ring-line transition-colors hover:bg-paper-2"
                     >
                       Debrief saved ✓ — view or edit
+                      {cited > 0 && (
+                        <span
+                          className="ml-1.5 rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-bold text-accent"
+                          title="Times your answers appeared as evidence for a friend, on this device"
+                        >
+                          helped {cited}×
+                        </span>
+                      )}
                     </button>
                   );
                 }

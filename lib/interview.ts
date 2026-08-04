@@ -10,6 +10,7 @@ import type {
   Visibility,
 } from "./types";
 import { acceptedFriendIds, distanceKm } from "./data";
+import { countryDisplayName } from "./format";
 
 // The 60-second post-trip interview. Ask at most five questions, and never
 // one the graph can already answer: if the trip has a clear favorite (a 9+/10
@@ -179,3 +180,113 @@ export const REFLECTION_VISIBILITY_LABEL: Record<Visibility, string> = {
   friends: "Friends",
   public: "Public",
 };
+
+// ── Surfacing helpers ───────────────────────────────────────────────────────
+
+/** Collapsed-card priority: the most decision-changing answers first. */
+export const QUOTE_PRIORITY: InterviewQuestionId[] = [
+  "dont_miss",
+  "skip",
+  "surprise",
+  "favorite",
+  "return",
+];
+
+export function sortQuotesByPriority(quotes: QuoteWithContext[]): QuoteWithContext[] {
+  const rank = new Map(QUOTE_PRIORITY.map((id, i) => [id, i]));
+  return [...quotes].sort(
+    (a, b) => (rank.get(a.answer.questionId) ?? 9) - (rank.get(b.answer.questionId) ?? 9)
+  );
+}
+
+/**
+ * Is this quote an endorsement, a warning, or a neutral observation?
+ * Disagreement between quotes is shown side by side, never averaged.
+ */
+export type QuoteStance = "endorsement" | "warning" | "neutral";
+
+export function quoteStance(a: ReflectionAnswer): QuoteStance {
+  if (a.questionId === "dont_miss" || a.questionId === "favorite") return "endorsement";
+  if (a.questionId === "skip") return "warning";
+  if (a.questionId === "return") {
+    if (a.scale === "yes") return "endorsement";
+    if (a.scale === "no") return "warning";
+  }
+  return "neutral";
+}
+
+/**
+ * The author's reward, honestly earned: after saving a debrief, tell them
+ * where these exact answers can now surface — derived ONLY from what was
+ * saved and what the retrieval layer actually does with it. A private
+ * debrief promises nothing except privacy.
+ */
+export function rewardLines(args: {
+  answers: ReflectionAnswer[];
+  visibility: Visibility;
+  trip: Trip;
+  pins: Pin[];
+}): string[] {
+  const { answers, visibility, trip, pins } = args;
+  const answered = answers.filter((a) => a.text.trim() || a.scale);
+  if (answered.length === 0) return ["Nothing saved yet — answer a question or two first."];
+  if (visibility === "private") {
+    return [
+      "Saved privately — only you can read this. Switch it to Friends when you want it working for your circle.",
+    ];
+  }
+
+  const pinsById = new Map(pins.map((p) => [p.id, p]));
+  const lines: string[] = [];
+  let hasTripLevel = false;
+
+  for (const a of answered) {
+    const pin = a.pinId ? pinsById.get(a.pinId) : undefined;
+    if (!pin) {
+      hasTripLevel = true;
+      continue;
+    }
+    const country = countryDisplayName(pin.countryCode);
+    if (a.questionId === "dont_miss" || a.questionId === "favorite") {
+      lines.push(
+        `Your ${pin.placeName} tip can now appear in friends' “Don't leave without” picks near ${pin.placeName}${country ? ` and when they ask about ${country}` : ""}.`
+      );
+    } else if (a.questionId === "skip") {
+      lines.push(
+        `Your ${pin.placeName} warning can now steer friends' “Don't leave without” picks away from the same mistake.`
+      );
+    } else {
+      lines.push(
+        `Your ${pin.placeName} note can now appear when friends look at ${pin.placeName}${country ? ` or ask about ${country}` : ""}.`
+      );
+    }
+  }
+
+  if (hasTripLevel) {
+    const stops = [...new Set(trip.stops.map((s) => s.placeName))].slice(0, 3);
+    lines.push(
+      `Your trip-level answers surface when friends ask about ${stops.join(", ")} — and on “${trip.title}” itself.`
+    );
+  }
+  return lines;
+}
+
+/**
+ * Quotes relevant to a location, matched by GEOGRAPHY, never by name — two
+ * towns can share a name across the world, so a pin-anchored quote counts
+ * only when its own pin is nearby, and a whole-trip quote counts when one of
+ * the trip's stops is (that's how trip-level answers inherit destination
+ * context).
+ */
+export function quotesNearPlace(
+  quotes: QuoteWithContext[],
+  anchor: { lat: number; lng: number },
+  radiusKm = 25
+): QuoteWithContext[] {
+  return quotes.filter((q) => {
+    if (q.pin) return distanceKm(anchor.lat, anchor.lng, q.pin.lat, q.pin.lng) <= radiusKm;
+    if (q.trip)
+      return q.trip.stops.some((s) => distanceKm(anchor.lat, anchor.lng, s.lat, s.lng) <= radiusKm);
+    return false;
+  });
+}

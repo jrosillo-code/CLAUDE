@@ -23,6 +23,9 @@ export interface DontMissPick {
   topRank?: number;
   /** Set when the reason is a verbatim debrief quote. */
   fromDebrief?: boolean;
+  /** Provenance of a debrief-sourced reason (for linking and analytics). */
+  sourceReflectionId?: string;
+  sourceOwnerId?: string;
 }
 
 export interface DontMissResult {
@@ -57,8 +60,10 @@ export function dontMissPicks(args: {
   const topByPin = new Map(topPlaces.map((t) => [t.pinId, t]));
   const myPins = pins.filter((p) => p.userId === viewerId);
 
-  // Pin-anchored debrief signals, keyed by place name (friends' separate pins
-  // on the same place should agree with each other).
+  // Pin-anchored debrief signals. A quote binds to a candidate pin only when
+  // the names match AND the pins sit within ~25 km of each other — name alone
+  // would let a "skip Springfield" demote every Springfield on the planet,
+  // and geography alone would bind it to a different spot one town over.
   const quotes = quotesFor(
     args.reflections ?? [],
     friendships,
@@ -67,20 +72,19 @@ export function dontMissPicks(args: {
     args.trips ?? [],
     pins
   ).filter((q) => q.owner.id !== viewerId && q.pin);
-  const placeKey = (name: string) => name.trim().toLowerCase();
-  const endorseQuotes = new Map<string, (typeof quotes)[number]>();
-  const skipPlaces = new Set<string>();
-  for (const q of quotes) {
-    const key = placeKey(q.pin!.placeName);
-    if (q.answer.questionId === "skip") skipPlaces.add(key);
-    else if (
-      (q.answer.questionId === "dont_miss" || q.answer.questionId === "favorite") &&
-      q.answer.text.trim() &&
-      !endorseQuotes.has(key)
-    ) {
-      endorseQuotes.set(key, q);
-    }
-  }
+  const SAME_PLACE_KM = 25;
+  const samePlace = (quotePin: Pin, candidate: Pin) =>
+    quotePin.placeName.trim().toLowerCase() === candidate.placeName.trim().toLowerCase() &&
+    distanceKm(quotePin.lat, quotePin.lng, candidate.lat, candidate.lng) <= SAME_PLACE_KM;
+  const endorseQuoteFor = (candidate: Pin) =>
+    quotes.find(
+      (q) =>
+        (q.answer.questionId === "dont_miss" || q.answer.questionId === "favorite") &&
+        q.answer.text.trim() &&
+        samePlace(q.pin!, candidate)
+    );
+  const skipQuoteFor = (candidate: Pin) =>
+    quotes.find((q) => q.answer.questionId === "skip" && samePlace(q.pin!, candidate));
 
   let endorsedNearby = 0;
   const candidates: DontMissPick[] = [];
@@ -94,15 +98,14 @@ export function dontMissPicks(args: {
     const dist = distanceKm(anchor.lat, anchor.lng, pin.lat, pin.lng);
     if (dist > radius) continue;
 
-    const key = placeKey(pin.placeName);
     const top = topByPin.get(pin.id);
-    const quote = endorseQuotes.get(key);
+    const quote = endorseQuoteFor(pin);
     const ratingEndorsed = (pin.rating ?? 0) >= MIN_RATING;
     const endorsed = top !== undefined || ratingEndorsed || quote !== undefined;
     if (!endorsed) continue;
     // An explicit "skip" beats an implicit rating; it never beats an explicit
     // positive (Top-5 or a "don't miss" quote) — contested places stay shown.
-    if (skipPlaces.has(key) && !top && !quote) continue;
+    if (skipQuoteFor(pin) && !top && !quote) continue;
     endorsedNearby++;
 
     // Skip what the viewer has already done — the point is the real gap,
@@ -124,6 +127,8 @@ export function dontMissPicks(args: {
       distanceKm: dist,
       topRank: top?.rank,
       fromDebrief: quote !== undefined,
+      sourceReflectionId: quote?.reflection.id,
+      sourceOwnerId: quote?.owner.id,
     });
   }
 

@@ -6,6 +6,7 @@ import { useStore } from "@/lib/store";
 import { askFriends, evidenceForApi, type AskAnswer } from "@/lib/askFriends";
 import { coverUrl } from "@/lib/data";
 import { flagEmoji } from "@/lib/passport";
+import { track, trackOnce } from "@/lib/analytics";
 
 // "Ask your friends": natural-language questions answered only from the
 // people you trust — their pins, ratings, Top 5s and trips. The deterministic
@@ -77,6 +78,16 @@ export default function AskPanel({
     });
     setAnswer(a);
     setAiText(null);
+
+    // Provenance: whose saved words did work in this answer (ids only).
+    for (const qc of a.quotes) {
+      trackOnce("reflection_ask_evidence", {
+        reflectionId: qc.reflection.id,
+        ownerId: qc.owner.id,
+        viewerId,
+        questionId: qc.answer.questionId,
+      });
+    }
 
     // Optional AI voice on top of the same evidence.
     aiAbort.current?.abort();
@@ -233,8 +244,15 @@ export default function AskPanel({
               <button
                 key={`${qc.reflection.id}-${qc.answer.questionId}`}
                 onClick={() => {
-                  if (qc.pin) openPin(qc.pin.id, qc.pin.lng, qc.pin.lat);
-                  else if (qc.trip) viewTrip(qc.trip.id);
+                  if (qc.pin) {
+                    track("reflection_pin_nav", {
+                      reflectionId: qc.reflection.id,
+                      pinId: qc.pin.id,
+                      ownerId: qc.owner.id,
+                      viewerId,
+                    });
+                    openPin(qc.pin.id, qc.pin.lng, qc.pin.lat);
+                  } else if (qc.trip) viewTrip(qc.trip.id);
                 }}
                 className="w-full rounded-2xl border border-line bg-paper-2/60 p-3.5 text-left transition-colors hover:bg-paper-2"
               >
