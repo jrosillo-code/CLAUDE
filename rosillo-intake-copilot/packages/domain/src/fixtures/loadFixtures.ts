@@ -38,6 +38,10 @@ export function loadCaseFixtures(fixturesRoot: string): LoadedFixture[] {
     }
 
     const attachments: AttachmentInput[] = fixture.attachments.map((filename, i) => {
+      // Path-traversal guard: attachment references are bare filenames only.
+      if (/[/\\]|\.\.|\0|%2e|%2f/i.test(filename)) {
+        throw new Error(`Fixture ${fixture.case_id}: unsafe attachment filename "${filename}" rejected.`);
+      }
       const ext = filename.split('.').pop()?.toLowerCase() ?? '';
       const textPath = join(attachmentsDir, `${filename}.txt`);
       const text = existsSync(textPath) ? readFileSync(textPath, 'utf8') : '';

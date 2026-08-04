@@ -2,8 +2,9 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { analyseCommunication, DECISION_TYPES, type DecisionType } from '@rosillo/domain';
+import { analyseCommunication, DECISION_TYPES, RateLimiter, type DecisionType } from '@rosillo/domain';
 import { createProvider } from '@rosillo/ai';
+import { log } from '@/lib/logger';
 import {
   getDb,
   getCaseDetail,
@@ -19,6 +20,12 @@ import { requireUser, can, canViewCase } from '@/lib/auth';
 
 /** Server actions for the case workspace. Every action re-checks authorization. */
 
+// Abuse protection for the expensive analysis path: 6 analyses per user per
+// minute (per process — see THREAT_MODEL.md). Survives HMR via globalThis.
+const limiterRef = globalThis as unknown as { __rosilloAnalyseLimiter?: RateLimiter };
+const analyseLimiter = () =>
+  (limiterRef.__rosilloAnalyseLimiter ??= new RateLimiter({ limit: 6, windowMs: 60_000 }));
+
 function fail(caseId: string, message: string): never {
   redirect(`/cases/${caseId}?error=${encodeURIComponent(message)}`);
 }
@@ -31,22 +38,61 @@ async function authorizeCaseAccess(caseId: string) {
   return { user, detail };
 }
 
+async function runAnalysis(caseId: string, userId: string): Promise<void> {
+  const db = getDb();
+  const comm = getCommunicationInput(db, caseId);
+  if (!comm) fail(caseId, 'El caso no tiene comunicación asociada.');
+
+  updateCaseStatus(db, caseId, 'ANALYSING', userId);
+  const started = Date.now();
+  try {
+    const provider = createProvider(); // throws if anthropic is configured without a key
+    const result = await analyseCommunication(comm, {
+      provider,
+      customers: listCustomers(db),
+      policies: listPolicies(db),
+    });
+    const runId = recordAnalysisRun(db, caseId, result, userId);
+    log.info('analysis.completed', {
+      caseId,
+      runId,
+      userId,
+      ok: result.ok,
+      errorCode: result.ok ? undefined : result.errorCode,
+      durationMs: result.durationMs,
+    });
+  } catch (err) {
+    // Degraded mode: provider unavailable → record a safe failed run, never a crash.
+    const detail = err instanceof Error ? err.message.slice(0, 300) : 'unknown provider error';
+    recordAnalysisRun(
+      db,
+      caseId,
+      {
+        ok: false,
+        errorCode: 'PROVIDER_ERROR',
+        detail,
+        inputHash: 'unavailable',
+        provider: process.env.AI_PROVIDER ?? 'mock',
+        model: 'unavailable',
+        durationMs: Date.now() - started,
+      },
+      userId,
+    );
+    log.error('analysis.provider_unavailable', { caseId, userId, detail });
+  }
+}
+
 export async function analyseCaseAction(caseId: string) {
   const { user } = await authorizeCaseAccess(caseId);
   if (!can(user, 'analysis.edit') && !can(user, 'cases.read_all')) {
     fail(caseId, 'Tu rol no permite lanzar análisis.');
   }
-  const db = getDb();
-  const comm = getCommunicationInput(db, caseId);
-  if (!comm) fail(caseId, 'El caso no tiene comunicación asociada.');
-
-  updateCaseStatus(db, caseId, 'ANALYSING', user.id);
-  const result = await analyseCommunication(comm, {
-    provider: createProvider(),
-    customers: listCustomers(db),
-    policies: listPolicies(db),
-  });
-  recordAnalysisRun(db, caseId, result, user.id);
+  if (!analyseLimiter().tryAcquire(`analyse:${user.id}`)) {
+    const wait = analyseLimiter().retryAfterSeconds(`analyse:${user.id}`);
+    log.warn('analysis.rate_limited', { caseId, userId: user.id, retryAfterSeconds: wait });
+    fail(caseId, `Límite de análisis alcanzado. Inténtalo de nuevo en ${wait} s.`);
+  }
+  await runAnalysis(caseId, user.id);
   revalidatePath(`/cases/${caseId}`);
   revalidatePath('/');
 }
@@ -114,20 +160,26 @@ export async function decideAction(caseId: string, formData: FormData) {
     userId: user.id,
     input: { decisionType: finalType, editsJson, feedbackCodes, note, overrideReason },
   });
-  if (!result.ok) fail(caseId, result.error);
+  if (!result.ok) {
+    log.warn('decision.blocked', { caseId, userId: user.id, decisionType: finalType });
+    fail(caseId, result.error);
+  }
+  log.info('decision.recorded', {
+    caseId,
+    userId: user.id,
+    decisionType: finalType,
+    decisionId: result.id,
+    overrideUsed: overrideReason !== '',
+  });
 
   if (finalType === 'REQUEST_REANALYSIS') {
-    // A re-analysis decision immediately produces a new immutable version.
-    const db = getDb();
-    const comm = getCommunicationInput(db, caseId);
-    if (comm) {
-      const analysis = await analyseCommunication(comm, {
-        provider: createProvider(),
-        customers: listCustomers(db),
-        policies: listPolicies(db),
-      });
-      recordAnalysisRun(db, caseId, analysis, user.id);
+    // A re-analysis decision immediately produces a new immutable version —
+    // subject to the same rate limit as first analysis.
+    if (!analyseLimiter().tryAcquire(`analyse:${user.id}`)) {
+      const wait = analyseLimiter().retryAfterSeconds(`analyse:${user.id}`);
+      fail(caseId, `Decisión registrada, pero el límite de análisis está alcanzado. Re-analiza en ${wait} s.`);
     }
+    await runAnalysis(caseId, user.id);
   }
 
   revalidatePath(`/cases/${caseId}`);

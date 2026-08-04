@@ -8,3 +8,4 @@ export * from './matching/candidateSearch';
 export * from './fixtures/loadFixtures';
 export * from './fixtures/seedData';
 export * from './repoRoot';
+export * from './rateLimit';

@@ -123,3 +123,16 @@ button.danger { background: var(--red-bg); color: var(--red-ink); border-color: 
 .actions-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 fieldset { border: 1px solid var(--line); border-radius: 8px; margin: 0 0 12px; }
 legend { font-size: 13px; color: var(--muted); padding: 0 6px; }
+
+/* Evidence highlighting */
+mark.evidence-mark { background: #fff3bf; border-radius: 3px; padding: 0 2px; box-shadow: 0 0 0 1px #e6cf6b inset; }
+.evidence-btn {
+  display: inline; padding: 0; border: none; background: none; color: var(--accent);
+  font-size: 13px; font-style: italic; text-align: left; cursor: pointer; text-decoration: underline dotted;
+}
+.evidence-btn:hover { text-decoration: underline; }
+@keyframes evidence-flash-kf {
+  0% { background: #ffd43b; }
+  100% { background: #fff3bf; }
+}
+.evidence-flash { animation: evidence-flash-kf 1.2s ease-out; }

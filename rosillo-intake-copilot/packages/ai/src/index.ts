@@ -2,6 +2,13 @@ export { MockProvider } from './mock/mockProvider';
 export { AnthropicProvider } from './anthropic/anthropicProvider';
 export { promptRegistry, type PromptName, type PromptTemplate } from './prompts/registry';
 export { runEvaluation, formatEvaluationReport, type EvaluationResult } from './evaluation/evaluate';
+export {
+  MIN_OCR_CONFIDENCE,
+  PassthroughExtractor,
+  MockOcrAdapter,
+  type AttachmentExtractor,
+  type ExtractionResult,
+} from './extraction/attachmentExtractor';
 
 import type { AIProvider } from '@rosillo/domain';
 import { MockProvider } from './mock/mockProvider';

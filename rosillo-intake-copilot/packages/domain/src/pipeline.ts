@@ -22,6 +22,8 @@ export interface PipelineDeps {
   provider: AIProvider;
   customers: CustomerRecord[];
   policies: PolicyRecord[];
+  /** Per-provider-call timeout; a slow provider ends in the safe error state. Default 45s. */
+  providerTimeoutMs?: number;
 }
 
 export interface PipelineResult {
@@ -40,7 +42,7 @@ export interface PipelineResult {
 
 export interface PipelineFailure {
   ok: false;
-  errorCode: 'SCHEMA_VALIDATION_FAILED' | 'PROVIDER_ERROR';
+  errorCode: 'SCHEMA_VALIDATION_FAILED' | 'PROVIDER_ERROR' | 'PROVIDER_TIMEOUT';
   detail: string;
   inputHash: string;
   provider: string;
@@ -92,6 +94,26 @@ async function validateWithRepair<T>(
 }
 
 export class SchemaValidationError extends Error {}
+export class ProviderTimeoutError extends Error {}
+
+function withTimeout<T>(promise: Promise<T>, ms: number, stage: string): Promise<T> {
+  return new Promise<T>((resolvePromise, reject) => {
+    const timer = setTimeout(
+      () => reject(new ProviderTimeoutError(`AI provider timed out after ${ms}ms during ${stage}`)),
+      ms,
+    );
+    promise.then(
+      (v) => {
+        clearTimeout(timer);
+        resolvePromise(v);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      },
+    );
+  });
+}
 
 export async function analyseCommunication(
   comm: CommunicationInput,
@@ -99,6 +121,7 @@ export async function analyseCommunication(
 ): Promise<PipelineResult | PipelineFailure> {
   const started = Date.now();
   const { provider } = deps;
+  const timeoutMs = deps.providerTimeoutMs ?? 45_000;
   const { communication, inputHash } = preprocessCommunication(comm);
   let repairs = 0;
 
@@ -106,9 +129,9 @@ export async function analyseCommunication(
     // Stage 2: classification + extraction, schema-validated with one repair retry.
     const analyseInput = { communication, allowedWorkflows: WORKFLOW_TYPES };
     const analysed = await validateWithRepair<CaseAnalysis>(
-      await provider.analyseCase(analyseInput),
+      await withTimeout(provider.analyseCase(analyseInput), timeoutMs, 'analyseCase'),
       caseAnalysisSchema,
-      () => provider.analyseCase(analyseInput),
+      () => withTimeout(provider.analyseCase(analyseInput), timeoutMs, 'analyseCase (repair)'),
     );
     repairs += analysed.repairs;
     let analysis = analysed.value;
@@ -124,9 +147,9 @@ export async function analyseCommunication(
     if (customerCandidates.length + policyCandidates.length > 0) {
       const rankInput = { communication, analysis, customerCandidates, policyCandidates };
       const ranking = await validateWithRepair(
-        await provider.rankCandidates(rankInput),
+        await withTimeout(provider.rankCandidates(rankInput), timeoutMs, 'rankCandidates'),
         candidateRankingSchema,
-        () => provider.rankCandidates(rankInput),
+        () => withTimeout(provider.rankCandidates(rankInput), timeoutMs, 'rankCandidates (repair)'),
       );
       repairs += ranking.repairs;
       rankedCustomers = reorderBySubset(customerCandidates, ranking.value.rankedCustomerIds);
@@ -163,9 +186,9 @@ export async function analyseCommunication(
     // Stage 7: response draft using confirmed facts and marked uncertainties.
     const draftInput = { communication, analysis, missingInformation, tone: 'WARM' as const };
     const drafted = await validateWithRepair<ResponseDraft>(
-      await provider.draftResponse(draftInput),
+      await withTimeout(provider.draftResponse(draftInput), timeoutMs, 'draftResponse'),
       responseDraftSchema,
-      () => provider.draftResponse(draftInput),
+      () => withTimeout(provider.draftResponse(draftInput), timeoutMs, 'draftResponse (repair)'),
     );
     repairs += drafted.repairs;
 
@@ -189,7 +212,12 @@ export async function analyseCommunication(
   } catch (err) {
     return {
       ok: false,
-      errorCode: err instanceof SchemaValidationError ? 'SCHEMA_VALIDATION_FAILED' : 'PROVIDER_ERROR',
+      errorCode:
+        err instanceof SchemaValidationError
+          ? 'SCHEMA_VALIDATION_FAILED'
+          : err instanceof ProviderTimeoutError
+            ? 'PROVIDER_TIMEOUT'
+            : 'PROVIDER_ERROR',
       detail: err instanceof Error ? err.message.slice(0, 500) : 'unknown error',
       inputHash,
       provider: provider.name,

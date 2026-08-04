@@ -9,6 +9,9 @@ import {
   type ResponseDraft,
 } from '@rosillo/domain';
 import { analyseCaseAction, claimCaseAction, reassignCaseAction, decideAction } from './actions';
+import { alignEvidence } from '@/lib/evidenceAlignment';
+import { HighlightableText } from '@/components/HighlightableText';
+import { EvidenceLink } from '@/components/EvidenceLink';
 
 const STATUS_LABELS: Record<string, string> = {
   EXPLICIT: 'Explícito',
@@ -50,7 +53,7 @@ export default async function CaseDetailPage({
   const selectedRun = runs.find((r) => r.id === runParam) ?? runs[0] ?? null;
   const analysis: CaseAnalysis | null = selectedRun?.outputJson ? JSON.parse(selectedRun.outputJson) : null;
   const draft: ResponseDraft | null = selectedRun?.draftJson ? JSON.parse(selectedRun.draftJson) : null;
-  const evidenceById = new Map((analysis?.evidence ?? []).map((e) => [e.id, e]));
+  const alignment = analysis ? alignEvidence(analysis, communication, attachments) : null;
   const isLatest = selectedRun != null && selectedRun.id === runs[0]?.id;
   const decided = caseRow.status === 'DECIDED';
   const users = can(user, 'cases.assign') ? listUsers(getDb()) : [];
@@ -78,15 +81,29 @@ export default async function CaseDetailPage({
               De: <strong>{communication.sender}</strong> · Recibido:{' '}
               {new Date(communication.receivedAt).toLocaleString('es-ES')} · Caso {caseRow.id}
             </p>
-            <div className="email-body">{communication.bodyText}</div>
+            <HighlightableText
+              text={communication.bodyText}
+              marks={alignment?.bodyMarks ?? []}
+              idPrefix="body"
+              className="email-body"
+            />
             <h2>Adjuntos ({attachments.length})</h2>
             {attachments.length === 0 && <p className="muted">Sin adjuntos.</p>}
             {attachments.map((a) => (
-              <details key={a.id} style={{ marginBottom: 6 }}>
+              <details key={a.id} id={`att-panel-${a.id}`} style={{ marginBottom: 6 }}>
                 <summary>
                   {a.filename} <span className="muted">({a.mimeType})</span>
                 </summary>
-                {a.text ? <div className="email-body">{a.text}</div> : <p className="muted">Sin texto extraíble (imagen).</p>}
+                {a.text ? (
+                  <HighlightableText
+                    text={a.text}
+                    marks={alignment?.attachmentMarks[a.id] ?? []}
+                    idPrefix={`att-${a.id}`}
+                    className="email-body"
+                  />
+                ) : (
+                  <p className="muted">Sin texto extraíble (imagen).</p>
+                )}
               </details>
             ))}
           </div>
@@ -171,13 +188,20 @@ export default async function CaseDetailPage({
                     <div className="field-row" key={c.id}>
                       <span className="k">{c.kind === 'CUSTOMER' ? 'Cliente' : 'Póliza'}</span>{' '}
                       <span className="v">{c.label}</span>{' '}
-                      <span className="badge explicit">{(c.score * 100).toFixed(0)}%</span>
+                      <span className="badge explicit">{(c.score * 100).toFixed(0)}%</span>{' '}
+                      <span className="badge unknown">coincidencia determinista (BD)</span>
                       <div className="evidence">{c.signals.join(' · ')}</div>
                     </div>
                   ))}
                 </div>
 
                 <h2>Campos extraídos</h2>
+                <p className="muted" style={{ fontSize: 12 }}>
+                  Leyenda: <span className="badge explicit">Explícito</span> citado textualmente en la fuente ·{' '}
+                  <span className="badge inferred">Inferido — confirmar</span> deducido y pendiente de confirmación ·{' '}
+                  <span className="badge unknown">coincidencia determinista (BD)</span> obtenido de los registros, no del texto.
+                  Pulsa una cita para resaltar el pasaje original.
+                </p>
                 {Object.keys(analysis.entities).length === 0 && <p className="muted">Sin campos extraídos.</p>}
                 <div className="field-list">
                   {Object.entries(analysis.entities).map(([key, f]) => (
@@ -186,10 +210,17 @@ export default async function CaseDetailPage({
                       <span className={`badge ${f.status.toLowerCase()}`}>{STATUS_LABELS[f.status]}</span>
                       <div className="v">{f.value ?? '—'}</div>
                       {f.evidenceIds.map((eid) => {
-                        const ev = evidenceById.get(eid);
-                        return ev ? (
-                          <div className="evidence" key={eid}>
-                            Fuente ({ev.sourceType}): «{ev.quote}»
+                        const a = alignment?.byEvidenceId.get(eid);
+                        return a ? (
+                          <div key={eid}>
+                            <EvidenceLink
+                              quote={a.quote}
+                              sourceLabel={a.sourceLabel}
+                              aligned={a.aligned}
+                              targetId={a.targetId}
+                              containerId={a.containerId}
+                              deterministic={a.deterministic}
+                            />
                           </div>
                         ) : null;
                       })}
