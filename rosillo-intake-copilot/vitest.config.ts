@@ -5,6 +5,7 @@ export default defineConfig({
     include: [
       'packages/*/test/**/*.test.ts',
       'tests/integration/**/*.test.ts',
+      'tests/security/**/*.test.ts',
     ],
     environment: 'node',
   },

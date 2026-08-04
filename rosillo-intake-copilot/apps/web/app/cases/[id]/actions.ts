@@ -24,7 +24,10 @@ import { requireUser, can, canViewCase } from '@/lib/auth';
 // minute (per process — see THREAT_MODEL.md). Survives HMR via globalThis.
 const limiterRef = globalThis as unknown as { __rosilloAnalyseLimiter?: RateLimiter };
 const analyseLimiter = () =>
-  (limiterRef.__rosilloAnalyseLimiter ??= new RateLimiter({ limit: 6, windowMs: 60_000 }));
+  (limiterRef.__rosilloAnalyseLimiter ??= new RateLimiter({
+    limit: Number(process.env.ANALYSE_RATE_LIMIT ?? 6),
+    windowMs: 60_000,
+  }));
 
 function fail(caseId: string, message: string): never {
   redirect(`/cases/${caseId}?error=${encodeURIComponent(message)}`);

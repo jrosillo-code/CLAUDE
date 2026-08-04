@@ -15,7 +15,9 @@
     "db:seed": "node --import tsx packages/database/src/bin/seed.ts",
     "evaluate": "node --import tsx packages/ai/src/evaluation/bin/run.ts",
     "dev": "npm run dev -w apps/web",
-    "build": "npm run build -w apps/web"
+    "build": "npm run build -w apps/web",
+    "test:e2e": "playwright test",
+    "audit": "npm audit --omit=dev"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",

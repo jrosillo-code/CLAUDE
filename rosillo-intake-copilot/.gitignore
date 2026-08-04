@@ -9,3 +9,5 @@ data/*.db-*
 evaluation-reports/*.json
 evaluation-reports/*.md
 !evaluation-reports/.gitkeep
+test-results/
+playwright-report/
