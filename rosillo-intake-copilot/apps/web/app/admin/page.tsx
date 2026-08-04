@@ -9,7 +9,7 @@ export default async function AdminPage() {
     return <p className="notice error">Solo el rol de administración puede acceder a esta página.</p>;
   }
 
-  const users = listUsers(getDb());
+  const users = await listUsers(await getDb());
   const provider = createProvider();
   const health = await provider.healthCheck();
   const rules = listRules();

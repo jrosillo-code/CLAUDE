@@ -41,9 +41,15 @@ AI_PROVIDER=anthropic ANTHROPIC_API_KEY=sk-ant-... npm run evaluate
 The deterministic gates are identical for both providers and are never
 relaxed; a live run that violates any gate fails the command.
 
+## Deployment
+
+The database layer runs on the Postgres dialect (ADR-0006): Supabase Postgres
+in production (Vercel), PGlite locally and in tests — same SQL, same triggers,
+same constraints. Vercel + Supabase click-path: `docs/DEPLOYMENT.md`.
+
 ## Known limitations
 
-- Prototype auth (ADR-0004); single-process rate limiter; SQLite single-node.
+- Prototype auth (ADR-0004); per-instance rate limiter on serverless.
 - OCR deferred behind the extraction seam (ADR-0005).
 - Accessibility: keyboard navigation, focus states, and semantic tables/forms
   are implemented; a full screen-reader audit is future work.

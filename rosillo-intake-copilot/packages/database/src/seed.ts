@@ -9,100 +9,98 @@ import type { Db } from './client';
 import * as t from './schema';
 import { appendAudit } from './repositories';
 
-/** Reproducible synthetic seed (spec section 14). Idempotent: wipes and reloads. */
-export function seedDatabase(db: Db, fixturesRoot: string) {
+/**
+ * Reproducible synthetic seed (spec section 14). Idempotent: wipes and reloads.
+ * Inserts are batched per table so seeding a remote Supabase database stays fast.
+ */
+export async function seedDatabase(db: Db, fixturesRoot: string) {
   const now = new Date().toISOString();
 
   // Order matters for foreign keys.
-  db.delete(t.evaluationLabels).run();
-  db.delete(t.decisions).run();
-  db.delete(t.analysisRuns).run();
-  db.delete(t.attachments).run();
-  db.delete(t.communications).run();
-  db.delete(t.cases).run();
-  db.delete(t.policies).run();
-  db.delete(t.customers).run();
-  db.delete(t.insurers).run();
-  db.delete(t.users).run();
+  await db.delete(t.evaluationLabels);
+  await db.delete(t.decisions);
+  await db.delete(t.analysisRuns);
+  await db.delete(t.attachments);
+  await db.delete(t.communications);
+  await db.delete(t.cases);
+  await db.delete(t.policies);
+  await db.delete(t.customers);
+  await db.delete(t.insurers);
+  await db.delete(t.users);
 
-  for (const u of SEED_USERS) {
-    db.insert(t.users).values({ id: u.id, name: u.name, email: u.email, role: u.role, createdAt: now }).run();
-  }
-  for (const i of SEED_INSURERS) db.insert(t.insurers).values(i).run();
-  for (const c of SEED_CUSTOMERS) {
-    db.insert(t.customers)
-      .values({
-        id: c.id,
-        customerType: c.customerType,
-        name: c.name,
-        email: c.email,
-        phone: c.phone,
-        taxIdFake: c.taxIdFake,
-        classification: 'SYNTHETIC',
-      })
-      .run();
-  }
-  for (const p of SEED_POLICIES) {
-    db.insert(t.policies)
-      .values({
-        id: p.id,
-        policyNumber: p.policyNumber,
-        customerId: p.customerId,
-        insurerId: p.insurerId,
-        product: p.product,
-        status: p.status,
-        inceptionDate: p.inceptionDate,
-        renewalDate: p.renewalDate,
-        premium: p.premium,
-        riskSummary: p.riskSummary,
-      })
-      .run();
-  }
+  await db
+    .insert(t.users)
+    .values(SEED_USERS.map((u) => ({ id: u.id, name: u.name, email: u.email, role: u.role, createdAt: now })));
+  await db.insert(t.insurers).values([...SEED_INSURERS]);
+  await db.insert(t.customers).values(
+    SEED_CUSTOMERS.map((c) => ({
+      id: c.id,
+      customerType: c.customerType,
+      name: c.name,
+      email: c.email,
+      phone: c.phone,
+      taxIdFake: c.taxIdFake,
+      classification: 'SYNTHETIC',
+    })),
+  );
+  await db.insert(t.policies).values(
+    SEED_POLICIES.map((p) => ({
+      id: p.id,
+      policyNumber: p.policyNumber,
+      customerId: p.customerId,
+      insurerId: p.insurerId,
+      product: p.product,
+      status: p.status,
+      inceptionDate: p.inceptionDate,
+      renewalDate: p.renewalDate,
+      premium: p.premium,
+      riskSummary: p.riskSummary,
+    })),
+  );
 
   const fixtures = loadCaseFixtures(fixturesRoot);
-  for (const { fixture, communication } of fixtures) {
-    db.insert(t.cases)
-      .values({
-        id: fixture.case_id,
-        workflow: 'UNKNOWN',
-        status: 'NEW',
-        priority: fixture.priority,
-        createdAt: fixture.received_at,
-        updatedAt: fixture.received_at,
-      })
-      .run();
-    db.insert(t.communications)
-      .values({
-        id: communication.id,
-        caseId: fixture.case_id,
-        sender: communication.from,
-        subject: communication.subject,
-        bodyText: communication.bodyText,
-        receivedAt: communication.receivedAt,
-      })
-      .run();
-    for (const a of communication.attachments) {
-      db.insert(t.attachments)
-        .values({
-          id: a.id,
-          communicationId: communication.id,
-          filename: a.filename,
-          mimeType: a.mimeType,
-          text: a.text,
-          hash: a.hash,
-        })
-        .run();
-    }
-    db.insert(t.evaluationLabels)
-      .values({
-        id: `label-${fixture.case_id}`,
-        caseId: fixture.case_id,
-        expectedJson: JSON.stringify(fixture.expected),
-        labelerId: 'USER-eva',
-        version: 1,
-      })
-      .run();
-    appendAudit(db, {
+  await db.insert(t.cases).values(
+    fixtures.map(({ fixture }) => ({
+      id: fixture.case_id,
+      workflow: 'UNKNOWN',
+      status: 'NEW',
+      priority: fixture.priority,
+      createdAt: fixture.received_at,
+      updatedAt: fixture.received_at,
+    })),
+  );
+  await db.insert(t.communications).values(
+    fixtures.map(({ fixture, communication }) => ({
+      id: communication.id,
+      caseId: fixture.case_id,
+      sender: communication.from,
+      subject: communication.subject,
+      bodyText: communication.bodyText,
+      receivedAt: communication.receivedAt,
+    })),
+  );
+  const attachmentRows = fixtures.flatMap(({ communication }) =>
+    communication.attachments.map((a) => ({
+      id: a.id,
+      communicationId: communication.id,
+      filename: a.filename,
+      mimeType: a.mimeType,
+      text: a.text,
+      hash: a.hash,
+    })),
+  );
+  if (attachmentRows.length > 0) await db.insert(t.attachments).values(attachmentRows);
+  await db.insert(t.evaluationLabels).values(
+    fixtures.map(({ fixture }) => ({
+      id: `label-${fixture.case_id}`,
+      caseId: fixture.case_id,
+      expectedJson: JSON.stringify(fixture.expected),
+      labelerId: 'USER-eva',
+      version: 1,
+    })),
+  );
+  for (const { fixture } of fixtures) {
+    await appendAudit(db, {
       actorId: 'system-seed',
       entityType: 'case',
       entityId: fixture.case_id,

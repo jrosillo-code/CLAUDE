@@ -12,85 +12,89 @@ import type { Db } from './client';
 import * as t from './schema';
 
 /**
- * Typed data access. Immutability of analysis runs and audit events is enforced
- * both here (no update paths exist) and by database triggers.
+ * Typed data access (async, Postgres dialect). Immutability of analysis runs
+ * and audit events is enforced both here (no update paths exist) and by
+ * database triggers.
  */
 
 const now = () => new Date().toISOString();
 
-export function appendAudit(
+export async function appendAudit(
   db: Db,
   entry: { actorId: string; entityType: string; entityId: string; eventType: string; payload?: unknown },
 ) {
   const payloadJson = JSON.stringify(entry.payload ?? {});
-  db.insert(t.auditEvents)
-    .values({
-      id: `audit-${randomUUID()}`,
-      actorId: entry.actorId,
-      entityType: entry.entityType,
-      entityId: entry.entityId,
-      eventType: entry.eventType,
-      payloadHash: sha256(payloadJson),
-      payloadJson,
-      createdAt: now(),
-    })
-    .run();
+  await db.insert(t.auditEvents).values({
+    id: `audit-${randomUUID()}`,
+    actorId: entry.actorId,
+    entityType: entry.entityType,
+    entityId: entry.entityId,
+    eventType: entry.eventType,
+    payloadHash: sha256(payloadJson),
+    payloadJson,
+    createdAt: now(),
+  });
 }
 
-export function listCases(db: Db, filter?: { status?: string; workflow?: string; assigneeId?: string }) {
+export async function listCases(
+  db: Db,
+  filter?: { status?: string; workflow?: string; assigneeId?: string },
+) {
   const conditions = [];
   if (filter?.status) conditions.push(eq(t.cases.status, filter.status));
   if (filter?.workflow) conditions.push(eq(t.cases.workflow, filter.workflow));
   if (filter?.assigneeId) conditions.push(eq(t.cases.assigneeId, filter.assigneeId));
 
-  const rows = db
+  return db
     .select({
       caseRow: t.cases,
       subject: t.communications.subject,
       sender: t.communications.sender,
       receivedAt: t.communications.receivedAt,
-      attachmentCount: sql<number>`(SELECT COUNT(*) FROM attachments a WHERE a.communication_id = ${t.communications.id})`,
+      attachmentCount: sql<number>`(SELECT COUNT(*)::int FROM attachments a WHERE a.communication_id = ${t.communications.id})`,
     })
     .from(t.cases)
     .innerJoin(t.communications, eq(t.communications.caseId, t.cases.id))
     .where(conditions.length ? and(...conditions) : undefined)
-    .orderBy(desc(t.communications.receivedAt))
-    .all();
-  return rows;
+    .orderBy(desc(t.communications.receivedAt));
 }
 
-export function getCaseDetail(db: Db, caseId: string) {
-  const caseRow = db.select().from(t.cases).where(eq(t.cases.id, caseId)).get();
+export async function getCaseDetail(db: Db, caseId: string) {
+  const caseRow = (await db.select().from(t.cases).where(eq(t.cases.id, caseId)).limit(1))[0];
   if (!caseRow) return null;
-  const communication = db.select().from(t.communications).where(eq(t.communications.caseId, caseId)).get();
+  const communication = (
+    await db.select().from(t.communications).where(eq(t.communications.caseId, caseId)).limit(1)
+  )[0];
   const atts = communication
-    ? db.select().from(t.attachments).where(eq(t.attachments.communicationId, communication.id)).all()
+    ? await db.select().from(t.attachments).where(eq(t.attachments.communicationId, communication.id))
     : [];
-  const runs = db
+  const runs = await db
     .select()
     .from(t.analysisRuns)
     .where(eq(t.analysisRuns.caseId, caseId))
-    .orderBy(desc(t.analysisRuns.version))
-    .all();
-  const caseDecisions = db
+    .orderBy(desc(t.analysisRuns.version));
+  const caseDecisions = await db
     .select()
     .from(t.decisions)
     .where(eq(t.decisions.caseId, caseId))
-    .orderBy(desc(t.decisions.createdAt))
-    .all();
-  const audit = db
+    .orderBy(desc(t.decisions.createdAt));
+  const audit = await db
     .select()
     .from(t.auditEvents)
     .where(and(eq(t.auditEvents.entityType, 'case'), eq(t.auditEvents.entityId, caseId)))
-    .orderBy(t.auditEvents.createdAt)
-    .all();
+    .orderBy(t.auditEvents.createdAt);
   return { caseRow, communication, attachments: atts, runs, decisions: caseDecisions, audit };
 }
 
-export function getCommunicationInput(db: Db, caseId: string) {
-  const communication = db.select().from(t.communications).where(eq(t.communications.caseId, caseId)).get();
+export async function getCommunicationInput(db: Db, caseId: string) {
+  const communication = (
+    await db.select().from(t.communications).where(eq(t.communications.caseId, caseId)).limit(1)
+  )[0];
   if (!communication) return null;
-  const atts = db.select().from(t.attachments).where(eq(t.attachments.communicationId, communication.id)).all();
+  const atts = await db
+    .select()
+    .from(t.attachments)
+    .where(eq(t.attachments.communicationId, communication.id));
   return {
     id: communication.id,
     from: communication.sender,
@@ -107,14 +111,14 @@ export function getCommunicationInput(db: Db, caseId: string) {
   };
 }
 
-export function updateCaseStatus(db: Db, caseId: string, status: CaseStatus, actorId: string) {
-  db.update(t.cases).set({ status, updatedAt: now() }).where(eq(t.cases.id, caseId)).run();
-  appendAudit(db, { actorId, entityType: 'case', entityId: caseId, eventType: `STATUS_${status}` });
+export async function updateCaseStatus(db: Db, caseId: string, status: CaseStatus, actorId: string) {
+  await db.update(t.cases).set({ status, updatedAt: now() }).where(eq(t.cases.id, caseId));
+  await appendAudit(db, { actorId, entityType: 'case', entityId: caseId, eventType: `STATUS_${status}` });
 }
 
-export function assignCase(db: Db, caseId: string, assigneeId: string | null, actorId: string) {
-  db.update(t.cases).set({ assigneeId, updatedAt: now() }).where(eq(t.cases.id, caseId)).run();
-  appendAudit(db, {
+export async function assignCase(db: Db, caseId: string, assigneeId: string | null, actorId: string) {
+  await db.update(t.cases).set({ assigneeId, updatedAt: now() }).where(eq(t.cases.id, caseId));
+  await appendAudit(db, {
     actorId,
     entityType: 'case',
     entityId: caseId,
@@ -124,64 +128,58 @@ export function assignCase(db: Db, caseId: string, assigneeId: string | null, ac
 }
 
 /** Persist one immutable analysis version (success or safe failure). */
-export function recordAnalysisRun(
+export async function recordAnalysisRun(
   db: Db,
   caseId: string,
   result: PipelineResult | PipelineFailure,
   actorId: string,
-): string {
-  const versionRow = db
-    .select({ v: max(t.analysisRuns.version) })
-    .from(t.analysisRuns)
-    .where(eq(t.analysisRuns.caseId, caseId))
-    .get();
+): Promise<string> {
+  const versionRow = (
+    await db.select({ v: max(t.analysisRuns.version) }).from(t.analysisRuns).where(eq(t.analysisRuns.caseId, caseId))
+  )[0];
   const version = (versionRow?.v ?? 0) + 1;
   const id = `run-${randomUUID()}`;
 
   if (result.ok) {
-    db.insert(t.analysisRuns)
-      .values({
-        id,
-        caseId,
-        version,
-        provider: result.provider,
-        model: result.model,
-        promptVersions: JSON.stringify(result.promptVersions),
-        rulesVersion: result.rulesVersion,
-        inputHash: result.inputHash,
-        outputJson: JSON.stringify(result.analysis),
-        draftJson: JSON.stringify(result.draft),
-        outputHash: result.outputHash,
-        confidence: result.analysis.workflowConfidence,
-        durationMs: result.durationMs,
-        createdAt: now(),
-      })
-      .run();
-    db.update(t.cases)
+    await db.insert(t.analysisRuns).values({
+      id,
+      caseId,
+      version,
+      provider: result.provider,
+      model: result.model,
+      promptVersions: JSON.stringify(result.promptVersions),
+      rulesVersion: result.rulesVersion,
+      inputHash: result.inputHash,
+      outputJson: JSON.stringify(result.analysis),
+      draftJson: JSON.stringify(result.draft),
+      outputHash: result.outputHash,
+      confidence: result.analysis.workflowConfidence,
+      durationMs: result.durationMs,
+      createdAt: now(),
+    });
+    await db
+      .update(t.cases)
       .set({ workflow: result.analysis.workflow, status: 'ANALYSED', updatedAt: now() })
-      .where(eq(t.cases.id, caseId))
-      .run();
+      .where(eq(t.cases.id, caseId));
   } else {
-    db.insert(t.analysisRuns)
-      .values({
-        id,
-        caseId,
-        version,
-        provider: result.provider,
-        model: result.model,
-        promptVersions: '{}',
-        rulesVersion: null,
-        inputHash: result.inputHash,
-        errorCode: result.errorCode,
-        errorDetail: result.detail,
-        durationMs: result.durationMs,
-        createdAt: now(),
-      })
-      .run();
-    db.update(t.cases).set({ status: 'ERROR', updatedAt: now() }).where(eq(t.cases.id, caseId)).run();
+    await db.insert(t.analysisRuns).values({
+      id,
+      caseId,
+      version,
+      provider: result.provider,
+      model: result.model,
+      promptVersions: '{}',
+      rulesVersion: null,
+      inputHash: result.inputHash,
+      errorCode: result.errorCode,
+      errorDetail: result.detail,
+      durationMs: result.durationMs,
+      createdAt: now(),
+    });
+    await db.update(t.cases).set({ status: 'ERROR', updatedAt: now() }).where(eq(t.cases.id, caseId));
   }
 
-  appendAudit(db, {
+  await appendAudit(db, {
     actorId,
     entityType: 'case',
     entityId: caseId,
@@ -192,12 +190,14 @@ export function recordAnalysisRun(
 }
 
 /** Record an employee decision against the exact analysis run reviewed (FR-010). */
-export function recordDecision(
+export async function recordDecision(
   db: Db,
   args: { caseId: string; analysisRunId: string; userId: string; input: DecisionInput },
-): { ok: true; id: string } | { ok: false; error: string } {
+): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
   const input = decisionInputSchema.parse(args.input);
-  const run = db.select().from(t.analysisRuns).where(eq(t.analysisRuns.id, args.analysisRunId)).get();
+  const run = (
+    await db.select().from(t.analysisRuns).where(eq(t.analysisRuns.id, args.analysisRunId)).limit(1)
+  )[0];
   if (!run || run.caseId !== args.caseId) {
     return { ok: false, error: 'La decisión debe referenciar un análisis existente de este caso.' };
   }
@@ -218,25 +218,23 @@ export function recordDecision(
   }
 
   const id = `dec-${randomUUID()}`;
-  db.insert(t.decisions)
-    .values({
-      id,
-      caseId: args.caseId,
-      analysisRunId: args.analysisRunId,
-      userId: args.userId,
-      decisionType: input.decisionType,
-      editsJson: JSON.stringify(input.editsJson),
-      feedbackCodes: JSON.stringify(input.feedbackCodes),
-      note: input.note,
-      overrideReason: input.overrideReason,
-      createdAt: now(),
-    })
-    .run();
+  await db.insert(t.decisions).values({
+    id,
+    caseId: args.caseId,
+    analysisRunId: args.analysisRunId,
+    userId: args.userId,
+    decisionType: input.decisionType,
+    editsJson: JSON.stringify(input.editsJson),
+    feedbackCodes: JSON.stringify(input.feedbackCodes),
+    note: input.note,
+    overrideReason: input.overrideReason,
+    createdAt: now(),
+  });
 
   const newStatus: CaseStatus = input.decisionType === 'REQUEST_REANALYSIS' ? 'ANALYSING' : 'DECIDED';
-  db.update(t.cases).set({ status: newStatus, updatedAt: now() }).where(eq(t.cases.id, args.caseId)).run();
+  await db.update(t.cases).set({ status: newStatus, updatedAt: now() }).where(eq(t.cases.id, args.caseId));
 
-  appendAudit(db, {
+  await appendAudit(db, {
     actorId: args.userId,
     entityType: 'case',
     entityId: args.caseId,
@@ -246,67 +244,56 @@ export function recordDecision(
   return { ok: true, id };
 }
 
-export function getUserByEmail(db: Db, email: string) {
-  return db.select().from(t.users).where(eq(t.users.email, email)).get() ?? null;
+export async function getUserByEmail(db: Db, email: string) {
+  return (await db.select().from(t.users).where(eq(t.users.email, email)).limit(1))[0] ?? null;
 }
 
-export function getUserById(db: Db, id: string) {
-  return db.select().from(t.users).where(eq(t.users.id, id)).get() ?? null;
+export async function getUserById(db: Db, id: string) {
+  return (await db.select().from(t.users).where(eq(t.users.id, id)).limit(1))[0] ?? null;
 }
 
-export function listUsers(db: Db) {
-  return db.select().from(t.users).all();
+export async function listUsers(db: Db) {
+  return db.select().from(t.users);
 }
 
-export function listCustomers(db: Db) {
-  return db
-    .select()
-    .from(t.customers)
-    .all()
-    .map((c) => ({
-      id: c.id,
-      customerType: c.customerType as 'INDIVIDUAL' | 'COMPANY',
-      name: c.name,
-      email: c.email,
-      phone: c.phone,
-      taxIdFake: c.taxIdFake,
-    }));
+export async function listCustomers(db: Db) {
+  return (await db.select().from(t.customers)).map((c) => ({
+    id: c.id,
+    customerType: c.customerType as 'INDIVIDUAL' | 'COMPANY',
+    name: c.name,
+    email: c.email,
+    phone: c.phone,
+    taxIdFake: c.taxIdFake,
+  }));
 }
 
-export function listPolicies(db: Db) {
-  return db
-    .select()
-    .from(t.policies)
-    .all()
-    .map((p) => ({
-      id: p.id,
-      policyNumber: p.policyNumber,
-      customerId: p.customerId,
-      insurerId: p.insurerId,
-      product: p.product,
-      status: p.status as 'ACTIVE' | 'PENDING_RENEWAL' | 'CANCELLED',
-      inceptionDate: p.inceptionDate,
-      renewalDate: p.renewalDate,
-      premium: p.premium,
-      riskSummary: p.riskSummary,
-    }));
+export async function listPolicies(db: Db) {
+  return (await db.select().from(t.policies)).map((p) => ({
+    id: p.id,
+    policyNumber: p.policyNumber,
+    customerId: p.customerId,
+    insurerId: p.insurerId,
+    product: p.product,
+    status: p.status as 'ACTIVE' | 'PENDING_RENEWAL' | 'CANCELLED',
+    inceptionDate: p.inceptionDate,
+    renewalDate: p.renewalDate,
+    premium: p.premium,
+    riskSummary: p.riskSummary,
+  }));
 }
 
-export function analyticsOverview(db: Db) {
-  const byStatus = db
-    .select({ status: t.cases.status, count: sql<number>`COUNT(*)` })
+export async function analyticsOverview(db: Db) {
+  const byStatus = await db
+    .select({ status: t.cases.status, count: sql<number>`COUNT(*)::int` })
     .from(t.cases)
-    .groupBy(t.cases.status)
-    .all();
-  const byWorkflow = db
-    .select({ workflow: t.cases.workflow, count: sql<number>`COUNT(*)` })
+    .groupBy(t.cases.status);
+  const byWorkflow = await db
+    .select({ workflow: t.cases.workflow, count: sql<number>`COUNT(*)::int` })
     .from(t.cases)
-    .groupBy(t.cases.workflow)
-    .all();
-  const decisionsByType = db
-    .select({ decisionType: t.decisions.decisionType, count: sql<number>`COUNT(*)` })
+    .groupBy(t.cases.workflow);
+  const decisionsByType = await db
+    .select({ decisionType: t.decisions.decisionType, count: sql<number>`COUNT(*)::int` })
     .from(t.decisions)
-    .groupBy(t.decisions.decisionType)
-    .all();
+    .groupBy(t.decisions.decisionType);
   return { byStatus, byWorkflow, decisionsByType };
 }

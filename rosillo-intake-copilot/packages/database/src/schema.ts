@@ -1,13 +1,14 @@
-import { sqliteTable, text, integer, real, uniqueIndex } from 'drizzle-orm/sqlite-core';
+import { pgTable, text, integer, doublePrecision, uniqueIndex } from 'drizzle-orm/pg-core';
 
 /**
- * Drizzle schema (spec section 10). Kept to portable SQL types so the driver can
- * later swap to Postgres (ADR-0002). Field evidence and the suggested action are
- * stored inside analysis_runs.output_json — the analysis run is the immutable
- * unit of record, and the evidence never exists apart from its run.
+ * Drizzle schema, Postgres dialect (ADR-0006). Runs identically on Supabase
+ * Postgres (production) and PGlite (local development and tests). Field
+ * evidence and the suggested action are stored inside
+ * analysis_runs.output_json — the analysis run is the immutable unit of
+ * record, and the evidence never exists apart from its run.
  */
 
-export const users = sqliteTable('users', {
+export const users = pgTable('users', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
@@ -16,12 +17,12 @@ export const users = sqliteTable('users', {
   createdAt: text('created_at').notNull(),
 });
 
-export const insurers = sqliteTable('insurers', {
+export const insurers = pgTable('insurers', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
 });
 
-export const customers = sqliteTable('customers', {
+export const customers = pgTable('customers', {
   id: text('id').primaryKey(),
   customerType: text('customer_type').notNull(),
   name: text('name').notNull(),
@@ -31,7 +32,7 @@ export const customers = sqliteTable('customers', {
   classification: text('classification').notNull().default('SYNTHETIC'),
 });
 
-export const policies = sqliteTable(
+export const policies = pgTable(
   'policies',
   {
     id: text('id').primaryKey(),
@@ -42,13 +43,13 @@ export const policies = sqliteTable(
     status: text('status').notNull(),
     inceptionDate: text('inception_date').notNull(),
     renewalDate: text('renewal_date').notNull(),
-    premium: real('premium').notNull(),
+    premium: doublePrecision('premium').notNull(),
     riskSummary: text('risk_summary').notNull(),
   },
   (t) => [uniqueIndex('policies_number_insurer').on(t.policyNumber, t.insurerId)],
 );
 
-export const cases = sqliteTable('cases', {
+export const cases = pgTable('cases', {
   id: text('id').primaryKey(),
   workflow: text('workflow').notNull().default('UNKNOWN'),
   status: text('status').notNull().default('NEW'),
@@ -58,7 +59,7 @@ export const cases = sqliteTable('cases', {
   updatedAt: text('updated_at').notNull(),
 });
 
-export const communications = sqliteTable('communications', {
+export const communications = pgTable('communications', {
   id: text('id').primaryKey(),
   caseId: text('case_id').notNull().references(() => cases.id),
   sender: text('sender').notNull(),
@@ -68,7 +69,7 @@ export const communications = sqliteTable('communications', {
   receivedAt: text('received_at').notNull(),
 });
 
-export const attachments = sqliteTable('attachments', {
+export const attachments = pgTable('attachments', {
   id: text('id').primaryKey(),
   communicationId: text('communication_id').notNull().references(() => communications.id),
   filename: text('filename').notNull(),
@@ -78,27 +79,31 @@ export const attachments = sqliteTable('attachments', {
   hash: text('hash').notNull(),
 });
 
-/** Immutable once created — enforced by SQLite triggers in the migration. */
-export const analysisRuns = sqliteTable('analysis_runs', {
-  id: text('id').primaryKey(),
-  caseId: text('case_id').notNull().references(() => cases.id),
-  version: integer('version').notNull(),
-  provider: text('provider').notNull(),
-  model: text('model').notNull(),
-  promptVersions: text('prompt_versions').notNull(),
-  rulesVersion: text('rules_version'),
-  inputHash: text('input_hash').notNull(),
-  outputJson: text('output_json'),
-  draftJson: text('draft_json'),
-  outputHash: text('output_hash'),
-  confidence: real('confidence'),
-  durationMs: integer('duration_ms').notNull(),
-  errorCode: text('error_code'),
-  errorDetail: text('error_detail'),
-  createdAt: text('created_at').notNull(),
-});
+/** Immutable once created — enforced by Postgres triggers in the migration. */
+export const analysisRuns = pgTable(
+  'analysis_runs',
+  {
+    id: text('id').primaryKey(),
+    caseId: text('case_id').notNull().references(() => cases.id),
+    version: integer('version').notNull(),
+    provider: text('provider').notNull(),
+    model: text('model').notNull(),
+    promptVersions: text('prompt_versions').notNull(),
+    rulesVersion: text('rules_version'),
+    inputHash: text('input_hash').notNull(),
+    outputJson: text('output_json'),
+    draftJson: text('draft_json'),
+    outputHash: text('output_hash'),
+    confidence: doublePrecision('confidence'),
+    durationMs: integer('duration_ms').notNull(),
+    errorCode: text('error_code'),
+    errorDetail: text('error_detail'),
+    createdAt: text('created_at').notNull(),
+  },
+  (t) => [uniqueIndex('analysis_runs_case_version').on(t.caseId, t.version)],
+);
 
-export const decisions = sqliteTable('decisions', {
+export const decisions = pgTable('decisions', {
   id: text('id').primaryKey(),
   caseId: text('case_id').notNull().references(() => cases.id),
   analysisRunId: text('analysis_run_id').notNull().references(() => analysisRuns.id),
@@ -112,7 +117,7 @@ export const decisions = sqliteTable('decisions', {
 });
 
 /** Append-only — UPDATE/DELETE blocked by triggers in the migration. */
-export const auditEvents = sqliteTable('audit_events', {
+export const auditEvents = pgTable('audit_events', {
   id: text('id').primaryKey(),
   actorId: text('actor_id').notNull(),
   entityType: text('entity_type').notNull(),
@@ -123,7 +128,7 @@ export const auditEvents = sqliteTable('audit_events', {
   createdAt: text('created_at').notNull(),
 });
 
-export const evaluationLabels = sqliteTable('evaluation_labels', {
+export const evaluationLabels = pgTable('evaluation_labels', {
   id: text('id').primaryKey(),
   caseId: text('case_id').notNull().references(() => cases.id),
   expectedJson: text('expected_json').notNull(),

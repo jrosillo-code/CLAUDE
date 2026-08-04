@@ -6,7 +6,7 @@ export default async function AnalyticsPage() {
   if (!can(user, 'analytics.read') && !can(user, 'cases.read_all')) {
     return <p className="notice error">Tu rol no permite acceder a la analítica.</p>;
   }
-  const { byStatus, byWorkflow, decisionsByType } = analyticsOverview(getDb());
+  const { byStatus, byWorkflow, decisionsByType } = await analyticsOverview(await getDb());
 
   const section = (title: string, rows: Array<{ label: string; count: number }>) => (
     <div className="card">

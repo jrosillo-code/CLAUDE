@@ -38,7 +38,7 @@ export default async function CaseDetailPage({
   const { id } = await params;
   const { error, ok, run: runParam } = await searchParams;
 
-  const detail = getCaseDetail(getDb(), id);
+  const detail = await getCaseDetail(await getDb(), id);
   if (!detail || !detail.communication) notFound();
   const { caseRow, communication, attachments, runs, decisions, audit } = detail;
 
@@ -56,7 +56,7 @@ export default async function CaseDetailPage({
   const alignment = analysis ? alignEvidence(analysis, communication, attachments) : null;
   const isLatest = selectedRun != null && selectedRun.id === runs[0]?.id;
   const decided = caseRow.status === 'DECIDED';
-  const users = can(user, 'cases.assign') ? listUsers(getDb()) : [];
+  const users = can(user, 'cases.assign') ? await listUsers(await getDb()) : [];
   const requiredItems = (analysis?.missingInformation ?? []).filter((m) => m.severity === 'REQUIRED');
 
   return (

@@ -35,27 +35,27 @@ function fail(caseId: string, message: string): never {
 
 async function authorizeCaseAccess(caseId: string) {
   const user = await requireUser();
-  const detail = getCaseDetail(getDb(), caseId);
+  const detail = await getCaseDetail(await getDb(), caseId);
   if (!detail) fail(caseId, 'Caso no encontrado.');
   if (!canViewCase(user, detail.caseRow.assigneeId)) fail(caseId, 'No tienes acceso a este caso.');
   return { user, detail };
 }
 
 async function runAnalysis(caseId: string, userId: string): Promise<void> {
-  const db = getDb();
-  const comm = getCommunicationInput(db, caseId);
+  const db = await getDb();
+  const comm = await getCommunicationInput(db, caseId);
   if (!comm) fail(caseId, 'El caso no tiene comunicación asociada.');
 
-  updateCaseStatus(db, caseId, 'ANALYSING', userId);
+  await updateCaseStatus(db, caseId, 'ANALYSING', userId);
   const started = Date.now();
   try {
     const provider = createProvider(); // throws if anthropic is configured without a key
     const result = await analyseCommunication(comm, {
       provider,
-      customers: listCustomers(db),
-      policies: listPolicies(db),
+      customers: await listCustomers(db),
+      policies: await listPolicies(db),
     });
-    const runId = recordAnalysisRun(db, caseId, result, userId);
+    const runId = await recordAnalysisRun(db, caseId, result, userId);
     log.info('analysis.completed', {
       caseId,
       runId,
@@ -67,7 +67,7 @@ async function runAnalysis(caseId: string, userId: string): Promise<void> {
   } catch (err) {
     // Degraded mode: provider unavailable → record a safe failed run, never a crash.
     const detail = err instanceof Error ? err.message.slice(0, 300) : 'unknown provider error';
-    recordAnalysisRun(
+    await recordAnalysisRun(
       db,
       caseId,
       {
@@ -105,7 +105,7 @@ export async function claimCaseAction(caseId: string) {
   if (detail.caseRow.assigneeId && detail.caseRow.assigneeId !== user.id && !can(user, 'cases.assign')) {
     fail(caseId, 'El caso ya está asignado.');
   }
-  assignCase(getDb(), caseId, user.id, user.id);
+  await assignCase(await getDb(), caseId, user.id, user.id);
   revalidatePath(`/cases/${caseId}`);
   revalidatePath('/');
 }
@@ -114,7 +114,7 @@ export async function reassignCaseAction(caseId: string, formData: FormData) {
   const { user } = await authorizeCaseAccess(caseId);
   if (!can(user, 'cases.assign')) fail(caseId, 'Solo supervisión puede reasignar casos.');
   const assignee = String(formData.get('assignee') ?? '');
-  assignCase(getDb(), caseId, assignee || null, user.id);
+  await assignCase(await getDb(), caseId, assignee || null, user.id);
   revalidatePath(`/cases/${caseId}`);
   revalidatePath('/');
 }
@@ -157,7 +157,7 @@ export async function decideAction(caseId: string, formData: FormData) {
   const finalType: DecisionType =
     decisionType === 'APPROVE' && withEdits ? 'APPROVE_WITH_EDITS' : (decisionType as DecisionType);
 
-  const result = recordDecision(getDb(), {
+  const result = await recordDecision(await getDb(), {
     caseId,
     analysisRunId,
     userId: user.id,

@@ -19,7 +19,7 @@ Governing specification: [`docs/Rosillo_Intake_Copilot_Claude_Code_Spec.pdf`](do
 ```bash
 npm install
 cp .env.example .env
-npm run db:migrate     # create the SQLite schema
+npm run db:migrate     # create the schema (embedded Postgres — zero setup)
 npm run db:seed        # load synthetic customers, policies, and the 19 labelled cases
 npm run dev            # http://localhost:3000 — log in as any synthetic user
 ```

@@ -24,7 +24,7 @@ export default defineConfig({
     reuseExistingServer: false,
     timeout: 60_000,
     env: {
-      DATABASE_PATH: './data/e2e.db',
+      DATABASE_PATH: './data/e2e-pg',
       AUTH_SECRET: 'e2e-secret-not-for-production',
       AI_PROVIDER: 'mock',
       DATA_CLASSIFICATION: 'SYNTHETIC',

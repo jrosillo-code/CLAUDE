@@ -25,7 +25,7 @@ export interface SessionUser {
 
 export async function login(email: string, password: string): Promise<string | null> {
   if (password !== DEMO_PASSWORD) return 'Credenciales no válidas.';
-  const user = getUserByEmail(getDb(), email);
+  const user = await getUserByEmail(await getDb(), email);
   if (!user || user.status !== 'ACTIVE') return 'Credenciales no válidas.';
   const store = await cookies();
   store.set(COOKIE, `${user.id}.${sign(user.id)}`, {
@@ -55,7 +55,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   ) {
     return null;
   }
-  const user = getUserById(getDb(), userId);
+  const user = await getUserById(await getDb(), userId);
   if (!user || user.status !== 'ACTIVE') return null;
   return { id: user.id, name: user.name, email: user.email, role: user.role as Role };
 }

@@ -1,8 +1,10 @@
-import { join, resolve } from 'node:path';
-import { openDatabase } from '../client';
+import { join } from 'node:path';
+import { findRepoRoot } from '@rosillo/domain';
+import { openDatabase, runMigrations } from '../client';
 import { seedDatabase } from '../seed';
 
-const { db, sqlite } = openDatabase();
-const counts = seedDatabase(db, join(resolve(process.cwd()), 'fixtures'));
-console.log('Synthetic seed complete:', counts);
-sqlite.close();
+const handle = await openDatabase();
+await runMigrations(handle);
+const counts = await seedDatabase(handle.db, join(findRepoRoot(), 'fixtures'));
+console.log(`Synthetic seed complete (driver: ${handle.driver}):`, counts);
+await handle.close();

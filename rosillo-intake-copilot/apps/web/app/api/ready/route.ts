@@ -11,7 +11,7 @@ export async function GET() {
   let ready = true;
 
   try {
-    const users = listUsers(getDb());
+    const users = await listUsers(await getDb());
     checks['database'] = users.length > 0 ? 'ok' : 'empty — run npm run db:seed';
     if (users.length === 0) ready = false;
   } catch (err) {

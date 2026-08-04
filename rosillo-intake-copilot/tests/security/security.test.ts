@@ -12,6 +12,7 @@ import {
   WORKFLOW_TYPES,
 } from '@rosillo/domain';
 import { MockProvider } from '@rosillo/ai';
+import { sql as drizzleSql } from 'drizzle-orm';
 import { openDatabase, seedDatabase, listCases } from '@rosillo/database';
 
 const fixturesRoot = join(__dirname, '..', '..', 'fixtures');
@@ -116,20 +117,23 @@ describe('prompt-injection containment (deterministic checks)', () => {
 });
 
 describe('injection-shaped inputs against the data layer', () => {
-  it('SQLi strings in filters are parameterised and match nothing', () => {
-    const { db, sqlite } = openDatabase(':memory:');
-    seedDatabase(db, fixturesRoot);
+  it('SQLi strings in filters are parameterised and match nothing', async () => {
+    const handle = await openDatabase(':memory:');
+    await seedDatabase(handle.db, fixturesRoot);
     const payloads = ["'; DROP TABLE cases;--", '" OR 1=1 --', "NEW' UNION SELECT * FROM users --"];
     for (const p of payloads) {
-      expect(listCases(db, { status: p })).toHaveLength(0);
-      expect(listCases(db, { workflow: p })).toHaveLength(0);
-      expect(listCases(db, { assigneeId: p })).toHaveLength(0);
+      expect(await listCases(handle.db, { status: p })).toHaveLength(0);
+      expect(await listCases(handle.db, { workflow: p })).toHaveLength(0);
+      expect(await listCases(handle.db, { assigneeId: p })).toHaveLength(0);
     }
     // Tables intact.
-    expect(listCases(db).length).toBeGreaterThan(0);
-    expect(sqlite.prepare('SELECT COUNT(*) AS n FROM users').get()).toMatchObject({ n: 5 });
-    sqlite.close();
-  });
+    expect((await listCases(handle.db)).length).toBeGreaterThan(0);
+    const count = (await handle.db.execute(drizzleSql`SELECT COUNT(*)::int AS n FROM users`)) as unknown as {
+      rows: Array<{ n: number }>;
+    };
+    expect(count.rows[0]).toMatchObject({ n: 5 });
+    await handle.close();
+  }, 60_000);
 });
 
 describe('path traversal', () => {
@@ -205,7 +209,7 @@ describe('secret leakage', () => {
         if (statSync(p).isDirectory()) scan(p);
         else if (/\.(js|css|txt|json)$/.test(entry)) {
           const content = readFileSync(p, 'utf8');
-          if (/sk-ant-|ANTHROPIC_API_KEY|AUTH_SECRET|CASE_ANALYST v1|better-sqlite3/.test(content)) {
+          if (/sk-ant-|ANTHROPIC_API_KEY|AUTH_SECRET|CASE_ANALYST v1|DATABASE_URL|pglite/.test(content)) {
             offenders.push(p);
           }
         }

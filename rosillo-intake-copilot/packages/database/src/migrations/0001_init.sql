@@ -31,7 +31,7 @@ CREATE TABLE policies (
   status TEXT NOT NULL,
   inception_date TEXT NOT NULL,
   renewal_date TEXT NOT NULL,
-  premium REAL NOT NULL,
+  premium DOUBLE PRECISION NOT NULL,
   risk_summary TEXT NOT NULL
 );
 CREATE UNIQUE INDEX policies_number_insurer ON policies(policy_number, insurer_id);
@@ -78,7 +78,7 @@ CREATE TABLE analysis_runs (
   output_json TEXT,
   draft_json TEXT,
   output_hash TEXT,
-  confidence REAL,
+  confidence DOUBLE PRECISION,
   duration_ms INTEGER NOT NULL,
   error_code TEXT,
   error_detail TEXT,
@@ -121,11 +121,23 @@ CREATE TABLE evaluation_labels (
 -- Immutability guarantees (spec sections 10 and 13): analysis runs are
 -- immutable after creation; audit events can never be updated or deleted
 -- through the application layer.
+CREATE OR REPLACE FUNCTION rosillo_forbid_analysis_run_update() RETURNS trigger AS $$
+BEGIN
+  RAISE EXCEPTION 'analysis runs are immutable';
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION rosillo_forbid_audit_change() RETURNS trigger AS $$
+BEGIN
+  RAISE EXCEPTION 'audit events are append-only';
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE TRIGGER analysis_runs_no_update BEFORE UPDATE ON analysis_runs
-BEGIN SELECT RAISE(ABORT, 'analysis runs are immutable'); END;
+FOR EACH ROW EXECUTE FUNCTION rosillo_forbid_analysis_run_update();
 
 CREATE TRIGGER audit_events_no_update BEFORE UPDATE ON audit_events
-BEGIN SELECT RAISE(ABORT, 'audit events are append-only'); END;
+FOR EACH ROW EXECUTE FUNCTION rosillo_forbid_audit_change();
 
 CREATE TRIGGER audit_events_no_delete BEFORE DELETE ON audit_events
-BEGIN SELECT RAISE(ABORT, 'audit events are append-only'); END;
+FOR EACH ROW EXECUTE FUNCTION rosillo_forbid_audit_change();

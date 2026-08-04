@@ -25,7 +25,7 @@ export default async function InboxPage({
   if (params.workflow && (WORKFLOW_TYPES as readonly string[]).includes(params.workflow)) filter.workflow = params.workflow;
   if (params.assignee === 'me') filter.assigneeId = user.id;
 
-  const rows = listCases(getDb(), filter);
+  const rows = await listCases(await getDb(), filter);
 
   return (
     <>

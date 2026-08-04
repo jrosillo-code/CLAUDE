@@ -1,6 +1,6 @@
 # ADR-0002: SQLite (Drizzle) for the prototype; PostgreSQL as the deployment target
 
-**Status:** accepted (documented deviation from spec section 12)
+**Status:** superseded by ADR-0006 (Postgres dialect: Supabase in production, PGlite locally)
 
 ## Context
 

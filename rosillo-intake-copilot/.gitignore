@@ -4,8 +4,7 @@ node_modules/
 .env
 .env.local
 *.local.db
-data/*.db
-data/*.db-*
+data/
 evaluation-reports/*.json
 evaluation-reports/*.md
 !evaluation-reports/.gitkeep

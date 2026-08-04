@@ -28,7 +28,8 @@ refuses to boot with an actionable message when invalid.
 | Variable | Default | Notes |
 | --- | --- | --- |
 | `DATA_CLASSIFICATION` | `SYNTHETIC` | Anything else aborts startup — this prototype never touches real data |
-| `DATABASE_PATH` | `./data/rosillo.db` | Relative paths resolve against the monorepo root |
+| `DATABASE_URL` | — | Postgres connection string (Supabase pooler). When set, it wins over `DATABASE_PATH` |
+| `DATABASE_PATH` | `./data/pgdata` | PGlite (embedded Postgres) data directory for local dev; relative paths resolve against the monorepo root |
 | `AUTH_SECRET` | dev fallback | Must be ≥16 random chars in production (enforced) |
 | `AI_PROVIDER` | `mock` | `mock` or `anthropic` |
 | `ANTHROPIC_API_KEY` | — | Required only when `AI_PROVIDER=anthropic`; server-side only |
@@ -57,25 +58,33 @@ drafts, or quotes unless `LOG_CONTENT=1`.
 
 ## Database backup and reset
 
-The whole state is one SQLite file (plus WAL side files):
+**Local development (PGlite)** — the whole state is one data directory:
 
 ```bash
-# Backup (server stopped, or after a checkpoint)
-sqlite3 data/rosillo.db "PRAGMA wal_checkpoint(TRUNCATE);"
-cp data/rosillo.db backups/rosillo-$(date +%F).db
+# Backup (stop the dev server first — PGlite is single-process)
+cp -r data/pgdata backups/pgdata-$(date +%F)
 
 # Restore
-cp backups/rosillo-2026-08-04.db data/rosillo.db && rm -f data/rosillo.db-wal data/rosillo.db-shm
+rm -rf data/pgdata && cp -r backups/pgdata-2026-08-04 data/pgdata
 
 # Full reset to the pristine synthetic dataset
-rm -f data/rosillo.db data/rosillo.db-*
+rm -rf data/pgdata
 npm run db:migrate && npm run db:seed
 ```
 
 `npm run db:seed` alone also resets all operational data (cases, runs,
 decisions) — audit rows from previous sessions are removed with it because
-the whole database is synthetic and disposable. The Playwright suite uses a
-separate `data/e2e.db` and never touches the dev database.
+the whole database is synthetic and disposable. Stop the dev server before
+seeding. The Playwright suite uses a separate `data/e2e-pg` directory and
+never touches the dev database.
+
+**Production (Supabase)** — Supabase takes daily automatic backups (dashboard →
+Database → Backups). To reset the hosted demo to pristine synthetic data, run
+from any machine:
+
+```bash
+DATABASE_URL='postgresql://...' npm run db:seed
+```
 
 ## Dependency and vulnerability scanning
 

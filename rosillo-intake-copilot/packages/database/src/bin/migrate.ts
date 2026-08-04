@@ -1,6 +1,9 @@
-import { openDatabase } from '../client';
+import { openDatabase, runMigrations } from '../client';
 
-const { sqlite } = openDatabase();
-const applied = sqlite.prepare('SELECT name FROM _migrations ORDER BY name').all() as { name: string }[];
-console.log(`Database ready. Applied migrations: ${applied.map((m) => m.name).join(', ') || 'none'}`);
-sqlite.close();
+const handle = await openDatabase();
+const applied = await runMigrations(handle);
+console.log(
+  `Database ready (driver: ${handle.driver}). ` +
+    (applied.length ? `Applied now: ${applied.join(', ')}` : 'No pending migrations.'),
+);
+await handle.close();

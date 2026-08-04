@@ -18,7 +18,7 @@ export default async function LoginPage({
 }) {
   if (await getCurrentUser()) redirect('/');
   const { error } = await searchParams;
-  const users = listUsers(getDb());
+  const users = await listUsers(await getDb());
 
   return (
     <div className="card" style={{ maxWidth: 460, margin: '40px auto' }}>
