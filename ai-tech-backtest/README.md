@@ -36,6 +36,44 @@ market-data hosts (Stooq, Yahoo, FRED, SEC EDGAR, Tiingo, Polygon — verified
 `reports/real/` contains an explicit UNAVAILABLE placeholder, not synthetic
 numbers. See `data/real_data_manifest.md` for exactly what to run elsewhere.
 
+## The research platform
+
+The project is a long-horizon research platform, not a one-off backtest. A
+static, fully self-contained research site (no server, no external assets) is
+generated from the registries and governance artifacts:
+
+```bash
+python scripts/research.py dashboard      # build site/ -> open site/index.html
+python scripts/research.py update         # incremental experiments + site refresh
+python scripts/research.py validate       # real-data quality gate
+python scripts/research.py compare A B    # side-by-side metric table
+python scripts/research.py roadmap        # ranked research priorities
+python scripts/research.py ideas          # idea backlog (configs/research_ideas.yaml)
+python scripts/research.py assistant      # rule-based evidence review (read-only)
+python scripts/research.py export         # markdown research summary
+python scripts/research.py tradingview    # Pine v5 exports for portable strategies
+```
+
+Site pages: **dashboard** (state-of-the-research cards, timeline, leaders,
+roadmap) · **experiment explorer** (every registry record ever, filterable,
+nothing deleted) · **strategy catalog + per-strategy pages** (auto docs,
+research notebook, scorecard, genealogy tree, frozen grids, Pine export,
+fingerprinted source) · **comparison engine** (any selection, CSV export) ·
+**portfolio lab** (strategy correlation heatmap, regime co-failure map,
+pairwise blend analysis) · **ideas** · **roadmap** (auto-generated from
+backlog + gate limitations + open audit findings) · **audit & governance**.
+
+Platform guarantees: the site builder and assistant are **read-only** over
+registries, freezes, locks and findings (tested byte-for-byte); scorecards
+measure research quality, never future returns; deprecated strategies stay
+visible with reasons; every numeric page carries its data-mode banner.
+
+**Plugins:** drop `plugins/<name>/strategy.py` with a `@register`-decorated
+Strategy subclass (see `plugins/example_golden_cross/`) — it appears in the
+catalog/site automatically. A plugin cannot enter a REAL study without being
+added to the frozen grid and fingerprint list, which forces a freeze bump
+(tested).
+
 ## The first frozen real-data study (one command)
 
 The first real run is governed by a **research freeze**
