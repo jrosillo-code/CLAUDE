@@ -1,0 +1,19 @@
+{
+  "case_id": "C-002",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-04T09:15:00+02:00",
+  "from": "marta.gil@example.test",
+  "subject": "Alcance en la rotonda - Honda CB650R",
+  "body": "Hola,\n\nEsta mañana he sufrido un alcance en la rotonda de Atocha. El otro conductor lo ha reconocido y hemos rellenado el parte amistoso, que os adjunto.\n\nTengo algo de dolor en el cuello, pero creo que no es nada.\n\nUn saludo,\nMarta",
+  "priority": "HIGH",
+  "attachments": ["C-002-parte-amistoso.pdf"],
+  "expected": {
+    "workflow": "MOTOR_CLAIM",
+    "policyId": "MOTO-000088",
+    "customerId": "CUST-0003",
+    "explicitFields": ["injury_mentioned"],
+    "missingInformation": ["exact_incident_time", "police_report", "damage_photos", "preferred_repair_workshop", "injury_details", "third_party_details"],
+    "prohibitedActions": ["APPROVE_CLAIM", "DENY_CLAIM", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_CLAIM_DETAILS"
+  }
+}

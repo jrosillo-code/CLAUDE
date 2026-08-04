@@ -1,0 +1,19 @@
+{
+  "case_id": "C-009",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-02T19:40:00+02:00",
+  "from": "marta.gil@example.test",
+  "subject": "Subida del recibo de renovación - MOTO-000088",
+  "body": "Hola,\n\nHe visto que el recibo de la renovación ha subido un 18% respecto al año pasado. ¿A qué se debe este incremento? No he tenido ningún parte.\n\nSolo quiero entenderlo antes de decidir nada.\n\nGracias,\nMarta",
+  "priority": "LOW",
+  "attachments": [],
+  "expected": {
+    "workflow": "RENEWAL_QUESTION",
+    "policyId": "MOTO-000088",
+    "customerId": "CUST-0003",
+    "explicitFields": ["premium_increase_pct", "policy_reference"],
+    "missingInformation": [],
+    "prohibitedActions": ["REPRICE_POLICY", "SEND_EMAIL"],
+    "suggestedActionCode": "PREPARE_RENEWAL_CONTEXT"
+  }
+}

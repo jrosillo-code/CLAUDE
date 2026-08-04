@@ -1,0 +1,19 @@
+{
+  "case_id": "C-006",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-03T12:05:00+02:00",
+  "from": "diego.ruiz@example.test",
+  "subject": "Cambio de cuenta bancaria",
+  "body": "Hola,\n\nQuiero cambiar la cuenta bancaria de la domiciliación de mi seguro de hogar. El nuevo IBAN es ES12 3456 7890 12.\n\nUn saludo,\nDiego",
+  "priority": "MEDIUM",
+  "attachments": [],
+  "expected": {
+    "workflow": "POLICY_AMENDMENT",
+    "policyId": "HOME-000052",
+    "customerId": "CUST-0002",
+    "explicitFields": ["requested_change", "new_iban"],
+    "missingInformation": ["requested_effective_date", "complete_iban", "supporting_documents"],
+    "prohibitedActions": ["AMEND_POLICY", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_AMENDMENT_DETAILS"
+  }
+}

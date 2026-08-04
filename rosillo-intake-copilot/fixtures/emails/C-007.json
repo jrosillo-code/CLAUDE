@@ -1,0 +1,19 @@
+{
+  "case_id": "C-007",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-03T10:00:00+02:00",
+  "from": "carla.nunez@example.test",
+  "subject": "Presupuesto para seguro de hogar",
+  "body": "Buenos días,\n\nAcabamos de comprar una casa en Alcalá y necesitamos un seguro de hogar. ¿Podríais prepararnos un presupuesto?\n\nNos gustaría que la cobertura empezara la semana que viene, si es posible.\n\nGracias,\nCarla Núñez",
+  "priority": "MEDIUM",
+  "attachments": [],
+  "expected": {
+    "workflow": "QUOTE_REQUEST",
+    "policyId": null,
+    "customerId": null,
+    "explicitFields": ["product"],
+    "missingInformation": ["construction_year"],
+    "prohibitedActions": ["ISSUE_QUOTE", "BIND_COVERAGE", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_QUOTE_DETAILS"
+  }
+}

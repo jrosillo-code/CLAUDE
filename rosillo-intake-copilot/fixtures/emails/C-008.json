@@ -1,0 +1,19 @@
+{
+  "case_id": "C-008",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-03T09:10:00+02:00",
+  "from": "operaciones@lince.test",
+  "subject": "Presupuesto seguro de flota",
+  "body": "Estimados señores:\n\nSomos una empresa de logística y queremos un presupuesto para asegurar nuestra flota de furgonetas. Adjuntamos el listado de vehículos con matrículas y modelos.\n\nAtentamente,\nTransportes Lince SL",
+  "priority": "MEDIUM",
+  "attachments": ["C-008-listado-vehiculos.pdf"],
+  "expected": {
+    "workflow": "QUOTE_REQUEST",
+    "policyId": "FLEET-000013",
+    "customerId": "CUST-0004",
+    "explicitFields": ["product"],
+    "missingInformation": ["desired_start_date"],
+    "prohibitedActions": ["ISSUE_QUOTE", "BIND_COVERAGE", "SEND_EMAIL"],
+    "suggestedActionCode": "ROUTE_TO_QUOTATION"
+  }
+}

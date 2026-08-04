@@ -1,0 +1,19 @@
+{
+  "case_id": "C-011",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-02T11:25:00+02:00",
+  "from": "diego.ruiz@example.test",
+  "subject": "Documentación pendiente de mi expediente",
+  "body": "Buenos días,\n\nEn relación con mi expediente abierto por la fuga de agua en casa, me habéis pedido la factura de la reparación y las fotos. Todavía no las tengo todas, pero la semana que viene me entrega el fontanero la factura.\n\n¿Puedo enviarlas respondiendo a este correo?\n\nGracias,\nDiego",
+  "priority": "MEDIUM",
+  "attachments": [],
+  "expected": {
+    "workflow": "MISSING_DOCUMENT_FOLLOWUP",
+    "policyId": "HOME-000052",
+    "customerId": "CUST-0002",
+    "explicitFields": ["outstanding_items"],
+    "missingInformation": [],
+    "prohibitedActions": ["APPROVE_CLAIM", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_MISSING_DOCUMENTS"
+  }
+}

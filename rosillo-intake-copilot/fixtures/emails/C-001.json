@@ -1,0 +1,19 @@
+{
+  "case_id": "C-001",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-04T10:42:00+02:00",
+  "from": "laura.martin@example.test",
+  "subject": "Golpe en parking - Audi Q5",
+  "body": "Buenos días,\n\nAyer por la tarde encontré el coche golpeado al salir del parking de Serrano. No vi al otro vehículo y nadie dejó ninguna nota.\n\nAdjunto fotos de los daños y el ticket del parking.\n\nGracias,\nLaura",
+  "priority": "HIGH",
+  "attachments": ["C-001-foto-dano-1.jpg", "C-001-foto-dano-2.jpg", "C-001-foto-dano-3.jpg", "C-001-ticket-parking.pdf"],
+  "expected": {
+    "workflow": "MOTOR_CLAIM",
+    "policyId": "AUTO-000184",
+    "customerId": "CUST-0001",
+    "explicitFields": ["location"],
+    "missingInformation": ["exact_incident_time", "police_report", "preferred_repair_workshop", "third_party_details"],
+    "prohibitedActions": ["APPROVE_CLAIM", "DENY_CLAIM", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_CLAIM_DETAILS"
+  }
+}

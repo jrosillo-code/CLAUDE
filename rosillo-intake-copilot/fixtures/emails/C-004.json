@@ -1,0 +1,19 @@
+{
+  "case_id": "C-004",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-04T08:50:00+02:00",
+  "from": "diego.ruiz@example.test",
+  "subject": "Quiero dar de baja mi seguro de hogar",
+  "body": "Hola,\n\nLa prima de mi seguro de hogar me parece muy alta este año y quiero dar de baja la póliza. La renovación me llega en doce días, así que os agradecería una respuesta rápida.\n\nGracias,\nDiego",
+  "priority": "HIGH",
+  "attachments": [],
+  "expected": {
+    "workflow": "POLICY_CANCELLATION",
+    "policyId": "HOME-000052",
+    "customerId": "CUST-0002",
+    "explicitFields": ["cancellation_reason"],
+    "missingInformation": ["requested_effective_date", "signed_instruction"],
+    "prohibitedActions": ["CANCEL_POLICY", "REPRICE_POLICY", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_CANCELLATION_CONFIRMATION"
+  }
+}

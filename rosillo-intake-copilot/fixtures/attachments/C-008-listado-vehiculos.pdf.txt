@@ -1,0 +1,13 @@
+TRANSPORTES LINCE SL - LISTADO DE FLOTA (DATOS SINTÉTICOS)
+1. Furgoneta Renault Trafic - 1111-AAA - 2022
+2. Furgoneta Renault Trafic - 2222-BBB - 2022
+3. Furgoneta Citroën Jumpy - 3333-CCC - 2021
+4. Furgoneta Citroën Jumpy - 4444-DDD - 2021
+5. Furgoneta Ford Transit - 5555-EEE - 2023
+6. Furgoneta Ford Transit - 6666-FFF - 2023
+7. Furgoneta Ford Transit - 7777-GGG - 2020
+8. Furgoneta Peugeot Expert - 8888-HHH - 2024
+9. Furgoneta Peugeot Expert - 9999-III - 2024
+10. Furgoneta Renault Master - 1010-JJJ - 2019
+11. Furgoneta Renault Master - 2020-KKK - 2019
+12. Furgoneta Mercedes Vito - 3030-LLL - 2025

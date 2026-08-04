@@ -1,0 +1,19 @@
+{
+  "case_id": "C-003",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-04T09:30:00+02:00",
+  "from": "laura.martin@example.test",
+  "subject": "Venta del coche - baja del seguro",
+  "body": "Buenos días,\n\nVendí el coche ayer y quiero dar de baja el seguro. Adjunto el contrato de compraventa.\n\nGracias,\nLaura",
+  "priority": "MEDIUM",
+  "attachments": ["C-003-contrato-venta.pdf"],
+  "expected": {
+    "workflow": "POLICY_CANCELLATION",
+    "policyId": "AUTO-000184",
+    "customerId": "CUST-0001",
+    "explicitFields": ["cancellation_reason"],
+    "missingInformation": ["requested_effective_date", "signed_instruction"],
+    "prohibitedActions": ["CANCEL_POLICY", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_CANCELLATION_CONFIRMATION"
+  }
+}

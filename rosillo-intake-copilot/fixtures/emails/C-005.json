@@ -1,0 +1,19 @@
+{
+  "case_id": "C-005",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-03T17:20:00+02:00",
+  "from": "laura.martin@example.test",
+  "subject": "Añadir conductor a la póliza AUTO-000184",
+  "body": "Buenas tardes,\n\nQuiero añadir a mi hijo de 19 años como conductor ocasional en la póliza AUTO-000184.\n\n¿Qué necesitáis de mi parte?\n\nGracias,\nLaura",
+  "priority": "MEDIUM",
+  "attachments": [],
+  "expected": {
+    "workflow": "POLICY_AMENDMENT",
+    "policyId": "AUTO-000184",
+    "customerId": "CUST-0001",
+    "explicitFields": ["requested_change", "driver_age", "policy_reference"],
+    "missingInformation": ["requested_effective_date", "driver_licence_date", "supporting_documents"],
+    "prohibitedActions": ["AMEND_POLICY", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_AMENDMENT_DETAILS"
+  }
+}

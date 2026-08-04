@@ -1,0 +1,19 @@
+{
+  "case_id": "C-010",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-02T18:30:00+02:00",
+  "from": "laura.martin@example.test",
+  "subject": "Renovación AUTO-000184 - subida de prima",
+  "body": "Hola,\n\nMi renovación llega el mes que viene y la prima vuelve a subir; la subida no me parece justificada. Tengo una oferta de otra compañía bastante más barata.\n\nSi no podéis igualarla, me plantearé la baja.\n\nUn saludo,\nLaura",
+  "priority": "HIGH",
+  "attachments": [],
+  "expected": {
+    "workflow": "RENEWAL_QUESTION",
+    "policyId": "AUTO-000184",
+    "customerId": "CUST-0001",
+    "explicitFields": ["cancellation_risk", "policy_reference"],
+    "missingInformation": [],
+    "prohibitedActions": ["REPRICE_POLICY", "CANCEL_POLICY", "ISSUE_QUOTE", "SEND_EMAIL"],
+    "suggestedActionCode": "ROUTE_TO_RETENTION_REVIEW"
+  }
+}
