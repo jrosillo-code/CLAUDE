@@ -16,10 +16,20 @@ def total_return(r: pd.Series) -> float:
 
 
 def cagr(r: pd.Series) -> float:
+    """Compound annual growth rate over ELAPSED CALENDAR TIME.
+
+    Audit finding AUD-006: dividing the row count by 252 misstates years on
+    calendars with a different session density (a plain business-day calendar
+    has ~261 rows/year, understating CAGR by ~35bp/yr). Elapsed days / 365.25
+    is calendar-correct regardless of session convention.
+    """
     r = _clean(r)
     if len(r) < 2:
         return np.nan
-    years = len(r) / ANN
+    if isinstance(r.index, pd.DatetimeIndex):
+        years = max((r.index[-1] - r.index[0]).days, 1) / 365.25
+    else:
+        years = len(r) / ANN
     growth = float((1 + r).prod())
     if growth <= 0:
         return -1.0

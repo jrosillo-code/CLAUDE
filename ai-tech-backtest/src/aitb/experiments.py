@@ -29,6 +29,23 @@ from .validation import (Split, concentration_diagnostics, contribution_shares,
 log = get_logger("experiments")
 
 
+def _lineage(md: MarketData) -> dict:
+    """Data-store fingerprint + freeze hash for real runs (empty-safe)."""
+    out: dict = {}
+    if md.data_mode == "real":
+        try:
+            from .data.quality import store_fingerprint
+            out["store_fingerprint"] = store_fingerprint()
+        except Exception:
+            out["store_fingerprint"] = None
+        try:
+            from .freeze import load_freeze
+            out["freeze_hash"] = load_freeze()["hash"]
+        except Exception:
+            out["freeze_hash"] = None
+    return out
+
+
 def _git_commit() -> str:
     try:
         return subprocess.run(["git", "rev-parse", "--short", "HEAD"],
@@ -146,6 +163,10 @@ def run_experiment(md: MarketData,
             "provider": md.provider_name,
             "data_mode": md.data_mode,
             "universe_hash": stable_hash([s.ticker for s in md.universe.securities]),
+            # Lineage (audit finding AUD-007): bind the record to the exact
+            # validated data-store contents and governing freeze, so any
+            # upstream change invalidates downstream artifacts detectably.
+            "lineage": _lineage(md),
             "split": {"dev_end": str(split.dev_end.date()),
                       "holdout_start": str(split.holdout_start.date()),
                       "holdout_end": str(split.holdout_end.date())},

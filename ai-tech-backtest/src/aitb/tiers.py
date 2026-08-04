@@ -25,6 +25,11 @@ _MACRO_DEPENDENT = {"regime"}
 _FUNDAMENTAL_DEPENDENT = {"fundamental"}
 
 
+_KNOWN_FAMILIES = (_UNIVERSE_CROSS_SECTIONAL | _MACRO_DEPENDENT
+                   | _FUNDAMENTAL_DEPENDENT
+                   | {"benchmark", "tsmom", "riskmanaged", "target_holdings"})
+
+
 def gate_flags(gate: dict | None) -> dict:
     """Extract tiering-relevant facts from a quality-gate document."""
     lims = " ".join((gate or {}).get("limitations", []))
@@ -32,18 +37,26 @@ def gate_flags(gate: dict | None) -> dict:
         "delisted_incomplete": "delisted names" in lims,
         "split_only_prices": "split-adjusted-only" in lims,
         "fundamentals_partial": "fundamentals cover only" in lims,
-        "macro_revised": "revised data" in lims or True,  # FRED is always revised
+        "macro_revised": True,   # FRED series are revised, never vintage
         "no_vix": "no VIX" in lims,
     }
 
 
 def assign_tier(record: dict, gate: dict | None) -> tuple[str, str]:
-    """(tier, reason) for one experiment registry record."""
+    """(tier, reason) for one experiment registry record.
+
+    FAIL-CLOSED (audit finding AUD-009): unknown or missing metadata can
+    never promote — a record with no recognizable family lands in Tier B at
+    best, and a missing/failed record in Tier C.
+    """
     family = record.get("family", "")
     flags = gate_flags(gate)
 
-    if record.get("status") in ("failed", "deprecated"):
+    if record.get("status") in ("failed", "deprecated", None):
         return "C", f"not run ({record.get('status')})"
+    if not family or family not in _KNOWN_FAMILIES:
+        return "B", (f"unrecognized family '{family}' — tier metadata missing, "
+                     "cannot verify Tier A data dependencies")
 
     if family in _MACRO_DEPENDENT:
         if flags["no_vix"]:

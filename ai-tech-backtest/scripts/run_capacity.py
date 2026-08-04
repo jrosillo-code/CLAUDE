@@ -44,6 +44,9 @@ def main() -> int:
     if args.data_mode == "real":
         from aitb.data.quality import require_gate
         require_gate()
+        from aitb.freeze import verify_freeze
+        verify_freeze()   # audit AUD-002: derived analytics must run frozen code
+
         md = load_market_data(mode="real")
     else:
         md = load_market_data(args.provider, mode="synthetic")

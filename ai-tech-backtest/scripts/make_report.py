@@ -76,6 +76,8 @@ def main() -> int:
             gate = require_gate()
         except Exception as exc:
             return write_unavailable_stub(REP, str(exc))
+        from aitb.freeze import verify_freeze
+        verify_freeze()   # audit AUD-002: report must render frozen logic
         md = load_market_data(mode="real")
     else:
         md = load_market_data(args.provider, mode="synthetic")
@@ -360,6 +362,38 @@ after-tax comparison of active vs buy-and-hold.</li>
 </ul>
 <p class="note">Nothing in this report is investment advice. Historical (and
 synthetic) performance does not predict future results.</p>"""})
+
+    # ---- provenance (real mode): hashes of every source artifact ---------
+    if args.data_mode == "real":
+        import hashlib
+        from aitb.freeze import load_freeze
+        from aitb.data.quality import store_fingerprint
+        from aitb.holdout import holdout_status as _hs
+        reg_sha = hashlib.sha256(registry.path.read_bytes()).hexdigest()[:16]
+        hs2 = _hs("real")
+        lineages = {str((r.get("lineage") or {}).get("store_fingerprint"))
+                    for r in ok.to_dict("records")}
+        current_store = store_fingerprint()
+        stale = lineages - {current_store, "None"}
+        prov_rows = pd.DataFrame([
+            {"artifact": "research freeze", "fingerprint": load_freeze()["hash"]},
+            {"artifact": "data store (current)", "fingerprint": current_store},
+            {"artifact": "data store (at experiment time)", "fingerprint": ", ".join(sorted(lineages))},
+            {"artifact": "quality gate status", "fingerprint": (gate or {}).get("status", "?")},
+            {"artifact": "experiment registry sha256", "fingerprint": reg_sha},
+            {"artifact": "experiments (ok, base)", "fingerprint": str(len(ok))},
+            {"artifact": "holdout accesses / compromised",
+             "fingerprint": f"{len(hs2.get('access_log', []))} / {hs2.get('compromised')}"},
+        ])
+        stale_html = ("<p class='warn'>STALE RESULTS: experiments were run against a "
+                      "different store fingerprint than the current one — re-run the "
+                      "study before trusting this report.</p>" if stale else "")
+        sections.append({"title": "14. Report provenance",
+                         "html": stale_html + df_to_html(prov_rows)})
+        if stale:
+            warnings.insert(0, "PROVENANCE MISMATCH: some experiment records were "
+                               "produced from a different data-store fingerprint than "
+                               "the current store — results are stale.")
 
     # ---- render ----------------------------------------------------------
     if args.data_mode == "real" and gate is not None:

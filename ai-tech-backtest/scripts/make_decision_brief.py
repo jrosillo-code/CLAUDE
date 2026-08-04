@@ -64,28 +64,64 @@ def main() -> int:
     if "tier" not in active.columns:
         active["tier"] = "B"
 
-    # ---- advancement test (all criteria) --------------------------------
+    # ---- fail-closed preconditions (audit AUD-004/AUD-005) ---------------
+    # Any of these forces DO NOTHING regardless of results: a compromised
+    # holdout, a gate that is not currently passing, or a gate whose store
+    # fingerprint no longer matches (stale results).
+    blocked_reason = None
+    if hs.get("compromised"):
+        blocked_reason = "holdout is COMPROMISED (accessed repeatedly, before freezing, or log tampering detected)"
+    elif gate.get("status") not in ("PASS FOR RESEARCH", "PASS WITH LIMITATIONS"):
+        blocked_reason = f"data-quality gate is '{gate.get('status')}'"
+    else:
+        try:
+            from aitb.data.quality import store_fingerprint
+            if gate.get("store_fingerprint") != store_fingerprint():
+                blocked_reason = ("data store changed since validation — gate is stale; "
+                                  "re-validate and re-run before deciding")
+        except Exception as exc:
+            blocked_reason = f"could not verify store fingerprint ({exc})"
+
+    def _finite(x, default=None):
+        """Fail-closed float: missing/NaN/inf -> None (never passes a check)."""
+        try:
+            v = float(x)
+            return v if v == v and abs(v) != float("inf") else default
+        except (TypeError, ValueError):
+            return default
+
+    # ---- advancement test (all criteria, fail-closed) --------------------
     survivors, near_misses = [], []
     for _, row in active.iterrows():
+        top_share = _finite(row.get("top_name_share"))
         checks = {"tier_A": row.get("tier") == "A",
                   "robust_verdict": row.get("verdict") == "robust_candidate",
-                  "not_concentrated": float(row.get("top_name_share", 1.0)) < 0.5,
+                  # unknown concentration blocks (audit: fail closed on NaN)
+                  "not_concentrated": top_share is not None and top_share < 0.5,
                   "not_ai_rally_only": not bool(row.get("fails_pre_ai_rally", False))}
         frow = fam[fam["best_variant"] == row["strategy"]] if len(fam) else pd.DataFrame()
-        checks["bootstrap_ci_positive"] = (bool(len(frow)) and
-                                           float(frow.iloc[0]["sharpe_ci90_lo"] or 0) > 0)
+        ci_lo = _finite(frow.iloc[0]["sharpe_ci90_lo"]) if len(frow) else None
+        checks["bootstrap_ci_positive"] = ci_lo is not None and ci_lo > 0
         crow = cap[cap["strategy"] == row["strategy"]] if len(cap) else pd.DataFrame()
-        checks["capacity_1M_plus"] = (not len(crow)) or float(crow.iloc[0]["capacity_est_usd"]) >= 1e6
+        # AUD-004 fix: a MISSING capacity estimate blocks advancement — it is
+        # unknown, not adequate.
+        cap_est = _finite(crow.iloc[0]["capacity_est_usd"]) if len(crow) else None
+        checks["capacity_1M_plus"] = cap_est is not None and cap_est >= 1e6
         entry = {"strategy": row["strategy"], "family": row["family"],
                  "score": row["score"], "checks": checks,
-                 "passed": all(checks.values())}
+                 "passed": all(checks.values()) and blocked_reason is None}
         (survivors if entry["passed"] else near_misses).append(entry)
 
     rejected = active[active["verdict"] == "rejected"]
     deprecated = df[df["status"] == "deprecated"] if "status" in df.columns else pd.DataFrame()
 
-    decision = "PAPER-TRADE the surviving strategy under the prospective protocol" \
-        if survivors else "DO NOTHING (no strategy met all advancement criteria)"
+    if blocked_reason:
+        decision = f"DO NOTHING — advancement blocked: {blocked_reason}"
+        survivors = []
+    elif survivors:
+        decision = "PAPER-TRADE the surviving strategy under the prospective protocol"
+    else:
+        decision = "DO NOTHING (no strategy met all advancement criteria)"
 
     def check_list(checks: dict) -> str:
         return ", ".join(f"{'✓' if v else '✗'} {k}" for k, v in checks.items())

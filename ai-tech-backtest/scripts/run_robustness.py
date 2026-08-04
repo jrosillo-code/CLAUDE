@@ -38,6 +38,9 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--data-mode", default="synthetic", choices=["synthetic", "real"])
     args = ap.parse_args()
+    if args.data_mode == "real":
+        from aitb.freeze import verify_freeze
+        verify_freeze()   # audit AUD-002: derived analytics must run frozen code
     registry = ExperimentRegistry.for_mode(args.data_mode)
     df = registry.load()
     if df.empty:
@@ -72,7 +75,15 @@ def main() -> int:
             step_months=bt_cfg.step_months)
         wf_sharpe = sharpe(wf_oos) if len(wf_oos) else float("nan")
 
-        trial_sharpes = [sharpe(v.dropna()) for v in dev_curves.values()]
+        # Audit finding AUD-008: the deflated-Sharpe trial battery must count
+        # EVERY variant attempted in the family — errored runs enter as
+        # zero-Sharpe trials so the multiple-testing correction is not
+        # understated by dropping failures.
+        n_failed = int((df[(df["status"] == "failed")
+                           & (df.get("family", pd.Series(dtype=object)) == family)]
+                        ).shape[0]) if "family" in df.columns else 0
+        trial_sharpes = ([sharpe(v.dropna()) for v in dev_curves.values()]
+                         + [0.0] * n_failed)
         best_name = max(dev_curves, key=lambda k: sharpe(dev_curves[k].dropna()))
         best = dev_curves[best_name].dropna()
         point, lo, hi = block_bootstrap_ci(best, n_boot=bt_cfg.n_bootstrap,

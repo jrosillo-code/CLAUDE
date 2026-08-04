@@ -64,12 +64,19 @@ def run_backtest(md: MarketData,
                  name: str = "strategy",
                  initial_capital: float = 1_000_000.0,
                  rebalance_tolerance: float = 0.0015,
-                 max_participation: float = 0.05) -> BacktestResult:
+                 max_participation: float = 0.05,
+                 check_invariants: bool = False) -> BacktestResult:
     """Simulate the strategy defined by `target_weights` under scenario `scen`.
 
     max_participation caps any single day's trade in a name at that fraction
     of its trailing ADV; the remainder is carried to later days (a simple but
     real liquidity constraint).
+
+    check_invariants=True (or env AITB_ENGINE_INVARIANTS=1) enables the
+    per-bar accounting invariant:
+        Δequity == overnight P&L + intraday P&L + cash interest
+                   − trading costs − borrow − delisting write-offs
+    and raises AssertionError on any bar where it fails (audit mode).
     """
     cols = [c for c in target_weights.columns if c in md.adj_close.columns]
     tw = target_weights[cols]
@@ -98,6 +105,9 @@ def run_backtest(md: MarketData,
     W_des = desired.to_numpy()
     cash_r = cash_rate.to_numpy()
 
+    import os
+    check_invariants = check_invariants or os.environ.get("AITB_ENGINE_INVARIANTS") == "1"
+
     shares = np.zeros(n_assets)
     cash = initial_capital
     last_price = np.full(n_assets, np.nan)
@@ -112,6 +122,9 @@ def run_backtest(md: MarketData,
         o, c = O[t], C[t]
         fill = np.where(np.isnan(o), last_price, o)     # delisted -> last price
         mark = np.where(np.isnan(c), fill, c)
+        if check_invariants:
+            _prev_mark = last_price.copy()
+            _shares_pre = shares.copy()
 
         # --- execute at the open against yesterday's decided weights -------
         wd = W_des[t]
@@ -150,7 +163,8 @@ def run_backtest(md: MarketData,
             turnover_out[t] = np.abs(trade_val).sum() / equity_pre
 
         # --- end of day: accrue cash interest and borrow, mark to close ----
-        cash *= 1 + cash_r[t]
+        _interest = cash * cash_r[t]
+        cash += _interest
         short_val = np.nansum(np.where(shares < 0, shares * mark, 0.0))
         if short_val < 0:
             borrow = daily_borrow_cost(short_val, scen)
@@ -161,6 +175,23 @@ def run_backtest(md: MarketData,
         equity = cash + pos_val
         equity_out[t] = equity
         weights_out[t] = np.where(np.isnan(mark), 0.0, shares * np.nan_to_num(mark)) / equity if equity > 0 else 0.0
+
+        if check_invariants and t > 0:
+            # Per-bar accounting invariant (audit finding AUD-011):
+            #   Δequity == overnight P&L (pre-trade shares, prev mark -> fill)
+            #            + intraday P&L (post-trade shares, fill -> mark)
+            #            + cash interest − all costs booked today
+            overnight = np.nansum(np.where(_shares_pre != 0,
+                                           _shares_pre * (fill - _prev_mark), 0.0))
+            intraday = np.nansum(np.where(shares != 0, shares * (mark - fill), 0.0))
+            expected = equity_out[t - 1] + overnight + intraday + _interest - costs_out[t]
+            tol = max(1e-6 * max(abs(equity), 1.0), 1e-4)
+            if abs(equity - expected) > tol:
+                raise AssertionError(
+                    f"{name}: accounting invariant violated on {cal[t].date()}: "
+                    f"equity {equity:.4f} != expected {expected:.4f} "
+                    f"(diff {equity - expected:+.6f})")
+
         last_price = np.where(np.isnan(mark), last_price, mark)
 
     equity_s = pd.Series(equity_out, index=cal, name=name)

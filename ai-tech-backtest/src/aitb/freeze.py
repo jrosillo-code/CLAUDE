@@ -32,12 +32,22 @@ from .utils import get_logger, stable_hash
 
 log = get_logger("freeze")
 
-FREEZE_VERSION = 1
+# v1 (hash c8b99c3fb795d3e19f64cc197283321f) is SUPERSEDED by the adversarial
+# audit of 2026-08-04: it bound only strategy/engine/ranking code, leaving
+# metrics, statistical validation, evidence tiers, the calendar, the data
+# layer and the registry logic changeable without detection (finding AUD-001),
+# and its engine/metrics contained fixed defects (AUD-006 CAGR annualization,
+# AUD-011 missing invariant hooks). configs/research_freeze_v1.json is
+# preserved unmodified for the record; no real-data results were ever produced
+# under v1, so nothing is invalidated retroactively.
+FREEZE_VERSION = 2
 FREEZE_PATH = CONFIG_DIR / f"research_freeze_v{FREEZE_VERSION}.json"
 
 # Code whose behavior defines the study. Any edit to these invalidates the
-# freeze (that is the point). Reporting/plumbing modules are deliberately
-# excluded so cosmetic report fixes do not block a frozen run.
+# freeze (that is the point). Pure presentation modules (reporting.py, chart
+# code, HTML templates) are deliberately excluded so cosmetic report fixes do
+# not block a frozen run — but everything that computes, tiers, gates or
+# records a number is bound.
 _FROZEN_MODULES = [
     "src/aitb/strategies/base.py",
     "src/aitb/strategies/benchmarks.py",
@@ -55,6 +65,20 @@ _FROZEN_MODULES = [
     "src/aitb/costs.py",
     "src/aitb/ranking.py",
     "src/aitb/universe.py",
+    # bound since v2 (audit finding AUD-001):
+    "src/aitb/metrics.py",
+    "src/aitb/validation.py",
+    "src/aitb/tiers.py",
+    "src/aitb/calendar.py",
+    "src/aitb/experiments.py",
+    "src/aitb/holdout.py",
+    "src/aitb/tax.py",
+    "src/aitb/data/loader.py",
+    "src/aitb/data/import_bundle.py",
+    "src/aitb/data/quality.py",
+    "src/aitb/data/security_master.py",
+    "src/aitb/data/providers.py",
+    "src/aitb/data/providers_ext.py",
 ]
 
 REJECTION_CRITERIA = [

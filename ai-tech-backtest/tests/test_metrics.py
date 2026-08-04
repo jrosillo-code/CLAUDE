@@ -11,7 +11,11 @@ def _series(vals):
 def test_total_return_and_cagr():
     r = _series([0.01] * 252)
     assert abs(m.total_return(r) - (1.01 ** 252 - 1)) < 1e-9
-    assert abs(m.cagr(r) - (1.01 ** 252 - 1)) < 1e-6  # exactly one year
+    # CAGR is annualized over ELAPSED CALENDAR TIME (audit AUD-006), not a
+    # fixed 252-rows-per-year convention.
+    years = (r.index[-1] - r.index[0]).days / 365.25
+    expected = (1.01 ** 252) ** (1 / years) - 1
+    assert abs(m.cagr(r) - expected) < 1e-9
 
 
 def test_sharpe_of_constant_positive_is_undefined_or_large():

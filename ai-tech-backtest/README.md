@@ -39,12 +39,23 @@ numbers. See `data/real_data_manifest.md` for exactly what to run elsewhere.
 ## The first frozen real-data study (one command)
 
 The first real run is governed by a **research freeze**
-(`configs/research_freeze_v1.json`): every strategy grid, benchmark, cost
-scenario, split, ranking rule, rejection rule and the fingerprints of the code
-that implements them, hashed before any real result exists. Real-mode
-experiment runs verify the hash and abort on any drift — no tuning is possible
-during the first study. The commit carrying the freeze is tagged
-`pre-real-data-freeze-v1`.
+(`configs/research_freeze_v2.json`, hash `49767ea3efc44cead711d72946c3fe31`):
+every strategy grid, benchmark, cost scenario, split, ranking rule, rejection
+rule, and the fingerprints of the 29 code modules that compute, tier, gate or
+record results — hashed before any real result exists. Every real-mode entry
+point (experiments, robustness, capacity, company analysis, report) verifies
+the hash and aborts on any drift — no tuning is possible during the first
+study.
+
+**Freeze v1 is superseded** (preserved unmodified at
+`configs/research_freeze_v1.json`, tag `pre-real-data-freeze-v1`): the
+2026-08 adversarial audit (`audit/reports/adversarial_audit.md`, verdict
+`READY WITH MATERIAL LIMITATIONS`) found v1 bound only strategy/engine/
+ranking code, its holdout log was not tamper-evident, the decision brief had
+fail-open paths, experiment records lacked data lineage, and CAGR was
+mis-annualized. All CRITICAL/HIGH findings are fixed with regression tests
+(87 tests); no real-data results ever existed under v1, so nothing was
+retroactively invalidated.
 
 On a network-enabled macOS/Linux machine:
 
