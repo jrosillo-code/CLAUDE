@@ -1,0 +1,59 @@
+# Experiment grid: every variant listed here is run under every cost scenario
+# and recorded in the registry — including the ones that fail. Grids are kept
+# economically motivated and coarse on purpose; fine grids inflate the trial
+# count that the deflated Sharpe ratio must correct for.
+
+benchmarks:
+  - {class: BuyAndHold, grid: {ticker: [SPY, QQQ, XLK, SOXX, SMH, IGV]}}
+  - {class: EqualWeightUniverse, grid: {rebalance: [ME]}}
+  - {class: EqualWeightUniverse, grid: {rebalance: [ME], basket: [megacap_ai, ai_compute]}}
+  - {class: CapWeightUniverse, grid: {rebalance: [QE], basket: [null, megacap_ai]}}
+  - {class: QQQMovingAverage, grid: {window: [200], fallback: [IEF, null]}}
+  - {class: SimpleMomentum12_1, grid: {top_n: [5]}}
+
+buy_and_hold_companies:
+  - {class: BuyAndHold,
+     grid: {ticker: [NVDA, MSFT, GOOGL, AMZN, META, AAPL, AVGO, AMD, TSM, ASML,
+                     ARM, PLTR, ORCL, CRM, ADBE, NOW, SNOW, CRWD, PANW, ANET,
+                     SMCI, MU, MRVL, DELL, VRT, CEG, VST, TSLA]}}
+
+tsmom:
+  - {class: TrendFollowCash, grid: {sma_window: [100, 150, 200, 250], fallback: [IEF]}}
+  - {class: TrendFollowCash, grid: {sma_window: [200], fallback: [BIL], basket: [megacap_ai]}}
+  - {class: AbsoluteMomentum, grid: {lookback_days: [126, 252], fallback: [BIL]}}
+  - {class: DualMomentum, grid: {lookback_days: [63, 126, 252]}}
+
+xsmom:
+  - {class: XSMomentumTopN,
+     grid: {lookback_days: [63, 126, 252], top_n: [3, 5, 8], weighting: [equal]}}
+  - {class: XSMomentumTopN,
+     grid: {lookback_days: [126], top_n: [5], weighting: [inverse_vol, momentum]}}
+  - {class: XSRiskAdjMomentum, grid: {lookback_days: [126, 252], top_n: [5]}}
+  - {class: RelativeStrengthVsBench, grid: {lookback_days: [126], top_n: [5, 8]}}
+
+meanrev:
+  - {class: RSIReversion, grid: {entry: [5, 10, 15], exit: [60]}}
+  - {class: ShortTermReversal, grid: {lookback_days: [5, 10], top_n: [5]}}
+  - {class: BollingerReversion, grid: {entry_z: [-2.0, -2.5]}}
+
+breakout:
+  - {class: DonchianBreakout,
+     grid: {entry_window: [20, 55, 100], exit_window: [20], regime_filter: [true, false]}}
+  - {class: VolCompressionBreakout, grid: {entry_window: [40], squeeze_pct: [0.2, 0.3]}}
+
+fundamental:
+  - {class: QualityGrowth, grid: {top_n: [5, 8], rebalance: [QE]}}
+  - {class: ValuationAwareGrowth, grid: {top_n: [8], max_ps_own_pct: [0.7, 0.85, 1.0]}}
+
+regime:
+  - {class: RegimeSwitchedTech, grid: {cut: [0.2, 0.25, 0.34]}}
+  - {class: SemisLeadership, grid: {lookback_days: [63, 126]}}
+
+riskmanaged:
+  - {class: VolTargetedBasket,
+     grid: {basket: [megacap_ai], target_vol: [0.15, 0.20, 0.25]}}
+  - {class: DrawdownDeRisk, grid: {basket: [megacap_ai], dd_start: [-0.10, -0.15]}}
+  - {class: InverseVolBasket, grid: {basket: [megacap_ai, semiconductors]}}
+
+ml:
+  - {class: MLRankStrategy, grid: {horizon: [21], top_n: [6], alpha: [10.0]}}

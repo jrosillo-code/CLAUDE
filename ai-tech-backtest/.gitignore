@@ -1,0 +1,9 @@
+# Data and generated outputs (reproducible via scripts/run_all.py)
+data/
+results/
+reports/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+.venv/
+.env
