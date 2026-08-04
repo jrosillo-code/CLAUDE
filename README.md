@@ -79,6 +79,22 @@ research behind them):
   goes through one input component, so voice transcription drops in without changing the
   flow. Run the tests with `npm test`.
 
+  Debriefs are also **visible where decisions happen**: a completed friend trip card shows
+  up to two collapsed quotes (don't-miss and skip first, expandable, pin-anchored quotes fly
+  the map), and searching a place shows **What friends said** — verbatim quotes split into
+  endorsements / warnings / observations, disagreement displayed side by side, never
+  averaged into a consensus. Saving a debrief shows the author exactly where those answers
+  can now surface (derived from the real anchors — a private debrief promises privacy, not
+  reach), and a "helped N×" chip counts when their words did work for a friend. Product
+  events are local-only and carry ids, never reflection text (`lib/analytics.ts`).
+
+  The privacy model is enforced twice: client helpers for UX, **Postgres RLS as the
+  authority**. `npm run test:rls` boots a disposable local PostgreSQL cluster, applies the
+  *verbatim* reflections migration, and runs 24 assertions as a non-owner role (drafts
+  owner-only, the private/friends/public matrix, impersonation and answer-planting
+  rejected, unfriending revocation, cascades). Architecture, provenance rules and the
+  remaining manual-verification list live in [`docs/reflections.md`](docs/reflections.md).
+
 ## Architecture
 
 ```
