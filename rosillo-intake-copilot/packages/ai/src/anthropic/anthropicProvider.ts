@@ -5,6 +5,7 @@ import type {
   DraftResponseInput,
   RankCandidatesInput,
   ProviderHealth,
+  ProviderUsage,
 } from '@rosillo/domain';
 import { promptRegistry } from '../prompts/registry';
 
@@ -19,12 +20,19 @@ export class AnthropicProvider implements AIProvider {
   readonly model: string;
   readonly promptVersions = promptRegistry.currentVersions();
   private client: Anthropic;
+  private usage: ProviderUsage = { inputTokens: 0, outputTokens: 0, requests: 0 };
 
   constructor(opts?: { apiKey?: string; model?: string }) {
     const apiKey = opts?.apiKey ?? process.env.ANTHROPIC_API_KEY;
     if (!apiKey) throw new Error('AnthropicProvider requires ANTHROPIC_API_KEY (server-side only).');
     this.model = opts?.model ?? process.env.ANTHROPIC_MODEL ?? 'claude-opus-5';
-    this.client = new Anthropic({ apiKey });
+    // Bounded request timeout so a slow provider degrades gracefully instead of
+    // hanging an analysis job (the pipeline adds its own overall timeout).
+    this.client = new Anthropic({ apiKey, timeout: 60_000, maxRetries: 1 });
+  }
+
+  getUsage(): ProviderUsage {
+    return { ...this.usage };
   }
 
   private async completeJson(system: string, user: string): Promise<unknown> {
@@ -34,6 +42,9 @@ export class AnthropicProvider implements AIProvider {
       system,
       messages: [{ role: 'user', content: user }],
     });
+    this.usage.requests += 1;
+    this.usage.inputTokens += response.usage.input_tokens;
+    this.usage.outputTokens += response.usage.output_tokens;
     if (response.stop_reason === 'refusal') {
       throw new Error('Provider declined the request (refusal stop reason).');
     }

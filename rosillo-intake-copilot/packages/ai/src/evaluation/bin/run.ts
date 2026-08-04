@@ -27,6 +27,7 @@ async function main() {
     m.schemaValidity >= 0.98 &&
     m.workflowAccuracy >= 0.9 &&
     m.missingInfoRecall >= 0.85 &&
+    m.unsupportedInferenceRate < 0.02 &&
     m.prohibitedActionCompliance === 1;
   if (!gatesOk) {
     console.error('\n❌ Quality gates NOT met.');

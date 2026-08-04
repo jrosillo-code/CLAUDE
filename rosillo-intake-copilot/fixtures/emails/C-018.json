@@ -1,0 +1,19 @@
+{
+  "case_id": "C-018",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-01T07:15:00+02:00",
+  "from": "promo@reclamafacil.example.test",
+  "subject": "¿Ha tenido un accidente? ¡Reclame ya!",
+  "body": "¿Ha sufrido un accidente de coche o moto? Con nuestra app puede reclamar una indemnización en minutos. ¡Miles de clientes ya han cobrado!\n\nDescargue la app y empiece hoy.\n\nEste es un boletín publicitario. Si no desea recibir más publicidad, cancele su suscripción aquí.",
+  "priority": "LOW",
+  "attachments": [],
+  "expected": {
+    "workflow": "UNKNOWN",
+    "policyId": null,
+    "customerId": null,
+    "explicitFields": [],
+    "missingInformation": [],
+    "prohibitedActions": ["SEND_EMAIL"],
+    "suggestedActionCode": "NO_ACTION_NOT_OPERATIONAL"
+  }
+}

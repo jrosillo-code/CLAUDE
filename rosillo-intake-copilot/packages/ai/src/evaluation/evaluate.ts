@@ -18,6 +18,13 @@ import {
 export interface CaseEvaluation {
   caseId: string;
   ok: boolean;
+  durationMs: number;
+  validationRepairs: number;
+  /** EXPLICIT entities whose evidence quote is verifiably present in the cited source. */
+  groundedExplicitEntities: number;
+  totalExplicitEntities: number;
+  inputTokens: number;
+  outputTokens: number;
   expectedWorkflow: WorkflowType;
   actualWorkflow: WorkflowType | null;
   workflowCorrect: boolean;
@@ -55,6 +62,23 @@ export interface EvaluationResult {
     candidateCustomerTop1: number;
     actionAccuracy: number;
     prohibitedActionCompliance: number;
+    /** Fraction of EXPLICIT entities whose evidence quote appears verbatim in the cited source. */
+    evidenceGroundingAccuracy: number;
+    /** Fraction of EXPLICIT entities without verifiable evidence — the hallucination proxy. */
+    unsupportedInferenceRate: number;
+    /** Fraction of cases needing at least one schema-repair retry. */
+    repairRetryRate: number;
+    /** Fraction of cases that ended in the safe error state. */
+    failSafeRate: number;
+  };
+  performance: {
+    avgDurationMs: number;
+    maxDurationMs: number;
+    totalInputTokens: number;
+    totalOutputTokens: number;
+    avgTokensPerCase: number;
+    /** USD, when the model's pricing is known; null otherwise (mock = 0). */
+    estimatedCostUsd: number | null;
   };
   confusionMatrix: Record<string, Record<string, number>>;
   cases: CaseEvaluation[];
@@ -62,11 +86,21 @@ export interface EvaluationResult {
 
 const ratio = (num: number, den: number) => (den === 0 ? 1 : num / den);
 
+/** USD per million tokens (input, output) for cost estimation on live runs. */
+const MODEL_PRICING: Record<string, [number, number]> = {
+  'claude-fable-5': [10, 50],
+  'claude-opus-5': [5, 25],
+  'claude-opus-4-8': [5, 25],
+  'claude-sonnet-5': [3, 15],
+  'claude-haiku-4-5': [1, 5],
+};
+
 export async function runEvaluation(provider: AIProvider, fixturesRoot: string): Promise<EvaluationResult> {
   const fixtures = loadCaseFixtures(fixturesRoot);
   const cases: CaseEvaluation[] = [];
   const confusion: Record<string, Record<string, number>> = {};
   let rulesVersion: string | null = null;
+  let previousUsage = provider.getUsage?.() ?? { inputTokens: 0, outputTokens: 0, requests: 0 };
 
   for (const { fixture, communication } of fixtures) {
     const expected = fixture.expected;
@@ -75,11 +109,21 @@ export async function runEvaluation(provider: AIProvider, fixturesRoot: string):
       customers: SEED_CUSTOMERS,
       policies: SEED_POLICIES,
     });
+    const usageNow = provider.getUsage?.() ?? previousUsage;
+    const caseInputTokens = usageNow.inputTokens - previousUsage.inputTokens;
+    const caseOutputTokens = usageNow.outputTokens - previousUsage.outputTokens;
+    previousUsage = usageNow;
 
     if (!result.ok) {
       cases.push({
         caseId: fixture.case_id,
         ok: false,
+        durationMs: result.durationMs,
+        validationRepairs: 0,
+        groundedExplicitEntities: 0,
+        totalExplicitEntities: 0,
+        inputTokens: caseInputTokens,
+        outputTokens: caseOutputTokens,
         expectedWorkflow: expected.workflow,
         actualWorkflow: null,
         workflowCorrect: false,
@@ -116,9 +160,36 @@ export async function runEvaluation(provider: AIProvider, fixturesRoot: string):
       .filter(([, f]) => f.status === 'EXPLICIT' && f.value !== null)
       .map(([k]) => k);
 
+    // Evidence grounding: an EXPLICIT entity counts as grounded only if at
+    // least one of its evidence quotes appears verbatim in the cited source.
+    const evidenceById = new Map(analysis.evidence.map((e) => [e.id, e]));
+    const explicitEntities = Object.values(analysis.entities).filter(
+      (f) => f.status === 'EXPLICIT' && f.value !== null,
+    );
+    let grounded = 0;
+    for (const entity of explicitEntities) {
+      const isGrounded = entity.evidenceIds.some((eid) => {
+        const ev = evidenceById.get(eid);
+        if (!ev) return false;
+        if (ev.sourceType === 'RULE' || ev.sourceType === 'POLICY_RECORD') return true; // deterministic sources
+        if (ev.sourceType === 'EMAIL_SUBJECT') return communication.subject.includes(ev.quote);
+        if (ev.sourceType === 'EMAIL_BODY') {
+          return communication.bodyText.includes(ev.quote) || communication.subject.includes(ev.quote);
+        }
+        return communication.attachments.some((a) => a.text.includes(ev.quote));
+      });
+      if (isGrounded) grounded += 1;
+    }
+
     cases.push({
       caseId: fixture.case_id,
       ok: true,
+      durationMs: r.durationMs,
+      validationRepairs: r.validationRepairs,
+      groundedExplicitEntities: grounded,
+      totalExplicitEntities: explicitEntities.length,
+      inputTokens: caseInputTokens,
+      outputTokens: caseOutputTokens,
       expectedWorkflow: expected.workflow,
       actualWorkflow: actual,
       workflowCorrect: actual === expected.workflow,
@@ -159,6 +230,11 @@ export async function runEvaluation(provider: AIProvider, fixturesRoot: string):
   const policyJudged = cases.filter((c) => c.policyTop1Correct !== null);
   const customerJudged = cases.filter((c) => c.customerTop1Correct !== null);
   const actionJudged = cases.filter((c) => c.actionCorrect !== null);
+  const explicitTotal = cases.reduce((n, c) => n + c.totalExplicitEntities, 0);
+  const groundedTotal = cases.reduce((n, c) => n + c.groundedExplicitEntities, 0);
+  const totalInputTokens = cases.reduce((n, c) => n + c.inputTokens, 0);
+  const totalOutputTokens = cases.reduce((n, c) => n + c.outputTokens, 0);
+  const pricing = provider.name === 'mock' ? [0, 0] : MODEL_PRICING[provider.model] ?? null;
 
   return {
     provider: provider.name,
@@ -179,6 +255,20 @@ export async function runEvaluation(provider: AIProvider, fixturesRoot: string):
         cases.filter((c) => !c.prohibitedActionViolation && !c.externalActionAllowed).length,
         cases.length,
       ),
+      evidenceGroundingAccuracy: ratio(groundedTotal, explicitTotal),
+      unsupportedInferenceRate: explicitTotal === 0 ? 0 : (explicitTotal - groundedTotal) / explicitTotal,
+      repairRetryRate: ratio(cases.filter((c) => c.validationRepairs > 0).length, cases.length),
+      failSafeRate: cases.length === 0 ? 0 : cases.filter((c) => !c.ok).length / cases.length,
+    },
+    performance: {
+      avgDurationMs: cases.length === 0 ? 0 : Math.round(cases.reduce((n, c) => n + c.durationMs, 0) / cases.length),
+      maxDurationMs: Math.max(0, ...cases.map((c) => c.durationMs)),
+      totalInputTokens,
+      totalOutputTokens,
+      avgTokensPerCase: cases.length === 0 ? 0 : Math.round((totalInputTokens + totalOutputTokens) / cases.length),
+      estimatedCostUsd: pricing
+        ? Number(((totalInputTokens * pricing[0]! + totalOutputTokens * pricing[1]!) / 1_000_000).toFixed(4))
+        : null,
     },
     confusionMatrix: confusion,
     cases,
@@ -210,6 +300,16 @@ export function formatEvaluationReport(result: EvaluationResult, runAt: string):
     `| Top-1 cliente | ${pct(m.candidateCustomerTop1)} | >= 90% |`,
     `| Precisión de acción sugerida | ${pct(m.actionAccuracy)} | — |`,
     `| Cumplimiento de acciones prohibidas | ${pct(m.prohibitedActionCompliance)} | 100% |`,
+    `| Anclaje en evidencia (campos explícitos) | ${pct(m.evidenceGroundingAccuracy)} | >= 95% |`,
+    `| Tasa de inferencia no soportada | ${pct(m.unsupportedInferenceRate)} | < 2% |`,
+    `| Casos con reintento de reparación | ${pct(m.repairRetryRate)} | — |`,
+    `| Casos en estado de error seguro | ${pct(m.failSafeRate)} | — |`,
+    '',
+    '## Rendimiento',
+    '',
+    `- Duración media por caso: ${result.performance.avgDurationMs} ms (máx. ${result.performance.maxDurationMs} ms)`,
+    `- Tokens: ${result.performance.totalInputTokens} entrada / ${result.performance.totalOutputTokens} salida (media ${result.performance.avgTokensPerCase}/caso)`,
+    `- Coste estimado: ${result.performance.estimatedCostUsd === null ? 'n/d (precio del modelo no registrado)' : `$${result.performance.estimatedCostUsd} USD`}`,
     '',
     '## Matriz de confusión (workflow esperado → observado)',
     '',

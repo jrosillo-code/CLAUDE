@@ -1,0 +1,19 @@
+{
+  "case_id": "C-016",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-01T11:10:00+02:00",
+  "from": "laura.martin@example.test",
+  "subject": "Cambio de dirección en dos pólizas",
+  "body": "Hola,\n\nNos hemos mudado. Necesito cambiar la dirección de correspondencia en mi póliza AUTO-000184 y también en la póliza HOME-000052, que está a nombre de Diego Ruiz.\n\nLa nueva dirección es Calle Invención 8, Madrid.\n\nGracias,\nLaura",
+  "priority": "MEDIUM",
+  "attachments": [],
+  "expected": {
+    "workflow": "POLICY_AMENDMENT",
+    "policyId": "AUTO-000184",
+    "customerId": "CUST-0001",
+    "explicitFields": ["policy_reference"],
+    "missingInformation": ["requested_effective_date", "supporting_documents"],
+    "prohibitedActions": ["AMEND_POLICY", "SEND_EMAIL"],
+    "suggestedActionCode": "PREPARE_AMENDMENT_SUMMARY"
+  }
+}

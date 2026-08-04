@@ -1,0 +1,19 @@
+{
+  "case_id": "C-019",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-01T08:40:00+02:00",
+  "from": "marta.gil@example.test",
+  "subject": "Alcance de ayer - adjunto parte",
+  "body": "Hola,\n\nAyer tuve un alcance con la moto en la glorieta de Embajadores. Adjunto el parte amistoso firmado.\n\nMarta",
+  "priority": "MEDIUM",
+  "attachments": ["C-019-parte-amistoso.pdf"],
+  "expected": {
+    "workflow": "MOTOR_CLAIM",
+    "policyId": "MOTO-000088",
+    "customerId": "CUST-0003",
+    "explicitFields": ["location"],
+    "missingInformation": ["exact_incident_time", "police_report", "damage_photos", "preferred_repair_workshop"],
+    "prohibitedActions": ["APPROVE_CLAIM", "DENY_CLAIM", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_CLAIM_DETAILS"
+  }
+}

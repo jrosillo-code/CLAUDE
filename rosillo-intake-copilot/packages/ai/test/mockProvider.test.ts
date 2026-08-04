@@ -8,8 +8,8 @@ const fixtures = loadCaseFixtures(fixturesRoot);
 const provider = new MockProvider();
 
 describe('mock provider', () => {
-  it('loads the twelve starter fixtures', () => {
-    expect(fixtures).toHaveLength(12);
+  it('loads the nineteen fixtures (12 starter + 7 adversarial)', () => {
+    expect(fixtures).toHaveLength(19);
   });
 
   for (const { fixture, communication } of fixtures) {

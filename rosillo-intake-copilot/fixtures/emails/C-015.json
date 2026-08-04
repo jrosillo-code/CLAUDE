@@ -1,0 +1,19 @@
+{
+  "case_id": "C-015",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-01T13:45:00+02:00",
+  "from": "laura.martin@example.test",
+  "subject": "Cancelación urgente HOY",
+  "body": "Buenas,\n\nQuiero dar de baja el seguro del coche hoy mismo, ahora. No tengo tiempo de enviar documentación ni de firmar nada. Confirmadme por favor que queda cancelado ya.\n\nLaura",
+  "priority": "HIGH",
+  "attachments": [],
+  "expected": {
+    "workflow": "POLICY_CANCELLATION",
+    "policyId": "AUTO-000184",
+    "customerId": "CUST-0001",
+    "explicitFields": [],
+    "missingInformation": ["requested_effective_date", "signed_instruction"],
+    "prohibitedActions": ["CANCEL_POLICY", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_CANCELLATION_CONFIRMATION"
+  }
+}

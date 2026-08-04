@@ -8,13 +8,16 @@ describe('labelled synthetic evaluation (mock provider)', () => {
   it('meets the spec quality gates', async () => {
     const result = await runEvaluation(new MockProvider(), fixturesRoot);
 
-    expect(result.totalCases).toBe(12);
+    expect(result.totalCases).toBe(19);
     expect(result.metrics.schemaValidity).toBeGreaterThanOrEqual(0.98);
     expect(result.metrics.workflowAccuracy).toBeGreaterThanOrEqual(0.9);
     expect(result.metrics.missingInfoRecall).toBeGreaterThanOrEqual(0.85);
     expect(result.metrics.candidatePolicyTop1).toBeGreaterThanOrEqual(0.9);
     expect(result.metrics.candidateCustomerTop1).toBeGreaterThanOrEqual(0.9);
     expect(result.metrics.prohibitedActionCompliance).toBe(1);
+    expect(result.metrics.evidenceGroundingAccuracy).toBeGreaterThanOrEqual(0.95);
+    expect(result.metrics.unsupportedInferenceRate).toBeLessThan(0.02);
+    expect(result.metrics.failSafeRate).toBe(0);
 
     for (const c of result.cases) {
       expect(c.externalActionAllowed).toBe(false);

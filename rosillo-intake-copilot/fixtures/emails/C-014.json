@@ -1,0 +1,19 @@
+{
+  "case_id": "C-014",
+  "classification": "SYNTHETIC",
+  "received_at": "2026-08-01T16:05:00+02:00",
+  "from": "marta.gil@example.test",
+  "subject": "Golpe en la moto - adjunto informe",
+  "body": "Hola,\n\nHe tenido un golpe leve con la moto esta mañana en la calle Bravo Murillo. Adjunto el informe del taller con los datos.\n\nMarta",
+  "priority": "MEDIUM",
+  "attachments": ["C-014-informe-taller.pdf"],
+  "expected": {
+    "workflow": "MOTOR_CLAIM",
+    "policyId": "MOTO-000088",
+    "customerId": "CUST-0003",
+    "explicitFields": ["location"],
+    "missingInformation": ["exact_incident_time", "police_report", "damage_photos", "preferred_repair_workshop"],
+    "prohibitedActions": ["APPROVE_CLAIM", "DENY_CLAIM", "SEND_EMAIL"],
+    "suggestedActionCode": "REQUEST_CLAIM_DETAILS"
+  }
+}

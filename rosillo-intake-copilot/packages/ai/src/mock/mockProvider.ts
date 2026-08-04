@@ -62,14 +62,28 @@ const SIGNALS: Signal[] = [
   { workflow: 'MISSING_DOCUMENT_FOLLOWUP', pattern: /me hab(eis|ian) pedido|me solicitasteis/, weight: 3 },
 ];
 
+// Marketing/newsletter signals. Bulk mail is written to look operational
+// ("¿Ha tenido un accidente? ¡Reclame ya!") — when these outweigh the
+// workflow signals the message must NOT become an operational case.
+const MARKETING_SIGNALS: RegExp[] = [
+  /boletin|newsletter/,
+  /publicidad|publicitario|promocion(es)?/,
+  /suscripcion|suscribirse|cancele su suscripcion/,
+  /descargue la app|haga clic aqui|gane un/,
+  /indemnizacion en minutos|miles de clientes/,
+];
+
 function classify(text: string): { workflow: WorkflowType; confidence: number; secondary: WorkflowType[] } {
   const scores = new Map<WorkflowType, number>();
   for (const s of SIGNALS) {
     if (s.pattern.test(text)) scores.set(s.workflow, (scores.get(s.workflow) ?? 0) + s.weight);
   }
+  const marketingScore = MARKETING_SIGNALS.filter((p) => p.test(text)).length * 2;
   const ranked = [...scores.entries()].sort((a, b) => b[1] - a[1]);
   const top = ranked[0];
-  if (!top || top[1] < 2) return { workflow: 'UNKNOWN', confidence: 0.9, secondary: [] };
+  if (!top || top[1] < 2 || marketingScore >= top[1]) {
+    return { workflow: 'UNKNOWN', confidence: 0.9, secondary: [] };
+  }
   const secondary = ranked
     .slice(1)
     .filter(([, score]) => score >= 4)
@@ -151,7 +165,7 @@ function extractEntities(
     }
     const time = body.match(/a las (\d{1,2}([:.h]\d{2})?)/i);
     if (time) entities['incident_time'] = field(time[1] ?? time[0], 'EXPLICIT', 0.9, bag.fromBody(time));
-    const loc = body.match(/(parking de [^.,\n]+|calle [^.,\n]+|avenida [^.,\n]+|carretera [^.,\n]+)/i);
+    const loc = body.match(/(parking de [^.,\n]+|calle [^.,\n]+|avenida [^.,\n]+|carretera [^.,\n]+|rotonda de [^.,\n]+|glorieta de [^.,\n]+)/i);
     if (loc) entities['location'] = field(loc[0].trim(), 'EXPLICIT', 0.95, bag.fromBody(loc));
     const police = body.match(/[^.\n]*(policia|policía|atestado|guardia civil)[^.\n]*/i);
     if (police) entities['police_report'] = field(police[0].trim().slice(0, 200), 'EXPLICIT', 0.85, bag.fromBody(police));
@@ -194,14 +208,12 @@ function extractEntities(
   }
 
   if (workflow === 'QUOTE_REQUEST') {
-    const home = /vivienda|casa|piso|hogar|inmueble/i.test(body);
-    const fleet = /flota|furgonetas|camiones/i.test(body);
-    entities['product'] = field(
-      fleet ? 'Flota' : home ? 'Hogar' : 'Por determinar',
-      fleet || home ? 'EXPLICIT' : 'UNKNOWN',
-      fleet || home ? 0.9 : 0.4,
-      bag.manual(fleet ? 'mención de flota' : home ? 'mención de vivienda' : 'producto no identificado'),
-    );
+    const homeM = body.match(/vivienda|casa|piso|hogar|inmueble/i);
+    const fleetM = body.match(/flota|furgonetas|camiones/i);
+    const productM = fleetM ?? homeM;
+    entities['product'] = productM
+      ? field(fleetM ? 'Flota' : 'Hogar', 'EXPLICIT', 0.9, bag.fromBody(productM))
+      : field('Por determinar', 'UNKNOWN', 0.4, bag.manual('producto no identificado en el mensaje'));
     const year = body.match(/(construid[oa] en|ano de construccion|año de construcción)[^\d]*(\d{4})/i);
     if (year) entities['construction_year'] = field(year[2] ?? null, 'EXPLICIT', 0.9, bag.fromBody(year));
     const soon = body.match(/la semana que viene|proxima semana|próxima semana/i);
@@ -230,8 +242,9 @@ function extractEntities(
     if (/factura/i.test(body)) items.push('factura de reparación');
     if (/foto/i.test(body)) items.push('fotos de los daños');
     if (/justificante|recibo/i.test(body)) items.push('justificante');
-    if (items.length > 0) {
-      entities['outstanding_items'] = field(items.join(', '), 'EXPLICIT', 0.85, bag.manual('documentos citados en el mensaje'));
+    const itemsM = body.match(/[^.\n]*(factura|foto|justificante|recibo)[^.\n]*/i);
+    if (items.length > 0 && itemsM) {
+      entities['outstanding_items'] = field(items.join(', '), 'EXPLICIT', 0.85, bag.fromBody(itemsM));
     }
   }
 

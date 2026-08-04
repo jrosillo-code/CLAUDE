@@ -42,7 +42,7 @@ describe('database layer', () => {
   it('seeds the minimum synthetic dataset', () => {
     expect(listCustomers(db).length).toBeGreaterThanOrEqual(40);
     expect(listPolicies(db).length).toBeGreaterThanOrEqual(70);
-    expect(listCases(db)).toHaveLength(12);
+    expect(listCases(db)).toHaveLength(19);
   });
 
   it('persists an immutable analysis run and updates the case', async () => {

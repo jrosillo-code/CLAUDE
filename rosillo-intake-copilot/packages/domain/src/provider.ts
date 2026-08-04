@@ -34,6 +34,12 @@ export interface ProviderHealth {
   detail?: string;
 }
 
+export interface ProviderUsage {
+  inputTokens: number;
+  outputTokens: number;
+  requests: number;
+}
+
 export interface AIProvider {
   readonly name: string;
   readonly model: string;
@@ -42,6 +48,8 @@ export interface AIProvider {
   rankCandidates(input: RankCandidatesInput): Promise<unknown>;
   draftResponse(input: DraftResponseInput): Promise<unknown>;
   healthCheck(): Promise<ProviderHealth>;
+  /** Cumulative token usage, when the provider can report it (live providers only). */
+  getUsage?(): ProviderUsage;
 }
 
 export interface ResponseDraftResult extends ResponseDraft {}
