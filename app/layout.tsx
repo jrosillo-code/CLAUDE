@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from "next";
 import ThemeManager from "@/components/ThemeManager";
+import PreviewBanner from "@/components/PreviewBanner";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Waypoint — your friends' maps",
   description:
     "A social app where the world map is the interface. Friends appear as photo-pins on the places they've been.",
+  // Preview deployments must never be indexed — the flag is baked at build
+  // time from the preview env var.
+  robots:
+    process.env.NEXT_PUBLIC_PREVIEW === "1"
+      ? { index: false, follow: false, nocache: true }
+      : undefined,
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "Waypoint", statusBarStyle: "black-translucent" },
   icons: {
@@ -51,6 +58,7 @@ export default function RootLayout({
       <body>
         <ThemeManager />
         {children}
+        <PreviewBanner />
       </body>
     </html>
   );
