@@ -238,9 +238,10 @@ export default function TripsPanel({
                 }
                 if (refl?.status === "complete") {
                   // Reward signal, no engagement pressure: how often these
-                  // words did work for a friend (this device's log only).
-                  // Server count when signed in (it sees every reader, not
-                  // just this device); the local log is the demo-mode fallback.
+                  // words did work for a friend. Server count when signed in
+                  // (it sees every reader, and tells the author a number
+                  // without ever telling them a name); the local device log
+                  // is the demo-mode fallback.
                   const cited = citationCounts[refl.id] ?? contributionCount(viewerId, refl.id);
                   return (
                     <button
@@ -254,7 +255,7 @@ export default function TripsPanel({
                       {cited > 0 && (
                         <span
                           className="ml-1.5 rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-bold text-accent"
-                          title="Times your answers appeared as evidence for a friend, on this device"
+                          title="Times your answers appeared as evidence for a friend"
                         >
                           helped {cited}×
                         </span>
