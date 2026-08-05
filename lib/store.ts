@@ -655,6 +655,7 @@ export const useStore = create<WaypointState>((set, get) => ({
     const first = owner?.displayName.split(" ")[0];
     const title =
       source.userId === s.viewerId || !first ? `${source.title} (copy)` : `${first}'s ${source.title}`;
+    track("trip_cloned", { tripId, ownerId: source.userId, viewerId: s.viewerId });
     // Contribution signal: the clone carried the owner's completed debrief.
     const debrief = s.reflections.find(
       (r) => r.tripId === tripId && r.userId === source.userId && r.status === "complete"

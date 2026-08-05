@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useStore } from "@/lib/store";
 import { quotesFor, sortQuotesByPriority, type QuoteWithContext } from "@/lib/interview";
 import { track, trackOnce } from "@/lib/analytics";
@@ -40,12 +40,28 @@ export default function DebriefQuotes({
     return sortQuotesByPriority(all);
   }, [reflections, friendships, viewerId, users, trips, pins, tripId]);
 
+  // Funnel stage 1: the viewer saw a friend's debrief evidence.
+  useEffect(() => {
+    if (quotes.length === 0) return;
+    trackOnce("reflection_viewed", {
+      reflectionId: quotes[0].reflection.id,
+      ownerId: quotes[0].owner.id,
+      viewerId,
+    });
+  }, [quotes, viewerId]);
+
   if (quotes.length === 0) return null;
   const shown = expanded ? quotes : quotes.slice(0, 2);
   const owner = quotes[0].owner;
 
   function openPin(q: QuoteWithContext) {
     if (!q.pin) return;
+    track("quote_selected", {
+      reflectionId: q.reflection.id,
+      ownerId: q.owner.id,
+      viewerId,
+      questionId: q.answer.questionId,
+    });
     track("reflection_pin_nav", {
       reflectionId: q.reflection.id,
       pinId: q.pin.id,

@@ -11,14 +11,21 @@ export type ProductEventName =
   | "debrief_started"
   | "debrief_resumed"
   | "debrief_completed"
+  | "debrief_abandoned" // closed the sheet with the debrief still a draft
+  | "reflection_viewed" // a friend's quotes rendered on a trip card
   | "reflection_expanded"
+  | "quote_selected" // tapped any quote row
   | "reflection_ask_evidence" // a debrief quote surfaced in Ask-your-friends
   | "reflection_dontmiss_evidence" // a debrief quote powered a Don't-miss pick
   | "reflection_place_evidence" // a debrief quote shown on a place card
   | "reflection_pin_nav" // tapping a quote flew the map to its pin
-  | "trip_cloned_with_debrief"; // a cloned trip carried the owner's debrief
+  | "ask_question_submitted" // question asked (never the question text)
+  | "trip_cloned" // any clone
+  | "trip_cloned_with_debrief" // the cloned trip carried the owner's debrief
+  | "visibility_selected" // which privacy level a debrief was saved with
+  | "reward_viewed"; // the saved-answer reward screen rendered
 
-/** IDs and enums only — no free text, by type. */
+/** IDs, enums and counts only — no free text, by type. */
 export interface ProductEventMeta {
   reflectionId?: string;
   tripId?: string;
@@ -28,6 +35,10 @@ export interface ProductEventMeta {
   /** Who was looking. */
   viewerId?: string;
   questionId?: string;
+  /** Privacy level chosen (visibility_selected). */
+  visibility?: "private" | "friends" | "public";
+  /** Result sizes (e.g. evidence returned for an ask) — never content. */
+  count?: number;
 }
 
 export interface ProductEvent {

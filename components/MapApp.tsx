@@ -23,6 +23,7 @@ import CrossingsPanel from "./CrossingsPanel";
 import SearchPlaceCard from "./SearchPlaceCard";
 import AskPanel from "./AskPanel";
 import ReflectionSheet from "./ReflectionSheet";
+import GuidedStart from "./GuidedStart";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
 import { cancelFlightRender } from "@/lib/renderFlight";
@@ -280,6 +281,8 @@ export default function MapApp() {
       {debriefTripId && (
         <ReflectionSheet tripId={debriefTripId} onClose={() => setDebriefTripId(null)} />
       )}
+      {/* First-use checklist — completes itself from real actions, dismissible */}
+      {mapMode === "pins" && !tripDraft && !selectedPinId && <GuidedStart />}
 
       {/* Phones, trips mode: the AI route guide waits behind one small button
           instead of popping over the freshly framed route. */}

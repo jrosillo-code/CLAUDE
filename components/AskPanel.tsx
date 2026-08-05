@@ -79,6 +79,13 @@ export default function AskPanel({
     setAnswer(a);
     setAiText(null);
 
+    // Funnel stage 2 — the question itself is never logged, only that one
+    // was asked and how much evidence came back.
+    track("ask_question_submitted", {
+      viewerId,
+      count: a.evidence.length + a.quotes.length + a.trips.length,
+    });
+
     // Provenance: whose saved words did work in this answer (ids only).
     for (const qc of a.quotes) {
       trackOnce("reflection_ask_evidence", {

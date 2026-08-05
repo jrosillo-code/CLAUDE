@@ -106,15 +106,33 @@ export default function ReflectionSheet({
     if (!id) return;
     setReflectionVisibility(id, visibility);
     completeReflection(id);
+    track("visibility_selected", { reflectionId: id, tripId, viewerId, visibility });
     track("debrief_completed", { reflectionId: id, tripId, viewerId });
     const saved = useStore.getState().reflections.find((r) => r.id === id);
     setSavedLines(
       rewardLines({ answers: saved?.answers ?? [], visibility, trip: trip!, pins })
     );
+    track("reward_viewed", { reflectionId: id, tripId, viewerId });
+  }
+
+  // Abandonment: closing the sheet while the debrief is still a draft.
+  function close() {
+    const r = useStore.getState().reflections.find(
+      (x) => x.tripId === tripId && x.userId === viewerId
+    );
+    if (r && r.status === "draft") {
+      track("debrief_abandoned", {
+        reflectionId: r.id,
+        tripId,
+        viewerId,
+        count: r.answers.length,
+      });
+    }
+    onClose();
   }
 
   return (
-    <Sheet onClose={onClose}>
+    <Sheet onClose={close}>
       <div className="border-b border-line px-5 py-4">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
@@ -124,7 +142,7 @@ export default function ReflectionSheet({
             </p>
           </div>
           <button
-            onClick={onClose}
+            onClick={close}
             aria-label="Close — your progress is saved"
             title="Close — your progress is saved"
             className="grid h-8 w-8 shrink-0 place-items-center rounded-full hover:bg-paper-2"
