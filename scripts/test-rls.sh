@@ -55,6 +55,7 @@ run_as "$PSQL -d $DB -f tests/rls/setup.sql"
 echo "→ applying VERBATIM reflections migrations (0013, then the 0015 fix)"
 run_as "$PSQL -d $DB -f supabase/migrations/0013_reflections.sql"
 run_as "$PSQL -d $DB -f supabase/migrations/0015_reflection_trip_ownership.sql"
+run_as "$PSQL -d $DB -f supabase/migrations/0016_reflection_citations.sql"
 echo "→ running assertions (tests/rls/assertions.sql)"
 run_as "$PSQL -d $DB -f tests/rls/assertions.sql"
 

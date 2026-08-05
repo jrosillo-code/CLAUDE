@@ -20,9 +20,12 @@ create table if not exists public.creator_applications (
 alter table public.creator_applications enable row level security;
 
 -- You can submit, update, and see your own application; service role reviews.
+drop policy if exists "creator_applications_insert_own" on public.creator_applications;
 create policy "creator_applications_insert_own" on public.creator_applications
   for insert with check (auth.uid() = user_id);
+drop policy if exists "creator_applications_update_own" on public.creator_applications;
 create policy "creator_applications_update_own" on public.creator_applications
   for update using (auth.uid() = user_id);
+drop policy if exists "creator_applications_select_own" on public.creator_applications;
 create policy "creator_applications_select_own" on public.creator_applications
   for select using (auth.uid() = user_id);

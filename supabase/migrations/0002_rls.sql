@@ -26,32 +26,41 @@ as $$
 $$;
 
 -- ── users: profiles are world-readable; you can only write your own. ──
+drop policy if exists users_read_all on users;
 create policy users_read_all on users
   for select using (true);
+drop policy if exists users_write_own on users;
 create policy users_write_own on users
   for all using (id = auth.uid()) with check (id = auth.uid());
 
 -- ── friendships: visible to and writable by the two parties. ──
+drop policy if exists friendships_read on friendships;
 create policy friendships_read on friendships
   for select using (auth.uid() in (user_a, user_b));
+drop policy if exists friendships_insert on friendships;
 create policy friendships_insert on friendships
   for insert with check (auth.uid() = requested_by and auth.uid() in (user_a, user_b));
+drop policy if exists friendships_update on friendships;
 create policy friendships_update on friendships
   for update using (auth.uid() in (user_a, user_b));
+drop policy if exists friendships_delete on friendships;
 create policy friendships_delete on friendships
   for delete using (auth.uid() in (user_a, user_b));
 
 -- ── pins: the core visibility rule. ──
+drop policy if exists pins_select on pins;
 create policy pins_select on pins
   for select using (
     user_id = auth.uid()
     or visibility = 'public'
     or (visibility = 'friends' and are_friends(auth.uid(), user_id))
   );
+drop policy if exists pins_write_own on pins;
 create policy pins_write_own on pins
   for all using (user_id = auth.uid()) with check (user_id = auth.uid());
 
 -- ── pin_photos: inherit the parent pin's visibility. ──
+drop policy if exists pin_photos_select on pin_photos;
 create policy pin_photos_select on pin_photos
   for select using (
     exists (
@@ -64,6 +73,7 @@ create policy pin_photos_select on pin_photos
         )
     )
   );
+drop policy if exists pin_photos_write_own on pin_photos;
 create policy pin_photos_write_own on pin_photos
   for all using (
     exists (select 1 from pins p where p.id = pin_photos.pin_id and p.user_id = auth.uid())
@@ -72,6 +82,7 @@ create policy pin_photos_write_own on pin_photos
   );
 
 -- ── top_places: readable if you can read the backing pin; owner writes. ──
+drop policy if exists top_places_select on top_places;
 create policy top_places_select on top_places
   for select using (
     exists (
@@ -84,5 +95,6 @@ create policy top_places_select on top_places
         )
     )
   );
+drop policy if exists top_places_write_own on top_places;
 create policy top_places_write_own on top_places
   for all using (user_id = auth.uid()) with check (user_id = auth.uid());

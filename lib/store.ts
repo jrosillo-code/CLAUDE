@@ -164,9 +164,20 @@ interface WaypointState {
   cloneTripToDraft: (tripId: string) => boolean;
   /** Mark your trip finished — the cue for the 60-second debrief. */
   completeTrip: (tripId: string) => void;
+  /**
+   * A friend's debrief did work on one of the surfaces — record it so the
+   * author can see that it helped (never who it helped).
+   */
+  noteCitation: (
+    reflectionId: string,
+    ownerId: string,
+    surface: "ask" | "place" | "dontmiss" | "clone"
+  ) => void;
 
   // ── Post-trip debriefs (reflections) ──
   reflections: TripReflection[];
+  /** Times each of the viewer's own debriefs was cited, from the server. */
+  citationCounts: Record<string, number>;
   /** Get-or-create the viewer's draft debrief for a trip; returns its id. */
   startReflection: (tripId: string) => string | null;
   /** Save one answer verbatim (replaces an earlier answer to the same question). */
@@ -304,6 +315,9 @@ export const useStore = create<WaypointState>((set, get) => ({
           /* private mode */
         }
         const world = await backend.loadWorld(userId);
+        // Citations are read separately: an aggregate over the viewer's own
+        // debriefs, never the rows behind it.
+        const counts = await backend.loadCitationCounts();
         set((s) => ({
           session: { userId, method: "email" },
           sessionReady: true,
@@ -317,6 +331,7 @@ export const useStore = create<WaypointState>((set, get) => ({
           friendships: world?.friendships ?? [],
           trips: world?.trips ?? [],
           reflections: world?.reflections ?? [],
+          citationCounts: counts,
           topPlaces: world?.topPlaces ?? [],
           likeCounts: world?.likeCounts ?? {},
           likedPinIds: world?.likedPinIds ?? new Set(),
@@ -338,7 +353,9 @@ export const useStore = create<WaypointState>((set, get) => ({
             realtimeTimer = null;
             const w = await backend.loadWorld(userId);
             if (!w || get().viewerId !== userId) return;
+            const counts = await backend.loadCitationCounts();
             set({
+              citationCounts: counts,
               users: w.users,
               pins: w.pins,
               friendships: w.friendships,
@@ -683,6 +700,12 @@ export const useStore = create<WaypointState>((set, get) => ({
     });
     return true;
   },
+  noteCitation: (reflectionId, ownerId, surface) => {
+    const s = get();
+    if (!backendEnabled || !s.viewerId || ownerId === s.viewerId) return;
+    backend.syncRecordCitation(reflectionId, s.viewerId, surface);
+  },
+
   completeTrip: (tripId) =>
     set((s) => {
       const trip = s.trips.find((t) => t.id === tripId && t.userId === s.viewerId);
@@ -695,6 +718,7 @@ export const useStore = create<WaypointState>((set, get) => ({
     }),
 
   reflections: [...seedReflections],
+  citationCounts: {},
   startReflection: (tripId) => {
     const s = get();
     const trip = s.trips.find((t) => t.id === tripId && t.userId === s.viewerId);

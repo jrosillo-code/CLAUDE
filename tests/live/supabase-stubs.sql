@@ -1,5 +1,5 @@
 -- Stubs for the schemas a hosted Supabase project provides out of the box,
--- so the FULL migration chain (0001 → 0014) can be applied VERBATIM to an
+-- so the FULL migration chain (0001 → 0017) can be applied VERBATIM to an
 -- empty local PostgreSQL — the same order `supabase db push` would use.
 -- Everything here mirrors real Supabase objects the migrations touch:
 --   auth.users, auth.uid(), storage.buckets/objects + storage.foldername(),

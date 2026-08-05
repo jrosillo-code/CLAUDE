@@ -84,15 +84,21 @@ values ('avatars', 'avatars', true), ('pin-media', 'pin-media', true)
 on conflict (id) do nothing;
 
 -- Public read; each user writes only under their own folder (path "<uid>/…").
+drop policy if exists "avatars_public_read" on storage.objects;
 create policy "avatars_public_read" on storage.objects
   for select using (bucket_id = 'avatars');
+drop policy if exists "avatars_owner_write" on storage.objects;
 create policy "avatars_owner_write" on storage.objects
   for insert with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+drop policy if exists "avatars_owner_update" on storage.objects;
 create policy "avatars_owner_update" on storage.objects
   for update using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+drop policy if exists "pin_media_public_read" on storage.objects;
 create policy "pin_media_public_read" on storage.objects
   for select using (bucket_id = 'pin-media');
+drop policy if exists "pin_media_owner_write" on storage.objects;
 create policy "pin_media_owner_write" on storage.objects
   for insert with check (bucket_id = 'pin-media' and (storage.foldername(name))[1] = auth.uid()::text);
+drop policy if exists "pin_media_owner_delete" on storage.objects;
 create policy "pin_media_owner_delete" on storage.objects
   for delete using (bucket_id = 'pin-media' and (storage.foldername(name))[1] = auth.uid()::text);

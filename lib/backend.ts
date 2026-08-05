@@ -621,6 +621,43 @@ export function syncSaveReflection(r: TripReflection): void {
   })();
 }
 
+/**
+ * Record that a friend's debrief did work on one surface. Best-effort and
+ * silent: the primary key dedupes repeat views, and a failure here must never
+ * interrupt reading. Never called for your own words (the policy rejects it).
+ */
+export function syncRecordCitation(
+  reflectionId: string,
+  viewerId: string,
+  surface: "ask" | "place" | "dontmiss" | "clone"
+): void {
+  void supabase!
+    .from("reflection_citations")
+    .upsert(
+      { reflection_id: reflectionId, viewer_id: viewerId, surface },
+      { onConflict: "reflection_id,viewer_id,surface", ignoreDuplicates: true }
+    )
+    .then(({ error }) => {
+      // A rejected insert is expected when the debrief isn't visible to this
+      // viewer; it is not worth surfacing.
+      if (error && debugLoggingEnabled) log("recordCitation")(error);
+    });
+}
+
+/** Counts for the viewer's OWN reflections. Never reveals who was reading. */
+export async function loadCitationCounts(): Promise<Record<string, number>> {
+  const { data, error } = await supabase!.rpc("reflection_citation_counts");
+  if (error) {
+    log("citationCounts")(error);
+    return {};
+  }
+  const out: Record<string, number> = {};
+  for (const row of (data ?? []) as { rid: string; citations: number }[]) {
+    out[row.rid] = Number(row.citations);
+  }
+  return out;
+}
+
 export function syncDeleteReflection(reflectionId: string): void {
   void supabase!
     .from("trip_reflections")

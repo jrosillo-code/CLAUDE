@@ -25,6 +25,7 @@ export default function SearchPlaceCard() {
   const setSearchedPlace = useStore((s) => s.setSearchedPlace);
   const viewerId = useStore((s) => s.viewerId);
   const users = useStore((s) => s.users);
+  const noteCitation = useStore((s) => s.noteCitation);
   const pins = useStore((s) => s.pins);
   const friendships = useStore((s) => s.friendships);
   const follows = useStore((s) => s.follows);
@@ -96,6 +97,7 @@ export default function SearchPlaceCard() {
         viewerId,
         questionId: q.answer.questionId,
       });
+      noteCitation(q.reflection.id, q.owner.id, "place");
     }
     for (const p of dontMiss.picks) {
       if (p.fromDebrief && p.sourceReflectionId) {
@@ -105,6 +107,7 @@ export default function SearchPlaceCard() {
           pinId: p.pin.id,
           viewerId,
         });
+        if (p.sourceOwnerId) noteCitation(p.sourceReflectionId, p.sourceOwnerId, "dontmiss");
       }
     }
   }, [friendVoices, dontMiss, viewerId]);

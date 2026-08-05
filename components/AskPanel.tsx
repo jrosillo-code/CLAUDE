@@ -25,6 +25,7 @@ export default function AskPanel({
   const pins = useStore((s) => s.pins);
   const friendships = useStore((s) => s.friendships);
   const follows = useStore((s) => s.follows);
+  const noteCitation = useStore((s) => s.noteCitation);
   const topPlaces = useStore((s) => s.topPlaces);
   const trips = useStore((s) => s.trips);
   const reflections = useStore((s) => s.reflections);
@@ -94,6 +95,7 @@ export default function AskPanel({
         viewerId,
         questionId: qc.answer.questionId,
       });
+      noteCitation(qc.reflection.id, qc.owner.id, "ask");
     }
 
     // Optional AI voice on top of the same evidence.

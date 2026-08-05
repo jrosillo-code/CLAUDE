@@ -27,11 +27,13 @@ alter table public.trip_checkins enable row level security;
 
 -- Members are visible to the trip owner and the members themselves; only the
 -- owner manages membership.
+drop policy if exists "trip_members_select" on public.trip_members;
 create policy "trip_members_select" on public.trip_members
   for select using (
     user_id = auth.uid()
     or exists (select 1 from public.trips t where t.id = trip_members.trip_id and t.user_id = auth.uid())
   );
+drop policy if exists "trip_members_owner_write" on public.trip_members;
 create policy "trip_members_owner_write" on public.trip_members
   for all using (
     exists (select 1 from public.trips t where t.id = trip_members.trip_id and t.user_id = auth.uid())
@@ -40,6 +42,7 @@ create policy "trip_members_owner_write" on public.trip_members
   );
 
 -- Check-ins are visible wherever the trip is visible; you write your own.
+drop policy if exists "trip_checkins_select" on public.trip_checkins;
 create policy "trip_checkins_select" on public.trip_checkins
   for select using (
     exists (
@@ -52,5 +55,6 @@ create policy "trip_checkins_select" on public.trip_checkins
         )
     )
   );
+drop policy if exists "trip_checkins_insert_own" on public.trip_checkins;
 create policy "trip_checkins_insert_own" on public.trip_checkins
   for insert with check (user_id = auth.uid());

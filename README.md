@@ -90,9 +90,18 @@ research behind them):
 
   The privacy model is enforced twice: client helpers for UX, **Postgres RLS as the
   authority**. `npm run test:rls` boots a disposable local PostgreSQL cluster, applies the
-  *verbatim* reflections migration, and runs 24 assertions as a non-owner role (drafts
+  *verbatim* reflections migrations, and runs 30 assertions as a non-owner role (drafts
   owner-only, the private/friends/public matrix, impersonation and answer-planting
-  rejected, unfriending revocation, cascades). One level up, `npm run test:live` applies
+  rejected, citation counts visible to the author but never the citers, unfriending
+  revocation, cascades). `npm run test:migrations` covers the layer beneath that: it applies
+  **every** migration to an empty database in order, applies them all a second time to prove
+  the chain is re-runnable (DEPLOY.md has you paste files by hand — losing track is the
+  normal failure), then asserts over the catalog that every table the app queries exists and
+  that **every** table in `public` has RLS enabled. That last check is deliberately not a
+  hand-kept list: on Supabase the public schema is granted to `anon` by default, so a table
+  that merely forgets to enable RLS is world-writable, and the omission is invisible in a
+  diff. It found four such tables (`follows`, `posts`, `activities`, `pin_activities`),
+  closed in `0017_close_rls_gaps.sql`. One level up, `npm run test:live` applies
   the **entire migration chain from an empty database** and drives the app's real
   `lib/backend.ts` through a **real PostgREST** with per-user JWTs — the same API server
   hosted Supabase runs — covering the full REST privacy matrix, unauthorized-write
@@ -138,7 +147,7 @@ layer), and write-through hooks in `lib/store.ts`. Without env keys the app runs
 seeded in-memory demo; with them, auth + data + storage are live. To turn it on:
 
 1. **Create a project** at [supabase.com](https://supabase.com) (free tier is fine).
-2. **Run the migrations** `supabase/migrations/0001…0015` in order:
+2. **Run the migrations** `supabase/migrations/0001…0017` in order:
    ```bash
    supabase link --project-ref <your-ref> && supabase db push
    ```

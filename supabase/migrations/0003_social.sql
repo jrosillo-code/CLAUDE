@@ -1,14 +1,14 @@
 -- Likes and saves ("favorite for later"). One row per user per pin; counts are
 -- aggregates over pin_likes.
 
-create table pin_likes (
+create table if not exists pin_likes (
   pin_id      uuid not null references pins (id) on delete cascade,
   user_id     uuid not null references users (id) on delete cascade,
   created_at  timestamptz not null default now(),
   primary key (pin_id, user_id)
 );
 
-create table pin_saves (
+create table if not exists pin_saves (
   pin_id      uuid not null references pins (id) on delete cascade,
   user_id     uuid not null references users (id) on delete cascade,
   created_at  timestamptz not null default now(),
@@ -20,6 +20,7 @@ alter table pin_saves enable row level security;
 
 -- You can like/save any pin you're allowed to see; rows are readable wherever
 -- the underlying pin is readable (so like counts respect pin visibility).
+drop policy if exists pin_likes_select on pin_likes;
 create policy pin_likes_select on pin_likes
   for select using (
     exists (
@@ -32,6 +33,7 @@ create policy pin_likes_select on pin_likes
         )
     )
   );
+drop policy if exists pin_likes_insert on pin_likes;
 create policy pin_likes_insert on pin_likes
   for insert with check (
     user_id = auth.uid()
@@ -45,12 +47,15 @@ create policy pin_likes_insert on pin_likes
         )
     )
   );
+drop policy if exists pin_likes_delete on pin_likes;
 create policy pin_likes_delete on pin_likes
   for delete using (user_id = auth.uid());
 
 -- Saves are private to the saver.
+drop policy if exists pin_saves_select on pin_saves;
 create policy pin_saves_select on pin_saves
   for select using (user_id = auth.uid());
+drop policy if exists pin_saves_insert on pin_saves;
 create policy pin_saves_insert on pin_saves
   for insert with check (
     user_id = auth.uid()
@@ -64,5 +69,6 @@ create policy pin_saves_insert on pin_saves
         )
     )
   );
+drop policy if exists pin_saves_delete on pin_saves;
 create policy pin_saves_delete on pin_saves
   for delete using (user_id = auth.uid());

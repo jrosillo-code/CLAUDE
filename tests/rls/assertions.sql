@@ -200,6 +200,47 @@ exception when others then
   perform ok(true, 'D5 debrief on someone else''s trip is rejected');
 end $$;
 
+-- ── D6-D9. Citations: authors learn THAT they helped, never WHO ─────────────
+-- Bob is Alice's friend here and Alice's debrief 3333… is friends-visible.
+do $$
+begin
+  insert into reflection_citations (reflection_id, viewer_id, surface)
+  values ('33333333-3333-3333-3333-333333333333',
+          '00000000-0000-0000-0000-00000000000b', 'ask');
+  perform ok(true, 'D6 friend can cite a visible debrief');
+exception when others then
+  perform ok(false, 'D6 friend can cite a visible debrief');
+end $$;
+
+-- A citation must be attributable to the caller, not planted as someone else.
+do $$
+begin
+  insert into reflection_citations (reflection_id, viewer_id, surface)
+  values ('33333333-3333-3333-3333-333333333333',
+          '00000000-0000-0000-0000-00000000000a', 'place');
+  perform ok(false, 'D7 citing as another viewer is rejected');
+exception when others then
+  perform ok(true, 'D7 citing as another viewer is rejected');
+end $$;
+
+-- Nobody reads the rows — not even the author. Counts come from the function.
+select ok(
+  (select count(*) from reflection_citations) = 0,
+  'D8 citation rows are unreadable, even to a friend who wrote one'
+);
+
+select set_config('request.jwt.claim.sub', :'alice', false);
+select ok(
+  (select count(*) from reflection_citations) = 0,
+  'D9 the author cannot read who cited them'
+);
+select ok(
+  (select citations from reflection_citation_counts()
+    where rid = '33333333-3333-3333-3333-333333333333') = 1,
+  'D10 the author does see the aggregate count'
+);
+select set_config('request.jwt.claim.sub', :'bob', false);
+
 -- ── E. Unfriending revokes friends-only access ──────────────────────────────
 
 select set_config('request.jwt.claim.sub', :'alice', false);

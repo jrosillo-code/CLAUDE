@@ -28,6 +28,7 @@ export default function TripsPanel({
   const users = useStore((s) => s.users);
   const friendships = useStore((s) => s.friendships);
   const viewerId = useStore((s) => s.viewerId);
+  const citationCounts = useStore((s) => s.citationCounts);
   const shownTripIds = useStore((s) => s.shownTripIds);
   const toggleTripShown = useStore((s) => s.toggleTripShown);
   const deleteTrip = useStore((s) => s.deleteTrip);
@@ -238,7 +239,9 @@ export default function TripsPanel({
                 if (refl?.status === "complete") {
                   // Reward signal, no engagement pressure: how often these
                   // words did work for a friend (this device's log only).
-                  const cited = contributionCount(viewerId, refl.id);
+                  // Server count when signed in (it sees every reader, not
+                  // just this device); the local log is the demo-mode fallback.
+                  const cited = citationCounts[refl.id] ?? contributionCount(viewerId, refl.id);
                   return (
                     <button
                       onClick={() => {
