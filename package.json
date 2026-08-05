@@ -10,7 +10,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "test:rls": "bash scripts/test-rls.sh"
+    "test:rls": "bash scripts/test-rls.sh",
+    "test:live": "bash scripts/test-live-stack.sh"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.113.0",

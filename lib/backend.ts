@@ -6,6 +6,7 @@
 // optimistic local state stands and the next full load reconciles.
 
 import { supabase } from "./supabase";
+import { debugLoggingEnabled } from "./env";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import type {
   ActivitySlug,
@@ -313,9 +314,20 @@ export function subscribeRealtime(viewerId: string, onWorldChange: () => void): 
     const token = data.session?.access_token;
     if (token) sb.realtime.setAuth(token);
     const tap = (label: string) => (payload: unknown) => {
-      console.info(`[waypoint] realtime event: ${label}`, payload && (payload as { eventType?: string }).eventType);
+      if (debugLoggingEnabled)
+        console.info(`[waypoint] realtime event: ${label}`, payload && (payload as { eventType?: string }).eventType);
       onWorldChange();
     };
+    // Reflections ride the same coarse-but-correct pattern as everything
+    // else: the payload is never rendered — any event triggers a debounced
+    // world reload AS THE VIEWER, so restrictions apply on arrival exactly
+    // like on a fresh load. Supabase filters events per-subscriber through
+    // RLS, so a draft or a stranger's private debrief never even emits to
+    // us; and because the reload recomputes every trust surface from
+    // scratch, tightened visibility / unfriending / deletions REMOVE
+    // evidence as promptly as additions appear. The debounce (700 ms in
+    // store.ts) collapses event bursts into one fetch — no duplicate rows,
+    // and analytics stay deduped by trackOnce independent of reloads.
     ch = sb
       .channel(`wp-live-${viewerId}`)
       .on(
@@ -326,12 +338,23 @@ export function subscribeRealtime(viewerId: string, onWorldChange: () => void): 
       .on("postgres_changes", { event: "*", schema: "public", table: "friendships" }, tap("friendships"))
       .on("postgres_changes", { event: "*", schema: "public", table: "pins" }, tap("pins"))
       .on("postgres_changes", { event: "*", schema: "public", table: "pin_likes" }, tap("pin_likes"))
+      .on("postgres_changes", { event: "*", schema: "public", table: "trips" }, tap("trips"))
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "trip_reflections" },
+        tap("trip_reflections")
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "reflection_answers" },
+        tap("reflection_answers")
+      )
       .subscribe((status, err) => {
-        // Leave this breadcrumb in production: it's the first thing to check
-        // when "realtime doesn't work" — SUBSCRIBED means the channel joined;
-        // CHANNEL_ERROR/TIMED_OUT points at server config (publication,
-        // realtime availability) rather than this client.
-        console.info(`[waypoint] realtime channel: ${status}${err ? ` — ${err.message}` : ""}`);
+        // First thing to check when "realtime doesn't work" — SUBSCRIBED
+        // means the channel joined; CHANNEL_ERROR/TIMED_OUT points at server
+        // config (publication, realtime availability) rather than this client.
+        if (debugLoggingEnabled)
+          console.info(`[waypoint] realtime channel: ${status}${err ? ` — ${err.message}` : ""}`);
       });
   });
   return () => {
