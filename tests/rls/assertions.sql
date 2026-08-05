@@ -184,6 +184,22 @@ exception when others then
   perform ok(true, 'D4 planting answers in another debrief is rejected');
 end $$;
 
+-- D5: a friend cannot attach their OWN debrief to someone else's trip.
+-- The reflection is honestly owned (user_id = the caller), so the owner check
+-- alone passes; only the trip-ownership check in 0015 stops it. Without that,
+-- the planted debrief renders as quote cards on Alice's trip, because the
+-- quote surfaces select on trip_id.
+do $$
+begin
+  insert into trip_reflections (trip_id, user_id, visibility, status)
+  values ('11111111-1111-1111-1111-111111111111',
+          '00000000-0000-0000-0000-00000000000b',
+          'public', 'complete');
+  perform ok(false, 'D5 debrief on someone else''s trip is rejected');
+exception when others then
+  perform ok(true, 'D5 debrief on someone else''s trip is rejected');
+end $$;
+
 -- ── E. Unfriending revokes friends-only access ──────────────────────────────
 
 select set_config('request.jwt.claim.sub', :'alice', false);

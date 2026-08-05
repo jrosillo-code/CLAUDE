@@ -45,6 +45,27 @@ export default function TopBar({
   // Picking a result writes its name into the input — that programmatic change
   // must not re-run the search and pop the dropdown back open.
   const suppressSearchRef = useRef(false);
+  const searchWrapRef = useRef<HTMLDivElement | null>(null);
+
+  // The panel opens on the second keystroke, before any geocoder result, so
+  // it needs real exits: tapping anywhere outside it, or Escape. Without
+  // these it covers the top half of a phone screen with no way back to the
+  // map except finding the tiny clear button.
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (!searchWrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   useEffect(() => {
     if (suppressSearchRef.current) {
@@ -103,7 +124,7 @@ export default function TopBar({
       {/* Search — its own centered row on phones, underneath the icon row */}
       {/* Search — lives in the top row on phones too: only the bell and avatar
           stay beside it (Trips/Creators move to the bottom-right column) */}
-      <div className="relative max-sm:min-w-0 max-sm:flex-1 sm:w-full sm:max-w-sm sm:shrink">
+      <div ref={searchWrapRef} className="relative max-sm:min-w-0 max-sm:flex-1 sm:w-full sm:max-w-sm sm:shrink">
         <div className="flex items-center gap-2 rounded-full bg-paper/85 px-3 py-2 shadow-float backdrop-blur sm:px-4 sm:py-2.5">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0 text-ink-3">
             <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />

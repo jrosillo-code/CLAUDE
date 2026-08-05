@@ -34,7 +34,7 @@ accept a request in-app, or insert the `friendships` row), then either:
 ## Reset procedure
 
 ```
-psql "$SUPABASE_DB_URL" -f scripts/reset-synthetic.sql
+psql -v ON_ERROR_STOP=1 "$SUPABASE_DB_URL" -f scripts/reset-synthetic.sql
 ```
 
 (or paste the file into the project's SQL editor). The script wipes user
@@ -44,6 +44,5 @@ Re-create the three accounts afterwards.
 
 ## What the two-browser test uses these for
 
-The privacy-matrix walkthrough in `docs/live-supabase-validation.md` (and
-the automated version in `tests/e2e/privacy-matrix.md`) runs Alice and Bob
+The privacy-matrix walkthrough in `docs/live-supabase-validation.md` runs Alice and Bob
 in separate browser profiles and Carol in a third/incognito profile.

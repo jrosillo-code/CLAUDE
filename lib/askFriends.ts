@@ -385,13 +385,20 @@ function composeAnswer(
     const names = [
       ...new Set([...best.map((e) => firstName(e.pin.owner)), ...quotes.map((q) => firstName(q.owner))]),
     ];
-    const who =
-      names.length === 1
-        ? names[0]
-        : names.length === 2
-          ? `${names[0]} and ${names[1]}`
-          : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
-    parts.push(`From your circle, ${who} can answer that.`);
+    // Only planned trips matched: nobody has actually been yet, so naming
+    // people as if they could answer would overstate what we know. (Reaching
+    // the old join with an empty list also rendered a literal "and undefined".)
+    if (names.length === 0) {
+      parts.push("No one you're connected with has been yet, but it's on someone's route:");
+    } else {
+      const who =
+        names.length === 1
+          ? names[0]
+          : names.length === 2
+            ? `${names[0]} and ${names[1]}`
+            : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+      parts.push(`From your circle, ${who} can answer that.`);
+    }
   }
 
   // Debrief quotes lead — they're the richest, most recent signal.

@@ -1,29 +1,35 @@
 -- Safe reset for the SYNTHETIC preview environment. Wipes user data, keeps
 -- schema, policies and buckets. Refuses to run if anything looks like a
--- non-synthetic account (any auth email outside *.test / *.example) — the
--- guard makes it impossible to point this at a real project by accident.
+-- non-synthetic account (any auth user whose email is not *@synthetic.test).
+--
+-- The guard runs INSIDE the same transaction as the wipe, on purpose: psql
+-- does not stop on error by default, so a guard in its own statement would
+-- print "REFUSING RESET" and then truncate everything anyway. Raising inside
+-- the transaction aborts it, so the destructive statements below can never
+-- commit against a project that holds real accounts.
 --
 -- Usage (preview project only):
---   psql "$SUPABASE_DB_URL" -f scripts/reset-synthetic.sql
+--   psql -v ON_ERROR_STOP=1 "$SUPABASE_DB_URL" -f scripts/reset-synthetic.sql
 -- or paste into the Supabase SQL editor of the DISPOSABLE project.
+
+begin;
 
 do $$
 declare
   real_accounts int;
 begin
+  -- A NULL email counts as real: phone/OAuth-only accounts have no address
+  -- to vouch for them, and a project made of those must never be wiped here.
   select count(*) into real_accounts
   from auth.users
-  where email is not null
-    and email not like '%@synthetic.test'
-    and email not like '%.example';
+  where email is null
+     or email not like '%@synthetic.test';
   if real_accounts > 0 then
     raise exception
       'REFUSING RESET: % account(s) do not look synthetic (expected *@synthetic.test). This is not the disposable project.',
       real_accounts;
   end if;
 end $$;
-
-begin;
 
 -- Order-independent thanks to cascades; truncate the roots.
 truncate table

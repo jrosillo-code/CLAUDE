@@ -26,7 +26,9 @@ export default function PreviewBanner() {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[60] flex items-center justify-center gap-2 bg-amber-500/95 px-3 py-1 text-center text-[11px] font-semibold text-black backdrop-blur">
+    <div // pointer-events-none: the bar overlaps the bottom FABs by a few pixels on
+    // short phones, and a demo label must never eat a tap meant for the app.
+    className="pointer-events-none fixed inset-x-0 bottom-0 z-[60] flex items-center justify-center gap-2 bg-amber-500/95 px-3 py-1 pb-[calc(0.25rem+env(safe-area-inset-bottom))] text-center text-[11px] font-semibold text-black backdrop-blur">
       <span>
         {isPreviewEnv ? "PREVIEW" : "DEMO"} — synthetic data only. Accounts, trips and quotes
         are test fixtures, not real people.
@@ -34,7 +36,7 @@ export default function PreviewBanner() {
       <button
         onClick={() => setCollapsed(true)}
         aria-label="Collapse banner"
-        className="rounded-full px-1.5 font-bold hover:bg-black/10"
+        className="pointer-events-auto rounded-full px-1.5 font-bold hover:bg-black/10"
       >
         –
       </button>

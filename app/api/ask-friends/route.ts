@@ -9,6 +9,23 @@ import Anthropic from "@anthropic-ai/sdk";
 
 export const maxDuration = 30;
 
+// The route is unauthenticated by design (the client supplies its own
+// evidence), which also means anyone can point a script at it and spend the
+// project's Anthropic quota. A small per-IP budget keeps casual abuse cheap
+// without needing any external dependency. Per serverless instance, which is
+// enough for a beta.
+const hits = new Map<string, number[]>();
+function withinRateLimit(req: Request, max = 12, windowMs = 60_000): boolean {
+  const ip = (req.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim();
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < windowMs);
+  if (recent.length >= max) return false;
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) hits.clear(); // bound memory
+  return true;
+}
+
 interface EvidencePin {
   friend: string;
   place: string;
@@ -36,6 +53,11 @@ interface EvidenceQuote {
 
 export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ source: "none" });
+  }
+  // Over budget: fall back to the client's deterministic answer, which is
+  // exactly what happens with no key at all — the feature still works.
+  if (!withinRateLimit(req)) {
     return NextResponse.json({ source: "none" });
   }
 

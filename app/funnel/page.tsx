@@ -35,6 +35,9 @@ export default function FunnelPage() {
 
   return (
     <main className="mx-auto max-w-xl px-6 py-10">
+      {/* Reachable during user tests on the deployed URL, but this is an
+          internal facilitator surface — it should never turn up in search. */}
+      <meta name="robots" content="noindex,nofollow" />
       <h1 className="font-display text-3xl">User-test funnel</h1>
       <p className="mt-2 text-sm leading-relaxed text-ink-3">
         Computed from this device&apos;s local event log ({eventCount} events, ids only — no
