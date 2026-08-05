@@ -92,8 +92,21 @@ research behind them):
   authority**. `npm run test:rls` boots a disposable local PostgreSQL cluster, applies the
   *verbatim* reflections migration, and runs 24 assertions as a non-owner role (drafts
   owner-only, the private/friends/public matrix, impersonation and answer-planting
-  rejected, unfriending revocation, cascades). Architecture, provenance rules and the
-  remaining manual-verification list live in [`docs/reflections.md`](docs/reflections.md).
+  rejected, unfriending revocation, cascades). One level up, `npm run test:live` applies
+  the **entire migration chain from an empty database** and drives the app's real
+  `lib/backend.ts` through a **real PostgREST** with per-user JWTs — the same API server
+  hosted Supabase runs — covering the full REST privacy matrix, unauthorized-write
+  rejection, cascade behavior, and evidence freshness after reload. Architecture,
+  provenance rules and the remaining manual-verification list live in
+  [`docs/reflections.md`](docs/reflections.md) and
+  [`docs/live-supabase-validation.md`](docs/live-supabase-validation.md).
+
+  For user testing: a dismissible **Getting-started checklist** completes itself from real
+  actions (view a debrief → ask → clone → debrief → reward), local no-text product events
+  feed a facilitator funnel at `/funnel`, preview deployments show a persistent
+  synthetic-data banner and are noindexed (`NEXT_PUBLIC_PREVIEW=1`), and startup env
+  validation refuses to run with a service-role key in the public env. The five-person
+  test plan is [`docs/reflections-user-test.md`](docs/reflections-user-test.md).
 
 ## Architecture
 

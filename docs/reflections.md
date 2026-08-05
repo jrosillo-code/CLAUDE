@@ -123,17 +123,21 @@ construction. Events: `debrief_started/resumed/completed`,
 
 ## Remaining limitations / manual verification
 
-- **The RLS harness proves the SQL policies, not the full Supabase stack.**
-  PostgREST query shapes, Supabase Auth JWTs, storage, and realtime need one
-  manual pass against a real project: `supabase db push` (0001→0013), two
-  accounts in separate browsers, then walk the lifecycle and the visibility
-  matrix. The client code paths involved (`loadWorld`, `syncSaveReflection`,
-  `syncDeleteReflection`, `syncCompleteTrip`) follow the same patterns as
-  the already-wired pins/trips syncs.
-- **Realtime**: reflections are not yet in the `supabase_realtime`
-  publication; a friend's new debrief appears on the next world reload, not
-  live. Add the tables to migration 0012's publication when live updates
-  matter.
+- **PostgREST query shapes and JWT-authenticated RLS are now machine-
+  verified** by `npm run test:live` (full migration chain from empty + a
+  real PostgREST driving `loadWorld` / the reflection syncs / the complete
+  REST privacy matrix — see `docs/live-supabase-validation.md`). Still
+  needing one manual pass on a hosted project: GoTrue login UX, Realtime
+  event delivery, and Storage.
+- **Realtime**: migration 0014 adds `trip_reflections`,
+  `reflection_answers` and `trips` to the `supabase_realtime` publication,
+  and the client subscribes to all three. Events are RLS-scoped per
+  subscriber (drafts and private debriefs never emit to others), payloads
+  are never rendered — every event triggers the debounced viewer-scoped
+  world reload, so tightened visibility, unfriending and deletions REMOVE
+  evidence as promptly as additions appear. One platform caveat: Supabase
+  does not RLS-filter DELETE payloads (primary key only) — since payloads
+  are unused, the worst case is knowing *some* row id was deleted.
 - **Contribution counts are per-device**: the "helped N×" chip reads this
   browser's event log. Real cross-device counts need a server-side
   aggregate under the same no-text rule.
