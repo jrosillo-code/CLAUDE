@@ -25,6 +25,50 @@ import type {
 const log = (op: string) => (e: unknown) =>
   console.error(`[backend] ${op} failed:`, e);
 
+/**
+ * Never let a backend call hold the UI open indefinitely.
+ *
+ * This is not belt-and-braces: a Supabase query that fails at the NETWORK
+ * level (DNS, a reset connection, a project that is paused or over quota)
+ * can leave `Promise.all` over the query builders permanently unsettled —
+ * not rejected, just never finished. Awaiting one builder handles the same
+ * failure fine; the group does not. So `loadWorld` never returned, the one
+ * line that sets sessionReady never ran, and the app sat on its loading logo
+ * forever with no error and nothing to click.
+ *
+ * A promise that has not answered in `ms` is treated as a failure and the
+ * caller carries on with `fallback`.
+ */
+export function withTimeout<T>(work: Promise<T>, ms: number, fallback: T, label: string): Promise<T> {
+  return new Promise<T>((resolve) => {
+    let done = false;
+    const timer = setTimeout(() => {
+      if (done) return;
+      done = true;
+      console.error(`[backend] ${label} timed out after ${ms}ms — continuing without it`);
+      resolve(fallback);
+    }, ms);
+    work.then(
+      (value) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (error) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        log(label)(error);
+        resolve(fallback);
+      }
+    );
+  });
+}
+
+/** How long any single startup load may take before we give up on it. */
+export const LOAD_TIMEOUT_MS = 12_000;
+
 // ── row shapes ─────────────────────────────────────────────────────────────
 
 interface UserRow {
@@ -190,9 +234,21 @@ export interface World {
 
 /** Everything the store needs, in one parallel fetch. RLS scopes all of it. */
 export async function loadWorld(viewerId: string): Promise<World | null> {
+  return withTimeout(loadWorldInner(viewerId), LOAD_TIMEOUT_MS, null, "loadWorld");
+}
+
+async function loadWorldInner(viewerId: string): Promise<World | null> {
   const sb = supabase!;
   try {
-    const [usersQ, pinsQ, friendsQ, tripsQ, reflQ, likesQ, savesQ, followsQ, notifQ, topQ] = await Promise.all([
+    // allSettled, not all: one table that errors — an RLS policy that is too
+    // strict, a migration not yet applied — should cost you that table, not
+    // the entire map. `all` also rejects on the first failure and, worse, has
+    // been seen never to settle at all when the failure is network-level.
+    const settle = <T>(r: PromiseSettledResult<T>, fallbackName: string): T =>
+      r.status === "fulfilled"
+        ? r.value
+        : (log(`loadWorld:${fallbackName}`)(r.reason), { data: null, error: r.reason } as T);
+    const [usersR, pinsR, friendsR, tripsR, reflR, likesR, savesR, followsR, notifR, topR] = await Promise.allSettled([
       sb.from("users").select("*"),
       sb
         .from("pins")
@@ -212,9 +268,22 @@ export async function loadWorld(viewerId: string): Promise<World | null> {
         .limit(50),
       sb.from("top_places").select("*"),
     ]);
-    const firstError =
-      usersQ.error ?? pinsQ.error ?? friendsQ.error ?? tripsQ.error ?? likesQ.error ?? savesQ.error ?? followsQ.error;
-    if (firstError) throw firstError;
+    const usersQ = settle(usersR, "users");
+    const pinsQ = settle(pinsR, "pins");
+    const friendsQ = settle(friendsR, "friendships");
+    const tripsQ = settle(tripsR, "trips");
+    const reflQ = settle(reflR, "trip_reflections");
+    const likesQ = settle(likesR, "pin_likes");
+    const savesQ = settle(savesR, "pin_saves");
+    const followsQ = settle(followsR, "follows");
+    const notifQ = settle(notifR, "notifications");
+    const topQ = settle(topR, "top_places");
+
+    // Only the identity of the world is non-negotiable. If `users` and `pins`
+    // both failed there is nothing worth rendering and the caller should fall
+    // back; anything else missing just renders as empty, which is honest and
+    // still leaves a usable app.
+    if (usersQ.error && pinsQ.error) throw usersQ.error;
 
     const pins = ((pinsQ.data ?? []) as unknown as PinRow[]).map(toPin);
     const likeCounts: Record<string, number> = {};

@@ -42,6 +42,14 @@ let authListenerBound = false;
 // world reloads debounced so a burst of events costs one fetch.
 let unsubscribeRealtime: (() => void) | null = null;
 let realtimeTimer: ReturnType<typeof setTimeout> | null = null;
+// Hard ceiling on the loading screen — deliberately SHORTER than the load
+// timeouts in lib/backend.ts. Being signed in is a fact we already know from
+// the session; it does not depend on whether the world finished downloading.
+// So after this long we show the app, and a load that is merely slow still
+// populates it when it lands. The alternative — holding the splash until
+// every request has answered — is what made a single unresponsive query look
+// like a broken app.
+const HYDRATE_WATCHDOG_MS = 6_000;
 
 function followsFor(viewerId: string): Set<string> {
   return new Set(
@@ -302,6 +310,20 @@ export const useStore = create<WaypointState>((set, get) => ({
     // ── Live backend: session comes from Supabase Auth ──
     if (backendEnabled) {
       const applyAuthUser = async (userId: string, email?: string) => {
+        // Whatever happens below, a signed-in user ends up signed in and
+        // looking at the app. A backend that is down means an empty map they
+        // can sign out of — never a loading screen they cannot leave.
+        try {
+          await loadEverything(userId, email);
+        } catch (e) {
+          console.error("[waypoint] hydrate failed; continuing with what loaded", e);
+          set({ session: { userId, method: "email" }, viewerId: userId });
+        } finally {
+          set({ sessionReady: true });
+        }
+      };
+
+      const loadEverything = async (userId: string, email?: string) => {
         const profile = await backend.ensureProfile(userId, email);
         // A username picked on the signup form waits in localStorage until
         // the session exists, then becomes the account's handle.
@@ -316,8 +338,14 @@ export const useStore = create<WaypointState>((set, get) => ({
         }
         const world = await backend.loadWorld(userId);
         // Citations are read separately: an aggregate over the viewer's own
-        // debriefs, never the rows behind it.
-        const counts = await backend.loadCitationCounts();
+        // debriefs, never the rows behind it. Bounded, because nothing during
+        // startup is allowed to hold the loading screen open.
+        const counts = await backend.withTimeout(
+          backend.loadCitationCounts(),
+          backend.LOAD_TIMEOUT_MS,
+          {} as Record<string, number>,
+          "loadCitationCounts"
+        );
         set((s) => ({
           session: { userId, method: "email" },
           sessionReady: true,
@@ -353,7 +381,12 @@ export const useStore = create<WaypointState>((set, get) => ({
             realtimeTimer = null;
             const w = await backend.loadWorld(userId);
             if (!w || get().viewerId !== userId) return;
-            const counts = await backend.loadCitationCounts();
+            const counts = await backend.withTimeout(
+              backend.loadCitationCounts(),
+              backend.LOAD_TIMEOUT_MS,
+              {} as Record<string, number>,
+              "loadCitationCounts"
+            );
             set({
               citationCounts: counts,
               users: w.users,
@@ -371,11 +404,51 @@ export const useStore = create<WaypointState>((set, get) => ({
           }, 700);
         });
       };
-      void supabase!.auth.getSession().then(({ data }) => {
-        const u = data.session?.user;
-        if (u) void applyAuthUser(u.id, u.email);
-        else set({ session: null, sessionReady: true });
-      });
+      // The loading screen is shown until sessionReady flips, so EVERY path
+      // out of here must flip it — including the ones that fail. Previously
+      // it was set in exactly one place, at the end of a chain of awaited
+      // network calls, with nothing catching: any failure in that chain left
+      // the app on its pulsing logo permanently, with no error and no way
+      // forward. A signed-in user could not even reach the sign-out button.
+      const finish = () => {
+        if (!get().sessionReady) set({ sessionReady: true });
+      };
+
+      // Last line of defence. If hydration has not finished by now something
+      // is wrong that we cannot see from here; show the app anyway (signed in
+      // with whatever loaded, or the login screen) rather than a spinner.
+      window.setTimeout(finish, HYDRATE_WATCHDOG_MS);
+
+      void supabase!.auth
+        .getSession()
+        .then(({ data }) => {
+          const u = data.session?.user;
+          if (!u) {
+            set({ session: null, sessionReady: true });
+            return;
+          }
+          // Being signed in is known NOW, from the stored session — it does
+          // not depend on the world downloading. Record it immediately so
+          // that if the watchdog has to step in, it shows this user their
+          // (empty) app rather than a login screen they don't need. The
+          // seeded demo world is cleared at the same time: better an empty
+          // map than someone else's pins while the real ones are in flight.
+          set({
+            session: { userId: u.id, method: "email" },
+            viewerId: u.id,
+            pins: [],
+            trips: [],
+            reflections: [],
+            friendships: [],
+            topPlaces: [],
+          });
+          return applyAuthUser(u.id, u.email);
+        })
+        .catch((e) => {
+          console.error("[waypoint] session restore failed", e);
+          set({ session: null });
+        })
+        .finally(finish);
       if (!authListenerBound) {
         authListenerBound = true;
         supabase!.auth.onAuthStateChange((event, session) => {
