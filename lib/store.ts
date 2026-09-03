@@ -30,7 +30,7 @@ import {
   topPlaces as seedTopPlaces,
   users as seedUsers,
 } from "./seed";
-import { backendEnabled, supabase } from "./supabase";
+import { arrivedForPasswordRecovery, backendEnabled, supabase } from "./supabase";
 import * as backend from "./backend";
 import { track } from "./analytics";
 
@@ -93,6 +93,9 @@ interface WaypointState {
   session: { userId: string; method: "apple" | "google" | "email" } | null;
   sessionReady: boolean;
   hydrateSession: () => void;
+  /** True while a password-recovery link is being acted on — see PasswordReset. */
+  passwordRecovery: boolean;
+  endPasswordRecovery: () => void;
   signIn: (method: "apple" | "google" | "email") => void;
   signOut: () => void;
 
@@ -306,6 +309,10 @@ export const useStore = create<WaypointState>((set, get) => ({
 
   session: null,
   sessionReady: false,
+  // Read from the landing URL rather than waited for as an event — see the
+  // note in lib/supabase.ts on why the event alone is unreliable.
+  passwordRecovery: backendEnabled && arrivedForPasswordRecovery,
+  endPasswordRecovery: () => set({ passwordRecovery: false }),
   hydrateSession: () => {
     // ── Live backend: session comes from Supabase Auth ──
     if (backendEnabled) {
@@ -455,7 +462,13 @@ export const useStore = create<WaypointState>((set, get) => ({
           // Keep the realtime socket's JWT fresh — RLS-scoped subscriptions
           // (notifications, friendships) go silent once the token expires.
           if (session?.access_token) supabase!.realtime.setAuth(session.access_token);
-          if (event === "SIGNED_IN" && session?.user) {
+          // A recovery link signs the user in like any other session, so
+          // without catching this event the reset would appear to do nothing:
+          // the app would just open and the password would be unchanged.
+          if (event === "PASSWORD_RECOVERY") {
+            set({ passwordRecovery: true });
+            if (session?.user) void applyAuthUser(session.user.id, session.user.email);
+          } else if (event === "SIGNED_IN" && session?.user) {
             void applyAuthUser(session.user.id, session.user.email);
           } else if (event === "SIGNED_OUT") {
             set({ session: null });

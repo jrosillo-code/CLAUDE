@@ -16,7 +16,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
-  const [linkSent, setLinkSent] = useState<false | "otp" | "confirm">(false);
+  const [linkSent, setLinkSent] = useState<false | "otp" | "confirm" | "reset">(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
   // Live mode shows an OAuth button only when that provider is actually
@@ -95,6 +95,46 @@ export default function LoginScreen() {
     }
   }
 
+  // Supabase's built-in email sender is rate limited to a handful of messages
+  // an hour and is documented as being for testing only. When it refuses, say
+  // so in words that point at the actual problem instead of echoing "over
+  // email send rate limit" at someone who just wants to sign in.
+  function explainMailError(message: string): string {
+    if (/rate limit|too many requests|429/i.test(message)) {
+      return "Too many emails requested — Supabase's built-in sender allows only a few per hour. Wait a while, or add a custom SMTP provider in Supabase → Authentication → Emails.";
+    }
+    if (/redirect|not allowed/i.test(message)) {
+      return "This site's URL isn't allow-listed in Supabase → Authentication → URL Configuration, so the link can't be sent.";
+    }
+    return message;
+  }
+
+  /** A real password reset: the email carries a recovery link, and following
+   *  it opens the "set a new password" form (see PasswordReset). This used to
+   *  send a magic sign-in link instead — which let you in, but never let you
+   *  set a new password, so a forgotten one stayed forgotten. */
+  async function sendPasswordReset() {
+    if (!emailOk) {
+      setAuthError("Enter your email above first.");
+      return;
+    }
+    if (!backendEnabled) {
+      setLinkSent("reset");
+      return;
+    }
+    setAuthError(null);
+    setBusy(true);
+    try {
+      const { error } = await supabase!.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin,
+      });
+      if (error) setAuthError(explainMailError(error.message));
+      else setLinkSent("reset");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function sendMagicLink() {
     if (!emailOk) {
       setAuthError("Enter your email above first.");
@@ -105,12 +145,17 @@ export default function LoginScreen() {
       return;
     }
     setAuthError(null);
-    const { error } = await supabase!.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: window.location.origin },
-    });
-    if (error) setAuthError(error.message);
-    else setLinkSent("otp");
+    setBusy(true);
+    try {
+      const { error } = await supabase!.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: window.location.origin },
+      });
+      if (error) setAuthError(explainMailError(error.message));
+      else setLinkSent("otp");
+    } finally {
+      setBusy(false);
+    }
   }
 
   const inputCls =
@@ -148,8 +193,15 @@ export default function LoginScreen() {
             <p className="mt-1 text-sm text-ink-3">
               {linkSent === "confirm"
                 ? "Tap the confirmation link we sent to "
-                : "We sent a sign-in link to "}
-              <span className="text-ink-2">{email}</span>.
+                : linkSent === "reset"
+                  ? "Tap the reset link we sent to "
+                  : "We sent a sign-in link to "}
+              <span className="text-ink-2">{email}</span>
+              {linkSent === "reset" ? " and you can choose a new password." : "."}
+            </p>
+            <p className="mt-3 text-xs leading-relaxed text-ink-3">
+              Nothing after a minute? Check spam. Supabase&apos;s built-in sender is
+              limited to a few emails an hour until a custom SMTP provider is added.
             </p>
             {!backendEnabled && (
               <button
@@ -251,9 +303,23 @@ export default function LoginScreen() {
                       Create an account
                     </button>
                   </p>
-                  <p>
-                    <button onClick={sendMagicLink} className="text-xs underline-offset-2 hover:underline">
-                      Forgot password? Email me a sign-in link
+                  <p className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs">
+                    <button
+                      onClick={sendPasswordReset}
+                      disabled={busy}
+                      className="underline-offset-2 hover:underline disabled:opacity-50"
+                    >
+                      Forgot password? Reset it
+                    </button>
+                    <span aria-hidden className="text-ink-3">
+                      ·
+                    </span>
+                    <button
+                      onClick={sendMagicLink}
+                      disabled={busy}
+                      className="underline-offset-2 hover:underline disabled:opacity-50"
+                    >
+                      Email me a sign-in link
                     </button>
                   </p>
                 </>

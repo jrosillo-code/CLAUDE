@@ -13,6 +13,18 @@ import { validateSupabaseEnv } from "./env";
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+// Captured at module load, BEFORE the client is built, because supabase-js
+// strips the recovery fragment out of the URL as soon as it processes it —
+// and it does that before React has mounted. Waiting to look from inside a
+// component finds nothing. Listening for the PASSWORD_RECOVERY event is not
+// enough either: it fires during client initialisation, which is over before
+// the store gets a chance to subscribe, so the reset link just opened the app
+// and quietly changed nothing.
+export const arrivedForPasswordRecovery =
+  typeof window !== "undefined" &&
+  (/[#&]type=recovery/.test(window.location.hash) ||
+    new URLSearchParams(window.location.search).get("type") === "recovery");
+
 function build(): SupabaseClient | null {
   if (!url || !anonKey) return null;
   const check = validateSupabaseEnv(url, anonKey);
