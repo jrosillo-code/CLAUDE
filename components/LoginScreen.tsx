@@ -7,8 +7,9 @@ import { checkHandleAvailable } from "@/lib/backend";
 import WaypointLogo from "./Logo";
 
 // Sign-in. Live mode: create an account (username + email + password) or
-// sign in with an existing one; a magic-link fallback covers forgotten
-// passwords. Demo mode: every option opens the seeded sample account.
+// sign in with an existing one; forgotten passwords go through the emailed
+// reset link, which lands on /reset. Demo mode: every option opens the
+// seeded sample account.
 export default function LoginScreen() {
   const signIn = useStore((s) => s.signIn);
   const [mode, setMode] = useState<"signup" | "signin">("signup");
@@ -16,7 +17,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
-  const [linkSent, setLinkSent] = useState<false | "otp" | "confirm" | "reset">(false);
+  const [linkSent, setLinkSent] = useState<false | "confirm" | "reset">(false);
   // Seeded from the URL: if the visitor arrived here because an email link
   // failed, say so rather than showing a blank login form that looks like
   // the link simply did nothing.
@@ -129,33 +130,10 @@ export default function LoginScreen() {
     setBusy(true);
     try {
       const { error } = await supabase!.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/reset`,
       });
       if (error) setAuthError(explainMailError(error.message));
       else setLinkSent("reset");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  async function sendMagicLink() {
-    if (!emailOk) {
-      setAuthError("Enter your email above first.");
-      return;
-    }
-    if (!backendEnabled) {
-      setLinkSent("otp");
-      return;
-    }
-    setAuthError(null);
-    setBusy(true);
-    try {
-      const { error } = await supabase!.auth.signInWithOtp({
-        email,
-        options: { emailRedirectTo: window.location.origin },
-      });
-      if (error) setAuthError(explainMailError(error.message));
-      else setLinkSent("otp");
     } finally {
       setBusy(false);
     }
@@ -196,9 +174,7 @@ export default function LoginScreen() {
             <p className="mt-1 text-sm text-ink-3">
               {linkSent === "confirm"
                 ? "Tap the confirmation link we sent to "
-                : linkSent === "reset"
-                  ? "Tap the reset link we sent to "
-                  : "We sent a sign-in link to "}
+                : "Tap the reset link we sent to "}
               <span className="text-ink-2">{email}</span>
               {linkSent === "reset" ? " and you can choose a new password." : "."}
             </p>
@@ -289,7 +265,7 @@ export default function LoginScreen() {
               </button>
             </form>
 
-            {/* Mode switch + magic-link fallback */}
+            {/* Mode switch + password reset */}
             <div className="mt-4 space-y-1.5 text-center text-sm text-ink-3">
               {mode === "signup" ? (
                 <p>
@@ -306,23 +282,13 @@ export default function LoginScreen() {
                       Create an account
                     </button>
                   </p>
-                  <p className="flex flex-wrap justify-center gap-x-3 gap-y-1 text-xs">
+                  <p>
                     <button
                       onClick={sendPasswordReset}
                       disabled={busy}
-                      className="underline-offset-2 hover:underline disabled:opacity-50"
+                      className="text-xs underline-offset-2 hover:underline disabled:opacity-50"
                     >
                       Forgot password? Reset it
-                    </button>
-                    <span aria-hidden className="text-ink-3">
-                      ·
-                    </span>
-                    <button
-                      onClick={sendMagicLink}
-                      disabled={busy}
-                      className="underline-offset-2 hover:underline disabled:opacity-50"
-                    >
-                      Email me a sign-in link
                     </button>
                   </p>
                 </>

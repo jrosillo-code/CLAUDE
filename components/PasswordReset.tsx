@@ -16,8 +16,12 @@ import WaypointLogo from "./Logo";
 // It renders above everything, signed in or not, because a recovery link
 // creates a real session — so without this the app would simply open as
 // normal and the reset would silently do nothing.
-export default function PasswordReset() {
-  const clear = useStore((s) => s.endPasswordRecovery);
+/** `onDone` overrides where "finished" goes: the store flag is right when
+ *  this renders as an overlay on the main page, but the /reset landing page
+ *  wants a real navigation home instead. */
+export default function PasswordReset({ onDone }: { onDone?: () => void }) {
+  const clearFlag = useStore((s) => s.endPasswordRecovery);
+  const clear = onDone ?? clearFlag;
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +37,14 @@ export default function PasswordReset() {
     try {
       const { error: err } = await supabase!.auth.updateUser({ password });
       if (err) {
-        setError(err.message);
+        // The usual way to land here: the link was already used, or sat in
+        // the inbox past its lifetime. Supabase phrases that as a missing
+        // session, which reads like the app's fault rather than the link's.
+        setError(
+          /session|expired|invalid|not found/i.test(err.message)
+            ? "This reset link has expired or was already used — they're single-use. Request a fresh one from the sign-in screen."
+            : err.message
+        );
         return;
       }
       setDone(true);

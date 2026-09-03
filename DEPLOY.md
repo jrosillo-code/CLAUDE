@@ -46,10 +46,13 @@ site is a PWA; phones install it from the browser).
 
 Supabase Dashboard → **Authentication → URL Configuration**:
 - **Site URL**: your Vercel URL, e.g. `https://waypoint-beta.vercel.app`
-- **Redirect URLs**: add the same URL (and `http://localhost:3000` to keep
-  local dev sign-in working).
+- **Redirect URLs**: add the WILDCARD forms — `https://waypoint-beta.vercel.app/**`
+  and `http://localhost:3000/**`. The `/**` matters: matching is exact
+  otherwise, and password-reset emails land on `/reset`, which a bare origin
+  entry does not cover.
 
-Without this, sign-in emails link back to localhost.
+Without this, sign-in emails link back to localhost — or bounce to the
+Supabase API root, which renders as a bare `{}` in the browser.
 
 ## 4 · The "app" on phones (1 min per phone)
 
