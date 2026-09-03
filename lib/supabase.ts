@@ -25,6 +25,33 @@ export const arrivedForPasswordRecovery =
   (/[#&]type=recovery/.test(window.location.hash) ||
     new URLSearchParams(window.location.search).get("type") === "recovery");
 
+/**
+ * Why an email link failed, if it did — read from the URL for the same reason
+ * as above: supabase-js clears the fragment during initialisation.
+ *
+ * Supabase reports a dead link by bouncing back with `error` and
+ * `error_description` on the URL. Nothing read them, so an expired or
+ * already-used reset link just opened the login screen with no explanation,
+ * which is indistinguishable from the link doing nothing at all.
+ */
+export const authLinkError: string | null = (() => {
+  if (typeof window === "undefined") return null;
+  const fromHash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  const fromQuery = new URLSearchParams(window.location.search);
+  const code = fromHash.get("error_code") ?? fromQuery.get("error_code");
+  const desc =
+    fromHash.get("error_description") ??
+    fromQuery.get("error_description") ??
+    fromHash.get("error") ??
+    fromQuery.get("error");
+  if (!desc) return null;
+  const text = desc.replace(/\+/g, " ");
+  if (/expired/i.test(text) || code === "otp_expired") {
+    return "That link has expired — reset links are single-use and short-lived. Request a new one below.";
+  }
+  return text;
+})();
+
 function build(): SupabaseClient | null {
   if (!url || !anonKey) return null;
   const check = validateSupabaseEnv(url, anonKey);

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useStore } from "@/lib/store";
-import { backendEnabled, supabase } from "@/lib/supabase";
+import { authLinkError, backendEnabled, supabase } from "@/lib/supabase";
 import { checkHandleAvailable } from "@/lib/backend";
 import WaypointLogo from "./Logo";
 
@@ -17,7 +17,10 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [linkSent, setLinkSent] = useState<false | "otp" | "confirm" | "reset">(false);
-  const [authError, setAuthError] = useState<string | null>(null);
+  // Seeded from the URL: if the visitor arrived here because an email link
+  // failed, say so rather than showing a blank login form that looks like
+  // the link simply did nothing.
+  const [authError, setAuthError] = useState<string | null>(authLinkError);
 
   // Live mode shows an OAuth button only when that provider is actually
   // configured in Supabase (set NEXT_PUBLIC_OAUTH_PROVIDERS="google,apple"
