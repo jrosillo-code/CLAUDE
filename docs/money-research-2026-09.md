@@ -15,6 +15,17 @@ almost every direct page fetch outside anthropic.com and github.com, so most mon
 below are REPORTED or CLAIMED. Where two research threads disagreed, the conflict is
 recorded in the source notes and the better-sourced number is used.
 
+> **Update, 12 September 2026.** After an independent review and one new fact (the
+> founder's family owns an insurance brokerage, Rosillo Hermanos), four things changed and
+> are reflected inline below. (1) The three service offers S1, S2 and P1 are one company,
+> "operaciones con IA para corredurías y asesorías", not three businesses. (2) The 90-day
+> objective is "one workflow that three unrelated firms have paid to solve", not a revenue
+> figure. (3) An insurance-brokerage track (P0) runs alongside the accounting track for four
+> weeks with the same interview guide; buyer behavior picks the lead. (4) Spain's B2B
+> e-invoicing dates are contingent on a ministerial order and are no longer treated as
+> settled. The executable version is `docs/plan-2026-09.md`; the launch materials are in
+> `docs/launch-kit/`.
+
 ---
 
 ## TL;DR
@@ -27,8 +38,10 @@ recorded in the source notes and the better-sourced number is used.
    assistant for small firms, and Claude Code enablement for engineering teams.
 2. **The most defensible product for you is a regulated, deadline-driven back-office
    workflow in Spanish.** Spain's Verifactu invoicing mandate lands 1 January 2027 for
-   companies and 1 July 2027 for autónomos. Its e-invoicing law follows in October 2027
-   and 2028. Every Latin American tax authority tightened rules in 2026. Compliance
+   companies and 1 July 2027 for autónomos. Its B2B e-invoicing law is a second wave
+   whose obligations start 12 and 24 months after a ministerial order that was not yet
+   published at the time of writing. Every Latin American tax authority tightened rules in
+   2026. Compliance
    deadlines convert buyers faster than "AI" ever will, and the platforms will never chase
    per-country tax logic. Sell it through gestorías, who control thousands of small firms.
 3. **Do not build developer tools, plugins, skills, or MCP servers as products.** No one
@@ -85,8 +98,9 @@ recorded in the source notes and the better-sourced number is used.
    Annual billing cuts churn 40 to 60 percent. CLAIMED benchmarks, directionally
    consistent across sources.
 7. **Spanish-speaking markets have a regulatory calendar that creates forced purchases.**
-   Verifactu (Jan and Jul 2027), Crea y Crece B2B e-invoicing (Oct 2027 for firms over
-   €8M, Oct 2028 for the rest), EU AI Act Article 50 disclosure for chatbots (in force
+   Verifactu (Jan and Jul 2027), Crea y Crece B2B e-invoicing (12 months after the
+   implementing ministerial order for firms over €8M, 24 months for the rest; the order was
+   expected in October 2026 but was not yet published), EU AI Act Article 50 disclosure for chatbots (in force
    since 2 August 2026), Mexico's SAT real-time platform access (April 2026), Colombia's
    DIAN consolidation, Chile's digital boleta (March 2026), Argentina's ARCA e-invoicing
    for monotributistas (November 2026), Peru's day-one e-receipts (June 2026). REPORTED,
@@ -131,13 +145,16 @@ so the pitch must be "production-grade with auth, data model and tests", which W
 RLS suite and migration tests demonstrate. **Verdict: launch in week one. Ceiling: salary
 replacement; a funnel for everything else.**
 
-**S2. Document assistant for small firms ("agente sobre tus documentos").** The most
-requested SMB item in Spain and Mexico: an assistant over the firm's own documents,
-delivered on web and WhatsApp, with the EU AI Act disclosure built in. SMB pricing sits at
-€4k to €8k build plus €300 to €600 per month. Deliverable in two weeks with the Anthropic
-SDK pattern already in this repo (evidence retrieved deterministically, model rewrites but
-never invents facts). **Verdict: launch in week one; it is the entry point to vertical P1
-below.**
+**S2. Document operations for one kind of firm ("operaciones documentales").** The most
+requested SMB item in Spain and Mexico is "an assistant over our documents", but retrieval
+alone commoditizes within a model generation. Sell it only as a workflow for a named
+buyer (accountants, insurance brokers, immigration lawyers): receive, extract, validate,
+compare, flag what is missing, create the task, update the management system, draft the
+reply, a human approves. Delivered on web and WhatsApp with the EU AI Act disclosure, a
+review step and an activity log built in. SMB pricing sits at €4k to €8k build plus €300
+to €600 per month. The deterministic-retrieval pattern in this repo (evidence retrieved,
+model rewrites but never invents facts) is the right foundation. **Verdict: launch in week
+one as the entry offer of the single positioning; it is how P0 and P1 start.**
 
 **S3. Claude Code enablement for engineering teams.** Vendors price discovery workshops at
 $5k, team enablement at $15k to $40k, and Spanish training from €1,200 per day. The sales
@@ -162,6 +179,20 @@ upsell from S1 to S3, not a day-one offer.**
 three if the warm network is dry.**
 
 ### Products
+
+**P0. Insurance brokerage operations, starting at Rosillo Hermanos (added 12 September).**
+The founder's family brokerage is a design partner with real workflows, documents and a
+management system to integrate with, a first case study, and a warm path into broker
+networks and associations. Spanish corredurías are thousands of small, document-heavy
+firms on a handful of incumbent systems; the recurring work is renewals, claims document
+collection, quote comparison, commission reconciliation against insurer statements,
+receipt collection and WhatsApp intake, which is exactly the S2 chain. It lacks the
+accounting track's deadline (Verifactu touches a brokerage only as its own invoicing), so
+the honest comparison is: insurance has the buyer, accounting has the clock. The family
+pilot discovers the workflow; it is not market evidence, so the count of three unrelated
+payers still applies. Evidence base for this track is being assembled separately.
+**Verdict: run as Track A alongside P1 for four weeks; lead with whichever produces a
+paying customer outside the family first. Ceiling: small company.**
 
 **P1. Verifactu and e-invoice readiness practice sold through gestorías, converting to
 per-client software.** Gestorías are the best channel found in the whole research: 86
@@ -289,7 +320,8 @@ VEN = venture. Evidence: V = verified, R = reported, C = claimed.
 | S4 Vibe-code rescue | 2 to 4 | High | Low | None | SAL | R | Offer under S1 |
 | S5 Fractional or FDE retainer | 8 to 12 | High | Low | None | SAL to SME | R | Month 2 to 3 upsell |
 | S6 Agency overflow | 1 to 2 | Med | None | None | SAL | C | Fallback only |
-| P1 Verifactu practice via gestorías | 4 to 8 | Very high | Med to high | Low | SME | R (dates V-grade) | Best product bet |
+| P0 Brokerage operations via Rosillo Hermanos | 2 to 6 | Very high | Med | Low | SME | Thin, in progress | Track A, four-week test |
+| P1 Verifactu practice via gestorías | 4 to 8 | Very high | Med to high | Low | SME | R (dates V-grade) | Track B, best product bet |
 | P2 WhatsApp + compliant invoicing, tourism | 8 to 12 | High | Med | Low | SME | R | Second product |
 | P3 Trades voice agent, Spanish | 12 to 20 | High | Med | Low to med | SME to VEN | R | After burn is covered |
 | P4 Extranjería intake | 8 to 12 | High | Med | Low | SAL to SME | C | Validate first |
@@ -313,6 +345,7 @@ VEN = venture. Evidence: V = verified, R = reported, C = claimed.
    turns this tier into a cushion). Target: five retainers by month six.
 
 **If the goal is a small company (€20k to €100k per month, a few hires, bootstrapped):**
+0. P0 brokerage operations if Track A wins the week-four gate; otherwise
 1. P1 Verifactu practice through gestorías, priced per client firm, launched as service in
    Q4 2026 and productized before the January 2027 deadline.
 2. P2 WhatsApp plus compliant invoicing for small tourism operators, Spain then Mexico.
@@ -333,40 +366,15 @@ VEN = venture. Evidence: V = verified, R = reported, C = claimed.
 
 ## Recommended sequence and 90-day plan
 
-**Days 0 to 14: convert what you have into proof.**
-- Open-source Waypoint, publish the case study, record the demo, keep the seeded deploy
-  live. Add a one-page services site in Spanish and English with the three offers (S1, S2,
-  S3), fixed prices, and Article 50 disclosure language in every chatbot deliverable.
-- Join the Claude Partner Network (free) and sit the Claude Certified Architect
-  Foundations exam ($125) for the badge and academy access. Ignore the Select tier; it needs
-  ten certified people, though a "virtual firm" of certified solos is a cheap moat later.
-- List every warm contact who runs or advises a company. Warm intros close 5 to 10 times
-  faster than cold; the only numeric cold-email account found needed 83 emails for five
-  clients at about $1,280 each.
-
-**Days 14 to 60: first three invoices.**
-- Lead every conversation with a three-minute recording of a working agent on the
-  prospect's own public data. Sell scope, never hours. Take 50 percent up front.
-- Offer S3 to CTOs of Spanish software houses with unused Claude Code seats; offer S1 and
-  S2 to founders and ops managers; use S6 agency overflow only if the pipeline is empty by
-  day 30.
-- Every build ships with the disclosure, a CLAUDE.md, and a maintenance retainer priced
-  above €250 per month, billed annually where possible.
-
-**Days 60 to 90: pick the vertical by who paid.**
-- If a gestoría, asesoría or accountant bought S2, go to P1: package "client-base
-  migration plus document intake" as a fixed fee and line up three firms before the Q1 2027
-  rush.
-- If a tourism operator bought S2, go to P2.
-- If neither, keep the services stack and revisit at month six. The Verifactu wave and the
-  October 2027 e-invoicing start both fall inside your window either way.
-- Hard rule for Waypoint: no feature work unless a client pays for it or it tests the one
-  question from the August doc with real users.
-
-**Months 3 to 9: productize what repeated.** Turn the second identical build into a
-product, accumulate the dataset (corrections, outcomes, document types), price per client
-or per completed unit, and decide at month six whether the tier-two shortlist is funded by
-retainers or whether services remain the business.
+Superseded on 12 September 2026 by `docs/plan-2026-09.md`, which runs the insurance and
+accounting tracks in parallel for four weeks with one interview guide and a decision gate.
+The objective by day 90 is no longer a revenue figure but a proof: **one workflow that three
+unrelated firms have paid to solve**, roughly €15k to €30k cumulative, one repeatable
+implementation, one channel. If met, productize; if not, the services stack is the
+business until the count is three. The rules that carry over unchanged: sell scope, never
+hours, 50 percent up front; no build without a buyer; the second identical build becomes
+the product; no Waypoint feature work unless a client pays; no plugins, skills, MCP servers
+or developer tools as products; read the Claude Code changelog monthly.
 
 ---
 
