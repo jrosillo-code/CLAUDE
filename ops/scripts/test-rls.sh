@@ -31,8 +31,8 @@ PSQL="psql -h $WORK -p $PORT -U postgres -v ON_ERROR_STOP=1 -q"
 run_as "$PSQL -d postgres -c 'create database $DB'"
 echo "→ harness shim"
 run_as "$PSQL -d $DB -f tests/rls/setup.sql"
-echo "→ verbatim migration"
-run_as "$PSQL -d $DB -f supabase/migrations/0001_init.sql"
+echo "→ verbatim migrations"
+for f in supabase/migrations/*.sql; do run_as "$PSQL -d $DB -f $f"; done
 echo "→ assertions"
 if ! OUT=$(run_as "$PSQL -d $DB -f tests/rls/assertions.sql" 2>&1); then
   echo "$OUT" | grep -E "ok:|FAILED|ERROR" || echo "$OUT" | tail -20

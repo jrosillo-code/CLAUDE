@@ -105,3 +105,51 @@ select assert_true(
      and not exists (select 1 from pg_class c join pg_namespace n on n.oid = c.relnamespace
                      where n.nspname = 'public' and c.relname = t.tablename and c.relrowsecurity)) = 0,
   'every public table has RLS enabled');
+
+-- ── Migration 0002: corrections and jobs ─────────────────────────────────────
+grant select, insert, update, delete on all tables in schema public to authenticated;
+grant execute on all functions in schema public to authenticated;
+insert into extractions (id, firm_id, document_id, kind, kind_confidence, data) values
+  ('50000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000001', 'factura', 0.9, '{}');
+insert into jobs (firm_id, kind) values ('10000000-0000-0000-0000-000000000001', 'process_document');
+
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+
+insert into corrections (firm_id, document_id, extraction_id, field, old_value, new_value, user_id)
+  values ('10000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000001', '50000000-0000-0000-0000-000000000001', 'total', '1', '2', '00000000-0000-0000-0000-00000000000a');
+select assert_true((select count(*) from corrections) = 1, 'member inserts and reads own firm correction');
+do $$ begin
+  begin
+    insert into corrections (firm_id, document_id, field, user_id)
+      values ('10000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000002', 'total', '00000000-0000-0000-0000-00000000000a');
+    raise exception 'ASSERTION FAILED: correction for other firm';
+  exception when insufficient_privilege then raise notice 'ok: cannot correct other firm document';
+  end;
+end $$;
+do $$ begin
+  begin
+    insert into corrections (firm_id, document_id, field, user_id)
+      values ('10000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000001', 'total', '00000000-0000-0000-0000-00000000000b');
+    raise exception 'ASSERTION FAILED: correction as another user';
+  exception when insufficient_privilege then raise notice 'ok: cannot correct as another user';
+  end;
+end $$;
+delete from corrections;
+select assert_true((select count(*) from corrections) = 1, 'corrections cannot be deleted by members');
+select assert_true((select count(*) from jobs) = 0, 'members cannot see jobs');
+do $$ begin
+  begin
+    insert into jobs (firm_id, kind) values ('10000000-0000-0000-0000-000000000001', 'x');
+    raise exception 'ASSERTION FAILED: member inserted a job';
+  exception when insufficient_privilege then raise notice 'ok: members cannot insert jobs';
+  end;
+end $$;
+reset role;
+select assert_true((select count(*) from claim_jobs(5)) = 1, 'claim_jobs returns due jobs once');
+select assert_true((select count(*) from claim_jobs(5)) = 0, 'claimed jobs are not returned again');
+select assert_true(
+  (select count(*) from pg_tables t where t.schemaname = 'public'
+     and not exists (select 1 from pg_class c join pg_namespace n on n.oid = c.relnamespace
+                     where n.nspname = 'public' and c.relname = t.tablename and c.relrowsecurity)) = 0,
+  'every public table still has RLS enabled');
