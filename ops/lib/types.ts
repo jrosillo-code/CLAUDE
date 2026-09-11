@@ -193,3 +193,37 @@ export interface ReconciliationRecord {
   usage: ModelUsage | null;
   createdAt: string;
 }
+
+export interface Correction {
+  id: string;
+  firmId: string;
+  documentId: string;
+  extractionId: string | null;
+  /** "total" for an extracted field of the document's kind, or "draft.body". */
+  field: string;
+  oldValue: unknown;
+  newValue: unknown;
+  userId: string;
+  createdAt: string;
+}
+
+export type JobKind = "process_document" | "reconcile_settlement";
+
+export interface Job {
+  id: string;
+  firmId: string;
+  kind: JobKind;
+  payload: Record<string, unknown>;
+  status: "queued" | "running" | "done" | "failed";
+  attempts: number;
+  runAfter: string;
+  lastError: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Membership {
+  firmId: string;
+  userId: string;
+  role: "owner" | "staff";
+}

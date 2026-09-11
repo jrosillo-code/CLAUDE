@@ -6,8 +6,6 @@ import { log } from "@/lib/audit";
 
 /** multipart: file (CSV with columns aseguradora;poliza;recibo;tomador;prima;comision;periodo), firmId, insurer, period. */
 export async function POST(req: Request) {
-  const auth = authorize(req);
-  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
   const rt = getRuntime();
   const form = await req.formData();
   const file = form.get("file");
@@ -18,6 +16,8 @@ export async function POST(req: Request) {
   }
   try {
     const firm = await requireFirm(rt.store, (form.get("firmId") as string) || null);
+    const auth = await authorize(req, firm.id);
+    if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
     const rows = parseExpectedReceiptsCsv(firm.id, await file.text(), newId).map((r) => ({ ...r, insurer, period }));
     await rt.store.receipts.replaceForPeriod(firm.id, insurer, period, rows);
     await log(rt.store, { firmId: firm.id, action: "receipts.imported", entity: { type: "receipts", id: `${insurer}:${period}` }, actor: { type: "user", id: auth.userId }, detail: { rows: rows.length } });

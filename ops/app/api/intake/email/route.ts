@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { getRuntime, requireFirm } from "@/lib/runtime";
 import { verifySecret, parseEmail, type EmailPayload } from "@/lib/intake/email";
-import { receiveDocument, processDocument } from "@/lib/pipeline";
+import { receiveDocument } from "@/lib/pipeline";
+import { enqueue } from "@/lib/jobs";
+import { allow } from "@/lib/ratelimit";
 import { log } from "@/lib/audit";
 
 export const maxDuration = 300;
@@ -12,6 +14,7 @@ export async function POST(req: Request) {
   if (!verifySecret(req.headers.get("x-webhook-secret"), secret)) return new NextResponse("Bad secret", { status: 401 });
   const rt = getRuntime();
   const firm = await requireFirm(rt.store, new URL(req.url).searchParams.get("firmId"));
+  if (!allow(`intake:${firm.id}`, 60, 60)) return NextResponse.json({ error: "Demasiadas entradas; espera un minuto" }, { status: 429 });
   let payload: EmailPayload;
   try { payload = (await req.json()) as EmailPayload; } catch { return NextResponse.json({ error: "Bad JSON" }, { status: 400 }); }
   const { message, files } = parseEmail(firm.id, payload);
@@ -22,7 +25,7 @@ export async function POST(req: Request) {
   for (const f of files) {
     const doc = await receiveDocument(rt, { firm, fileName: f.fileName, mediaType: f.mediaType, bytes: f.bytes, inbound: message });
     received.push(doc.id);
-    processDocument(rt, firm, doc.id).catch((e) => console.error("[ops] email process failed", e));
+    await enqueue(rt.store, firm.id, "process_document", { documentId: doc.id });
   }
   return NextResponse.json({ received });
 }

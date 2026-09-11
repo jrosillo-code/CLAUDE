@@ -32,20 +32,17 @@ export async function decide(store: Store, effects: Effects, input: DecideInput)
     decidedAt: nowIso(),
     note: input.note ?? null,
   };
-  await store.approvals.update(approval.id, patch);
-  await log(store, {
-    firmId: approval.firmId,
-    action: `approval.${input.decision}`,
-    entity: { type: "approval", id: approval.id },
-    actor: { type: "user", id: input.userId },
-    detail: { action: approval.action, documentId: approval.documentId, note: input.note ?? null },
-  });
 
   if (input.decision === "rejected") {
+    await store.approvals.update(approval.id, patch);
+    await log(store, { firmId: approval.firmId, action: "approval.rejected", entity: { type: "approval", id: approval.id }, actor: { type: "user", id: input.userId }, detail: { action: approval.action, documentId: approval.documentId, note: input.note ?? null } });
     await store.documents.update(approval.documentId, { status: "rejected" });
     return { ...approval, ...patch };
   }
 
+  // The effect runs first. If it fails, the approval stays pending so the
+  // person can retry once the cause (SMTP down, WhatsApp window closed) is
+  // resolved; the failure is logged either way.
   if (approval.action === "send_draft") {
     const draft = approval.draftId ? await store.drafts.get(approval.draftId) : null;
     if (!draft) throw new Error("La aprobación no tiene borrador asociado");
@@ -55,8 +52,9 @@ export async function decide(store: Store, effects: Effects, input: DecideInput)
       action: result.ok ? "message.sent" : "message.failed",
       entity: { type: "draft", id: draft.id },
       actor: { type: "user", id: input.userId },
-      detail: { channel: draft.channel, to: draft.to, externalId: result.externalId },
+      detail: { channel: draft.channel, to: draft.to, externalId: result.externalId, error: result.error ?? null, needsTemplate: result.needsTemplate ?? false },
     });
+    if (!result.ok) throw new Error(`No se pudo enviar: ${result.error ?? "error desconocido"}`);
   }
   if (approval.action === "write_system") {
     const doc = await store.documents.get(approval.documentId);
@@ -70,7 +68,11 @@ export async function decide(store: Store, effects: Effects, input: DecideInput)
       actor: { type: "user", id: input.userId },
       detail: { adapter: effects.adapter.name, reference: result.reference, note: result.detail ?? null },
     });
+    if (!result.ok) throw new Error(`No se pudo escribir en el sistema: ${result.detail ?? "error desconocido"}`);
   }
+
+  await store.approvals.update(approval.id, patch);
+  await log(store, { firmId: approval.firmId, action: "approval.approved", entity: { type: "approval", id: approval.id }, actor: { type: "user", id: input.userId }, detail: { action: approval.action, documentId: approval.documentId, note: input.note ?? null } });
 
   const pendingLeft = (await store.approvals.listPending(approval.firmId)).some((a) => a.documentId === approval.documentId);
   if (!pendingLeft) await store.documents.update(approval.documentId, { status: "approved" });

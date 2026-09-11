@@ -2,6 +2,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Store, FileStore } from "./store";
 import type {
   Firm, InboundMessage, DocumentRecord, Extraction, Validation, Task, Draft, Approval, ActivityEntry, MonthlyUsage, ReconciliationRecord,
+  Correction, Job, Membership,
 } from "./types";
 import type { ExpectedReceipt } from "./reconcile";
 
@@ -27,6 +28,8 @@ const toDraft = (r: Row): Draft => ({ id: r.id as string, firmId: r.firm_id as s
 const toApproval = (r: Row): Approval => ({ id: r.id as string, firmId: r.firm_id as string, documentId: r.document_id as string, action: r.action as Approval["action"], draftId: (r.draft_id as string) ?? null, status: r.status as Approval["status"], decidedBy: (r.decided_by as string) ?? null, decidedAt: (r.decided_at as string) ?? null, note: (r.note as string) ?? null, createdAt: r.created_at as string });
 const toActivity = (r: Row): ActivityEntry => ({ id: r.id as string, firmId: r.firm_id as string, at: r.at as string, actor: r.actor as ActivityEntry["actor"], action: r.action as string, entity: r.entity as ActivityEntry["entity"], usage: (r.usage as ActivityEntry["usage"]) ?? null, detail: (r.detail as Record<string, unknown>) ?? null });
 const toReceipt = (r: Row): ExpectedReceipt => ({ id: r.id as string, firmId: r.firm_id as string, insurer: r.insurer as string, policyNumber: r.policy_number as string, receiptNumber: (r.receipt_number as string) ?? null, premium: Number(r.premium), expectedCommission: Number(r.expected_commission), period: r.period as string, holder: (r.holder as string) ?? null });
+const toCorrection = (r: Row): Correction => ({ id: r.id as string, firmId: r.firm_id as string, documentId: r.document_id as string, extractionId: (r.extraction_id as string) ?? null, field: r.field as string, oldValue: r.old_value, newValue: r.new_value, userId: r.user_id as string, createdAt: r.created_at as string });
+const toJob = (r: Row): Job => ({ id: r.id as string, firmId: r.firm_id as string, kind: r.kind as Job["kind"], payload: (r.payload as Record<string, unknown>) ?? {}, status: r.status as Job["status"], attempts: Number(r.attempts), runAfter: r.run_after as string, lastError: (r.last_error as string) ?? null, createdAt: r.created_at as string, updatedAt: r.updated_at as string });
 const toReconciliation = (r: Row): ReconciliationRecord => ({ id: r.id as string, firmId: r.firm_id as string, documentId: r.document_id as string, insurer: (r.insurer as string) ?? null, period: (r.period as string) ?? null, summary: r.summary as Record<string, unknown>, unpaidEur: Number(r.unpaid_eur), mismatchEur: Number(r.mismatch_eur), usage: (r.usage as ReconciliationRecord["usage"]) ?? null, createdAt: r.created_at as string });
 
 export class SupabaseStore implements Store {
@@ -42,6 +45,17 @@ export class SupabaseStore implements Store {
   firms = {
     get: async (id: string) => { const r = await this.db.from("firms").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toFirm(r.data) : null; },
     upsert: async (f: Firm) => { must(await this.db.from("firms").upsert({ id: f.id, name: f.name, kind: f.kind, monthly_token_budget: f.monthlyTokenBudget, created_at: f.createdAt }).select("id"), "firms.upsert"); },
+  };
+  memberships = {
+    isMember: async (firmId: string, userId: string) => { const r = await this.db.from("memberships").select("firm_id").eq("firm_id", firmId).eq("user_id", userId).maybeSingle(); if (r.error) throw new Error(r.error.message); return !!r.data; },
+    firmsFor: async (userId: string) => {
+      const r = await this.db.from("memberships").select("firm_id").eq("user_id", userId); if (r.error) throw new Error(r.error.message);
+      const ids = (r.data ?? []).map((x) => x.firm_id as string);
+      if (!ids.length) return [];
+      const f = await this.db.from("firms").select("*").in("id", ids); if (f.error) throw new Error(f.error.message);
+      return (f.data ?? []).map(toFirm);
+    },
+    add: async (m: Membership) => { const r = await this.db.from("memberships").upsert({ firm_id: m.firmId, user_id: m.userId, role: m.role }); if (r.error) throw new Error(r.error.message); },
   };
   inbound = {
     insert: async (m: InboundMessage) => { must(await this.db.from("inbound_messages").insert({ id: m.id, firm_id: m.firmId, channel: m.channel, from_address: m.fromAddress, received_at: m.receivedAt, subject: m.subject, text: m.text, external_id: m.externalId, attachments: m.attachments }).select("id"), "inbound.insert"); },
@@ -65,6 +79,13 @@ export class SupabaseStore implements Store {
       must(await this.db.from("extractions").insert({ id: e.id, firm_id: doc?.firmId, document_id: e.documentId, kind: e.kind, kind_confidence: e.kindConfidence, data: e.data, usage: e.usage, created_at: e.createdAt }).select("id"), "extractions.insert");
     },
     latestForDocument: async (documentId: string) => { const r = await this.db.from("extractions").select("*").eq("document_id", documentId).order("created_at", { ascending: false }).limit(1).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toExtraction(r.data) : null; },
+    updateData: async (id: string, data: Record<string, unknown>) => { const r = await this.db.from("extractions").update({ data }).eq("id", id); if (r.error) throw new Error(r.error.message); },
+    listByFirm: async (firmId: string, from?: string, to?: string) => {
+      let q = this.db.from("extractions").select("*").eq("firm_id", firmId);
+      if (from) q = q.gte("created_at", from);
+      if (to) q = q.lte("created_at", to);
+      const r = await q; if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toExtraction);
+    },
   };
   validations = {
     insert: async (v: Validation) => {
@@ -77,10 +98,34 @@ export class SupabaseStore implements Store {
     insert: async (t: Task) => { must(await this.db.from("tasks").insert({ id: t.id, firm_id: t.firmId, document_id: t.documentId, title: t.title, detail: t.detail, owner: t.owner, status: t.status, created_at: t.createdAt }).select("id"), "tasks.insert"); },
     listByDocument: async (documentId: string) => { const r = await this.db.from("tasks").select("*").eq("document_id", documentId); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toTask); },
     listOpenByFirm: async (firmId: string) => { const r = await this.db.from("tasks").select("*").eq("firm_id", firmId).eq("status", "open"); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toTask); },
+    update: async (id: string, patch: Partial<Task>) => { const row: Row = {}; if (patch.status) row.status = patch.status; if (patch.title) row.title = patch.title; if (patch.detail !== undefined) row.detail = patch.detail; const r = await this.db.from("tasks").update(row).eq("id", id); if (r.error) throw new Error(r.error.message); },
+    get: async (id: string) => { const r = await this.db.from("tasks").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toTask(r.data) : null; },
   };
   drafts = {
     insert: async (d: Draft) => { must(await this.db.from("drafts").insert({ id: d.id, firm_id: d.firmId, document_id: d.documentId, channel: d.channel, to_address: d.to, subject: d.subject, body: d.body, usage: d.usage, created_at: d.createdAt }).select("id"), "drafts.insert"); },
     get: async (id: string) => { const r = await this.db.from("drafts").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toDraft(r.data) : null; },
+    update: async (id: string, patch: Partial<Draft>) => { const row: Row = {}; if (patch.body !== undefined) row.body = patch.body; if (patch.subject !== undefined) row.subject = patch.subject; if (patch.to !== undefined) row.to_address = patch.to; const r = await this.db.from("drafts").update(row).eq("id", id); if (r.error) throw new Error(r.error.message); },
+  };
+  corrections = {
+    insert: async (c: Correction) => { must(await this.db.from("corrections").insert({ id: c.id, firm_id: c.firmId, document_id: c.documentId, extraction_id: c.extractionId, field: c.field, old_value: c.oldValue ?? null, new_value: c.newValue ?? null, user_id: c.userId, created_at: c.createdAt }).select("id"), "corrections.insert"); },
+    listByDocument: async (documentId: string) => { const r = await this.db.from("corrections").select("*").eq("document_id", documentId); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toCorrection); },
+    listByFirm: async (firmId: string, from?: string, to?: string) => {
+      let q = this.db.from("corrections").select("*").eq("firm_id", firmId);
+      if (from) q = q.gte("created_at", from);
+      if (to) q = q.lte("created_at", to);
+      const r = await q; if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toCorrection);
+    },
+  };
+  jobs = {
+    enqueue: async (j: Job) => { must(await this.db.from("jobs").insert({ id: j.id, firm_id: j.firmId, kind: j.kind, payload: j.payload, status: j.status, attempts: j.attempts, run_after: j.runAfter, last_error: j.lastError, created_at: j.createdAt, updated_at: j.updatedAt }).select("id"), "jobs.enqueue"); },
+    claim: async (limit: number) => { const r = await this.db.rpc("claim_jobs", { p_limit: limit }); if (r.error) throw new Error(r.error.message); return ((r.data as Row[]) ?? []).map(toJob); },
+    complete: async (id: string) => { const r = await this.db.from("jobs").update({ status: "done", updated_at: new Date().toISOString() }).eq("id", id); if (r.error) throw new Error(r.error.message); },
+    fail: async (id: string, error: string, retryAt: string | null) => {
+      const row: Row = { last_error: error, updated_at: new Date().toISOString(), status: retryAt ? "queued" : "failed" };
+      if (retryAt) row.run_after = retryAt;
+      const r = await this.db.from("jobs").update(row).eq("id", id); if (r.error) throw new Error(r.error.message);
+    },
+    get: async (id: string) => { const r = await this.db.from("jobs").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toJob(r.data) : null; },
   };
   approvals = {
     insert: async (a: Approval) => { must(await this.db.from("approvals").insert({ id: a.id, firm_id: a.firmId, document_id: a.documentId, action: a.action, draft_id: a.draftId, status: a.status, created_at: a.createdAt }).select("id"), "approvals.insert"); },

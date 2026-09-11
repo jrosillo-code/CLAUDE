@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getRuntime, authorize } from "@/lib/runtime";
+import { getRuntime, authorize, assertFirmAccess } from "@/lib/runtime";
 import { processSettlement } from "@/lib/settlements";
 import { BudgetExceeded } from "@/lib/budget";
 
@@ -7,7 +7,7 @@ export const maxDuration = 300;
 
 /** JSON body: { insurer?, period? } to override what the statement says. */
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
-  const auth = authorize(req);
+  const auth = await authorize(req);
   if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
   const { id } = await ctx.params;
   const rt = getRuntime();
@@ -16,6 +16,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   try {
     const doc = await rt.store.documents.get(id);
     if (!doc) return NextResponse.json({ error: "Documento no encontrado" }, { status: 404 });
+    if (!(await assertFirmAccess(auth, doc.firmId))) return NextResponse.json({ error: "No perteneces a este despacho" }, { status: 403 });
     const firm = await rt.store.firms.get(doc.firmId);
     if (!firm) return NextResponse.json({ error: "Despacho no encontrado" }, { status: 404 });
     const result = await processSettlement(rt, { firm, documentId: id, insurer: body.insurer ?? null, period: body.period ?? null });

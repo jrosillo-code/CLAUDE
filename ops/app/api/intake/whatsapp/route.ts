@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { getRuntime, requireFirm } from "@/lib/runtime";
 import { verifyChallenge, verifySignature, parseWebhook, GraphMediaFetcher } from "@/lib/intake/whatsapp";
-import { receiveDocument, processDocument } from "@/lib/pipeline";
+import { receiveDocument } from "@/lib/pipeline";
+import { enqueue } from "@/lib/jobs";
+import { allow } from "@/lib/ratelimit";
 import { log } from "@/lib/audit";
 
 export const maxDuration = 300;
@@ -21,6 +23,7 @@ export async function POST(req: Request) {
   if (!verifySignature(raw, req.headers.get("x-hub-signature-256"), secret)) return new NextResponse("Bad signature", { status: 401 });
   const rt = getRuntime();
   const firm = await requireFirm(rt.store, new URL(req.url).searchParams.get("firmId"));
+  if (!allow(`intake:${firm.id}`, 60, 60)) return NextResponse.json({ error: "Demasiadas entradas; espera un minuto" }, { status: 429 });
   const fetcher = new GraphMediaFetcher(accessToken);
   let payload: unknown;
   try { payload = JSON.parse(raw); } catch { return NextResponse.json({ error: "Bad JSON" }, { status: 400 }); }
@@ -34,8 +37,7 @@ export async function POST(req: Request) {
         const file = await fetcher.fetch(m.mediaId);
         const doc = await receiveDocument(rt, { firm, fileName: m.fileName, mediaType: file.mediaType || m.mediaType, bytes: file.bytes, inbound: item.message });
         received.push(doc.id);
-        // Run the chain now; the webhook has already been acknowledged by the time Meta retries.
-        processDocument(rt, firm, doc.id).catch((e) => console.error("[ops] whatsapp process failed", e));
+        await enqueue(rt.store, firm.id, "process_document", { documentId: doc.id });
       } catch (e) {
         await log(rt.store, { firmId: firm.id, action: "inbound.media_failed", entity: { type: "inbound", id: item.message.id }, detail: { mediaId: m.mediaId, error: e instanceof Error ? e.message : String(e) } });
       }

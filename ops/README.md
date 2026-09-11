@@ -20,6 +20,25 @@ npm run test:rls    # boots a disposable PostgreSQL, applies the migration verba
 npm run typecheck
 ```
 
+## Using it as a firm
+
+- Members sign in at `/login` with a magic link (Supabase Auth); `/app` lists their
+  firms and `/app/{firmId}/revisar` is the reviewer's screen. Without Supabase configured
+  the same screen runs at `/app/demo/revisar` with no login.
+- On that screen a reviewer sees the original document next to every extracted field
+  with the text it was read from, can correct a field (the correction is stored as the
+  person's value, validation re-runs, closed items drop their tasks), edit the draft,
+  approve or reject, and close tasks. The three metrics at the top are the ones the site
+  promises: fields approved without correction, euros found in settlements, open work.
+- Documents that arrive by webhook or upload are queued; `POST /api/jobs/run` (from a
+  cron, with `CRON_SECRET` or `OPS_API_KEY`) drains the queue. Transient model errors
+  retry three times with backoff; anything else fails the document with the reason in
+  the activity log.
+- Sending happens only after approval, through SMTP (`SMTP_URL`, `MAIL_FROM`) or the
+  WhatsApp Cloud API (`WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`). A failed send
+  leaves the approval pending with the error logged; outside WhatsApp's 24-hour window the
+  error says a template is needed.
+
 ## Invariants the code enforces
 
 1. **Nothing leaves the firm without a person.** Sending a message or writing to the
@@ -33,8 +52,10 @@ npm run typecheck
    token ceiling before each call; `lib/audit.ts` records model, prompt hash, tokens and
    estimated cost in an append-only activity log.
 4. **The AI disclosure is appended by code**, not requested from the model
-   (`withDisclosure` in `lib/claude.ts`). EU AI Act Article 50.
-5. **Tenancy is enforced in the database.** `supabase/migrations/0001_init.sql` puts RLS on
+   (`withDisclosure` in `lib/claude.ts`). EU AI Act Article 50. Editing a draft keeps it.
+5. **A correction is a person's value, never the document's.** `lib/corrections.ts`
+   stores it with the quote "corregido por {user}" and records it in `corrections`.
+6. **Tenancy is enforced in the database.** `supabase/migrations/0001_init.sql` puts RLS on
    every table; members read their firm, decide approvals only as themselves, and can
    append to but never change the activity log. `npm run test:rls` proves it against the
    verbatim migration.
@@ -50,7 +71,12 @@ lib/validate.ts         deterministic rules per document kind; lib/nif.ts checks
 lib/reconcile.ts        settlement lines vs expected receipts; CSV import of receipts
 lib/pipeline.ts         receive → extract → validate → tasks → draft → approvals
 lib/settlements.ts      receive settlement → extract → reconcile → tasks
-lib/approvals.ts        the human step; the only path to send or write
+lib/approvals.ts        the human step; the only path to send or write (effects run before the status flips)
+lib/corrections.ts      a reviewer changes a field or the draft; re-validation; the accuracy signal
+lib/jobs.ts             queue, claim, run with retries and backoff
+lib/metrics.ts          the numbers on the review screen and the landing page
+lib/auth.ts             member sessions from Supabase Auth cookies; RLS-scoped reads
+lib/senders/            SMTP and WhatsApp Cloud API senders; RoutingSender in lib/sender.ts
 lib/audit.ts, budget.ts activity log and monthly token ceiling
 lib/store.ts            Store interface + MemoryStore; lib/supabase-store.ts for production
 lib/adapters/           management-system boundary (CSV export now; ebroker, segElevia later)
@@ -63,12 +89,19 @@ tests/                  node:test suites
 
 ## API
 
-All routes except the provider webhooks require `Authorization: Bearer $OPS_API_KEY`
-(open on localhost when the key is unset). `firmId` defaults to the demo firm.
+All routes except the provider webhooks accept either `Authorization: Bearer $OPS_API_KEY`
+or a signed-in member's session cookie (checked against the firm). With neither Supabase
+Auth nor a key configured they are open on localhost only. `firmId` defaults to the demo
+firm.
 
 | Route | What |
 |---|---|
-| `POST /api/intake/upload` | multipart `file`, optional `firmId`, `clientRef`, `process=1` to run the chain now |
+| `POST /api/intake/upload` | multipart `file`, optional `firmId`, `clientRef`; queues a job, or `process=1` runs the chain now |
+| `GET /api/documents/{id}/file` | streams the original to a member of its firm |
+| `POST /api/documents/{id}/correct` | `{field, value}` or `{field: "draft.body", value, draftId}` |
+| `PATCH /api/tasks/{id}` | `{status: "open" \| "done"}` |
+| `POST /api/jobs/run?limit=10` | drains due jobs; `CRON_SECRET` or `OPS_API_KEY` |
+| `GET /api/metrics?firmId&from&to` | fields, euros, tasks, cost |
 | `POST /api/documents/{id}/process` | run the chain on a received document |
 | `POST /api/receipts/import` | multipart CSV (`aseguradora;poliza;recibo;tomador;prima;comision;periodo`), `insurer`, `period` |
 | `POST /api/settlements/{id}/reconcile` | read a settlement document and reconcile it; JSON `{insurer?, period?}` |
@@ -87,7 +120,8 @@ All routes except the provider webhooks require `Authorization: Bearer $OPS_API_
 3. Set `OPS_API_KEY`, and the WhatsApp and email webhook secrets as needed.
 4. Point the WhatsApp Cloud API webhook at `/api/intake/whatsapp?firmId=...` and the
    inbound email provider at `/api/intake/email?firmId=...`.
-5. The review queue at `/revisar` reads the demo firm today; put it behind the firm's
-   Supabase login and member session before exposing it.
+5. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` for sign-in, add
+   each user to `memberships`, and schedule `POST /api/jobs/run` every minute.
+6. Set `SMTP_URL`/`MAIL_FROM` and the WhatsApp phone number id to send for real.
 
 Contact details on the landing page are placeholders until the company entity exists.

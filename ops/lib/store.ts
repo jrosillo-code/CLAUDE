@@ -1,5 +1,6 @@
 import type {
   Firm, InboundMessage, DocumentRecord, Extraction, Validation, Task, Draft, Approval, ActivityEntry, MonthlyUsage, ReconciliationRecord,
+  Correction, Job, JobKind, Membership,
 } from "./types";
 import type { ExpectedReceipt } from "./reconcile";
 
@@ -17,6 +18,11 @@ export interface Store {
     get(id: string): Promise<Firm | null>;
     upsert(firm: Firm): Promise<void>;
   };
+  memberships: {
+    isMember(firmId: string, userId: string): Promise<boolean>;
+    firmsFor(userId: string): Promise<Firm[]>;
+    add(m: Membership): Promise<void>;
+  };
   inbound: {
     insert(m: InboundMessage): Promise<void>;
     byExternalId(firmId: string, externalId: string): Promise<InboundMessage | null>;
@@ -31,6 +37,8 @@ export interface Store {
   extractions: {
     insert(e: Extraction): Promise<void>;
     latestForDocument(documentId: string): Promise<Extraction | null>;
+    updateData(id: string, data: Record<string, unknown>): Promise<void>;
+    listByFirm(firmId: string, from?: string, to?: string): Promise<Extraction[]>;
   };
   validations: {
     insert(v: Validation): Promise<void>;
@@ -40,10 +48,25 @@ export interface Store {
     insert(t: Task): Promise<void>;
     listByDocument(documentId: string): Promise<Task[]>;
     listOpenByFirm(firmId: string): Promise<Task[]>;
+    update(id: string, patch: Partial<Task>): Promise<void>;
+    get(id: string): Promise<Task | null>;
   };
   drafts: {
     insert(d: Draft): Promise<void>;
     get(id: string): Promise<Draft | null>;
+    update(id: string, patch: Partial<Draft>): Promise<void>;
+  };
+  corrections: {
+    insert(c: Correction): Promise<void>;
+    listByDocument(documentId: string): Promise<Correction[]>;
+    listByFirm(firmId: string, from?: string, to?: string): Promise<Correction[]>;
+  };
+  jobs: {
+    enqueue(j: Job): Promise<void>;
+    claim(limit: number): Promise<Job[]>;
+    complete(id: string): Promise<void>;
+    fail(id: string, error: string, retryAt: string | null): Promise<void>;
+    get(id: string): Promise<Job | null>;
   };
   approvals: {
     insert(a: Approval): Promise<void>;
@@ -85,10 +108,19 @@ export class MemoryStore implements Store {
   private receiptList: ExpectedReceipt[] = [];
   private reconciliationMap = new Map<string, ReconciliationRecord>();
   private fileMap = new Map<string, { bytes: Uint8Array; mediaType: string }>();
+  private membershipList: Membership[] = [];
+  private correctionList: Correction[] = [];
+  private jobMap = new Map<string, Job>();
 
   firms = {
     get: async (id: string) => this.firmsMap.get(id) ?? null,
     upsert: async (f: Firm) => { this.firmsMap.set(f.id, f); },
+  };
+  memberships = {
+    isMember: async (firmId: string, userId: string) => this.membershipList.some((m) => m.firmId === firmId && m.userId === userId),
+    firmsFor: async (userId: string) =>
+      this.membershipList.filter((m) => m.userId === userId).map((m) => this.firmsMap.get(m.firmId)).filter((f): f is Firm => !!f),
+    add: async (m: Membership) => { this.membershipList.push(m); },
   };
   inbound = {
     insert: async (m: InboundMessage) => { this.inboundList.push(m); },
@@ -110,6 +142,14 @@ export class MemoryStore implements Store {
     insert: async (e: Extraction) => { this.extractionList.push(e); },
     latestForDocument: async (documentId: string) =>
       [...this.extractionList].reverse().find((e) => e.documentId === documentId) ?? null,
+    updateData: async (id: string, data: Record<string, unknown>) => {
+      const e = this.extractionList.find((x) => x.id === id);
+      if (e) e.data = data;
+    },
+    listByFirm: async (firmId: string, from?: string, to?: string) => {
+      const docs = new Set([...this.docs.values()].filter((d) => d.firmId === firmId).map((d) => d.id));
+      return this.extractionList.filter((e) => docs.has(e.documentId) && (!from || e.createdAt >= from) && (!to || e.createdAt <= to));
+    },
   };
   validations = {
     insert: async (v: Validation) => { this.validationList.push(v); },
@@ -120,10 +160,42 @@ export class MemoryStore implements Store {
     insert: async (t: Task) => { this.taskList.push(t); },
     listByDocument: async (documentId: string) => this.taskList.filter((t) => t.documentId === documentId),
     listOpenByFirm: async (firmId: string) => this.taskList.filter((t) => t.firmId === firmId && t.status === "open"),
+    update: async (id: string, patch: Partial<Task>) => {
+      const i = this.taskList.findIndex((t) => t.id === id);
+      if (i >= 0) this.taskList[i] = { ...this.taskList[i], ...patch };
+    },
+    get: async (id: string) => this.taskList.find((t) => t.id === id) ?? null,
   };
   drafts = {
     insert: async (d: Draft) => { this.draftMap.set(d.id, d); },
     get: async (id: string) => this.draftMap.get(id) ?? null,
+    update: async (id: string, patch: Partial<Draft>) => {
+      const cur = this.draftMap.get(id);
+      if (cur) this.draftMap.set(id, { ...cur, ...patch });
+    },
+  };
+  corrections = {
+    insert: async (c: Correction) => { this.correctionList.push(c); },
+    listByDocument: async (documentId: string) => this.correctionList.filter((c) => c.documentId === documentId),
+    listByFirm: async (firmId: string, from?: string, to?: string) =>
+      this.correctionList.filter((c) => c.firmId === firmId && (!from || c.createdAt >= from) && (!to || c.createdAt <= to)),
+  };
+  jobs = {
+    enqueue: async (j: Job) => { this.jobMap.set(j.id, j); },
+    claim: async (limit: number) => {
+      const now = new Date().toISOString();
+      const due = [...this.jobMap.values()].filter((j) => j.status === "queued" && j.runAfter <= now).sort((a, b) => a.runAfter.localeCompare(b.runAfter)).slice(0, limit);
+      for (const j of due) { j.status = "running"; j.attempts += 1; j.updatedAt = now; }
+      return due.map((j) => ({ ...j }));
+    },
+    complete: async (id: string) => { const j = this.jobMap.get(id); if (j) { j.status = "done"; j.updatedAt = new Date().toISOString(); } },
+    fail: async (id: string, error: string, retryAt: string | null) => {
+      const j = this.jobMap.get(id);
+      if (!j) return;
+      j.lastError = error; j.updatedAt = new Date().toISOString();
+      if (retryAt) { j.status = "queued"; j.runAfter = retryAt; } else { j.status = "failed"; }
+    },
+    get: async (id: string) => { const j = this.jobMap.get(id); return j ? { ...j } : null; },
   };
   approvals = {
     insert: async (a: Approval) => { this.approvalMap.set(a.id, a); },

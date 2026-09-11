@@ -40,7 +40,7 @@ export default function Home() {
             </p>
             <div className="ctas">
               <a className="btn" href={`mailto:${CONTACT.email}?subject=Auditoría de 30 minutos`}>Pide una auditoría de 30 minutos</a>
-              <Link className="btn ghost" href="/revisar">Ver la cola de revisión</Link>
+              <Link className="btn ghost" href="/app">Ver la cola de revisión</Link>
             </div>
             <div className="contact">{CONTACT.phone} · <a href={CONTACT.whatsapp}>WhatsApp</a> · respuesta el mismo día</div>
           </div>
