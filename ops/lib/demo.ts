@@ -56,7 +56,7 @@ export class DemoExtractor implements Extractor {
           tomador_nif: { value: "12345678Z", quote: "NIF 12345678Z", page: 1 },
           ramo: { value: "Hogar", quote: "Ramo: Hogar", page: 1 },
           fecha_efecto: { value: "2025-10-15", quote: "Efecto 15/10/2025", page: 1 },
-          fecha_vencimiento: { value: new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10), quote: "Vencimiento", page: 1 },
+          fecha_vencimiento: { value: "2026-10-15", quote: "Vencimiento 15/10/2026", page: 1 },
           prima_total: { value: 412.5, quote: "Prima total 412,50 €", page: 2 },
         } } };
     }

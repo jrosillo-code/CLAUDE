@@ -36,3 +36,19 @@ test("routing sender picks by channel and falls back", async () => {
   assert.equal(wa.sent.length, 0);
   assert.equal(fallback.sent.length, 1);
 });
+
+test("WhatsApp falls back to the approved template when the window is closed", async () => {
+  const { WhatsAppSender, templateParam } = await import("../lib/senders/whatsapp");
+  const calls: string[] = [];
+  const fake = (async (_url: string | URL | Request, init?: RequestInit) => {
+    const body = JSON.parse(String(init?.body)) as { type: string };
+    calls.push(body.type);
+    if (body.type === "text") return new Response(JSON.stringify({ error: { code: 131047, message: "window" } }), { status: 400 });
+    return new Response(JSON.stringify({ messages: [{ id: "wamid.t" }] }), { status: 200 });
+  }) as typeof fetch;
+  const r = await new WhatsAppSender("1", "t", "v21.0", fake, { name: "documentacion_pendiente", language: "es" }).send(draft("whatsapp"));
+  assert.equal(r.ok, true);
+  assert.deepEqual(calls, ["text", "template"]);
+  assert.match(r.externalId!, /plantilla documentacion_pendiente/);
+  assert.equal(templateParam("Hola\n\n- uno\n- dos\t   fin"), "Hola · - uno · - dos fin");
+});

@@ -255,7 +255,7 @@ export default function Home() {
         </section>
 
         <footer>
-          <span>Operaciones con IA · {CONTACT.founder} · NIF pendiente · Aviso legal · Privacidad · Contrato de encargo</span>
+          <span>Operaciones con IA · {CONTACT.founder} · NIF pendiente · <a href="/legal/aviso">Aviso legal</a> · <a href="/legal/privacidad">Privacidad</a> · <a href="/legal/encargo">Contrato de encargo</a></span>
           <span>ES · EN próximamente</span>
         </footer>
       </div>

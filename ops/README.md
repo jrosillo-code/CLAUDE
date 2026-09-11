@@ -18,6 +18,9 @@ npm run dev         # http://localhost:3100 (site) and /revisar (review queue)
 npm test            # unit tests: validation, NIF, reconciliation, pipeline, intake
 npm run test:rls    # boots a disposable PostgreSQL, applies the migration verbatim, asserts RLS
 npm run typecheck
+npm run fixtures    # writes the fixture PDFs to tests/fixtures/
+npm run eval        # scores the reader on the fixtures; with ANTHROPIC_API_KEY it measures Claude
+npm run onboard -- --name "Despacho" --kind correduria --email persona@despacho.es
 ```
 
 ## Using it as a firm
@@ -38,6 +41,15 @@ npm run typecheck
   WhatsApp Cloud API (`WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`). A failed send
   leaves the approval pending with the error logged; outside WhatsApp's 24-hour window the
   error says a template is needed.
+
+## Measuring the reader
+
+`lib/eval/` holds fixture documents with ground truth and a scorer. Every present value
+must carry a quote that occurs in the document; a value whose quote is not in the document
+counts as invented, and `npm run eval` exits non-zero if any are found. The bundled
+fixtures mirror the demo reader's data so the harness passes trivially without a key;
+replace them with anonymised documents from the pilot firm to get real numbers. The
+scorer reports correct, wrong, missed and invented fields per fixture and overall.
 
 ## Invariants the code enforces
 

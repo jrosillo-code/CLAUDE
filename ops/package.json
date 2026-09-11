@@ -10,7 +10,10 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "test:rls": "bash scripts/test-rls.sh",
-    "demo": "tsx scripts/demo.ts"
+    "demo": "tsx scripts/demo.ts",
+    "fixtures": "tsx scripts/make-fixtures.ts",
+    "eval": "tsx scripts/eval.ts",
+    "onboard": "tsx scripts/onboard.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.125.0",
