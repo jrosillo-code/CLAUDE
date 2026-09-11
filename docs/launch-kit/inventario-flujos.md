@@ -15,6 +15,11 @@ dolor expresado por quien lo hace, facilidad de medir el antes y el después.
 
 ## Candidatos habituales en una correduría
 
+- **Conciliación de liquidaciones de comisiones** (candidato prioritario según la
+  investigación de mercado): cada aseguradora liquida en un formato distinto; alguien las
+  abre una a una y las cruza con la cartera. Medir: horas por liquidación, liquidaciones
+  al mes, comisiones no pagadas o mal pagadas detectadas en los últimos 12 meses.
+  Comprobar antes qué aseguradoras llegan ya por EIAC/CIMA y cuáles siguen en PDF o Excel.
 - Recopilación de documentación de siniestros (partes, fotos, facturas, informes) por
   WhatsApp y email, y su carga en el expediente.
 - Seguimiento de renovaciones: aviso, comparativa, propuesta, confirmación.

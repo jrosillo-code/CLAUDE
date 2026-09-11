@@ -33,9 +33,21 @@ leads with a three-minute recording of a working flow on sample data, never with
 - Colegios de Mediadores de Seguros (provinciales) y su Consejo General; asociaciones
   ADECOSE y FECOR; redes y agrupaciones de corredurías, que a menudo centralizan la compra
   de tecnología.
-- Proveedores de software de gestión de corredurías como canal (sus programas de partners
-  y sus foros de usuarios). Lista y detalle en la sección siguiente, pendiente de la
-  investigación de mercado en curso.
+- Redes y grupos de corredurías, que centralizan la compra de tecnología: Senda Vivir
+  Seguros, Espabrok (135 corredurías), E2K Brokernet (unos 150), Willis Networks, Club
+  Català de Corredors, BLB Partner. Un acuerdo con una red llega a 100 o 150 despachos.
+- Proveedores de software de gestión como canal: ebroker (API y web services abiertos,
+  agente Kit Digital para 200+ corredurías), MPM segElevia (acuerdos con el Consejo General
+  y "by Colegio de Madrid"), Codeoscopic Avant2 (API REST), Mediator. Sus clientes con
+  liquidaciones en PDF o Excel son el objetivo.
+- Asociaciones: FECOR (800 a 850 corredurías pequeñas y medianas; congreso en octubre;
+  programa de patrocinio) antes que ADECOSE (grandes, objetivo de Afori).
+- Eventos con fecha: Semana del Seguro (febrero, IFEMA), Forinvest (marzo, Valencia),
+  Foro ADECOSE (junio), congreso FECOR (octubre), reunión anual de CIMA, jornadas de los
+  colegios provinciales.
+- Señal de compra: despachos que hablan de digitalización o de EIAC en prensa sectorial,
+  que no tienen todas sus aseguradoras en CIMA, o que reciben liquidaciones en PDF.
+- Detalle y fuentes en `../insurance-brokerage-research-2026-09.md`.
 - Prensa sectorial para detectar quién habla de digitalización: ADN del Seguro, Grupo
   Aseguranza, Carta del Mediador, INESE.
 - Objetivo semanas 1 a 4: 10 conversaciones fuera de la familia, 1 auditoría pagada o 1
