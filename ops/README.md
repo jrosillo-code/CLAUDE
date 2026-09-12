@@ -124,9 +124,18 @@ firm.
 | `POST /api/intake/email` | inbound-parse JSON with base64 attachments; `x-webhook-secret` |
 | `GET /api/health` | mode: store and model |
 
+## Verify the deployment
+
+Open `https://<domain>/estado` (or `GET /api/selfcheck`). It checks, on the server, that
+every variable is present, the database is reachable with all three migrations applied,
+every table has RLS, the documents bucket is private, sign-in is configured and at least
+one member exists, the Anthropic key and model are accepted, the API key is long enough,
+and the cron secret is set. Secrets are never shown. From any machine,
+`npm run smoke -- https://<domain>` probes health, self-check, login and the site.
+
 ## Going live
 
-1. Create a Supabase project, run `supabase/migrations/0001_init.sql`, and set
+1. Create a Supabase project in an EU region, run the migrations in `supabase/migrations/` in order, and set
    `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (server only).
 2. Set `ANTHROPIC_API_KEY` and, optionally, `OPS_MODEL` (default `claude-opus-5`).
 3. Set `OPS_API_KEY`, and the WhatsApp and email webhook secrets as needed.

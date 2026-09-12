@@ -153,3 +153,6 @@ select assert_true(
      and not exists (select 1 from pg_class c join pg_namespace n on n.oid = c.relnamespace
                      where n.nspname = 'public' and c.relname = t.tablename and c.relrowsecurity)) = 0,
   'every public table still has RLS enabled');
+
+-- ── Migration 0003: self-check helper ────────────────────────────────────────
+select assert_true((select count(*) from tables_without_rls()) = 0, 'tables_without_rls() finds none');
