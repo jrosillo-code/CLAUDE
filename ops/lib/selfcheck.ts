@@ -22,7 +22,7 @@ export function redact(text: string, env: NodeJS.ProcessEnv = process.env): stri
   return out.length > 200 ? `${out.slice(0, 199)}…` : out;
 }
 
-const TABLES = ["firms", "memberships", "documents", "extractions", "validations", "tasks", "drafts", "approvals", "activity_log", "monthly_usage", "expected_receipts", "reconciliations", "corrections", "jobs"];
+const TABLES = ["firms", "memberships", "documents", "extractions", "validations", "tasks", "drafts", "approvals", "activity_log", "monthly_usage", "expected_receipts", "reconciliations", "corrections", "jobs", "leads"];
 
 async function withTimeout<T>(p: Promise<T>, ms = 10_000): Promise<T> {
   let t: NodeJS.Timeout;

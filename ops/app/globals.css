@@ -154,3 +154,35 @@ button.secondary { background: transparent; color: var(--ink); border: 1px solid
   section { padding-block: 48px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Site v2: nav state, sticky mobile CTA, queue entrance, page heroes */
+.nav-links a.active { color: var(--ink); border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+.nav-wa { font-weight: 500; }
+.page-hero { padding-block: 56px 40px; display: grid; gap: 14px; border-bottom: 1px solid var(--rule); }
+.page-hero .lede { font-size: 19px; color: var(--ink-2); max-width: 62ch; }
+.page-hero .ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.list-plain { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 16px; }
+.list-plain li { margin-bottom: 6px; }
+.check { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.check li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 16px; }
+.check li::before { content: "✓"; color: var(--accent); font-family: var(--mono); font-weight: 500; }
+.sticky-cta { display: none; }
+@media (max-width: 640px) {
+  .sticky-cta { display: flex; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px; background: var(--ground); border-top: 1px solid var(--rule); z-index: 20; }
+  .sticky-cta .btn { flex: 1; text-align: center; padding: 10px 12px; font-size: 15px; }
+  body { padding-bottom: 64px; }
+}
+@media (max-width: 820px) { .split { grid-template-columns: minmax(0, 1fr); } }
+/* Fields land after the document renders; visible at rest, animated only as a courtesy. */
+.queue-anim .field { animation: land .5s ease-out both; }
+.queue-anim .field:nth-child(1) { animation-delay: .15s } .queue-anim .field:nth-child(2) { animation-delay: .3s }
+.queue-anim .field:nth-child(3) { animation-delay: .45s } .queue-anim .field:nth-child(4) { animation-delay: .6s }
+@keyframes land { from { opacity: .35; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .queue-anim .field { animation: none; } }
+/* Contact form */
+.form { display: grid; gap: 12px; max-width: 560px; }
+.form label { display: grid; gap: 6px; font-size: 15px; font-weight: 500; }
+.form input, .form select, .form textarea { font: inherit; font-size: 16px; padding: 10px; border: 1px solid var(--rule); background: var(--surface); border-radius: 3px; }
+.form input:focus-visible, .form textarea:focus-visible, .form select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.hp { position: absolute; left: -9999px; }

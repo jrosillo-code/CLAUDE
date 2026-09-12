@@ -3,6 +3,7 @@ import type {
   Correction, Job, JobKind, Membership,
 } from "./types";
 import type { ExpectedReceipt } from "./reconcile";
+import type { Lead } from "./leads";
 
 // Persistence boundary. Two implementations: an in-memory store for tests and
 // the keyless demo, and Supabase for production. Everything above this
@@ -91,6 +92,10 @@ export interface Store {
     get(id: string): Promise<ReconciliationRecord | null>;
     listByFirm(firmId: string, limit?: number): Promise<ReconciliationRecord[]>;
   };
+  leads: {
+    insert(l: Lead): Promise<void>;
+    list(limit?: number): Promise<Lead[]>;
+  };
   files: FileStore;
 }
 
@@ -107,6 +112,7 @@ export class MemoryStore implements Store {
   private usageMap = new Map<string, MonthlyUsage>();
   private receiptList: ExpectedReceipt[] = [];
   private reconciliationMap = new Map<string, ReconciliationRecord>();
+  private leadList: Lead[] = [];
   private fileMap = new Map<string, { bytes: Uint8Array; mediaType: string }>();
   private membershipList: Membership[] = [];
   private correctionList: Correction[] = [];
@@ -233,6 +239,10 @@ export class MemoryStore implements Store {
     get: async (id: string) => this.reconciliationMap.get(id) ?? null,
     listByFirm: async (firmId: string, limit = 50) =>
       [...this.reconciliationMap.values()].filter((r) => r.firmId === firmId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit),
+  };
+  leads = {
+    insert: async (l: Lead) => { this.leadList.push(l); },
+    list: async (limit = 100) => [...this.leadList].reverse().slice(0, limit),
   };
   files: FileStore = {
     put: async (path, bytes, mediaType) => { this.fileMap.set(path, { bytes, mediaType }); },

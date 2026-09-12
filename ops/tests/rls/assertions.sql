@@ -156,3 +156,18 @@ select assert_true(
 
 -- ── Migration 0003: self-check helper ────────────────────────────────────────
 select assert_true((select count(*) from tables_without_rls()) = 0, 'tables_without_rls() finds none');
+
+-- ── Migration 0004: leads are server-only ────────────────────────────────────
+grant select, insert, update, delete on all tables in schema public to authenticated;
+insert into leads (name, email, message) values ('x', 'x@y.z', 'hola');
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+select assert_true((select count(*) from leads) = 0, 'members cannot see leads');
+do $$ begin
+  begin
+    insert into leads (name, email, message) values ('y', 'y@y.z', 'hola');
+    raise exception 'ASSERTION FAILED: member inserted a lead';
+  exception when insufficient_privilege then raise notice 'ok: members cannot insert leads';
+  end;
+end $$;
+reset role;

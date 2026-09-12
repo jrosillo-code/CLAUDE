@@ -5,6 +5,7 @@ import type {
   Correction, Job, Membership,
 } from "./types";
 import type { ExpectedReceipt } from "./reconcile";
+import type { Lead } from "./leads";
 import { supabaseUrl, supabaseServiceKey } from "./env";
 
 // Server-only. Uses the service role, so RLS does not apply here: this file is
@@ -165,6 +166,10 @@ export class SupabaseStore implements Store {
     insert: async (x: ReconciliationRecord) => { must(await this.db.from("reconciliations").insert({ id: x.id, firm_id: x.firmId, document_id: x.documentId, insurer: x.insurer, period: x.period, summary: x.summary, unpaid_eur: x.unpaidEur, mismatch_eur: x.mismatchEur, usage: x.usage, created_at: x.createdAt }).select("id"), "reconciliations.insert"); },
     get: async (id: string) => { const r = await this.db.from("reconciliations").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toReconciliation(r.data) : null; },
     listByFirm: async (firmId: string, limit = 50) => { const r = await this.db.from("reconciliations").select("*").eq("firm_id", firmId).order("created_at", { ascending: false }).limit(limit); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toReconciliation); },
+  };
+  leads = {
+    insert: async (l: Lead) => { must(await this.db.from("leads").insert({ id: l.id, name: l.name, email: l.email, phone: l.phone, firm: l.firm, kind: l.kind, message: l.message, source: l.source, ip_hash: l.ipHash, created_at: l.createdAt }).select("id"), "leads.insert"); },
+    list: async (limit = 100) => { const r = await this.db.from("leads").select("*").order("created_at", { ascending: false }).limit(limit); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map((x) => ({ id: x.id as string, name: x.name as string, email: x.email as string, phone: (x.phone as string) ?? null, firm: (x.firm as string) ?? null, kind: x.kind as Lead["kind"], message: x.message as string, source: x.source as string, ipHash: (x.ip_hash as string) ?? null, createdAt: x.created_at as string })); },
   };
   files: FileStore = {
     put: async (path, bytes, mediaType) => { const r = await this.db.storage.from(this.bucket).upload(path, bytes, { contentType: mediaType, upsert: false }); if (r.error) throw new Error(`storage.upload: ${r.error.message}`); },
