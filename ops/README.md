@@ -54,6 +54,21 @@ fixtures mirror the demo reader's data so the harness passes trivially without a
 replace them with anonymised documents from the pilot firm to get real numbers. The
 scorer reports correct, wrong, missed and invented fields per fixture and overall.
 
+## Design system
+
+`DESIGN.md` is the design system in the DESIGN.md format (Google Stitch's plain-text
+convention that AI agents read before generating UI): tokens in the front matter, then
+colors and roles, typography, layout, components, do's and don'ts, responsive rules and
+ready prompts. `app/globals.css` is the source of truth for values; DESIGN.md must match
+it. `/diseno` renders the system from the real CSS so the two can be compared.
+`design/references/` holds four DESIGN.md files from other products, copied from
+VoltAgent's awesome-design-md collection, as inspiration only. `CLAUDE.md` tells any
+coding agent to read DESIGN.md before touching UI.
+
+Three ways to use it: prefix UI requests with "siguiendo DESIGN.md"; review a change by
+checking `/diseno` and the do's and don'ts; hand DESIGN.md to a designer or a contractor
+as the brief.
+
 ## Invariants the code enforces
 
 1. **Nothing leaves the firm without a person.** Sending a message or writing to the
