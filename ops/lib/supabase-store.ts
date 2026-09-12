@@ -130,8 +130,9 @@ export class SupabaseStore implements Store {
     get: async (id: string) => { const r = await this.db.from("jobs").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toJob(r.data) : null; },
   };
   approvals = {
-    insert: async (a: Approval) => { must(await this.db.from("approvals").insert({ id: a.id, firm_id: a.firmId, document_id: a.documentId, action: a.action, draft_id: a.draftId, status: a.status, created_at: a.createdAt }).select("id"), "approvals.insert"); },
+    insert: async (a: Approval) => { must(await this.db.from("approvals").insert({ id: a.id, firm_id: a.firmId, document_id: a.documentId, action: a.action, draft_id: a.draftId, status: a.status, note: a.note, created_at: a.createdAt }).select("id"), "approvals.insert"); },
     get: async (id: string) => { const r = await this.db.from("approvals").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toApproval(r.data) : null; },
+    listByDocument: async (documentId: string) => { const r = await this.db.from("approvals").select("*").eq("document_id", documentId).order("created_at", { ascending: true }); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toApproval); },
     update: async (id: string, patch: Partial<Approval>) => {
       const row: Row = {};
       if (patch.status) row.status = patch.status;

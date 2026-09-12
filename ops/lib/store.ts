@@ -74,6 +74,7 @@ export interface Store {
     get(id: string): Promise<Approval | null>;
     update(id: string, patch: Partial<Approval>): Promise<void>;
     listPending(firmId: string): Promise<Approval[]>;
+    listByDocument(documentId: string): Promise<Approval[]>;
   };
   activity: {
     append(e: ActivityEntry): Promise<void>;
@@ -206,6 +207,7 @@ export class MemoryStore implements Store {
   approvals = {
     insert: async (a: Approval) => { this.approvalMap.set(a.id, a); },
     get: async (id: string) => this.approvalMap.get(id) ?? null,
+    listByDocument: async (documentId: string) => [...this.approvalMap.values()].filter((a) => a.documentId === documentId).sort((a, b) => a.createdAt.localeCompare(b.createdAt)),
     update: async (id: string, patch: Partial<Approval>) => {
       const cur = this.approvalMap.get(id);
       if (cur) this.approvalMap.set(id, { ...cur, ...patch });

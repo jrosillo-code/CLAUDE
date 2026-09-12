@@ -21,8 +21,11 @@ export async function POST(req: Request) {
     const rows = parseExpectedReceiptsCsv(firm.id, await file.text(), newId).map((r) => ({ ...r, insurer, period }));
     await rt.store.receipts.replaceForPeriod(firm.id, insurer, period, rows);
     await log(rt.store, { firmId: firm.id, action: "receipts.imported", entity: { type: "receipts", id: `${insurer}:${period}` }, actor: { type: "user", id: auth.userId }, detail: { rows: rows.length } });
+    if (req.headers.get("accept")?.includes("text/html")) return NextResponse.redirect(new URL(req.headers.get("referer") ?? "/app", req.url), 303);
     return NextResponse.json({ imported: rows.length });
   } catch (err) {
-    return NextResponse.json({ error: err instanceof Error ? err.message : "Error" }, { status: 400 });
+    const message = err instanceof Error ? err.message : "Error";
+    if (req.headers.get("accept")?.includes("text/html")) { const u = new URL(req.headers.get("referer") ?? "/app", req.url); u.searchParams.set("error", message); return NextResponse.redirect(u, 303); }
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }

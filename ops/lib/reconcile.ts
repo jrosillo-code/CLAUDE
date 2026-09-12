@@ -54,6 +54,8 @@ export function normalizePolicy(s: string): string {
   return s.toUpperCase().replace(/[\s\-./]/g, "");
 }
 
+const es = (n: number) => n.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
 function round2(n: number): number {
   return Math.round(n * 100) / 100;
 }
@@ -129,7 +131,7 @@ export function reconcile(settlement: Liquidacion, expected: ExpectedReceipt[]):
         expectedCommission: match.expectedCommission,
         settledCommission: settled,
         differenceEur: diff,
-        note: diff > 0 ? `Pagado ${settled.toFixed(2)} € de ${match.expectedCommission.toFixed(2)} € esperados` : `Pagado ${Math.abs(diff).toFixed(2)} € de más`,
+        note: diff > 0 ? `Pagado ${es(settled)} € de ${es(match.expectedCommission)} € esperados` : `Pagado ${es(Math.abs(diff))} € de más`,
         expectedId: match.id,
         lineIndex: idx,
       });

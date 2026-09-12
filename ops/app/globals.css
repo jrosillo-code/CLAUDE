@@ -186,3 +186,13 @@ button.secondary { background: transparent; color: var(--ink); border: 1px solid
 .form input, .form select, .form textarea { font: inherit; font-size: 16px; padding: 10px; border: 1px solid var(--rule); background: var(--surface); border-radius: 3px; }
 .form input:focus-visible, .form textarea:focus-visible, .form select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .hp { position: absolute; left: -9999px; }
+/* App header and tabs */
+.app-head { display: grid; gap: 14px; margin-bottom: 8px; }
+.app-tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--rule); }
+.app-tabs a { color: var(--ink-2); text-decoration: none; padding: 8px 0 10px; font-size: 15px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.app-tabs a.active { color: var(--ink); border-bottom-color: var(--accent); }
+.tabular { font-variant-numeric: tabular-nums; }
+td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.table-wrap { overflow-x: auto; }
+tr.selected td { background: var(--surface); }
+.letter { white-space: pre-wrap; font-family: var(--sans); font-size: 14px; background: var(--surface); border: 1px solid var(--rule); padding: 14px; line-height: 1.5; }

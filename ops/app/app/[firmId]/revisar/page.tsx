@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getRuntime, DEMO_FIRM, resolveFirmId } from "@/lib/runtime";
 import { createUserClient, getSessionUser, supabaseAuthConfigured } from "@/lib/auth";
@@ -6,6 +7,7 @@ import type { Store } from "@/lib/store";
 import { budgetStatus } from "@/lib/budget";
 import { computeMetrics } from "@/lib/metrics";
 import type { Field, Approval, Draft, Extraction, Validation, DocumentRecord } from "@/lib/types";
+import { AppNav } from "@/components/app-nav";
 
 export const dynamic = "force-dynamic";
 
@@ -62,11 +64,8 @@ export default async function Revisar({ params, searchParams }: { params: Promis
 
   return (
     <main className="app-wrap">
-      <div className="row" style={{ justifyContent: "space-between" }}>
-        <div className="eyebrow">{firm.name} · {userLabel} · modelo {rt.mode.model} · datos {rt.mode.store}</div>
-        {supabaseAuthConfigured() && <form action="/logout" method="post"><button className="secondary" type="submit">Salir</button></form>}
-      </div>
-      <h1 style={{ marginTop: 10 }}>Cola de revisión</h1>
+      <AppNav slug={slug} firmName={firm.name} userLabel={userLabel} mode={rt.mode} active="revisar" logout={supabaseAuthConfigured()} />
+      <h1 style={{ marginTop: 18 }}>Cola de revisión</h1>
       {error && <div className="card" style={{ borderColor: "var(--bad)" }}>{error}</div>}
 
       <div className="proof" style={{ margin: "20px 0 8px" }}>
@@ -98,7 +97,7 @@ export default async function Revisar({ params, searchParams }: { params: Promis
       </tbody></table>
 
       {reconciliations.length > 0 && (<>
-        <h2>Liquidaciones conciliadas</h2>
+        <h2>Liquidaciones conciliadas <span className="small muted" style={{ fontFamily: "var(--sans)", fontWeight: 400 }}>· <Link href={`/app/${slug}/liquidaciones`}>ver todas y reclamar</Link></span></h2>
         <table><thead><tr><th>Aseguradora</th><th>Periodo</th><th>No pagado</th><th>Diferencias</th></tr></thead><tbody>
           {reconciliations.map((r) => <tr key={r.id}><td>{r.insurer ?? "?"}</td><td>{r.period ?? "?"}</td><td>{r.unpaidEur.toFixed(2)} €</td><td>{r.mismatchEur.toFixed(2)} €</td></tr>)}
         </tbody></table>

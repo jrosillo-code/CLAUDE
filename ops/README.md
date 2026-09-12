@@ -40,6 +40,14 @@ npm run onboard -- --name "Despacho" --kind correduria --email persona@despacho.
   minute on Pro. Transient model errors
   retry three times with backoff; anything else fails the document with the reason in
   the activity log.
+- `/app/{firmId}/liquidaciones` is the settlements screen: every reconciled statement
+  with tabular figures, the selected one line by line with a status pill each, and the
+  claim. "Preparar reclamación" assembles a letter to the insurer from the unpaid and
+  short-paid lines (no model call; every figure comes from the statement or the firm's
+  receipts), stores it as a draft and puts it behind an approval. The only accent-colored
+  action on the page is "Aprobar y enviar", and nothing reaches the insurer before it.
+  The page also imports the expected receipts (CSV) and uploads a statement; in keyless
+  mode one button loads the example statement so the flow can be tried.
 - Sending happens only after approval, through SMTP (`SMTP_URL`, `MAIL_FROM`) or the
   WhatsApp Cloud API (`WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`). A failed send
   leaves the approval pending with the error logged; outside WhatsApp's 24-hour window the
@@ -93,7 +101,8 @@ as the brief.
 ## Layout
 
 ```
-app/                    Next.js: landing page (/) and review queue (/revisar); API routes under app/api
+app/                    Next.js: public site (/, /corredurias, /asesorias, /precios, /seguridad, /contacto),
+                        the app (/app/{firm}/revisar, /app/{firm}/liquidaciones); API routes under app/api
 lib/types.ts            domain model
 lib/schemas/            Zod schemas for documents and settlements (provenance-bearing fields)
 lib/claude.ts           the only file that calls the model: extractor, settlement extractor, drafter
@@ -101,6 +110,8 @@ lib/validate.ts         deterministic rules per document kind; lib/nif.ts checks
 lib/reconcile.ts        settlement lines vs expected receipts; CSV import of receipts
 lib/pipeline.ts         receive → extract → validate → tasks → draft → approvals
 lib/settlements.ts      receive settlement → extract → reconcile → tasks
+lib/claims.ts           claim letter assembled from the reconciliation lines, stored behind an approval
+lib/leads.ts            website contact requests: validation, honeypot, storage, notification
 lib/approvals.ts        the human step; the only path to send or write (effects run before the status flips)
 lib/corrections.ts      a reviewer changes a field or the draft; re-validation; the accuracy signal
 lib/jobs.ts             queue, claim, run with retries and backoff
@@ -135,6 +146,9 @@ firm.
 | `POST /api/documents/{id}/process` | run the chain on a received document |
 | `POST /api/receipts/import` | multipart CSV (`aseguradora;poliza;recibo;tomador;prima;comision;periodo`), `insurer`, `period` |
 | `POST /api/settlements/{id}/reconcile` | read a settlement document and reconcile it; JSON `{insurer?, period?}` |
+| `POST /api/settlements/upload` | multipart `file`, `firmId`, `insurer?`, `period?`: receive and reconcile in one call; `example=1` in keyless mode loads the demo statement |
+| `POST /api/settlements/{id}/claim` | `{to}`: assemble the claim letter for a reconciliation and put it behind an approval (id = reconciliation) |
+| `POST /api/leads` | public contact form: JSON or form `name, email, message, phone?, firm?, kind?`; honeypot `website` |
 | `GET /api/approvals` | pending approvals with their drafts |
 | `POST /api/approvals/{id}` | `{decision: "approved" \| "rejected", note?}` |
 | `GET /api/tasks`, `GET /api/activity` | open tasks; activity log and budget status |
