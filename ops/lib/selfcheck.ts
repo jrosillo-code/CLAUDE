@@ -2,6 +2,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
 import { getRuntime } from "./runtime";
 import { MODEL } from "./claude";
+import { supabaseUrl, supabaseAnonKey, supabaseServiceKey } from "./env";
 
 // Deployment self-check. Runs where the secrets live and reports pass or
 // fail per item with a short reason. Secret values never appear in the
@@ -10,7 +11,7 @@ import { MODEL } from "./claude";
 export interface Check { name: string; label: string; ok: boolean; detail: string }
 export interface SelfCheck { ok: boolean; at: string; checks: Check[] }
 
-const SECRET_ENV = ["SUPABASE_SERVICE_ROLE_KEY", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "ANTHROPIC_API_KEY", "OPS_API_KEY", "CRON_SECRET", "EMAIL_WEBHOOK_SECRET", "SMTP_URL", "WHATSAPP_APP_SECRET", "WHATSAPP_ACCESS_TOKEN", "WHATSAPP_VERIFY_TOKEN"];
+const SECRET_ENV = ["SUPABASE_SERVICE_ROLE_KEY", "SERVICE_ROLE_KEY", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "SUPABASE_ANON_KEY", "ANON_KEY", "ANTHROPIC_API_KEY", "OPS_API_KEY", "CRON_SECRET", "EMAIL_WEBHOOK_SECRET", "SMTP_URL", "WHATSAPP_APP_SECRET", "WHATSAPP_ACCESS_TOKEN", "WHATSAPP_VERIFY_TOKEN"];
 
 export function redact(text: string, env: NodeJS.ProcessEnv = process.env): string {
   let out = text;
@@ -40,19 +41,18 @@ async function check(name: string, label: string, fn: () => Promise<string>): Pr
 
 export async function runSelfCheck(env: NodeJS.ProcessEnv = process.env): Promise<SelfCheck> {
   const checks: Check[] = [];
-  const url = env.SUPABASE_URL;
-  const service = env.SUPABASE_SERVICE_ROLE_KEY;
-  const pubUrl = env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = supabaseUrl(env);
+  const service = supabaseServiceKey(env);
+  const pubUrl = supabaseUrl(env);
+  const anon = supabaseAnonKey(env);
 
   checks.push(await check("env.supabase.server", "Supabase (servidor)", async () => {
-    if (!url || !service) throw new Error("faltan SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY");
+    if (!url || !service) throw new Error("faltan la URL de Supabase (SUPABASE_URL o NEXT_PUBLIC_SUPABASE_URL) o SUPABASE_SERVICE_ROLE_KEY");
     if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(url)) throw new Error(`SUPABASE_URL no parece una URL de proyecto: ${url}`);
     return url;
   }));
   checks.push(await check("env.supabase.public", "Supabase (acceso de usuarios)", async () => {
-    if (!pubUrl || !anon) throw new Error("faltan NEXT_PUBLIC_SUPABASE_URL o NEXT_PUBLIC_SUPABASE_ANON_KEY");
-    if (url && pubUrl.replace(/\/$/, "") !== url.replace(/\/$/, "")) throw new Error("NEXT_PUBLIC_SUPABASE_URL no coincide con SUPABASE_URL");
+    if (!pubUrl || !anon) throw new Error("faltan la URL de Supabase o la clave anon (NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_ANON_KEY o ANON_KEY)");
     return "configurado";
   }));
 

@@ -5,6 +5,7 @@ import type {
   Correction, Job, Membership,
 } from "./types";
 import type { ExpectedReceipt } from "./reconcile";
+import { supabaseUrl, supabaseServiceKey } from "./env";
 
 // Server-only. Uses the service role, so RLS does not apply here: this file is
 // the only writer for most tables, and it must never be imported from client
@@ -36,8 +37,8 @@ export class SupabaseStore implements Store {
   constructor(private db: SupabaseClient, private bucket = "documents") {}
 
   static fromEnv(): SupabaseStore | null {
-    const url = process.env.SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const url = supabaseUrl();
+    const key = supabaseServiceKey();
     if (!url || !key) return null;
     return new SupabaseStore(createClient(url, key, { auth: { persistSession: false } }));
   }

@@ -3,6 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import type { Store } from "./store";
 import type { Firm } from "./types";
+import { supabaseUrl, supabaseAnonKey } from "./env";
 
 // Member sessions. The browser holds a Supabase Auth session in cookies; the
 // server rebuilds a client from them per request. Reads made with that client
@@ -10,13 +11,13 @@ import type { Firm } from "./types";
 // else, enforced by the database rather than by this code.
 
 export function supabaseAuthConfigured(): boolean {
-  return !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  return !!(supabaseUrl() && supabaseAnonKey());
 }
 
 export async function createUserClient(): Promise<SupabaseClient | null> {
   if (!supabaseAuthConfigured()) return null;
   const store = await cookies();
-  return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+  return createServerClient(supabaseUrl()!, supabaseAnonKey()!, {
     cookies: {
       getAll: () => store.getAll(),
       setAll: (list) => {

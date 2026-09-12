@@ -139,12 +139,12 @@ and the cron secret is set. Secrets are never shown. From any machine,
 ## Going live
 
 1. Create a Supabase project in an EU region, run the migrations in `supabase/migrations/` in order, and set
-   `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` (server only).
+   the project URL (`NEXT_PUBLIC_SUPABASE_URL` or `SUPABASE_URL`) and `SUPABASE_SERVICE_ROLE_KEY` (server only).
 2. Set `ANTHROPIC_API_KEY` and, optionally, `OPS_MODEL` (default `claude-opus-5`).
 3. Set `OPS_API_KEY`, and the WhatsApp and email webhook secrets as needed.
 4. Point the WhatsApp Cloud API webhook at `/api/intake/whatsapp?firmId=...` and the
    inbound email provider at `/api/intake/email?firmId=...`.
-5. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` for sign-in, add
+5. Set `NEXT_PUBLIC_SUPABASE_URL` and the anon key (`ANON_KEY` or `NEXT_PUBLIC_SUPABASE_ANON_KEY`) for sign-in, add
    each user to `memberships`, and schedule `POST /api/jobs/run` every minute.
 6. Set `SMTP_URL`/`MAIL_FROM` and the WhatsApp phone number id to send for real.
 
