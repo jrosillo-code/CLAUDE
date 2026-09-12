@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { getRuntime, authorize, requireFirm } from "@/lib/runtime";
 import { receiveDocument, processDocument } from "@/lib/pipeline";
 import { BudgetExceeded } from "@/lib/budget";
-import { enqueue } from "@/lib/jobs";
+import { enqueue, runJobs } from "@/lib/jobs";
 import { allow } from "@/lib/ratelimit";
 
 export const maxDuration = 300;
@@ -31,6 +31,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ document: result.document, validation: result.validation, tasks: result.tasks, approvals: result.approvals, draft: result.draft });
     }
     const job = await enqueue(rt.store, firm.id, "process_document", { documentId: doc.id });
+    after(() => runJobs(rt, 3).catch((e) => console.error("[ops] drain failed", e)));
     if (req.headers.get("accept")?.includes("text/html")) return NextResponse.redirect(new URL(req.headers.get("referer") ?? "/app", req.url), 303);
     return NextResponse.json({ document: doc, job: { id: job.id, status: job.status } }, { status: 201 });
   } catch (err) {

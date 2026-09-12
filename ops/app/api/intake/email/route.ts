@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { getRuntime, requireFirm } from "@/lib/runtime";
 import { verifySecret, parseEmail, type EmailPayload } from "@/lib/intake/email";
 import { receiveDocument } from "@/lib/pipeline";
-import { enqueue } from "@/lib/jobs";
+import { enqueue, runJobs } from "@/lib/jobs";
 import { allow } from "@/lib/ratelimit";
 import { log } from "@/lib/audit";
 
@@ -27,5 +27,6 @@ export async function POST(req: Request) {
     received.push(doc.id);
     await enqueue(rt.store, firm.id, "process_document", { documentId: doc.id });
   }
+  if (received.length) after(() => runJobs(rt, 5).catch((e) => console.error("[ops] drain failed", e)));
   return NextResponse.json({ received });
 }

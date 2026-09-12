@@ -33,8 +33,11 @@ npm run onboard -- --name "Despacho" --kind correduria --email persona@despacho.
   person's value, validation re-runs, closed items drop their tasks), edit the draft,
   approve or reject, and close tasks. The three metrics at the top are the ones the site
   promises: fields approved without correction, euros found in settlements, open work.
-- Documents that arrive by webhook or upload are queued; `POST /api/jobs/run` (from a
-  cron, with `CRON_SECRET` or `OPS_API_KEY`) drains the queue. Transient model errors
+- Documents that arrive by webhook or upload are queued and drained right after the
+  request completes, so processing starts within seconds without a cron. `POST
+  /api/jobs/run` (from a cron, with `CRON_SECRET` or `OPS_API_KEY`) sweeps retries; the
+  bundled schedule is daily, which the Vercel Hobby plan allows, and can be set to every
+  minute on Pro. Transient model errors
   retry three times with backoff; anything else fails the document with the reason in
   the activity log.
 - Sending happens only after approval, through SMTP (`SMTP_URL`, `MAIL_FROM`) or the
