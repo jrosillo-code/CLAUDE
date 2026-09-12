@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getRuntime } from "@/lib/runtime";
+import { getRuntime, authorize } from "@/lib/runtime";
 import { validateLead, saveLead } from "@/lib/leads";
 import { allow } from "@/lib/ratelimit";
 import { log } from "@/lib/audit";
@@ -35,4 +35,14 @@ export async function POST(req: Request) {
     if (html) { const u = new URL("/contacto", req.url); u.searchParams.set("error", "No se pudo guardar; escríbenos por WhatsApp"); return NextResponse.redirect(u, 303); }
     return NextResponse.json({ error: message }, { status: 500 });
   }
+}
+
+/** Founder only: the machine key (OPS_API_KEY). Members never see leads; the table has no member policy. */
+export async function GET(req: Request) {
+  const auth = await authorize(req);
+  if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status });
+  if (!auth.viaKey) return NextResponse.json({ error: "Solo con OPS_API_KEY" }, { status: 403 });
+  const limit = Math.min(500, Math.max(1, Number(new URL(req.url).searchParams.get("limit") ?? 100) || 100));
+  const leads = await getRuntime().store.leads.list(limit);
+  return NextResponse.json({ leads });
 }

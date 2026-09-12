@@ -149,6 +149,7 @@ firm.
 | `POST /api/settlements/upload` | multipart `file`, `firmId`, `insurer?`, `period?`: receive and reconcile in one call; `example=1` in keyless mode loads the demo statement |
 | `POST /api/settlements/{id}/claim` | `{to}`: assemble the claim letter for a reconciliation and put it behind an approval (id = reconciliation) |
 | `POST /api/leads` | public contact form: JSON or form `name, email, message, phone?, firm?, kind?`; honeypot `website` |
+| `GET /api/leads?limit` | the contact requests, newest first; `OPS_API_KEY` only |
 | `GET /api/approvals` | pending approvals with their drafts |
 | `POST /api/approvals/{id}` | `{decision: "approved" \| "rejected", note?}` |
 | `GET /api/tasks`, `GET /api/activity` | open tasks; activity log and budget status |

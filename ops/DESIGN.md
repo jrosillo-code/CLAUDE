@@ -299,9 +299,10 @@ Ready prompts:
 - "Siguiendo DESIGN.md, crea una página /casos con un caso de estudio: eyebrow, H2 como
   afirmación, tres cifras en Newsreader con su unidad, una tabla de antes y después, y una
   cita del despacho. Sin fotos de archivo. Enlaza el kit de cumplimiento."
-- "Following DESIGN.md, add a settlements screen to the review app: a table of reconciled
-  statements with tabular figures, a `pending` pill per unpaid line, and an approve button
-  in the accent color only on the action that sends the claim to the insurer."
+- "Following DESIGN.md, add a claims history screen to the app: one row per claim sent
+  to an insurer with tabular figures, a pill for its state (pending, sent, answered), and
+  no accent color anywhere, because nothing on that screen sends. Reuse the app tabs from
+  `components/app-nav.tsx` and the table classes from `/app/{firm}/liquidaciones`."
 - "Siguiendo DESIGN.md, redacta un PDF de propuesta para una correduría: misma tipografía
   (Newsreader para títulos, Plex Sans para texto), precios públicos de la web, y la sección
   'Qué pasa cuando la IA se equivoca'."
