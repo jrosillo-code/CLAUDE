@@ -1,7 +1,4 @@
-import type {
-  Firm, InboundMessage, DocumentRecord, Extraction, Validation, Task, Draft, Approval, ActivityEntry, MonthlyUsage, ReconciliationRecord,
-  Correction, Job, JobKind, Membership,
-} from "./types";
+import type { Firm, InboundMessage, DocumentRecord, Extraction, Validation, Task, Draft, Approval, ActivityEntry, MonthlyUsage, ReconciliationRecord, Correction, Job, JobKind, Membership, FirmSettings, DocumentStatus } from "./types";
 import type { ExpectedReceipt } from "./reconcile";
 import type { Lead } from "./leads";
 
@@ -12,12 +9,16 @@ import type { Lead } from "./leads";
 export interface FileStore {
   put(path: string, bytes: Uint8Array, mediaType: string): Promise<void>;
   get(path: string): Promise<{ bytes: Uint8Array; mediaType: string } | null>;
+  delete(path: string): Promise<void>;
 }
 
 export interface Store {
   firms: {
     get(id: string): Promise<Firm | null>;
     upsert(firm: Firm): Promise<void>;
+    /** Merges a partial settings object into the firm's settings. */
+    updateSettings(id: string, patch: Partial<FirmSettings>): Promise<Firm>;
+    listAll(): Promise<Firm[]>;
   };
   memberships: {
     isMember(firmId: string, userId: string): Promise<boolean>;
@@ -34,12 +35,15 @@ export interface Store {
     get(id: string): Promise<DocumentRecord | null>;
     update(id: string, patch: Partial<DocumentRecord>): Promise<void>;
     listByFirm(firmId: string, limit?: number): Promise<DocumentRecord[]>;
+    /** Documents of a firm in one of the given statuses whose last update is before the given instant. */
+    listOlderThan(firmId: string, beforeIso: string, statuses: DocumentStatus[]): Promise<DocumentRecord[]>;
   };
   extractions: {
     insert(e: Extraction): Promise<void>;
     latestForDocument(documentId: string): Promise<Extraction | null>;
     updateData(id: string, data: Record<string, unknown>): Promise<void>;
     listByFirm(firmId: string, from?: string, to?: string): Promise<Extraction[]>;
+    deleteByDocument(documentId: string): Promise<number>;
   };
   validations: {
     insert(v: Validation): Promise<void>;
@@ -56,11 +60,13 @@ export interface Store {
     insert(d: Draft): Promise<void>;
     get(id: string): Promise<Draft | null>;
     update(id: string, patch: Partial<Draft>): Promise<void>;
+    deleteByDocument(documentId: string): Promise<number>;
   };
   corrections: {
     insert(c: Correction): Promise<void>;
     listByDocument(documentId: string): Promise<Correction[]>;
     listByFirm(firmId: string, from?: string, to?: string): Promise<Correction[]>;
+    deleteByDocument(documentId: string): Promise<number>;
   };
   jobs: {
     enqueue(j: Job): Promise<void>;
@@ -78,7 +84,7 @@ export interface Store {
   };
   activity: {
     append(e: ActivityEntry): Promise<void>;
-    list(firmId: string, limit?: number): Promise<ActivityEntry[]>;
+    list(firmId: string, limit?: number, from?: string, to?: string): Promise<ActivityEntry[]>;
   };
   usage: {
     get(firmId: string, month: string): Promise<MonthlyUsage | null>;
@@ -122,6 +128,14 @@ export class MemoryStore implements Store {
   firms = {
     get: async (id: string) => this.firmsMap.get(id) ?? null,
     upsert: async (f: Firm) => { this.firmsMap.set(f.id, f); },
+    updateSettings: async (id: string, patch: Partial<FirmSettings>) => {
+      const cur = this.firmsMap.get(id);
+      if (!cur) throw new Error(`Despacho no encontrado: ${id}`);
+      const next: Firm = { ...cur, settings: { ...(cur.settings ?? {}), ...patch } };
+      this.firmsMap.set(id, next);
+      return next;
+    },
+    listAll: async () => [...this.firmsMap.values()],
   };
   memberships = {
     isMember: async (firmId: string, userId: string) => this.membershipList.some((m) => m.firmId === firmId && m.userId === userId),
@@ -144,6 +158,8 @@ export class MemoryStore implements Store {
     },
     listByFirm: async (firmId: string, limit = 50) =>
       [...this.docs.values()].filter((d) => d.firmId === firmId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit),
+    listOlderThan: async (firmId: string, beforeIso: string, statuses: DocumentStatus[]) =>
+      [...this.docs.values()].filter((d) => d.firmId === firmId && statuses.includes(d.status) && d.updatedAt < beforeIso),
   };
   extractions = {
     insert: async (e: Extraction) => { this.extractionList.push(e); },
@@ -156,6 +172,11 @@ export class MemoryStore implements Store {
     listByFirm: async (firmId: string, from?: string, to?: string) => {
       const docs = new Set([...this.docs.values()].filter((d) => d.firmId === firmId).map((d) => d.id));
       return this.extractionList.filter((e) => docs.has(e.documentId) && (!from || e.createdAt >= from) && (!to || e.createdAt <= to));
+    },
+    deleteByDocument: async (documentId: string) => {
+      const before = this.extractionList.length;
+      this.extractionList = this.extractionList.filter((e) => e.documentId !== documentId);
+      return before - this.extractionList.length;
     },
   };
   validations = {
@@ -180,12 +201,22 @@ export class MemoryStore implements Store {
       const cur = this.draftMap.get(id);
       if (cur) this.draftMap.set(id, { ...cur, ...patch });
     },
+    deleteByDocument: async (documentId: string) => {
+      let n = 0;
+      for (const [id, d] of this.draftMap) if (d.documentId === documentId) { this.draftMap.delete(id); n++; }
+      return n;
+    },
   };
   corrections = {
     insert: async (c: Correction) => { this.correctionList.push(c); },
     listByDocument: async (documentId: string) => this.correctionList.filter((c) => c.documentId === documentId),
     listByFirm: async (firmId: string, from?: string, to?: string) =>
       this.correctionList.filter((c) => c.firmId === firmId && (!from || c.createdAt >= from) && (!to || c.createdAt <= to)),
+    deleteByDocument: async (documentId: string) => {
+      const before = this.correctionList.length;
+      this.correctionList = this.correctionList.filter((c) => c.documentId !== documentId);
+      return before - this.correctionList.length;
+    },
   };
   jobs = {
     enqueue: async (j: Job) => { this.jobMap.set(j.id, j); },
@@ -217,8 +248,8 @@ export class MemoryStore implements Store {
   };
   activity = {
     append: async (e: ActivityEntry) => { this.activityList.push(e); },
-    list: async (firmId: string, limit = 100) =>
-      this.activityList.filter((e) => e.firmId === firmId).slice(-limit).reverse(),
+    list: async (firmId: string, limit = 100, from?: string, to?: string) =>
+      this.activityList.filter((e) => e.firmId === firmId && (!from || e.at >= from) && (!to || e.at <= to)).slice(-limit).reverse(),
   };
   usage = {
     get: async (firmId: string, month: string) => this.usageMap.get(`${firmId}:${month}`) ?? null,
@@ -249,5 +280,6 @@ export class MemoryStore implements Store {
   files: FileStore = {
     put: async (path, bytes, mediaType) => { this.fileMap.set(path, { bytes, mediaType }); },
     get: async (path) => this.fileMap.get(path) ?? null,
+    delete: async (path) => { this.fileMap.delete(path); },
   };
 }

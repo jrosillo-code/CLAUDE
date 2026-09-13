@@ -4,11 +4,13 @@ import Link from "next/link";
 // Same restraint as the site: text, hairlines, one active underline.
 
 export function AppNav({ slug, firmName, userLabel, mode, active, logout }: {
-  slug: string; firmName: string; userLabel: string; mode: { model: string; store: string }; active: "revisar" | "liquidaciones"; logout: boolean;
+  slug: string; firmName: string; userLabel: string; mode: { model: string; store: string }; active: "revisar" | "liquidaciones" | "informe" | "ajustes"; logout: boolean;
 }) {
-  const tabs: { key: "revisar" | "liquidaciones"; label: string }[] = [
+  const tabs: { key: "revisar" | "liquidaciones" | "informe" | "ajustes"; label: string }[] = [
     { key: "revisar", label: "Cola de revisión" },
     { key: "liquidaciones", label: "Liquidaciones" },
+    { key: "informe", label: "Informe" },
+    { key: "ajustes", label: "Ajustes" },
   ];
   return (
     <header className="app-head">

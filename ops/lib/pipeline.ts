@@ -1,5 +1,6 @@
 import type { Firm, DocumentRecord, Extraction, Validation, Task, Draft, Approval, InboundMessage } from "./types";
 import type { Store } from "./store";
+import type { Sender } from "./sender";
 import type { Extractor, Drafter } from "./claude";
 import { withDisclosure } from "./claude";
 import { validateExtraction } from "./validate";
@@ -15,6 +16,8 @@ export interface PipelineDeps {
   store: Store;
   extractor: Extractor;
   drafter: Drafter;
+  /** Used only for the operational budget warning. */
+  sender?: Sender;
 }
 
 export interface IntakeInput {
@@ -72,7 +75,7 @@ export async function processDocument(deps: PipelineDeps, firm: Firm, documentId
 
   try {
     // 1. Read. Budget is checked before every model call.
-    await assertWithinBudget(store, firm);
+    await assertWithinBudget(store, firm, deps.sender ?? null);
     const read = await extractor.extract({ mediaType: file.mediaType, bytes: file.bytes, fileName: doc.fileName });
     const extraction: Extraction = {
       id: newId(),
@@ -135,7 +138,7 @@ export async function processDocument(deps: PipelineDeps, firm: Firm, documentId
     const approvals: Approval[] = [];
     const to = doc.inboundMessageId ? await senderAddress(store, doc) : null;
     if (result.missing.length > 0 && to) {
-      await assertWithinBudget(store, firm);
+      await assertWithinBudget(store, firm, deps.sender ?? null);
       const warnings = result.issues.filter((i) => i.severity === "warning").map((i) => i.message);
       const written = await drafter.draft({
         firmName: firm.name,

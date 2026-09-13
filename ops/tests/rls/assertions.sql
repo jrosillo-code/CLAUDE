@@ -171,3 +171,13 @@ do $$ begin
   end;
 end $$;
 reset role;
+
+-- ── Migration 0005: settings are server-written; purged is a status ──────────
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+select assert_true((select settings from firms where id = '10000000-0000-0000-0000-000000000001') = '{}'::jsonb, 'member reads own firm settings');
+update firms set settings = '{"retentionDays": 1}'::jsonb where id = '10000000-0000-0000-0000-000000000001';
+select assert_true((select settings from firms where id = '10000000-0000-0000-0000-000000000001') = '{}'::jsonb, 'member cannot change firm settings');
+reset role;
+update documents set status = 'purged' where storage_path = 'a/1';
+select assert_true((select status::text from documents where storage_path = 'a/1') = 'purged', 'purged is a valid document status');

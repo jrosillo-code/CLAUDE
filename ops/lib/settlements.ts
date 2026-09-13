@@ -1,5 +1,6 @@
 import type { Firm, ReconciliationRecord, Task } from "./types";
 import type { Store } from "./store";
+import type { Sender } from "./sender";
 import type { SettlementExtractor } from "./claude";
 import { reconcile, type ReconcileSummary } from "./reconcile";
 import { assertWithinBudget } from "./budget";
@@ -14,6 +15,8 @@ import { newId, nowIso } from "./ids";
 export interface SettlementDeps {
   store: Store;
   settlementExtractor: SettlementExtractor;
+  /** Used only for the operational budget warning. */
+  sender?: Sender;
 }
 
 export interface SettlementInput {
@@ -32,7 +35,7 @@ export async function processSettlement(deps: SettlementDeps, input: SettlementI
   const file = await store.files.get(doc.storagePath);
   if (!file) throw new Error(`Archivo no encontrado: ${doc.storagePath}`);
 
-  await assertWithinBudget(store, input.firm);
+  await assertWithinBudget(store, input.firm, deps.sender ?? null);
   const read = await settlementExtractor.extractSettlement({ mediaType: file.mediaType, bytes: file.bytes, fileName: doc.fileName });
   await log(store, {
     firmId: input.firm.id,

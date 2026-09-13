@@ -73,6 +73,8 @@ export async function runSelfCheck(env: NodeJS.ProcessEnv = process.env): Promis
     if (missing.length) throw new Error(`faltan tablas: ${missing.join(", ")} (ejecuta las migraciones en orden)`);
     const fn = await db.rpc("claim_jobs", { p_limit: 0 });
     if (fn.error) throw new Error(`falta claim_jobs(): ${fn.error.message} (migración 0002)`);
+    const col = await db.from("firms").select("settings", { head: true, count: "exact" }).limit(0);
+    if (col.error) throw new Error(`falta firms.settings: ${col.error.message} (migración 0005)`);
     return `${TABLES.length} tablas y funciones presentes`;
   }));
   checks.push(await check("db.rls", "Seguridad por filas en todas las tablas", async () => {

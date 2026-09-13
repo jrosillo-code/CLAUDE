@@ -1,9 +1,6 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Store, FileStore } from "./store";
-import type {
-  Firm, InboundMessage, DocumentRecord, Extraction, Validation, Task, Draft, Approval, ActivityEntry, MonthlyUsage, ReconciliationRecord,
-  Correction, Job, Membership,
-} from "./types";
+import type { Firm, InboundMessage, DocumentRecord, Extraction, Validation, Task, Draft, Approval, ActivityEntry, MonthlyUsage, ReconciliationRecord, Correction, Job, Membership, FirmSettings, DocumentStatus } from "./types";
 import type { ExpectedReceipt } from "./reconcile";
 import type { Lead } from "./leads";
 import { supabaseUrl, supabaseServiceKey } from "./env";
@@ -20,7 +17,7 @@ function must<T>(res: { data: T | null; error: { message: string } | null }, wha
   return res.data;
 }
 
-const toFirm = (r: Row): Firm => ({ id: r.id as string, name: r.name as string, kind: r.kind as Firm["kind"], monthlyTokenBudget: Number(r.monthly_token_budget), createdAt: r.created_at as string });
+const toFirm = (r: Row): Firm => ({ id: r.id as string, name: r.name as string, kind: r.kind as Firm["kind"], monthlyTokenBudget: Number(r.monthly_token_budget), createdAt: r.created_at as string, settings: (r.settings as Firm["settings"]) ?? {} });
 const toInbound = (r: Row): InboundMessage => ({ id: r.id as string, firmId: r.firm_id as string, channel: r.channel as InboundMessage["channel"], fromAddress: r.from_address as string, receivedAt: r.received_at as string, subject: (r.subject as string) ?? null, text: (r.text as string) ?? null, externalId: (r.external_id as string) ?? null, attachments: (r.attachments as InboundMessage["attachments"]) ?? [] });
 const toDoc = (r: Row): DocumentRecord => ({ id: r.id as string, firmId: r.firm_id as string, inboundMessageId: (r.inbound_message_id as string) ?? null, clientRef: (r.client_ref as string) ?? null, storagePath: r.storage_path as string, fileName: r.file_name as string, mediaType: r.media_type as string, sha256: r.sha256 as string, status: r.status as DocumentRecord["status"], createdAt: r.created_at as string, updatedAt: r.updated_at as string });
 const toExtraction = (r: Row): Extraction => ({ id: r.id as string, documentId: r.document_id as string, kind: r.kind as Extraction["kind"], kindConfidence: Number(r.kind_confidence), data: r.data as Record<string, unknown>, usage: (r.usage as Extraction["usage"]) ?? null, createdAt: r.created_at as string });
@@ -46,7 +43,15 @@ export class SupabaseStore implements Store {
 
   firms = {
     get: async (id: string) => { const r = await this.db.from("firms").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toFirm(r.data) : null; },
-    upsert: async (f: Firm) => { must(await this.db.from("firms").upsert({ id: f.id, name: f.name, kind: f.kind, monthly_token_budget: f.monthlyTokenBudget, created_at: f.createdAt }).select("id"), "firms.upsert"); },
+    upsert: async (f: Firm) => { must(await this.db.from("firms").upsert({ id: f.id, name: f.name, kind: f.kind, monthly_token_budget: f.monthlyTokenBudget, created_at: f.createdAt, settings: f.settings ?? {} }).select("id"), "firms.upsert"); },
+    updateSettings: async (id: string, patch: Partial<FirmSettings>) => {
+      const cur = await this.firms.get(id);
+      if (!cur) throw new Error(`Despacho no encontrado: ${id}`);
+      const settings = { ...(cur.settings ?? {}), ...patch };
+      const r = await this.db.from("firms").update({ settings }).eq("id", id); if (r.error) throw new Error(r.error.message);
+      return { ...cur, settings };
+    },
+    listAll: async () => { const r = await this.db.from("firms").select("*"); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toFirm); },
   };
   memberships = {
     isMember: async (firmId: string, userId: string) => { const r = await this.db.from("memberships").select("firm_id").eq("firm_id", firmId).eq("user_id", userId).maybeSingle(); if (r.error) throw new Error(r.error.message); return !!r.data; },
@@ -74,6 +79,7 @@ export class SupabaseStore implements Store {
       const r = await this.db.from("documents").update(row).eq("id", id); if (r.error) throw new Error(r.error.message);
     },
     listByFirm: async (firmId: string, limit = 50) => { const r = await this.db.from("documents").select("*").eq("firm_id", firmId).order("created_at", { ascending: false }).limit(limit); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toDoc); },
+    listOlderThan: async (firmId: string, beforeIso: string, statuses: DocumentStatus[]) => { const r = await this.db.from("documents").select("*").eq("firm_id", firmId).in("status", statuses).lt("updated_at", beforeIso).limit(500); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toDoc); },
   };
   extractions = {
     insert: async (e: Extraction) => {
@@ -82,6 +88,7 @@ export class SupabaseStore implements Store {
     },
     latestForDocument: async (documentId: string) => { const r = await this.db.from("extractions").select("*").eq("document_id", documentId).order("created_at", { ascending: false }).limit(1).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toExtraction(r.data) : null; },
     updateData: async (id: string, data: Record<string, unknown>) => { const r = await this.db.from("extractions").update({ data }).eq("id", id); if (r.error) throw new Error(r.error.message); },
+    deleteByDocument: async (documentId: string) => { const r = await this.db.from("extractions").delete({ count: "exact" }).eq("document_id", documentId); if (r.error) throw new Error(r.error.message); return r.count ?? 0; },
     listByFirm: async (firmId: string, from?: string, to?: string) => {
       let q = this.db.from("extractions").select("*").eq("firm_id", firmId);
       if (from) q = q.gte("created_at", from);
@@ -107,10 +114,12 @@ export class SupabaseStore implements Store {
     insert: async (d: Draft) => { must(await this.db.from("drafts").insert({ id: d.id, firm_id: d.firmId, document_id: d.documentId, channel: d.channel, to_address: d.to, subject: d.subject, body: d.body, usage: d.usage, created_at: d.createdAt }).select("id"), "drafts.insert"); },
     get: async (id: string) => { const r = await this.db.from("drafts").select("*").eq("id", id).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? toDraft(r.data) : null; },
     update: async (id: string, patch: Partial<Draft>) => { const row: Row = {}; if (patch.body !== undefined) row.body = patch.body; if (patch.subject !== undefined) row.subject = patch.subject; if (patch.to !== undefined) row.to_address = patch.to; const r = await this.db.from("drafts").update(row).eq("id", id); if (r.error) throw new Error(r.error.message); },
+    deleteByDocument: async (documentId: string) => { const r = await this.db.from("drafts").delete({ count: "exact" }).eq("document_id", documentId); if (r.error) throw new Error(r.error.message); return r.count ?? 0; },
   };
   corrections = {
     insert: async (c: Correction) => { must(await this.db.from("corrections").insert({ id: c.id, firm_id: c.firmId, document_id: c.documentId, extraction_id: c.extractionId, field: c.field, old_value: c.oldValue ?? null, new_value: c.newValue ?? null, user_id: c.userId, created_at: c.createdAt }).select("id"), "corrections.insert"); },
     listByDocument: async (documentId: string) => { const r = await this.db.from("corrections").select("*").eq("document_id", documentId); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toCorrection); },
+    deleteByDocument: async (documentId: string) => { const r = await this.db.from("corrections").delete({ count: "exact" }).eq("document_id", documentId); if (r.error) throw new Error(r.error.message); return r.count ?? 0; },
     listByFirm: async (firmId: string, from?: string, to?: string) => {
       let q = this.db.from("corrections").select("*").eq("firm_id", firmId);
       if (from) q = q.gte("created_at", from);
@@ -145,7 +154,7 @@ export class SupabaseStore implements Store {
   };
   activity = {
     append: async (e: ActivityEntry) => { must(await this.db.from("activity_log").insert({ id: e.id, firm_id: e.firmId, at: e.at, actor: e.actor, action: e.action, entity: e.entity, usage: e.usage, detail: e.detail }).select("id"), "activity.append"); },
-    list: async (firmId: string, limit = 100) => { const r = await this.db.from("activity_log").select("*").eq("firm_id", firmId).order("at", { ascending: false }).limit(limit); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toActivity); },
+    list: async (firmId: string, limit = 100, from?: string, to?: string) => { let q = this.db.from("activity_log").select("*").eq("firm_id", firmId); if (from) q = q.gte("at", from); if (to) q = q.lte("at", to); const r = await q.order("at", { ascending: false }).limit(limit); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map(toActivity); },
   };
   usage = {
     get: async (firmId: string, month: string) => { const r = await this.db.from("monthly_usage").select("*").eq("firm_id", firmId).eq("month", month).maybeSingle(); if (r.error) throw new Error(r.error.message); return r.data ? ({ firmId, month, tokens: Number(r.data.tokens), costUsd: Number(r.data.cost_usd) } satisfies MonthlyUsage) : null; },
@@ -179,5 +188,6 @@ export class SupabaseStore implements Store {
       if (r.error || !r.data) return null;
       return { bytes: new Uint8Array(await r.data.arrayBuffer()), mediaType: r.data.type || "application/octet-stream" };
     },
+    delete: async (path) => { const r = await this.db.storage.from(this.bucket).remove([path]); if (r.error) throw new Error(`storage.remove: ${r.error.message}`); },
   };
 }

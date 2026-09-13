@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRuntime } from "@/lib/runtime";
 import { runJobs } from "@/lib/jobs";
+import { purgeExpired } from "@/lib/retention";
 
 export const maxDuration = 300;
 
@@ -14,7 +15,8 @@ export async function POST(req: Request) {
   const limit = Math.min(50, Number(new URL(req.url).searchParams.get("limit") ?? 50) || 50);
   const rt = getRuntime();
   const summary = await runJobs(rt, limit);
-  return NextResponse.json(summary);
+  const retention = await purgeExpired(rt.store);
+  return NextResponse.json({ ...summary, retention });
 }
 
 export const GET = POST;

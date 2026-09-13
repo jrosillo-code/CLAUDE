@@ -10,6 +10,19 @@
 
 export type FirmKind = "correduria" | "asesoria";
 
+export interface FirmSettings {
+  /** Days after a final status before originals, extractions, drafts and corrections are deleted. 0 or null keeps everything. */
+  retentionDays: number | null;
+  /** Where the 80% token-budget warning is sent. */
+  alertEmail: string | null;
+  /** Hours per week the workflow took before the pilot, from the week-1 inventory. */
+  baselineHoursPerWeek: number | null;
+  /** Insurer name → settlements mailbox, used to pre-fill claims. */
+  insurerEmails: Record<string, string>;
+}
+
+export const DEFAULT_SETTINGS: FirmSettings = { retentionDays: null, alertEmail: null, baselineHoursPerWeek: null, insurerEmails: {} };
+
 export interface Firm {
   id: string;
   name: string;
@@ -17,6 +30,12 @@ export interface Firm {
   /** Monthly ceiling on model tokens across all documents; alerts at 80%. */
   monthlyTokenBudget: number;
   createdAt: string;
+  /** Absent on older records; read through firmSettings(). */
+  settings?: Partial<FirmSettings>;
+}
+
+export function firmSettings(firm: Firm): FirmSettings {
+  return { ...DEFAULT_SETTINGS, ...(firm.settings ?? {}), insurerEmails: { ...(firm.settings?.insurerEmails ?? {}) } };
 }
 
 export type Channel = "upload" | "email" | "whatsapp";
@@ -57,7 +76,8 @@ export type DocumentStatus =
   | "awaiting_approval"
   | "approved"
   | "rejected"
-  | "failed";
+  | "failed"
+  | "purged";
 
 export interface DocumentRecord {
   id: string;

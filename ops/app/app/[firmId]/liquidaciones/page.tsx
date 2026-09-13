@@ -8,6 +8,7 @@ import type { ReconcileItem, ReconcileStatus, ReconcileSummary } from "@/lib/rec
 import type { Approval, Draft, ReconciliationRecord } from "@/lib/types";
 import { AppNav } from "@/components/app-nav";
 import { claimTotal, claimableItems, eur, findPendingClaim, periodLabel } from "@/lib/claims";
+import { firmSettings } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -107,7 +108,7 @@ export default async function Liquidaciones({ params, searchParams }: { params: 
             </table>
           </div>
 
-          <Claim slug={slug} record={selected} summary={detail.summary} pending={detail.pendingClaim} draft={detail.pendingDraft} history={detail.history} />
+          <Claim slug={slug} record={selected} summary={detail.summary} pending={detail.pendingClaim} draft={detail.pendingDraft} history={detail.history} mailbox={selected.insurer ? firmSettings(firm).insurerEmails[selected.insurer] ?? "" : ""} />
         </section>
       )}
 
@@ -172,7 +173,7 @@ function Line({ i }: { i: ReconcileItem }) {
   );
 }
 
-function Claim({ slug, record, summary, pending, draft, history }: { slug: string; record: ReconciliationRecord; summary: ReconcileSummary; pending: Approval | null; draft: Draft | null; history: Approval[] }) {
+function Claim({ slug, record, summary, pending, draft, history, mailbox }: { slug: string; record: ReconciliationRecord; summary: ReconcileSummary; pending: Approval | null; draft: Draft | null; history: Approval[]; mailbox: string }) {
   const total = claimTotal(summary);
   const lines = claimableItems(summary).length;
   return (
@@ -189,7 +190,7 @@ function Claim({ slug, record, summary, pending, draft, history }: { slug: strin
       {!pending && lines > 0 && (
         <form action={`/api/settlements/${record.id}/claim`} method="post" className="row" style={{ marginTop: 12 }}>
           <label className="small" style={{ display: "grid", gap: 4, flex: 1, minWidth: 220 }}>Correo de liquidaciones de {record.insurer ?? "la aseguradora"}
-            <input name="to" type="email" required placeholder="liquidaciones@aseguradora.es" style={{ font: "inherit", fontSize: 15, padding: "8px 10px", border: "1px solid var(--rule)", background: "var(--surface)" }} />
+            <input name="to" type="email" required defaultValue={mailbox} placeholder="liquidaciones@aseguradora.es" style={{ font: "inherit", fontSize: 15, padding: "8px 10px", border: "1px solid var(--rule)", background: "var(--surface)" }} />
           </label>
           <button type="submit" className="secondary" style={{ alignSelf: "end" }}>Preparar reclamación</button>
         </form>
@@ -202,7 +203,7 @@ function Claim({ slug, record, summary, pending, draft, history }: { slug: strin
           <div className="row" style={{ marginTop: 12 }}>
             <form action={`/api/approvals/${pending.id}`} method="post"><input type="hidden" name="decision" value="approved" /><button type="submit" className="btn accent">Aprobar y enviar a la aseguradora</button></form>
             <form action={`/api/approvals/${pending.id}`} method="post"><input type="hidden" name="decision" value="rejected" /><button type="submit" className="secondary">Rechazar</button></form>
-            <span className="small muted">Para cambiar el texto, edítalo en la <Link href={`/app/${slug}/revisar`}>cola de revisión</Link>.</span>
+            <span className="small muted">Para cambiar el texto, edítalo en la <Link href={`/app/${slug}/revisar`}>cola de revisión</Link>. Los correos de las aseguradoras se guardan en <Link href={`/app/${slug}/ajustes`}>ajustes</Link>.</span>
           </div>
         </div>
       )}
