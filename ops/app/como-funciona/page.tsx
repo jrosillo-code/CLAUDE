@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock } from "@/components/site";
+import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, AuditMock, DisclosureLine } from "@/components/site";
 
 export const metadata = { title: "Cómo funciona", description: "El recorrido de un documento: entrada, extracción con cita, validación determinista, tareas, borrador con aviso de IA, aprobación humana, escritura en el sistema de gestión y registro de auditoría." };
 
@@ -14,14 +14,27 @@ export default function ComoFunciona() {
       </section>
 
       <Section eyebrow="Paso a paso" title="Del correo o el WhatsApp al programa de gestión.">
-        <div className="steps" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
-          <div className="step"><h3>Recibe</h3><p>Email, WhatsApp o subida. El archivo se guarda con su huella, su origen y la hora. Si llega dos veces, se reconoce.</p></div>
-          <div className="step"><h3>Lee con cita</h3><p>El modelo rellena un esquema fijo por tipo de documento. Cada valor lleva el texto exacto y la página. Si no está escrito, el campo queda vacío: la instrucción es no deducir.</p></div>
-          <div className="step"><h3>Valida</h3><p>Reglas, no IA: dígito de control de NIF y CIF, sumas que cuadran, fechas coherentes, lista de documentos por tipo de siniestro. Un valor sin cita se trata como ausente.</p></div>
-          <div className="step"><h3>Crea tareas</h3><p>Cada elemento que falta es una tarea para el cliente; cada error de fondo, una tarea para el despacho.</p></div>
-          <div className="step"><h3>Redacta</h3><p>Un mensaje breve que solo puede mencionar lo que la validación decidió. El aviso de IA lo añade el código, no el modelo.</p></div>
-          <div className="step"><h3>Espera</h3><p>Aquí se detiene. Una persona ve el documento y la propuesta en la misma pantalla, corrige lo que haga falta, y aprueba o rechaza.</p></div>
-          <div className="step"><h3>Ejecuta y registra</h3><p>Solo tras la aprobación se envía el mensaje o se escribe en el programa de gestión. Quién, cuándo, con qué modelo y qué costó quedan en el registro.</p></div>
+        <div className="rows">
+          <div><div><h3>Recibe</h3><p>Email, WhatsApp o subida. El archivo se guarda con su huella, su origen y la hora. Si llega dos veces, se reconoce.</p></div></div>
+          <div><div><h3>Lee con cita</h3><p>El modelo rellena un esquema fijo por tipo de documento. Cada valor lleva el texto exacto y la página. Si no está escrito, el campo queda vacío: la instrucción es no deducir.</p></div></div>
+          <div><div><h3>Valida</h3><p>Reglas, no IA: dígito de control de NIF y CIF, sumas que cuadran, fechas coherentes, lista de documentos por tipo de siniestro. Un valor sin cita se trata como ausente.</p></div></div>
+          <div><div><h3>Crea tareas</h3><p>Cada elemento que falta es una tarea para el cliente; cada error de fondo, una tarea para el despacho.</p></div></div>
+          <div><div><h3>Redacta</h3><p>Un mensaje breve que solo puede mencionar lo que la validación decidió. El aviso de IA lo añade el código, no el modelo.</p></div></div>
+          <div><div><h3>Espera</h3><p>Aquí se detiene. Una persona ve el documento y la propuesta en la misma pantalla, corrige lo que haga falta, y aprueba o rechaza.</p></div></div>
+          <div><div><h3>Ejecuta y registra</h3><p>Solo tras la aprobación se envía el mensaje o se escribe en el programa de gestión. Quién, cuándo, con qué modelo y qué costó quedan en el registro.</p></div></div>
+        </div>
+      </Section>
+
+      <Section eyebrow="El registro" title="Lo que queda escrito, tal cual se guarda.">
+        <div className="two">
+          <div>
+            <AuditMock />
+            <p className="small muted" style={{ marginTop: 10 }}>Cinco filas reales del registro de un parte de siniestro: llega, se lee, se valida, una persona corrige una fecha, aprueba y se envía. Cada fila lleva actor, hora y coste del modelo.</p>
+          </div>
+          <div>
+            <DisclosureLine />
+            <p className="small muted" style={{ marginTop: 10 }}>El aviso que cierra cada mensaje. Lo añade el código al final del texto, después de la revisión; editar el borrador no lo quita.</p>
+          </div>
         </div>
       </Section>
 
@@ -39,7 +52,7 @@ export default function ComoFunciona() {
           <div><strong>Datos</strong>Contrato de encargo (RGPD). Datos de salud y de terceros dentro de la UE. Retención definida por ti. Sin entrenamiento.</div>
           <div><strong>Coste</strong>Presupuesto mensual de tokens por despacho con aviso al 80 %; el registro muestra lo que costó cada lectura.</div>
         </div>
-        <p style={{ marginTop: 20 }}><Link href="/seguridad">Los controles técnicos, uno por uno →</Link></p>
+        <p style={{ marginTop: 20 }}><Link href="/kit-cumplimiento">El kit, punto por punto, para tu DPO →</Link> · <Link href="/seguridad">Los controles técnicos →</Link></p>
       </Section>
 
       <Section eyebrow="Cuándo se equivoca" title="Qué pasa cuando la IA se equivoca.">

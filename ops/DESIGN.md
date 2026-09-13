@@ -147,8 +147,9 @@ Semantic colors are not the accent. They encode state and never decorate.
 Three families, each with one job.
 
 - **Newsreader** (Google Fonts, optical sizes 6 to 72) carries the voice: H1, H2, H3, the
-  big figures on the proof strip and the review screen. Weight 500, tight leading,
-  `text-wrap: balance`. Never used for body text or UI controls.
+  big figures on the proof strip and the review screen. Weight 400 with negative tracking
+  (H1 -0.02em, H2 -0.015em): the elegance comes from the face, not the weight (a move
+  taken from the Wired reference). Never used for body text or UI controls.
 - **IBM Plex Sans** is for reading and operating: body, ledes, buttons, form fields,
   card titles (weight 600). Good Spanish diacritics, calm at 17px.
 - **IBM Plex Mono** is for labels and data: eyebrows, mono labels in the queue, the audit
@@ -161,14 +162,14 @@ font host degrades gracefully.
 
 | Role | Face | Size | Notes |
 |---|---|---|---|
-| Hero H1 | Newsreader 500 | 40 to 64px fluid | One sentence with a period. "Tus operaciones, con IA y con control." |
-| Section H2 | Newsreader 500 | 28 to 38px fluid | A statement, not a label. "Cinco pasos que hoy hace tu equipo a mano." |
-| H3 | Newsreader 500 | 22px | Offers, steps, columns. |
+| Hero H1 | Newsreader 400, -0.02em | 40 to 64px fluid | One sentence with a period. "Tus operaciones, con IA y con control." |
+| Section H2 | Newsreader 400, -0.015em | 28 to 38px fluid | A statement, not a label. "Cinco pasos que hoy hace tu equipo a mano." |
+| H3 | Newsreader 400 | 22px | Offers, steps, columns. |
 | Eyebrow | Plex Mono | 12px, 0.08em, uppercase, ink-3 | Above every H2; names the section. |
 | Lede | Plex Sans | 19px, ink-2 | Under the H1 only. |
 | Body | Plex Sans | 17px / 1.55 | Max 62ch. |
 | Small | Plex Sans | 14px | Source lines, footers, table cells. |
-| Figure | Newsreader | 44px | Proof strip and metrics; unit follows in the same size. |
+| Figure | Newsreader | 44px | Proof strip and metrics; unit follows in the same size. `tnum` on every figure, price and money cell (the Stripe reference's quiet financial signal). |
 
 ## Layout
 
@@ -240,6 +241,38 @@ the same CSS as the app, not a screenshot, so it never drifts.
 Full width, 14px, hairline rows, mono uppercase headers in ink-3, tabular figures.
 Wrapped in an `overflow-x: auto` container; the page never scrolls sideways.
 
+### Comparison table (`.compare`)
+
+The pricing comparison, after the Notion reference: hairline rows, mono headers, the
+featured column marked by a 2px `accent` top rule and hairline sides, never a fill.
+"Incluido" rows carry an accent check; absent cells are an ink-3 dash; money cells are
+mono `tnum`.
+
+### Story rows (`.rows`)
+
+A numbered sequence as hairline rows (Wired byline rows, Linear changelog rows): a mono
+two-digit counter in ink-3, a sans 600 title and an ink-2 paragraph. Used for the seven
+steps on Cómo funciona and the seven points of the compliance kit. Replaces a grid when
+the order matters.
+
+### Settlement mock (`.settle`) and audit mock (`.audit`)
+
+Two more real-UI images, built from the app's classes like the queue mock: the
+reconciled lines with a state pill per line, tabular figures and the single accent
+button on the claim; and five rows of the activity log with time, action, actor and
+cost. Every explanatory section on the site shows one of the three mocks (a rule taken
+from the Linear and Stripe references: the product is the protagonist of each section).
+
+### Disclosure line (`.disclosure`)
+
+The AI notice exactly as `withDisclosure()` appends it, with a 2px accent left rule.
+Shown on Cómo funciona, Seguridad and the kit page so a DPO sees the real text.
+
+### Footer
+
+Four columns at 13px (brand and contact, Producto, Confianza, Legal) over a hairline,
+with a legal row beneath (Stripe and Notion footers). Links underline on hover only.
+
 ### Forms
 
 Inputs inherit the body font, 1px `rule` border, 8 to 10px padding, no radius beyond
@@ -258,6 +291,7 @@ detail, and a mono `pre` block for copying.
 - Show the real product: the review screen, real document crops (anonymised), the audit
   line. The product is the proof.
 - Spend the accent only where a person approves or where a value is verified.
+- One filled button per band. Everything else in the band is ghost (Stripe).
 - Publish prices, durations and what happens when the AI is wrong.
 - Use the Spanish regulatory vocabulary correctly: Verifactu, SII, RGPD, encargado del
   tratamiento, EIAC, DGSFP, artículo 50 del Reglamento de IA.

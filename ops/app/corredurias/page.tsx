@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, Faq, JsonLd, faqJsonLd } from "@/components/site";
+import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, SettlementMock, Faq, JsonLd, faqJsonLd } from "@/components/site";
 
 export const metadata = { title: "Para corredurías de seguros", description: "Conciliación de liquidaciones de comisiones, documentación de siniestros y renovaciones con revisión humana, integrado con ebroker, segElevia, Avant2, Mediator y ficheros EIAC." };
 
@@ -33,6 +33,11 @@ export default function Corredurias() {
             </ul>
           </div>
           <QueueMock variant="liquidacion" />
+        </div>
+        <div style={{ marginTop: 28 }}>
+          <div className="eyebrow" style={{ marginBottom: 10 }}>Así queda la liquidación conciliada</div>
+          <SettlementMock />
+          <p className="small muted" style={{ marginTop: 10 }}>Cada línea con su estado; las reclamables suman su importe. La carta a la aseguradora la redacta el sistema con esas líneas, y solo sale cuando alguien del despacho la aprueba.</p>
         </div>
       </Section>
 

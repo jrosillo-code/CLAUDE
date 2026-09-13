@@ -30,13 +30,40 @@ export default function Precios() {
           </div>
           <div className="offer featured">
             <div className="time">Dos semanas</div><h3>Sprint de automatización</h3><div className="price">6.000 a 12.000 €</div>
-            <ul><li>Un flujo en producción, integrado con tu programa de gestión</li><li>Kit de cumplimiento: aviso de IA, revisión humana, registro, contrato de encargo</li><li>Pruebas automáticas y documentación</li><li>Formación del equipo, media jornada</li><li>Una ronda de ajustes</li><li>Medición de horas al final</li></ul>
+            <ul><li>Un flujo en producción, integrado con tu programa de gestión</li><li><Link href="/kit-cumplimiento">Kit de cumplimiento</Link>: aviso de IA, revisión humana, registro, contrato de encargo</li><li>Pruebas automáticas y documentación</li><li>Formación del equipo, media jornada</li><li>Una ronda de ajustes</li><li>Medición de horas al final</li></ul>
           </div>
           <div className="offer">
             <div className="time">Mensual</div><h3>Operaciones gestionadas</h3><div className="price">2.000 a 6.000 €/mes</div>
             <ul><li>Mantenimiento y guardia</li><li>Nuevos flujos cada trimestre</li><li>Informe mensual: horas ahorradas, euros recuperados, acierto por tipo de documento, coste del modelo</li><li>Presupuesto de tokens con aviso</li><li>Facturación anual con descuento</li></ul>
           </div>
         </div>
+      </Section>
+
+      <Section eyebrow="Comparativa" title="Qué incluye cada opción.">
+        <div className="table-wrap">
+          <table className="compare">
+            <thead><tr><th style={{ width: "34%" }}></th><th>Auditoría</th><th className="featured">Sprint</th><th>Operaciones</th></tr></thead>
+            <tbody>
+              {([
+                ["Precio", "1.500 a 3.000 €", "6.000 a 12.000 €", "2.000 a 6.000 €/mes"],
+                ["Duración", "Una semana", "Dos semanas", "Mensual, trimestres"],
+                ["Inventario de tareas, horas y sistemas", "yes", "yes", "yes"],
+                ["Prototipo con tus documentos", "yes", "yes", "yes"],
+                ["Un flujo en producción, integrado", "—", "yes", "yes"],
+                ["Kit de cumplimiento", "—", "yes", "yes"],
+                ["Pruebas automáticas y documentación", "—", "yes", "yes"],
+                ["Formación del equipo", "—", "Media jornada", "Continua"],
+                ["Nuevos flujos", "—", "—", "Uno por trimestre"],
+                ["Informe mensual de horas, euros y acierto", "—", "Al cierre", "yes"],
+                ["Guardia y mantenimiento", "—", "Una ronda de ajustes", "yes"],
+                ["Pago", "Por adelantado", "50 % al inicio", "Anual con descuento"],
+              ] as Array<[string, string, string, string]>).map(([label, a, b, c]) => (
+                <tr key={label}><td>{label}</td>{[a, b, c].map((v, i) => <td key={i} className={`${i === 1 ? "featured " : ""}${v === "yes" ? "yes" : v === "—" ? "muted" : /€/.test(v) ? "num" : ""}`}>{v === "yes" ? "Incluido" : v}</td>)}</tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="small muted" style={{ marginTop: 12 }}>El <Link href="/kit-cumplimiento">kit de cumplimiento</Link> es el mismo en el sprint y en operaciones: aviso de IA, revisión humana, registro exportable, trazabilidad, contrato de encargo, presupuesto de modelo.</p>
       </Section>
 
       <Section eyebrow="Qué no incluye" title="Para que no haya sorpresas.">

@@ -35,10 +35,80 @@ export function SiteNav({ current }: { current?: string }) {
 export function SiteFooter() {
   return (
     <footer>
-      <span>{CONTACT.brand} · {CONTACT.founder} · NIF pendiente · <a href="/legal/aviso">Aviso legal</a> · <a href="/legal/privacidad">Privacidad</a> · <a href="/legal/encargo">Contrato de encargo</a></span>
-      <span><a href="/estado">Estado</a> · <a href="/diseno">Diseño</a> · ES · EN próximamente</span>
+      <div className="col">
+        <Link className="brand" href="/">{CONTACT.brand}</Link>
+        <span>Automatización con revisión humana para corredurías de seguros y asesorías en España.</span>
+        <span>{CONTACT.phone} · <a href={CONTACT.whatsapp}>WhatsApp</a> · <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></span>
+      </div>
+      <div className="col">
+        <span className="eyebrow">Producto</span>
+        <Link href="/corredurias">Corredurías</Link>
+        <Link href="/asesorias">Asesorías</Link>
+        <Link href="/como-funciona">Cómo funciona</Link>
+        <Link href="/precios">Precios</Link>
+      </div>
+      <div className="col">
+        <span className="eyebrow">Confianza</span>
+        <Link href="/seguridad">Seguridad</Link>
+        <Link href="/kit-cumplimiento">Kit de cumplimiento</Link>
+        <Link href="/estado">Estado del sistema</Link>
+        <Link href="/diseno">Sistema de diseño</Link>
+      </div>
+      <div className="col">
+        <span className="eyebrow">Legal</span>
+        <Link href="/legal/aviso">Aviso legal</Link>
+        <Link href="/legal/privacidad">Privacidad</Link>
+        <Link href="/legal/encargo">Contrato de encargo</Link>
+        <Link href="/contacto">Contacto</Link>
+      </div>
+      <div className="legal"><span>{CONTACT.brand} · {CONTACT.founder} · NIF pendiente</span><span>ES · EN próximamente</span></div>
     </footer>
   );
+}
+
+/** The reconciled statement as the settlements screen draws it: status pill per line, tabular figures, the approve action only on the claim. */
+export function SettlementMock({ compact = false }: { compact?: boolean }) {
+  const rows: Array<[string, "ok" | "pending" | "err", string, string, string, string]> = [
+    ["cuadra", "ok", "HG-55-220931", "82,50 €", "82,50 €", "—"],
+    ["diferencia", "pending", "AU-2024-778812", "76,80 €", "70,40 €", "6,40 €"],
+    ["no pagado", "pending", "SA-1", "12,00 €", "—", "12,00 €"],
+    ["no esperado", "err", "VD-90-000123", "—", "15,00 €", "—"],
+  ];
+  return (
+    <div className="settle" aria-label="Ejemplo de liquidación conciliada">
+      <table>
+        <thead><tr><th>Estado</th><th>Póliza</th>{!compact && <th className="num">Esperado</th>}{!compact && <th className="num">Liquidado</th>}<th className="num">Diferencia</th></tr></thead>
+        <tbody>
+          {rows.map(([label, pill, policy, exp, set, diff]) => (
+            <tr key={policy}><td><span className={`pill ${pill}`}>{label}</span></td><td className="mono">{policy}</td>{!compact && <td className="num">{exp}</td>}{!compact && <td className="num">{set}</td>}<td className="num">{diff}</td></tr>
+          ))}
+        </tbody>
+        <tfoot><tr><td colSpan={compact ? 2 : 4} className="small muted">Aseguradora Ejemplo SA · agosto 2026 · 4 líneas, 2 reclamables</td><td className="num"><strong>18,40 €</strong></td></tr></tfoot>
+      </table>
+      <div className="bar"><span className="small muted">Carta a la aseguradora redactada por el sistema, pendiente de una persona.</span><span className="btn accent">Aprobar y enviar</span></div>
+    </div>
+  );
+}
+
+/** Five rows of the activity log, as stored: time, what, who, what it cost. */
+export function AuditMock() {
+  const rows: Array<[string, string, string, string]> = [
+    ["12:04", "document.received", "sistema · WhatsApp", ""],
+    ["12:04", "document.extracted", "modelo · claude", "$0,0041"],
+    ["12:04", "document.validated · 2 elementos faltan", "sistema", ""],
+    ["12:31", "field.corrected · fecha_siniestro", "marta@despacho.es", ""],
+    ["12:32", "approval.approved · message.sent", "marta@despacho.es", ""],
+  ];
+  return (
+    <div className="audit" aria-label="Ejemplo del registro de actividad">
+      {rows.map(([t, a, w, c]) => <div key={t + a}><span className="t">{t}</span><span><span className="who">{a.split(" · ")[0]}</span>{a.includes(" · ") ? ` · ${a.split(" · ").slice(1).join(" · ")}` : ""} · {w}</span><span className="c">{c}</span></div>)}
+    </div>
+  );
+}
+
+/** The disclosure line exactly as withDisclosure() appends it. */
+export function DisclosureLine({ firm = "Correduría Ejemplo" }: { firm?: string }) {
+  return <div className="disclosure">{firm}<br />Este mensaje se ha preparado con ayuda de un sistema de inteligencia artificial y ha sido revisado por una persona antes de enviarse.</div>;
 }
 
 export function StickyCta() {

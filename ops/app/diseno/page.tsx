@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SettlementMock, AuditMock, DisclosureLine } from "@/components/site";
 
 export const metadata = { title: "Sistema de diseño" };
 
@@ -77,6 +78,24 @@ export default function Diseno() {
         <div className="offer"><div className="time">Una semana</div><h3>Auditoría</h3><div className="price">1.500 €</div><ul><li>Borde de línea, esquinas rectas</li><li>Sin sombra</li></ul></div>
         <div className="offer featured"><div className="time">Dos semanas</div><h3>Sprint</h3><div className="price">6.000 €</div><ul><li>La destacada usa borde de acento</li><li>No un relleno</li></ul></div>
         <div className="offer"><div className="time">Mensual</div><h3>Operaciones</h3><div className="price">2.000 €</div><ul><li>Misma altura por contenido</li><li>Mismo padding</li></ul></div>
+      </div>
+
+      <h2 style={{ marginTop: 32 }}>Tabla comparativa</h2>
+      <table className="compare"><thead><tr><th></th><th>Auditoría</th><th className="featured">Sprint</th><th>Operaciones</th></tr></thead><tbody>
+        <tr><td>Precio</td><td className="num">1.500 €</td><td className="featured num">6.000 €</td><td className="num">2.000 €/mes</td></tr>
+        <tr><td>Kit de cumplimiento</td><td className="muted">—</td><td className="featured yes">Incluido</td><td className="yes">Incluido</td></tr>
+      </tbody></table>
+
+      <h2 style={{ marginTop: 32 }}>Filas numeradas</h2>
+      <div className="rows">
+        <div><div><h3>Recibe</h3><p>Contador mono, título sans 600, párrafo ink-2, línea fina entre filas.</p></div></div>
+        <div><div><h3>Lee con cita</h3><p>Se usa cuando el orden importa; sustituye a la rejilla de pasos.</p></div></div>
+      </div>
+
+      <h2 style={{ marginTop: 32 }}>Imágenes reales del producto</h2>
+      <div className="two">
+        <SettlementMock />
+        <div style={{ display: "grid", gap: 12 }}><AuditMock /><DisclosureLine /></div>
       </div>
 
       <p className="small muted" style={{ marginTop: 32 }}><Link href="/">Inicio</Link> · <code>ops/DESIGN.md</code> · referencias en <code>ops/design/references/</code></p>

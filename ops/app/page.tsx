@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, Faq, JsonLd, faqJsonLd, ORG_JSONLD, CONTACT } from "@/components/site";
+import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, SettlementMock, AuditMock, Faq, JsonLd, faqJsonLd, ORG_JSONLD, CONTACT } from "@/components/site";
 
 const FAQ: Array<[string, string]> = [
   ["¿Qué pasa cuando la IA se equivoca?", "Se ve. Cada dato extraído muestra el texto del que se leyó; si no hay texto, el campo aparece como ausente y nunca como un valor. Una persona aprueba, corrige o rechaza antes de que nada salga del despacho. Las correcciones quedan registradas y miden el acierto por tipo de documento."],
@@ -35,8 +35,8 @@ export default function Home() {
           <div className="tile"><h3>Entrada de documentos</h3><p>Por email, WhatsApp o subida directa. Cada archivo queda registrado con su huella y su origen.</p></div>
           <div className="tile"><h3>Extracción con cita</h3><p>Pólizas, recibos, partes de siniestro, facturas. Cada dato lleva el texto exacto y la página de la que se leyó. Lo que no consta, se marca como ausente.</p></div>
           <div className="tile"><h3>Validación</h3><p>NIF y CIF comprobados, importes que cuadran, fechas coherentes, checklist de documentos por tipo de siniestro, requisitos de Verifactu en facturas.</p></div>
-          <div className="tile wide"><h3>Conciliación de liquidaciones de comisiones</h3><p>La liquidación de la aseguradora, en el formato que sea, contra los recibos que esperabas cobrar. Salida: qué comisiones no se han pagado y cuánto suman, en euros, con una tarea por cada una.</p></div>
-          <div className="tile"><h3>Aprobación humana y auditoría</h3><p>Nada se envía ni se escribe en tu programa de gestión sin un clic de tu equipo. Quién, cuándo, con qué modelo y qué coste: todo queda registrado y se puede exportar.</p></div>
+          <div className="tile wide"><h3>Conciliación de liquidaciones de comisiones</h3><p>La liquidación de la aseguradora, en el formato que sea, contra los recibos que esperabas cobrar. Salida: qué comisiones no se han pagado y cuánto suman, en euros, con una tarea por cada una.</p><SettlementMock compact /></div>
+          <div className="tile"><h3>Aprobación humana y auditoría</h3><p>Nada se envía ni se escribe en tu programa de gestión sin un clic de tu equipo. Quién, cuándo, con qué modelo y qué coste: todo queda registrado y se puede exportar.</p><AuditMock /></div>
         </div>
       </Section>
 
@@ -61,13 +61,13 @@ export default function Home() {
           <div className="step"><h3>Se propone</h3><p>El sistema lee, valida, detecta qué falta, crea las tareas y redacta la petición. Cada dato enlaza con su origen; cada mensaje lleva el aviso de IA.</p></div>
           <div className="step"><h3>Se aprueba</h3><p>Una persona ve el documento y la propuesta en la misma pantalla y decide. Solo entonces se envía el mensaje o se escribe en el programa de gestión.</p></div>
         </div>
-        <p style={{ marginTop: 20 }}><Link href="/como-funciona">Todo el recorrido, con el kit de cumplimiento →</Link></p>
+        <p style={{ marginTop: 20 }}><Link href="/como-funciona">Todo el recorrido →</Link> · <Link href="/kit-cumplimiento">El kit de cumplimiento, punto por punto →</Link></p>
       </Section>
 
       <Section id="precios" eyebrow="Cómo trabajamos" title="Empezamos por el flujo que más tiempo te cuesta." lede="Precios públicos. Si en el sprint no ahorramos horas medibles, no seguimos.">
         <div className="offers">
           <div className="offer"><div className="time">Una semana</div><h3>Auditoría de flujos</h3><div className="price">1.500 a 3.000 €</div><ul><li>Mapa del despacho: tareas, horas, sistemas</li><li>5 a 10 flujos con retorno estimado</li><li>Prototipo funcionando del mejor</li><li>Se descuenta íntegra del sprint</li></ul></div>
-          <div className="offer featured"><div className="time">Dos semanas</div><h3>Sprint de automatización</h3><div className="price">6.000 a 12.000 €</div><ul><li>Un flujo en producción, integrado con tu programa de gestión</li><li>Pruebas, documentación y formación</li><li>Kit de cumplimiento incluido</li><li>Una ronda de ajustes; 50 % al inicio</li></ul></div>
+          <div className="offer featured"><div className="time">Dos semanas</div><h3>Sprint de automatización</h3><div className="price">6.000 a 12.000 €</div><ul><li>Un flujo en producción, integrado con tu programa de gestión</li><li>Pruebas, documentación y formación</li><li><Link href="/kit-cumplimiento">Kit de cumplimiento</Link> incluido</li><li>Una ronda de ajustes; 50 % al inicio</li></ul></div>
           <div className="offer"><div className="time">Mensual</div><h3>Operaciones gestionadas</h3><div className="price">2.000 a 6.000 €/mes</div><ul><li>Mantenimiento, medición y ampliación</li><li>Nuevos flujos cada trimestre</li><li>Informe de horas ahorradas y euros recuperados</li><li>Facturación anual con descuento</li></ul></div>
         </div>
         <p style={{ marginTop: 20 }}><Link href="/precios">Qué incluye cada uno y qué no →</Link></p>

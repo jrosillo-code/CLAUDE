@@ -27,14 +27,15 @@ a { color: inherit; }
 img { max-width: 100%; }
 .wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; }
 .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -.01em; text-wrap: balance; margin: 0; }
-h1 { font-size: clamp(40px, 6vw, 64px); line-height: 1.02; }
-h2 { font-size: clamp(28px, 3.6vw, 38px); line-height: 1.1; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; text-wrap: balance; margin: 0; font-feature-settings: "kern"; }
+h1 { font-size: clamp(40px, 6vw, 64px); line-height: 1.02; letter-spacing: -.02em; }
+h2 { font-size: clamp(28px, 3.6vw, 38px); line-height: 1.1; letter-spacing: -.015em; }
 h3 { font-size: 22px; line-height: 1.2; }
 p { margin: 0; max-width: 62ch; }
 .muted { color: var(--ink-2); }
 .small { font-size: 14px; }
-.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+.tnum, .stat .n, .offer .price, .compare td.num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
 
 /* Nav */
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 18px; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
@@ -127,9 +128,14 @@ details p { margin-top: 10px; color: var(--ink-2); font-size: 15px; }
 .founder { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; align-items: start; }
 .founder .photo { width: 120px; height: 120px; background: var(--rule); border-radius: 4px; }
 
-/* Footer */
-footer { padding-block: 32px 48px; font-size: 13px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-footer a { color: inherit; }
+/* Footer: columns at caption size, hairline above, wordmark left (Stripe, Notion) */
+footer { padding-block: 40px 56px; font-size: 13px; color: var(--ink-3); border-top: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: 24px; }
+footer a { color: inherit; text-decoration: none; }
+footer a:hover { color: var(--ink); text-decoration: underline; }
+footer .col { display: grid; gap: 6px; align-content: start; }
+footer .col .eyebrow { margin-bottom: 4px; }
+footer .brand { font-size: 18px; color: var(--ink); }
+footer .legal { grid-column: 1 / -1; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
 /* App pages (review queue) */
 .app-wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 64px; }
@@ -148,6 +154,7 @@ button.secondary { background: transparent; color: var(--ink); border: 1px solid
 
 @media (max-width: 820px) {
   .hero, .two, .queue-body, .founder { grid-template-columns: minmax(0, 1fr); }
+  footer { grid-template-columns: repeat(2, minmax(0, 1fr)); } footer .col:first-child { grid-column: 1 / -1; }
   .bento, .steps, .proof, .offers, .trust { grid-template-columns: minmax(0, 1fr); }
   .tile.wide { grid-column: auto; }
   .queue-doc { border-right: 0; border-bottom: 1px solid var(--rule); }
@@ -213,3 +220,36 @@ tr.selected td { background: var(--surface); }
   a { color: inherit; text-decoration: none; }
   .pill { border: 1px solid #000; background: none !important; color: #000 !important; }
 }
+
+/* Story rows: numbered hairline rows for a sequence (Wired byline rows, Linear changelog rows) */
+.rows { counter-reset: r; border-top: 1px solid var(--rule); }
+.rows > div { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+.rows > div::before { counter-increment: r; content: counter(r, decimal-leading-zero); font-family: var(--mono); font-size: 13px; color: var(--ink-3); padding-top: 4px; }
+.rows h3 { font-family: var(--sans); font-size: 17px; font-weight: 600; }
+.rows p { font-size: 15px; color: var(--ink-2); margin-top: 4px; }
+/* Comparison table (Notion): hairline rows, tabular figures, the featured column marked by a rule, not a fill */
+.compare { width: 100%; border-collapse: collapse; font-size: 15px; }
+.compare th, .compare td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.compare th { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-weight: 500; }
+.compare th.featured, .compare td.featured { border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+.compare thead th.featured { border-top: 2px solid var(--accent); }
+.compare td.num { font-family: var(--mono); white-space: nowrap; }
+.compare td.muted { color: var(--ink-3); }
+.compare .yes::before { content: "✓ "; color: var(--accent); font-family: var(--mono); }
+/* Settlement mock: the reconciled lines as the app draws them */
+.settle { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; font-size: 13px; }
+.settle table { width: 100%; border-collapse: collapse; }
+.settle th, .settle td { padding: 8px 12px; border-bottom: 1px solid var(--rule); text-align: left; }
+.settle th { font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); font-weight: 500; }
+.settle td.num, .settle th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.settle tfoot td { border-bottom: 0; }
+.settle .bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px; border-top: 1px solid var(--rule); flex-wrap: wrap; }
+.settle .bar .btn { padding: 8px 12px; font-size: 13px; }
+/* Audit mock: five rows of the activity log */
+.audit { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+.audit > div { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; padding: 8px 12px; border-bottom: 1px solid var(--rule); }
+.audit > div:last-child { border-bottom: 0; }
+.audit .t { color: var(--ink-3); } .audit .c { color: var(--ink-3); text-align: right; }
+.audit .who { color: var(--ink); }
+.disclosure { border-left: 2px solid var(--accent); padding: 8px 12px; font-size: 14px; color: var(--ink-2); background: var(--surface); }
+@media (max-width: 640px) { .rows > div { grid-template-columns: 36px minmax(0, 1fr); } .compare { font-size: 13px; } .compare th, .compare td { padding: 10px 6px; } }

@@ -1,9 +1,9 @@
-import { SiteNav, SiteFooter, StickyCta, Section, FinalCta } from "@/components/site";
+import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, AuditMock, DisclosureLine } from "@/components/site";
 
 export const metadata = { title: "Seguridad y cumplimiento", description: "Controles técnicos y contractuales: RGPD y encargo del tratamiento, datos en la UE, sin entrenamiento, seguridad por filas, registro de actividad inmutable, revisión humana, aviso de IA, presupuesto de modelo." };
 
 const CONTROLS: Array<[string, string, string]> = [
-  ["Aislamiento por despacho", "Seguridad por filas en la base de datos: cada fila lleva el despacho, y una persona solo ve las de los despachos a los que pertenece. Lo aplica la base de datos, no la aplicación.", "Comprobado por 27 aserciones automáticas contra la migración real en cada cambio."],
+  ["Aislamiento por despacho", "Seguridad por filas en la base de datos: cada fila lleva el despacho, y una persona solo ve las de los despachos a los que pertenece. Lo aplica la base de datos, no la aplicación.", "Comprobado por 32 aserciones automáticas contra la migración real en cada cambio."],
   ["Registro inmutable", "Documento recibido, lectura, validación, borrador, aprobación, envío, escritura, corrección: con fecha, usuario, modelo y coste. Se puede añadir, no editar ni borrar.", "Política de base de datos: inserción permitida, actualización y borrado denegados incluso a miembros."],
   ["Revisión humana", "Enviar un mensaje o escribir en el programa de gestión solo ocurre tras una aprobación con nombre. Si el envío falla, la aprobación sigue pendiente.", "Una única función en el código es la puerta de salida; las pruebas comprueban que nada sale antes."],
   ["Trazabilidad de cada dato", "Cada valor extraído guarda el texto exacto y la página. Un valor sin texto de origen se trata como ausente.", "Evaluación automática: cualquier valor cuyo texto no aparece en el documento cuenta como inventado y bloquea la entrega."],
@@ -30,6 +30,13 @@ export default function Seguridad() {
           <thead><tr><th>Control</th><th>Qué hace</th><th>Cómo se comprueba</th></tr></thead>
           <tbody>{CONTROLS.map(([c, w, h]) => <tr key={c}><td><strong>{c}</strong></td><td className="muted">{w}</td><td className="muted">{h}</td></tr>)}</tbody>
         </table>
+      </Section>
+
+      <Section eyebrow="Cómo se ve" title="El registro y el aviso, tal como los verá tu DPO.">
+        <div className="two">
+          <div><AuditMock /><p className="small muted" style={{ marginTop: 10 }}>Registro de actividad: solo se añade, nunca se edita. Exportable en CSV desde la aplicación.</p></div>
+          <div><DisclosureLine /><p className="small muted" style={{ marginTop: 10 }}>Aviso del artículo 50 del Reglamento de IA, añadido por el sistema a cada mensaje aprobado.</p></div>
+        </div>
       </Section>
 
       <Section eyebrow="Marco" title="Lo que aplica a tu despacho.">
@@ -61,7 +68,8 @@ export default function Seguridad() {
           <li><a href="/legal/encargo">Contrato de encargo del tratamiento</a> (modelo, artículo 28 RGPD)</li>
           <li><a href="/legal/privacidad">Política de privacidad</a></li>
           <li>Lista de subencargados y regiones, en el anexo del contrato</li>
-          <li>Registro de actividad exportable por despacho, a petición</li>
+          <li>Registro de actividad exportable por despacho, en CSV, desde la aplicación</li>
+          <li><a href="/kit-cumplimiento">Kit de cumplimiento</a>, imprimible</li>
         </ul>
       </Section>
 
