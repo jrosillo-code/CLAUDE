@@ -196,3 +196,20 @@ td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numer
 .table-wrap { overflow-x: auto; }
 tr.selected td { background: var(--surface); }
 .letter { white-space: pre-wrap; font-family: var(--sans); font-size: 14px; background: var(--surface); border: 1px solid var(--rule); padding: 14px; line-height: 1.5; }
+/* Report and print: the pilot report is two pages, printed as it stands. */
+.report .page { padding-block: 24px; }
+.report .page + .page { border-top: 1px solid var(--rule); }
+.input { font: inherit; font-size: 15px; padding: 8px 10px; border: 1px solid var(--rule); background: var(--surface); }
+@media print {
+  @page { margin: 18mm 16mm; }
+  body { background: #fff; color: #000; font-size: 12px; padding-bottom: 0; }
+  .no-print, nav, footer, .app-tabs, .sticky-cta, button, form { display: none !important; }
+  .app-wrap { max-width: none; padding: 0; }
+  .report .page { break-after: page; padding-block: 0; border-top: 0; }
+  .report .page:last-child { break-after: auto; }
+  h1 { font-size: 28px; } h2 { font-size: 18px; margin-top: 18px; }
+  table { font-size: 11px; } .stat .n { font-size: 28px; }
+  .proof, .two { grid-template-columns: repeat(3, minmax(0, 1fr)); } .two { grid-template-columns: 1fr 1fr; }
+  a { color: inherit; text-decoration: none; }
+  .pill { border: 1px solid #000; background: none !important; color: #000 !important; }
+}
