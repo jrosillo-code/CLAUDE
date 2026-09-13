@@ -48,6 +48,18 @@ npm run onboard -- --name "Despacho" --kind correduria --email persona@despacho.
   action on the page is "Aprobar y enviar", and nothing reaches the insurer before it.
   The page also imports the expected receipts (CSV) and uploads a statement; in keyless
   mode one button loads the example statement so the flow can be tried.
+- `/app/{firmId}/informe` is the pilot report: the two pages the agreement promises,
+  computed from the activity log for a period (documents per week, cycle time from
+  arrival to first approval, fields approved without correction, euros found, corrections
+  by field, incidents, model cost) with the baseline hours from the firm's settings.
+  Print it for the PDF. `/app/{firmId}/ajustes` holds the firm's settings: retention
+  period, budget alert mailbox, baseline hours, insurers' settlement mailboxes.
+- Retention is the firm's decision: with `retentionDays` set, the daily job deletes the
+  original, extractions, drafts and corrections of documents in a final status older than
+  that, marks them `purged` and logs it. The activity log is never purged.
+- Two operational notices go out without an approval, because they are to the firm or the
+  founder and not to a client or an insurer: the contact-form notification (`LEADS_TO`)
+  and the 80% budget warning to the firm's alert mailbox. Both are logged.
 - Sending happens only after approval, through SMTP (`SMTP_URL`, `MAIL_FROM`) or the
   WhatsApp Cloud API (`WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_ACCESS_TOKEN`). A failed send
   leaves the approval pending with the error logged; outside WhatsApp's 24-hour window the
@@ -93,6 +105,11 @@ as the brief.
    (`withDisclosure` in `lib/claude.ts`). EU AI Act Article 50. Editing a draft keeps it.
 5. **A correction is a person's value, never the document's.** `lib/corrections.ts`
    stores it with the quote "corregido por {user}" and records it in `corrections`.
+6. **A cookie session cannot be driven from another site.** Mutating requests with a
+   member session must carry an Origin (or Referer) from this deployment or
+   `NEXT_PUBLIC_SITE_URL` (`sameOrigin` in `lib/runtime.ts`); redirects after form posts
+   follow only same-origin referers (`safeBack`); session cookies are httpOnly, lax and
+   secure in production.
 6. **Tenancy is enforced in the database.** `supabase/migrations/0001_init.sql` puts RLS on
    every table; members read their firm, decide approvals only as themselves, and can
    append to but never change the activity log. `npm run test:rls` proves it against the
@@ -118,7 +135,10 @@ lib/jobs.ts             queue, claim, run with retries and backoff
 lib/metrics.ts          the numbers on the review screen and the landing page
 lib/auth.ts             member sessions from Supabase Auth cookies; RLS-scoped reads
 lib/senders/            SMTP and WhatsApp Cloud API senders; RoutingSender in lib/sender.ts
-lib/audit.ts, budget.ts activity log and monthly token ceiling
+lib/audit.ts, budget.ts activity log; monthly token ceiling with the 80% warning
+lib/retention.ts       client-defined retention: purge of originals and derived data, never the log
+lib/settings.ts        validation of the firm's settings
+lib/csv.ts             CSV for Spanish Excel (semicolons, BOM, formula cells neutralized)
 lib/store.ts            Store interface + MemoryStore; lib/supabase-store.ts for production
 lib/adapters/           management-system boundary (CSV export now; ebroker, segElevia later)
 lib/intake/             WhatsApp Cloud API webhook (signature, parse, media fetch) and inbound email
@@ -141,8 +161,10 @@ firm.
 | `GET /api/documents/{id}/file` | streams the original to a member of its firm |
 | `POST /api/documents/{id}/correct` | `{field, value}` or `{field: "draft.body", value, draftId}` |
 | `PATCH /api/tasks/{id}` | `{status: "open" \| "done"}` |
-| `POST /api/jobs/run?limit=10` | drains due jobs; `CRON_SECRET` or `OPS_API_KEY` |
-| `GET /api/metrics?firmId&from&to` | fields, euros, tasks, cost |
+| `POST /api/jobs/run?limit=50` | drains due jobs, then runs retention; `CRON_SECRET` or `OPS_API_KEY` |
+| `GET /api/metrics?firmId&from&to` | fields, euros, tasks, cost, cycle time, review, incidents, weekly |
+| `GET /api/export?firmId&kind&from&to` | CSV of `activity`, `corrections` or `extractions` (semicolons, BOM) |
+| `GET,PATCH /api/firms/{id}` | read or merge the firm's settings: `retentionDays`, `alertEmail`, `baselineHoursPerWeek`, `insurerEmails` |
 | `POST /api/documents/{id}/process` | run the chain on a received document |
 | `POST /api/receipts/import` | multipart CSV (`aseguradora;poliza;recibo;tomador;prima;comision;periodo`), `insurer`, `period` |
 | `POST /api/settlements/{id}/reconcile` | read a settlement document and reconcile it; JSON `{insurer?, period?}` |
@@ -160,7 +182,7 @@ firm.
 ## Verify the deployment
 
 Open `https://<domain>/estado` (or `GET /api/selfcheck`). It checks, on the server, that
-every variable is present, the database is reachable with all three migrations applied,
+every variable is present, the database is reachable with all five migrations applied,
 every table has RLS, the documents bucket is private, sign-in is configured and at least
 one member exists, the Anthropic key and model are accepted, the API key is long enough,
 and the cron secret is set. Secrets are never shown. From any machine,
@@ -175,7 +197,9 @@ and the cron secret is set. Secrets are never shown. From any machine,
 4. Point the WhatsApp Cloud API webhook at `/api/intake/whatsapp?firmId=...` and the
    inbound email provider at `/api/intake/email?firmId=...`.
 5. Set `NEXT_PUBLIC_SUPABASE_URL` and the anon key (`ANON_KEY` or `NEXT_PUBLIC_SUPABASE_ANON_KEY`) for sign-in, add
-   each user to `memberships`, and schedule `POST /api/jobs/run` every minute.
+   each user to `memberships`, and schedule `POST /api/jobs/run` (daily on Vercel Hobby via
+   `vercel.json`; every minute on Pro). Set `NEXT_PUBLIC_SITE_URL` to the public domain: it
+   feeds the sitemap, the Open Graph image and the origin check.
 6. Set `SMTP_URL`/`MAIL_FROM` and the WhatsApp phone number id to send for real.
 
 Contact details on the landing page are placeholders until the company entity exists.
