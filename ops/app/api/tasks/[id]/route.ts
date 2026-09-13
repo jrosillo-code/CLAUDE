@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getRuntime, authorize, assertFirmAccess } from "@/lib/runtime";
+import { getRuntime, authorize, assertFirmAccess, safeBack } from "@/lib/runtime";
 import { log } from "@/lib/audit";
 
 /** JSON or form: { status: "open" | "done" }. Members may close their firm's tasks. */
@@ -17,7 +17,7 @@ async function update(req: Request, ctx: { params: Promise<{ id: string }> }) {
   if (!(await assertFirmAccess(auth, task.firmId))) return NextResponse.json({ error: "No perteneces a este despacho" }, { status: 403 });
   await rt.store.tasks.update(id, { status });
   await log(rt.store, { firmId: task.firmId, action: `task.${status}`, entity: { type: "task", id }, actor: { type: "user", id: auth.userId }, detail: { title: task.title } });
-  if (req.headers.get("accept")?.includes("text/html")) return NextResponse.redirect(new URL(req.headers.get("referer") ?? "/app", req.url), 303);
+  if (req.headers.get("accept")?.includes("text/html")) return NextResponse.redirect(safeBack(req), 303);
   return NextResponse.json({ ok: true });
 }
 

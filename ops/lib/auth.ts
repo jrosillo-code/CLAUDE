@@ -23,7 +23,7 @@ export async function createUserClient(): Promise<SupabaseClient | null> {
       setAll: (list) => {
         // Server components cannot set cookies; route handlers can. Refreshed
         // tokens are written when a route handler runs, which is fine.
-        try { for (const c of list) store.set(c.name, c.value, c.options); } catch { /* read-only context */ }
+        try { for (const c of list) store.set(c.name, c.value, { ...c.options, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production" }); } catch { /* read-only context */ }
       },
     },
   });

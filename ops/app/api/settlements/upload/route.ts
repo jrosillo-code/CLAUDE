@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getRuntime, authorize, requireFirm } from "@/lib/runtime";
+import { getRuntime, authorize, requireFirm, safeBack } from "@/lib/runtime";
 import { receiveDocument } from "@/lib/pipeline";
 import { processSettlement } from "@/lib/settlements";
 import { BudgetExceeded } from "@/lib/budget";
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   let form: FormData;
   try { form = await req.formData(); } catch { return NextResponse.json({ error: "Se esperaba multipart/form-data" }, { status: 400 }); }
   const html = req.headers.get("accept")?.includes("text/html");
-  const back = req.headers.get("referer") ?? "/app";
+  const back = safeBack(req);
   try {
     const firm = await requireFirm(rt.store, (form.get("firmId") as string) || null);
     const auth = await authorize(req, firm.id);
@@ -48,12 +48,12 @@ export async function POST(req: Request) {
       bytes: example ? new TextEncoder().encode("demo settlement") : new Uint8Array(await (file as File).arrayBuffer()),
     });
     const result = await processSettlement(rt, { firm, documentId: doc.id, insurer, period });
-    if (html) { const u = new URL(back, req.url); u.searchParams.delete("error"); u.searchParams.set("id", result.record.id); return NextResponse.redirect(u, 303); }
+    if (html) { const u = back; u.searchParams.delete("error"); u.searchParams.set("id", result.record.id); return NextResponse.redirect(u, 303); }
     return NextResponse.json({ document: doc, record: result.record, tasks: result.tasks }, { status: 201 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Error";
     const status = err instanceof BudgetExceeded ? 429 : 500;
-    if (html) { const u = new URL(back, req.url); u.searchParams.set("error", message); return NextResponse.redirect(u, 303); }
+    if (html) { const u = back; u.searchParams.set("error", message); return NextResponse.redirect(u, 303); }
     return NextResponse.json({ error: message }, { status });
   }
 }

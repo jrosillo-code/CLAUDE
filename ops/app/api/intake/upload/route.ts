@@ -1,5 +1,5 @@
 import { NextResponse, after } from "next/server";
-import { getRuntime, authorize, requireFirm } from "@/lib/runtime";
+import { getRuntime, authorize, requireFirm, safeBack } from "@/lib/runtime";
 import { receiveDocument, processDocument } from "@/lib/pipeline";
 import { BudgetExceeded } from "@/lib/budget";
 import { enqueue, runJobs } from "@/lib/jobs";
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     }
     const job = await enqueue(rt.store, firm.id, "process_document", { documentId: doc.id });
     after(() => runJobs(rt, 3).catch((e) => console.error("[ops] drain failed", e)));
-    if (req.headers.get("accept")?.includes("text/html")) return NextResponse.redirect(new URL(req.headers.get("referer") ?? "/app", req.url), 303);
+    if (req.headers.get("accept")?.includes("text/html")) return NextResponse.redirect(safeBack(req), 303);
     return NextResponse.json({ document: doc, job: { id: job.id, status: job.status } }, { status: 201 });
   } catch (err) {
     if (err instanceof BudgetExceeded) return NextResponse.json({ error: err.message }, { status: 429 });

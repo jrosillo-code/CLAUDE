@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const host = req.headers.get("host") ?? "";
   const local = /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host) && keys.length === 0;
   if (!local && !keys.some((k) => header === `Bearer ${k}`)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  const limit = Math.min(50, Number(new URL(req.url).searchParams.get("limit") ?? 10) || 10);
+  const limit = Math.min(50, Number(new URL(req.url).searchParams.get("limit") ?? 50) || 50);
   const rt = getRuntime();
   const summary = await runJobs(rt, limit);
   return NextResponse.json(summary);
