@@ -38,8 +38,8 @@ export default function ComoFunciona() {
         </div>
       </Section>
 
-      <Section eyebrow="La pantalla" title="Lo que ve tu equipo.">
-        <QueueMock variant="siniestro" />
+      <Section band eyebrow="La pantalla" title="Lo que ve tu equipo.">
+        <div className="frame"><div className="frame-bar"><i /><i /><i /><span className="url">app / correduría demo / cola de revisión</span></div><QueueMock variant="siniestro" /></div>
         <p className="muted small" style={{ marginTop: 12 }}>La misma pantalla, con datos de ejemplo. Cada campo muestra de dónde salió; las correcciones quedan marcadas con quién las hizo y se cuentan para medir el acierto.</p>
       </Section>
 

@@ -27,8 +27,15 @@ export default function Home() {
           </div>
           <div className="contact">{CONTACT.phone} · <a href={CONTACT.whatsapp}>WhatsApp</a> · respuesta el mismo día</div>
         </div>
-        <QueueMock variant="siniestro" />
+        <div className="hero-art" aria-hidden="false">
+          <div className="back" aria-hidden="true"><SettlementMock compact /></div>
+          <div className="front"><QueueMock variant="siniestro" /></div>
+        </div>
       </section>
+      <div className="strip" aria-label="Programas de gestión con los que trabajamos">
+        <span className="lbl">Escribimos en tu programa</span>
+        <span>ebroker</span><span>segElevia</span><span>Avant2</span><span>Mediator</span><span>ficheros EIAC</span><span>Holded</span><span>A3</span><span>Sage</span>
+      </div>
 
       <Section id="que" eyebrow="Qué hacemos" title="Cinco pasos que hoy hace tu equipo a mano.">
         <div className="bento">
@@ -55,7 +62,11 @@ export default function Home() {
         </div>
       </Section>
 
-      <Section id="como" eyebrow="Cómo funciona" title="Llega el documento. La IA propone. Tu equipo aprueba.">
+      <Section id="como" band eyebrow="Cómo funciona" title="Llega el documento. La IA propone. Tu equipo aprueba.">
+        <div className="frame" style={{ marginBottom: 36 }}>
+          <div className="frame-bar"><i /><i /><i /><span className="url">app / correduría demo / cola de revisión</span></div>
+          <QueueMock variant="liquidacion" />
+        </div>
         <div className="steps">
           <div className="step"><h3>Llega</h3><p>Un cliente manda fotos y el parte por WhatsApp. Una aseguradora envía la liquidación del mes en PDF. Un cliente de la asesoría manda sus facturas por email.</p></div>
           <div className="step"><h3>Se propone</h3><p>El sistema lee, valida, detecta qué falta, crea las tareas y redacta la petición. Cada dato enlaza con su origen; cada mensaje lleva el aviso de IA.</p></div>
@@ -64,7 +75,7 @@ export default function Home() {
         <p style={{ marginTop: 20 }}><Link href="/como-funciona">Todo el recorrido →</Link> · <Link href="/kit-cumplimiento">El kit de cumplimiento, punto por punto →</Link></p>
       </Section>
 
-      <Section id="precios" eyebrow="Cómo trabajamos" title="Empezamos por el flujo que más tiempo te cuesta." lede="Precios públicos. Si en el sprint no ahorramos horas medibles, no seguimos.">
+      <Section id="precios" band eyebrow="Cómo trabajamos" title="Empezamos por el flujo que más tiempo te cuesta." lede="Precios públicos. Si en el sprint no ahorramos horas medibles, no seguimos.">
         <div className="offers">
           <div className="offer"><div className="time">Una semana</div><h3>Auditoría de flujos</h3><div className="price">1.500 a 3.000 €</div><ul><li>Mapa del despacho: tareas, horas, sistemas</li><li>5 a 10 flujos con retorno estimado</li><li>Prototipo funcionando del mejor</li><li>Se descuenta íntegra del sprint</li></ul></div>
           <div className="offer featured"><div className="time">Dos semanas</div><h3>Sprint de automatización</h3><div className="price">6.000 a 12.000 €</div><ul><li>Un flujo en producción, integrado con tu programa de gestión</li><li>Pruebas, documentación y formación</li><li><Link href="/kit-cumplimiento">Kit de cumplimiento</Link> incluido</li><li>Una ronda de ajustes; 50 % al inicio</li></ul></div>
@@ -84,19 +95,19 @@ export default function Home() {
       </Section>
 
       <Section eyebrow="Resultados" title="Lo que medimos, y con qué lo medimos." lede="Sin clientes que enseñar todavía, enseñamos el método. Los tres primeros despachos tienen precio de fundador y un caso de estudio con cifras.">
-        <div className="proof">
-          <div className="stat"><div className="n mono">h/sem</div><div className="l">Horas semanales en el flujo, antes y después de la semana 6 del piloto</div></div>
-          <div className="stat"><div className="n mono">€</div><div className="l">Comisiones no pagadas detectadas en cada liquidación conciliada</div></div>
-          <div className="stat"><div className="n mono">%</div><div className="l">Campos aprobados sin corrección, por tipo de documento</div></div>
+        <div className="proof big">
+          <div className="stat"><div className="n">Horas<span className="u">por semana</span></div><div className="l">En el flujo elegido, antes del piloto y en la semana 6. La cifra de antes sale del inventario; la de después, del registro.</div></div>
+          <div className="stat"><div className="n">Euros<span className="u">por liquidación</span></div><div className="l">Comisiones no pagadas o pagadas de menos, detectadas línea a línea en cada liquidación conciliada.</div></div>
+          <div className="stat"><div className="n">Acierto<span className="u">por documento</span></div><div className="l">Campos aprobados sin corrección, por tipo de documento. Cada corrección de una persona cuenta en contra.</div></div>
         </div>
       </Section>
 
       <Section eyebrow="Quién está detrás" title="Una persona con nombre, no un formulario.">
         <div className="founder">
-          <div className="photo" aria-hidden="true" />
+          <div className="photo" aria-hidden="true">GR</div>
           <div>
-            <h3>{CONTACT.founder}</h3>
-            <p className="muted" style={{ marginTop: 8 }}>Construyo software en producción dirigiendo agentes de IA, con base de datos, permisos por fila probados por decenas de comprobaciones automáticas y una capa de IA que nunca inventa un dato. Crecí en una correduría familiar: sé qué es una liquidación que no cuadra y un siniestro que se atasca por un documento.</p>
+            <blockquote className="pull" style={{ margin: 0 }}>Crecí en una correduría familiar: sé qué es una liquidación que no cuadra y un siniestro que se atasca por un documento.<small>{CONTACT.founder}, fundador</small></blockquote>
+            <p className="muted" style={{ marginTop: 16 }}>Construyo software en producción dirigiendo agentes de IA, con base de datos, permisos por fila probados por decenas de comprobaciones automáticas y una capa de IA que nunca inventa un dato.</p>
           </div>
         </div>
       </Section>

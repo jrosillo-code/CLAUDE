@@ -39,7 +39,7 @@ export default function Precios() {
         </div>
       </Section>
 
-      <Section eyebrow="Comparativa" title="Qué incluye cada opción.">
+      <Section band eyebrow="Comparativa" title="Qué incluye cada opción.">
         <div className="table-wrap">
           <table className="compare">
             <thead><tr><th style={{ width: "34%" }}></th><th>Auditoría</th><th className="featured">Sprint</th><th>Operaciones</th></tr></thead>
@@ -76,7 +76,7 @@ export default function Precios() {
       </Section>
 
       <Section eyebrow="Precio de fundador" title="Tres primeros despachos.">
-        <p>Los tres primeros despachos que firmen un sprint tienen el precio de auditoría descontado aunque no continúen, y el primer trimestre de operaciones al precio mínimo del rango, a cambio de un caso de estudio con cifras reales y anonimizadas.</p>
+        <blockquote className="pull" style={{ margin: 0 }}>Auditoría descontada aunque no continúen, y el primer trimestre de operaciones al mínimo del rango, a cambio de un caso de estudio con cifras reales y anonimizadas.<small>Vale para los tres primeros sprints firmados.</small></blockquote>
       </Section>
 
       <Section eyebrow="Preguntas" title="Sobre el precio.">

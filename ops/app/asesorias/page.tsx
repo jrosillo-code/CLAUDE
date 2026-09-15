@@ -21,7 +21,7 @@ export default function Asesorias() {
         <div className="ctas"><Link className="btn" href="/contacto?tipo=asesoria">Pide una auditoría de 30 minutos</Link><Link className="btn ghost" href="/precios">Ver precios</Link></div>
       </section>
 
-      <Section eyebrow="El primer flujo" title="La factura entra por email. La tarea sale con lo que falta.">
+      <Section band eyebrow="El primer flujo" title="La factura entra por email. La tarea sale con lo que falta.">
         <div className="split">
           <div>
             <ul className="check">

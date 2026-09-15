@@ -155,8 +155,9 @@ Three families, each with one job.
 - **IBM Plex Mono** is for labels and data: eyebrows, mono labels in the queue, the audit
   line, table headers, figures in tables (`tabular-nums`), the status page.
 
-Fallback stacks are declared for every face (Georgia; system sans; Menlo), so a blocked
-font host degrades gracefully.
+The three faces are bundled with the app (@fontsource packages imported in
+`app/layout.tsx`): no request to a font host, so no visitor IP leaves the site for a
+font, which matters under the RGPD. Fallback stacks are still declared for every face.
 
 ### Hierarchy
 
@@ -267,6 +268,37 @@ from the Linear and Stripe references: the product is the protagonist of each se
 
 The AI notice exactly as `withDisclosure()` appends it, with a 2px accent left rule.
 Shown on Cómo funciona, Seguridad and the kit page so a DPO sees the real text.
+
+### Sticky nav
+
+A 60px band that stays at the top (Linear's top-nav): paper at 90% with a light blur,
+hairline below, wordmark left, links and one small primary button "Auditoría" right.
+Static on phones.
+
+### Composited hero (`.hero-art`)
+
+The queue mock in front and the compact settlement mock behind it, offset to the top
+right so its header and first rows show (Stripe's composited dashboard, Notion's
+workspace card). Depth comes from layering and hairlines only; the back layer hides on
+phones. A mono `.strip` under the hero names the management systems the product writes
+to.
+
+### Surface band (`section.band`)
+
+A full-bleed white band for one or two sections per page (Linear's surface ladder):
+sections separate by lifting onto the surface, not only by gaps. Sections breathe at
+88px on desktop, 56px on phones.
+
+### Window frame (`.frame`)
+
+A hairline window with three hollow dots and a mono path pill, around a full-width
+queue mock: the product shown as the screen it is. No shadow, no gradient.
+
+### Editorial figures (`.proof.big`) and pull quote (`.pull`)
+
+Figures up to 72px in Newsreader at optical size 72 with the unit in mono beneath;
+a pull quote in Newsreader with a 2px accent left rule, used for the founder's line and
+the founder price. Cards and offers lift on hover by border color only.
 
 ### Footer
 

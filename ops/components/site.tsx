@@ -27,6 +27,7 @@ export function SiteNav({ current }: { current?: string }) {
       <div className="nav-links">
         {NAV.map(([href, label]) => <Link key={href} href={href} aria-current={current === href ? "page" : undefined} className={current === href ? "active" : undefined}>{label}</Link>)}
         <a href={CONTACT.whatsapp} className="nav-wa">WhatsApp</a>
+        <Link href="/contacto" className="btn">Auditoría</Link>
       </div>
     </nav>
   );
@@ -120,9 +121,9 @@ export function StickyCta() {
   );
 }
 
-export function Section({ id, eyebrow, title, lede, children }: { id?: string; eyebrow?: string; title: string; lede?: string; children?: React.ReactNode }) {
+export function Section({ id, eyebrow, title, lede, band = false, children }: { id?: string; eyebrow?: string; title: string; lede?: string; band?: boolean; children?: React.ReactNode }) {
   return (
-    <section id={id}>
+    <section id={id} className={band ? "band" : undefined}>
       <div className="section-head">
         {eyebrow && <div className="eyebrow">{eyebrow}</div>}
         <h2>{title}</h2>

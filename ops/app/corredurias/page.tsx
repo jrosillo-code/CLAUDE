@@ -21,7 +21,7 @@ export default function Corredurias() {
         <div className="ctas"><Link className="btn" href="/contacto?tipo=correduria">Pide una auditoría de 30 minutos</Link><Link className="btn ghost" href="/precios">Ver precios</Link></div>
       </section>
 
-      <Section eyebrow="El primer flujo" title="La liquidación entra. Las incidencias salen con su importe.">
+      <Section band eyebrow="El primer flujo" title="La liquidación entra. Las incidencias salen con su importe.">
         <div className="split">
           <div>
             <ul className="check">
