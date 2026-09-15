@@ -345,8 +345,8 @@ tr.selected td { background: var(--surface); }
 .hero-art .queue .queue-audit { overflow: hidden; }
 .hero-art .queue .queue-audit::after { content: "▍"; color: var(--accent); opacity: 0; }
 .hero-art .queue.play .queue-audit::after { animation: cursor 1s steps(2) 3.4s 4; }
-.hero-art .back { opacity: 0; transform: translateY(8px); transition: opacity .8s ease 1.2s, transform .8s ease 1.2s; }
-.hero-art .back.in { opacity: 1; transform: none; }
+.hero-art .back { opacity: 0; transition: opacity .9s ease 1.2s; }
+.hero-art .back.in { opacity: 1; }
 @keyframes progress { from { width: 0; } to { width: 100%; } }
 @keyframes hl { from { background: transparent; } to { background: var(--accent-soft); } }
 @keyframes ask { 0%, 100% { outline: 0 solid transparent; outline-offset: 0; } 40% { outline: 3px solid var(--accent-soft); outline-offset: 3px; } }
@@ -354,9 +354,32 @@ tr.selected td { background: var(--surface); }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .strip-track { animation: none; }
-  .hero-art .queue .field, .hero-art .queue .queue-actions, .hero-art .back { opacity: 1; transform: none; }
+  .hero-art .queue .field, .hero-art .queue .queue-actions, .hero-art .back { opacity: 1; }
   .hero-art .queue-doc mark { background: var(--accent-soft); }
 }
 /* Without JavaScript the hero must still read: fields and buttons visible */
 html:not(.js) .hero-art .queue .field, html:not(.js) .hero-art .queue .queue-actions, html:not(.js) .hero-art .back { opacity: 1; transform: none; }
 html:not(.js) .hero-art .queue-doc mark { background: var(--accent-soft); }
+
+/* Round 5: ledger canvas, reading progress, step line, magnetic buttons, page transitions */
+.hero { position: relative; isolation: isolate; }
+.hero > * { position: relative; z-index: 1; }
+.hero .ledger { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.nav-progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+.rows { position: relative; --line: 0; }
+.rows::before { content: ""; position: absolute; left: 27px; top: 0; bottom: 0; width: 2px; background: var(--accent); transform: scaleY(var(--line)); transform-origin: top; pointer-events: none; }
+.rows > div::before { transition: color .3s ease; }
+.rows > div.passed::before { color: var(--ink); }
+.btn { transition: background-color .15s ease, border-color .15s ease, color .15s ease, transform .12s ease; will-change: transform; }
+.btn:active { transform: scale(.97); }
+.section-head a, .list-plain a, p a, .faq a { background-image: linear-gradient(currentColor, currentColor); background-size: 0 1px; background-repeat: no-repeat; background-position: 0 100%; text-decoration: none; transition: background-size .25s ease; }
+.section-head a:hover, .list-plain a:hover, p a:hover { background-size: 100% 1px; }
+p a { text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+p a:hover { text-decoration-color: currentColor; }
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 160ms ease-out both vt-out; }
+::view-transition-new(root) { animation: 220ms ease-in both vt-in; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(6px); } }
+@media (max-width: 640px) { .rows::before { left: 17px; } .hero .ledger { display: none; } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } .rows::before { transform: none; } .rows > div::before { color: var(--ink); } }

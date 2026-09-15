@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Effects } from "./effects";
+import { Motion } from "./motion";
 
 // Shared site chrome and the signature components, built from DESIGN.md.
 // Everything here is server-rendered; the only client behaviour is CSS.
@@ -24,6 +25,7 @@ const NAV = [
 export function SiteNav({ current }: { current?: string }) {
   return (
     <nav className="nav" aria-label="Principal">
+      <span className="nav-progress" aria-hidden="true" />
       <Link className="brand" href="/">{CONTACT.brand}</Link>
       <div className="nav-links">
         {NAV.map(([href, label]) => <Link key={href} href={href} aria-current={current === href ? "page" : undefined} className={current === href ? "active" : undefined}>{label}</Link>)}
@@ -38,6 +40,7 @@ export function SiteFooter() {
   return (
     <footer>
       <Effects />
+      <Motion />
       <div className="col">
         <Link className="brand" href="/">{CONTACT.brand}</Link>
         <span>Automatización con revisión humana para corredurías de seguros y asesorías en España.</span>

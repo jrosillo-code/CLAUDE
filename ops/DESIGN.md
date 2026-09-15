@@ -392,8 +392,21 @@ to read the page (without JavaScript everything is simply visible):
   edges, paused on hover.
 - **The nav** tightens from 60px to 52px after the first 24px of scroll.
 
-No parallax, no cursor effects, no gradients or shadows: the motion shows the product
-working and nothing else.
+- **The ledger field** (`components/ledger-canvas.tsx`). Behind the home hero, a canvas
+  of hairline ticks in ink at 7% that breathe slowly and lean toward the cursor, turning
+  accent when close: rows of a statement waiting to be read. Fine pointers only, paused
+  off-screen, hidden on phones.
+- **Scroll-driven** (`components/motion.tsx`, GSAP loaded on demand): the hero headline
+  rises word by word from a mask; the two hero layers drift apart as the page scrolls;
+  a 2px accent reading-progress line sits under the nav; on numbered rows an accent
+  line draws itself down the sequence and each number turns ink as it is passed.
+- **Micro-interactions.** Primary buttons are magnetic within a few pixels and press to
+  97%; links in prose underline in full on hover; pages cross-fade with the View
+  Transitions API.
+
+Everything degrades to the static page: no JavaScript, reduced motion or a touch screen
+each remove a layer and nothing else changes. No gradients or shadows anywhere: the
+motion shows the product working and nothing else.
 
 ## Known gaps
 
