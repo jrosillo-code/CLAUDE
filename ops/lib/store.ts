@@ -24,6 +24,8 @@ export interface Store {
     isMember(firmId: string, userId: string): Promise<boolean>;
     firmsFor(userId: string): Promise<Firm[]>;
     add(m: Membership): Promise<void>;
+    roleOf(firmId: string, userId: string): Promise<Membership["role"] | null>;
+    listByFirm(firmId: string): Promise<Membership[]>;
   };
   inbound: {
     insert(m: InboundMessage): Promise<void>;
@@ -141,7 +143,9 @@ export class MemoryStore implements Store {
     isMember: async (firmId: string, userId: string) => this.membershipList.some((m) => m.firmId === firmId && m.userId === userId),
     firmsFor: async (userId: string) =>
       this.membershipList.filter((m) => m.userId === userId).map((m) => this.firmsMap.get(m.firmId)).filter((f): f is Firm => !!f),
-    add: async (m: Membership) => { this.membershipList.push(m); },
+    add: async (m: Membership) => { if (!this.membershipList.some((x) => x.firmId === m.firmId && x.userId === m.userId)) this.membershipList.push(m); },
+    roleOf: async (firmId: string, userId: string) => this.membershipList.find((m) => m.firmId === firmId && m.userId === userId)?.role ?? null,
+    listByFirm: async (firmId: string) => this.membershipList.filter((m) => m.firmId === firmId),
   };
   inbound = {
     insert: async (m: InboundMessage) => { this.inboundList.push(m); },

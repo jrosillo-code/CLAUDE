@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Effects } from "./effects";
 
 // Shared site chrome and the signature components, built from DESIGN.md.
 // Everything here is server-rendered; the only client behaviour is CSS.
@@ -36,6 +37,7 @@ export function SiteNav({ current }: { current?: string }) {
 export function SiteFooter() {
   return (
     <footer>
+      <Effects />
       <div className="col">
         <Link className="brand" href="/">{CONTACT.brand}</Link>
         <span>Automatización con revisión humana para corredurías de seguros y asesorías en España.</span>

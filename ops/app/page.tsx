@@ -34,7 +34,11 @@ export default function Home() {
       </section>
       <div className="strip" aria-label="Programas de gestión con los que trabajamos">
         <span className="lbl">Escribimos en tu programa</span>
-        <span>ebroker</span><span>segElevia</span><span>Avant2</span><span>Mediator</span><span>ficheros EIAC</span><span>Holded</span><span>A3</span><span>Sage</span>
+        <div className="strip-viewport">
+          <div className="strip-track">
+            {[0, 1].map((copy) => ["ebroker", "segElevia", "Avant2", "Mediator", "ficheros EIAC", "Holded", "A3", "Sage", "Tesis", "Contasol"].map((n) => <span key={`${copy}-${n}`} aria-hidden={copy === 1 || undefined}>{n}</span>))}
+          </div>
+        </div>
       </div>
 
       <Section id="que" eyebrow="Qué hacemos" title="Cinco pasos que hoy hace tu equipo a mano.">

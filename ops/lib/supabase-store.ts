@@ -32,7 +32,7 @@ const toJob = (r: Row): Job => ({ id: r.id as string, firmId: r.firm_id as strin
 const toReconciliation = (r: Row): ReconciliationRecord => ({ id: r.id as string, firmId: r.firm_id as string, documentId: r.document_id as string, insurer: (r.insurer as string) ?? null, period: (r.period as string) ?? null, summary: r.summary as Record<string, unknown>, unpaidEur: Number(r.unpaid_eur), mismatchEur: Number(r.mismatch_eur), usage: (r.usage as ReconciliationRecord["usage"]) ?? null, createdAt: r.created_at as string });
 
 export class SupabaseStore implements Store {
-  constructor(private db: SupabaseClient, private bucket = "documents") {}
+  constructor(readonly db: SupabaseClient, private bucket = "documents") {}
 
   static fromEnv(): SupabaseStore | null {
     const url = supabaseUrl();
@@ -63,6 +63,8 @@ export class SupabaseStore implements Store {
       return (f.data ?? []).map(toFirm);
     },
     add: async (m: Membership) => { const r = await this.db.from("memberships").upsert({ firm_id: m.firmId, user_id: m.userId, role: m.role }); if (r.error) throw new Error(r.error.message); },
+    roleOf: async (firmId: string, userId: string) => { const r = await this.db.from("memberships").select("role").eq("firm_id", firmId).eq("user_id", userId).maybeSingle(); if (r.error) throw new Error(r.error.message); return (r.data?.role as Membership["role"]) ?? null; },
+    listByFirm: async (firmId: string) => { const r = await this.db.from("memberships").select("*").eq("firm_id", firmId); if (r.error) throw new Error(r.error.message); return (r.data ?? []).map((x) => ({ firmId: x.firm_id as string, userId: x.user_id as string, role: x.role as Membership["role"] })); },
   };
   inbound = {
     insert: async (m: InboundMessage) => { must(await this.db.from("inbound_messages").insert({ id: m.id, firm_id: m.firmId, channel: m.channel, from_address: m.fromAddress, received_at: m.receivedAt, subject: m.subject, text: m.text, external_id: m.externalId, attachments: m.attachments }).select("id"), "inbound.insert"); },

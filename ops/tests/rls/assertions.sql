@@ -181,3 +181,15 @@ select assert_true((select settings from firms where id = '10000000-0000-0000-00
 reset role;
 update documents set status = 'purged' where storage_path = 'a/1';
 select assert_true((select status::text from documents where storage_path = 'a/1') = 'purged', 'purged is a valid document status');
+
+-- ── Memberships are granted by the server, never by a member ─────────────────
+set role authenticated;
+select set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-00000000000a', false);
+do $$ begin
+  begin
+    insert into memberships (firm_id, user_id, role) values ('10000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-00000000000c', 'staff');
+    raise exception 'ASSERTION FAILED: member granted a membership';
+  exception when insufficient_privilege then raise notice 'ok: members cannot grant memberships';
+  end;
+end $$;
+reset role;

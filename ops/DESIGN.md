@@ -376,6 +376,25 @@ Ready prompts:
 When a request conflicts with this file, follow the file and say so. When the file is
 silent, choose the quieter option.
 
+## Motion
+
+Added by `components/effects.tsx`, off under `prefers-reduced-motion`, and never required
+to read the page (without JavaScript everything is simply visible):
+
+- **Reveals.** Section heads, tiles, steps, rows, offers and mocks rise 14px and fade in
+  when they enter the viewport, staggered 70ms inside a group. One easing, 0.7s.
+- **The hero sequence.** Every 11 seconds the queue mock replays what the product does:
+  a 2px accent progress line runs under the title bar, the quoted values light up in the
+  source text one by one, the field rows land in order, the trail shows a blinking
+  accent cursor, and the approve button asks twice with an accent-soft outline. The
+  settlement behind it fades in after the first fields.
+- **The strip.** The management systems drift left at 38s per loop, masked at the
+  edges, paused on hover.
+- **The nav** tightens from 60px to 52px after the first 24px of scroll.
+
+No parallax, no cursor effects, no gradients or shadows: the motion shows the product
+working and nothing else.
+
 ## Known gaps
 
 - Dark mode is not designed; the app is light only for now.

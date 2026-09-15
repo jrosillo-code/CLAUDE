@@ -68,8 +68,13 @@ section.band { background: var(--surface); box-shadow: 0 0 0 100vmax var(--surfa
 .hero-art .front { position: relative; }
 /* Systems strip under the hero */
 .strip { display: flex; gap: 10px 26px; flex-wrap: wrap; align-items: center; padding: 16px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
-.strip .lbl { color: var(--ink-2); letter-spacing: .08em; }
+.strip .lbl { color: var(--ink-2); letter-spacing: .08em; flex: 0 0 auto; }
 .strip span:not(.lbl) { color: var(--ink-2); }
+.strip-viewport { flex: 1 1 200px; min-width: 0; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.strip-track { display: flex; gap: 34px; width: max-content; animation: marquee 38s linear infinite; }
+.strip-track span { white-space: nowrap; }
+.strip:hover .strip-track { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 /* Product showcase in a hairline window frame */
 .frame { border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); overflow: hidden; }
 .frame-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
@@ -316,3 +321,42 @@ tr.selected td { background: var(--surface); }
 .audit .who { color: var(--ink); }
 .disclosure { border-left: 2px solid var(--accent); padding: 8px 12px; font-size: 14px; color: var(--ink-2); background: var(--surface); }
 @media (max-width: 640px) { .rows > div { grid-template-columns: 36px minmax(0, 1fr); } .compare { font-size: 13px; } .compare th, .compare td { padding: 10px 6px; } }
+
+/* Motion: reveals, the hero sequence, the nav on scroll. Added by components/effects.tsx; off under reduced motion. */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0ms); }
+.reveal.in { opacity: 1; transform: none; }
+.nav { transition: min-height .2s ease, padding .2s ease; }
+.nav.scrolled { min-height: 52px; padding-block: 8px; }
+/* Hero sequence: the source text lights up, the fields land, the trail writes itself, the approve button asks for the click */
+.hero-art .queue-bar { position: relative; }
+.hero-art .queue-bar::after { content: ""; position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--accent); }
+.hero-art .queue.play .queue-bar::after { animation: progress 4.6s linear both; }
+.hero-art .queue-doc mark { background: transparent; transition: none; }
+.hero-art .queue.play .queue-doc mark { animation: hl .5s ease both; }
+.hero-art .queue.play .queue-doc mark:nth-of-type(1) { animation-delay: .3s } .hero-art .queue.play .queue-doc mark:nth-of-type(2) { animation-delay: .9s }
+.hero-art .queue.play .queue-doc mark:nth-of-type(3) { animation-delay: 1.5s } .hero-art .queue.play .queue-doc mark:nth-of-type(4) { animation-delay: 2.1s }
+.hero-art .queue .field { opacity: 0; }
+.hero-art .queue.play .field { animation: land .5s ease-out both; }
+.hero-art .queue.play .field:nth-child(1) { animation-delay: .6s } .hero-art .queue.play .field:nth-child(2) { animation-delay: 1.2s }
+.hero-art .queue.play .field:nth-child(3) { animation-delay: 2.0s } .hero-art .queue.play .field:nth-child(4) { animation-delay: 2.6s }
+.hero-art .queue .queue-actions { opacity: 0; }
+.hero-art .queue.play .queue-actions { animation: land .4s ease-out 3.2s both; }
+.hero-art .queue.play .queue-actions .btn.accent { animation: ask 1.6s ease 3.8s 2; }
+.hero-art .queue .queue-audit { overflow: hidden; }
+.hero-art .queue .queue-audit::after { content: "▍"; color: var(--accent); opacity: 0; }
+.hero-art .queue.play .queue-audit::after { animation: cursor 1s steps(2) 3.4s 4; }
+.hero-art .back { opacity: 0; transform: translateY(8px); transition: opacity .8s ease 1.2s, transform .8s ease 1.2s; }
+.hero-art .back.in { opacity: 1; transform: none; }
+@keyframes progress { from { width: 0; } to { width: 100%; } }
+@keyframes hl { from { background: transparent; } to { background: var(--accent-soft); } }
+@keyframes ask { 0%, 100% { outline: 0 solid transparent; outline-offset: 0; } 40% { outline: 3px solid var(--accent-soft); outline-offset: 3px; } }
+@keyframes cursor { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .strip-track { animation: none; }
+  .hero-art .queue .field, .hero-art .queue .queue-actions, .hero-art .back { opacity: 1; transform: none; }
+  .hero-art .queue-doc mark { background: var(--accent-soft); }
+}
+/* Without JavaScript the hero must still read: fields and buttons visible */
+html:not(.js) .hero-art .queue .field, html:not(.js) .hero-art .queue .queue-actions, html:not(.js) .hero-art .back { opacity: 1; transform: none; }
+html:not(.js) .hero-art .queue-doc mark { background: var(--accent-soft); }

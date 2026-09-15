@@ -54,6 +54,10 @@ npm run onboard -- --name "Despacho" --kind correduria --email persona@despacho.
   by field, incidents, model cost) with the baseline hours from the firm's settings.
   Print it for the PDF. `/app/{firmId}/ajustes` holds the firm's settings: retention
   period, budget alert mailbox, baseline hours, insurers' settlement mailboxes.
+- The owner manages the team from Ajustes: an invitation creates the account and sends
+  the sign-in link; the membership row is what grants access, and RLS reads it. The log
+  records a hash of the address, not the address. `npm run onboard` remains for the very
+  first owner of a firm.
 - Retention is the firm's decision: with `retentionDays` set, the daily job deletes the
   original, extractions, drafts and corrections of documents in a final status older than
   that, marks them `purged` and logs it. The activity log is never purged.
@@ -164,6 +168,7 @@ firm.
 | `POST /api/jobs/run?limit=50` | drains due jobs, then runs retention; `CRON_SECRET` or `OPS_API_KEY` |
 | `GET /api/metrics?firmId&from&to` | fields, euros, tasks, cost, cycle time, review, incidents, weekly |
 | `GET /api/export?firmId&kind&from&to` | CSV of `activity`, `corrections` or `extractions` (semicolons, BOM) |
+| `GET,POST /api/firms/{id}/members` | the team; invite by `email` with `role` staff or owner (owners or the key). In Supabase mode the invitation email carries the sign-in link |
 | `GET,PATCH /api/firms/{id}` | read or merge the firm's settings: `retentionDays`, `alertEmail`, `baselineHoursPerWeek`, `insurerEmails` |
 | `POST /api/documents/{id}/process` | run the chain on a received document |
 | `POST /api/receipts/import` | multipart CSV (`aseguradora;poliza;recibo;tomador;prima;comision;periodo`), `insurer`, `period` |
