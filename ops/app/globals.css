@@ -164,7 +164,40 @@ footer .brand { font-size: 18px; color: var(--ink); }
 footer .legal { grid-column: 1 / -1; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
 /* App pages (review queue) */
-.app-wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 64px; }
+.app-wrap { max-width: 1080px; margin: 0 auto; padding: 24px 20px 72px; }
+.page-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-top: 22px; }
+.page-head h1 { font-size: clamp(30px, 3.4vw, 40px); }
+.page-head .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+.section-row { display: flex; align-items: baseline; gap: 12px; margin: 40px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.section-row h2 { font-size: 22px; letter-spacing: -.01em; }
+.section-row .count { font-family: var(--mono); font-size: 12px; color: var(--ink-3); padding: 1px 8px; border: 1px solid var(--rule); border-radius: 999px; }
+.section-row a { margin-left: auto; color: var(--ink-2); }
+.app-proof { margin-top: 22px; }
+.app-proof .n { font-size: 40px; font-family: var(--serif); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; letter-spacing: -.01em; }
+.app-proof .n .unit { font-family: var(--mono); font-size: 14px; color: var(--ink-3); margin-left: 6px; letter-spacing: .04em; }
+.notice { padding: 12px 14px; border: 1px solid var(--rule); background: var(--surface); margin-top: 14px; font-size: 15px; }
+.notice.err { border-color: var(--bad); color: var(--bad); }
+.empty { border: 1px dashed var(--rule); padding: 22px; display: grid; gap: 10px; background: var(--surface); }
+.empty p { color: var(--ink-2); font-size: 15px; }
+.btn.sm { padding: 5px 10px; font-size: 13px; }
+.btn.ghost.sm { border-color: var(--rule); color: var(--ink); }
+.btn.ghost.sm:hover { border-color: var(--ink); }
+.input.sm { font-size: 13px; padding: 4px 8px; }
+textarea.input { width: 100%; font-size: 14px; line-height: 1.5; }
+.app-queue { margin-top: 14px; font-size: 14px; }
+.app-queue .queue-bar .pill { font-size: 10.5px; }
+.app-queue .queue-doc { display: grid; gap: 10px; align-content: start; }
+.doc-frame { width: 100%; height: 460px; border: 1px solid var(--rule); background: #fff; }
+.issues { margin: 0; padding-left: 18px; font-size: 13px; color: var(--ink-2); display: grid; gap: 4px; }
+.issues li.err { color: var(--bad); }
+.field .fix { grid-column: 1 / -1; display: flex; gap: 6px; }
+.field .fix .input { flex: 1; min-width: 0; }
+.app-queue .queue-audit { display: grid; gap: 14px; font-family: var(--sans); font-size: 14px; color: var(--ink); }
+.app-queue .trail { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); }
+.decision { display: grid; gap: 10px; padding: 12px 0; border-bottom: 1px dashed var(--rule); }
+.decision .draft { display: grid; gap: 6px; }
+.decision .queue-actions { margin-top: 2px; }
+table.log td { padding: 6px 8px; font-size: 13px; }
 .card { background: var(--surface); border: 1px solid var(--rule); padding: 16px; margin: 12px 0; }
 .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 .pill { display: inline-block; padding: 2px 8px; border-radius: 3px; font-family: var(--mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .05em; }

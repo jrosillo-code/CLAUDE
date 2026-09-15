@@ -38,8 +38,8 @@ export default async function Ajustes({ params, searchParams }: { params: Promis
   return (
     <main className="app-wrap">
       <AppNav slug={slug} firmName={firm.name} userLabel={userLabel} mode={rt.mode} active="ajustes" logout={supabaseAuthConfigured()} />
-      <h1 style={{ marginTop: 18 }}>Ajustes del despacho</h1>
-      {error && <div className="card" style={{ borderColor: "var(--bad)" }}>{error}</div>}
+      <div className="page-head"><h1>Ajustes del despacho</h1></div>
+      {error && <div className="notice err">{error}</div>}
       {guardado && !error && <div className="card"><span className="pill ok">guardado</span> <span className="small muted">Los cambios se aplican desde ahora y quedan en el registro de actividad.</span></div>}
 
       <form action={`/api/firms/${firm.id}`} method="post" className="two" style={{ marginTop: 20, alignItems: "start" }}>

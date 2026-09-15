@@ -21,8 +21,10 @@ const FIELD_LABELS: Record<string, string> = {
   pagador: "Pagador", beneficiario: "Beneficiario", importe: "Importe", fecha: "Fecha", referencia_poliza: "Ref. póliza", estado: "Estado",
   tipo: "Tipo", numero_poliza: "Nº póliza", asegurado_nombre: "Asegurado", fecha_siniestro: "Fecha siniestro", lugar: "Lugar", descripcion: "Descripción", terceros_implicados: "Terceros",
   aseguradora: "Aseguradora", tomador_nombre: "Tomador", tomador_nif: "NIF tomador", ramo: "Ramo", fecha_efecto: "Efecto", fecha_vencimiento: "Vencimiento", prima_total: "Prima",
-  nombre: "Nombre", numero_documento: "Nº documento", fecha_caducidad: "Caducidad",
+  nombre: "Nombre", numero_documento: "Nº documento", fecha_caducidad: "Caducidad", documentos_adjuntos: "Documentos adjuntos",
 };
+
+const show = (v: unknown) => (typeof v === "boolean" ? (v ? "sí" : "no") : String(v));
 
 export default async function Revisar({ params, searchParams }: { params: Promise<{ firmId: string }>; searchParams: Promise<{ error?: string }> }) {
   const { firmId: slug } = await params;
@@ -65,25 +67,28 @@ export default async function Revisar({ params, searchParams }: { params: Promis
   return (
     <main className="app-wrap">
       <AppNav slug={slug} firmName={firm.name} userLabel={userLabel} mode={rt.mode} active="revisar" logout={supabaseAuthConfigured()} />
-      <h1 style={{ marginTop: 18 }}>Cola de revisión</h1>
-      {error && <div className="card" style={{ borderColor: "var(--bad)" }}>{error}</div>}
-
-      <div className="proof" style={{ margin: "20px 0 8px" }}>
-        <div className="stat"><div className="n mono">{metrics.fields.approvedWithoutCorrectionPct ?? "–"}{metrics.fields.approvedWithoutCorrectionPct != null ? "%" : ""}</div><div className="l">Campos aprobados sin corrección ({metrics.fields.extracted} leídos, {metrics.fields.corrected} corregidos)</div></div>
-        <div className="stat"><div className="n mono">{(metrics.euros.unpaid + metrics.euros.mismatch).toFixed(2)} €</div><div className="l">Comisiones no pagadas o mal pagadas detectadas en {metrics.euros.reconciliations} liquidaciones</div></div>
-        <div className="stat"><div className="n mono">{metrics.tasks.openFirm + metrics.tasks.openClient}</div><div className="l">Tareas abiertas ({metrics.tasks.openFirm} del despacho, {metrics.tasks.openClient} de clientes) · coste del modelo ${metrics.cost.usd.toFixed(2)}</div></div>
+      <div className="page-head">
+        <h1>Cola de revisión</h1>
+        <span className="meta">Presupuesto del mes · {budget.used.toLocaleString("es-ES")} de {budget.budget.toLocaleString("es-ES")} tokens{budget.warn ? " · por encima del 80 %" : ""}</span>
       </div>
-      <p className="muted small">Presupuesto del mes: {budget.used.toLocaleString("es-ES")} de {budget.budget.toLocaleString("es-ES")} tokens{budget.warn ? " · aviso: por encima del 80 %" : ""}</p>
+      {error && <div className="notice err">{error}</div>}
 
-      <h2 style={{ marginTop: 28 }}>Pendiente de aprobación ({items.length})</h2>
+      <div className="proof app-proof">
+        <div className="stat"><div className="n">{metrics.fields.approvedWithoutCorrectionPct ?? "–"}{metrics.fields.approvedWithoutCorrectionPct != null ? <span className="unit">%</span> : ""}</div><div className="l">Campos aprobados sin corrección · {metrics.fields.extracted} leídos, {metrics.fields.corrected} corregidos</div></div>
+        <div className="stat"><div className="n">{(metrics.euros.unpaid + metrics.euros.mismatch).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}<span className="unit">€</span></div><div className="l">Comisiones no pagadas o mal pagadas en {metrics.euros.reconciliations} {metrics.euros.reconciliations === 1 ? "liquidación" : "liquidaciones"}</div></div>
+        <div className="stat"><div className="n">{metrics.tasks.openFirm + metrics.tasks.openClient}</div><div className="l">Tareas abiertas · {metrics.tasks.openFirm} del despacho, {metrics.tasks.openClient} de clientes · modelo ${metrics.cost.usd.toFixed(2)}</div></div>
+      </div>
+
+      <div className="section-row"><h2>Pendiente de aprobación</h2><span className="count">{items.length}</span></div>
       {items.length === 0 && (
-        <div className="card">
-          <p className="muted">Nada pendiente.</p>
-          <form action="/api/intake/upload" method="post" encType="multipart/form-data" className="row" style={{ marginTop: 10 }}>
+        <div className="empty">
+          <div className="eyebrow">Nada pendiente</div>
+          <p>Todo lo que llegó está aprobado o rechazado. Sube un documento para verlo pasar por la cadena.</p>
+          <form action="/api/intake/upload" method="post" encType="multipart/form-data" className="row">
             <input type="hidden" name="firmId" value={firm.id} />
             <input type="hidden" name="process" value="1" />
-            <input type="file" name="file" id="file" required />
-            <button type="submit">Subir y procesar</button>
+            <input type="file" name="file" id="file" required className="input" />
+            <button type="submit" className="btn">Subir y procesar</button>
           </form>
         </div>
       )}
@@ -91,22 +96,27 @@ export default async function Revisar({ params, searchParams }: { params: Promis
         <DocumentCard key={doc.id} doc={doc} extraction={extraction} validation={validation} approvals={approvals} drafts={drafts} />
       ))}
 
-      <h2>Tareas abiertas ({tasks.length})</h2>
-      <table><thead><tr><th>Tarea</th><th>Detalle</th><th>Responsable</th><th></th></tr></thead><tbody>
-        {tasks.map((t) => <tr key={t.id}><td>{t.title}</td><td className="muted">{t.detail}</td><td>{t.owner === "firm" ? "Despacho" : "Cliente"}</td><td><form action={`/api/tasks/${t.id}`} method="post"><input type="hidden" name="status" value="done" /><button className="secondary" type="submit">Hecha</button></form></td></tr>)}
-      </tbody></table>
+      <div className="section-row"><h2>Tareas abiertas</h2><span className="count">{tasks.length}</span></div>
+      {tasks.length === 0 ? <div className="empty"><p>Sin tareas abiertas.</p></div> : (
+        <div className="table-wrap"><table>
+          <thead><tr><th>Tarea</th><th>Detalle</th><th>Responsable</th><th></th></tr></thead>
+          <tbody>{tasks.map((t) => <tr key={t.id}><td>{t.title}</td><td className="muted">{t.detail}</td><td><span className={`pill ${t.owner === "firm" ? "pending" : ""}`}>{t.owner === "firm" ? "despacho" : "cliente"}</span></td><td className="num"><form action={`/api/tasks/${t.id}`} method="post"><input type="hidden" name="status" value="done" /><button className="btn ghost sm" type="submit">Hecha</button></form></td></tr>)}</tbody>
+        </table></div>
+      )}
 
       {reconciliations.length > 0 && (<>
-        <h2>Liquidaciones conciliadas <span className="small muted" style={{ fontFamily: "var(--sans)", fontWeight: 400 }}>· <Link href={`/app/${slug}/liquidaciones`}>ver todas y reclamar</Link></span></h2>
-        <table><thead><tr><th>Aseguradora</th><th>Periodo</th><th>No pagado</th><th>Diferencias</th></tr></thead><tbody>
-          {reconciliations.map((r) => <tr key={r.id}><td>{r.insurer ?? "?"}</td><td>{r.period ?? "?"}</td><td>{r.unpaidEur.toFixed(2)} €</td><td>{r.mismatchEur.toFixed(2)} €</td></tr>)}
-        </tbody></table>
+        <div className="section-row"><h2>Liquidaciones conciliadas</h2><Link className="small" href={`/app/${slug}/liquidaciones`}>Ver todas y reclamar →</Link></div>
+        <div className="table-wrap"><table>
+          <thead><tr><th>Aseguradora</th><th>Periodo</th><th className="num">No pagado</th><th className="num">Diferencias</th></tr></thead>
+          <tbody>{reconciliations.map((r) => <tr key={r.id}><td>{r.insurer ?? "?"}</td><td className="mono">{r.period ?? "?"}</td><td className="num">{r.unpaidEur.toFixed(2)} €</td><td className="num">{r.mismatchEur.toFixed(2)} €</td></tr>)}</tbody>
+        </table></div>
       </>)}
 
-      <h2>Registro de actividad</h2>
-      <table><thead><tr><th>Cuándo</th><th>Acción</th><th>Actor</th><th>Coste</th></tr></thead><tbody>
-        {activity.map((e) => <tr key={e.id}><td className="muted">{new Date(e.at).toLocaleString("es-ES")}</td><td>{e.action}</td><td className="muted">{e.actor.type}{e.actor.id ? ` · ${e.actor.id}` : ""}</td><td className="muted">{e.usage ? `$${e.usage.costUsd.toFixed(4)}` : ""}</td></tr>)}
-      </tbody></table>
+      <div className="section-row"><h2>Registro de actividad</h2><Link className="small" href={`/api/export?kind=activity&firmId=${firm.id}`}>Exportar CSV</Link></div>
+      <div className="table-wrap"><table className="log">
+        <thead><tr><th>Cuándo</th><th>Acción</th><th>Actor</th><th className="num">Coste</th></tr></thead>
+        <tbody>{activity.map((e) => <tr key={e.id}><td className="mono muted">{new Date(e.at).toLocaleString("es-ES", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</td><td className="mono">{e.action}</td><td className="muted">{e.actor.type}{e.actor.id ? ` · ${e.actor.id}` : ""}</td><td className="num muted">{e.usage ? `$${e.usage.costUsd.toFixed(4)}` : ""}</td></tr>)}</tbody>
+      </table></div>
     </main>
   );
 }
@@ -116,62 +126,66 @@ function DocumentCard({ doc, extraction, validation, approvals, drafts }: { doc:
   const isPdf = doc.mediaType === "application/pdf";
   const isImage = doc.mediaType.startsWith("image/");
   const fileUrl = `/api/documents/${doc.id}/file`;
+  const missing = validation?.missing.length ?? 0;
   return (
-    <div className="card">
-      <div className="row" style={{ justifyContent: "space-between" }}>
-        <div><strong>{doc.fileName}</strong> <span className="muted">· {extraction?.kind ?? "sin leer"}{extraction ? ` · confianza ${(extraction.kindConfidence * 100).toFixed(0)} %` : ""}</span></div>
-        <span className={`pill ${validation?.ok ? "ok" : "pending"}`}>{validation?.ok ? "válido" : `${validation?.missing.length ?? 0} faltan`}</span>
+    <div className="queue app-queue">
+      <div className="queue-bar">
+        <span>{doc.fileName} · {extraction?.kind ?? "sin leer"}{extraction ? ` · confianza ${(extraction.kindConfidence * 100).toFixed(0)} %` : ""}</span>
+        <span className={`pill ${validation?.ok ? "ok" : "pending"}`}>{validation?.ok ? "válido" : `${missing} ${missing === 1 ? "falta" : "faltan"}`}</span>
       </div>
-      <div className="two" style={{ marginTop: 12 }}>
-        <div>
-          {isPdf && <iframe src={fileUrl} title={doc.fileName} style={{ width: "100%", height: 420, border: "1px solid var(--rule)", background: "#fff" }} />}
-          {isImage && <img src={fileUrl} alt={doc.fileName} style={{ border: "1px solid var(--rule)" }} />}
+      <div className="queue-body">
+        <div className="queue-doc">
+          {isPdf && <iframe src={fileUrl} title={doc.fileName} className="doc-frame" />}
+          {isImage && <img src={fileUrl} alt={doc.fileName} style={{ border: "1px solid var(--rule)", background: "#fff" }} />}
           {!isPdf && !isImage && <a href={fileUrl}>Abrir {doc.fileName}</a>}
           {validation && validation.issues.length > 0 && (
-            <ul className="small muted" style={{ paddingLeft: 18, marginTop: 10 }}>
-              {validation.issues.map((i, k) => <li key={k}>{i.severity === "error" ? "⚠ " : ""}{i.message}</li>)}
+            <ul className="issues">
+              {validation.issues.map((i, k) => <li key={k} className={i.severity === "error" ? "err" : ""}>{i.message}</li>)}
             </ul>
           )}
         </div>
-        <div>
+        <div className="queue-fields">
           {section && typeof section === "object" && Object.entries(section).map(([k, f]) => {
-            if (Array.isArray(f)) return <div className="field" key={k}><span className="k">{k}</span><span className="tag ok">{f.length}</span><span className="v">{f.join(", ") || "—"}</span></div>;
+            if (Array.isArray(f)) return <div className="field" key={k}><span className="k">{FIELD_LABELS[k] ?? k}</span><span className="tag ok">{f.length}</span><span className="v">{f.join(", ") || "—"}</span></div>;
             const fld = f as Field<unknown> | null;
             const has = !!fld && fld.quote?.trim();
             return (
               <div className="field" key={k}>
                 <span className="k">{FIELD_LABELS[k] ?? k}</span>
                 <span className={`tag ${has ? "ok" : "missing"}`}>{has ? (String(fld!.quote).startsWith("corregido") ? "corregido" : "leído") : "falta"}</span>
-                <span className="v">{has ? String(fld!.value) : "—"}</span>
+                <span className="v">{has ? show(fld!.value) : "—"}</span>
                 <span className="src">{has ? `“${fld!.quote}”${fld!.page ? `, pág. ${fld!.page}` : ""}` : "no consta en el documento"}</span>
-                <form action={`/api/documents/${doc.id}/correct`} method="post" className="row" style={{ gridColumn: "1 / -1", gap: 6 }}>
+                <form action={`/api/documents/${doc.id}/correct`} method="post" className="fix">
                   <input type="hidden" name="field" value={k} />
-                  <input name="value" placeholder="Corregir…" aria-label={`Corregir ${k}`} style={{ font: "inherit", fontSize: 13, padding: "4px 6px", border: "1px solid var(--rule)", flex: 1, minWidth: 0 }} />
-                  <button type="submit" className="secondary" style={{ padding: "4px 8px", fontSize: 13 }}>Guardar</button>
+                  <input name="value" placeholder="Corregir…" aria-label={`Corregir ${FIELD_LABELS[k] ?? k}`} className="input sm" />
+                  <button type="submit" className="btn ghost sm">Guardar</button>
                 </form>
               </div>
             );
           })}
         </div>
-      </div>
-      {approvals.map((a, i) => (
-        <div key={a.id} style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid var(--rule)" }}>
-          <span className="pill pending">{a.action === "send_draft" ? `Enviar ${drafts[i]?.channel ?? "mensaje"}` : "Escribir en el sistema de gestión"}</span>
-          {drafts[i] && (
-            <form action={`/api/documents/${doc.id}/correct`} method="post" style={{ marginTop: 8 }}>
-              <div className="small muted">Para: {drafts[i]!.to}{drafts[i]!.subject ? ` · Asunto: ${drafts[i]!.subject}` : ""}</div>
-              <input type="hidden" name="field" value="draft.body" />
-              <input type="hidden" name="draftId" value={drafts[i]!.id} />
-              <textarea name="value" defaultValue={drafts[i]!.body} rows={8} style={{ width: "100%", font: "inherit", fontSize: 14, padding: 8, border: "1px solid var(--rule)", marginTop: 6 }} />
-              <button type="submit" className="secondary" style={{ marginTop: 6 }}>Guardar cambios del mensaje</button>
-            </form>
-          )}
-          <div className="row" style={{ marginTop: 10 }}>
-            <form action={`/api/approvals/${a.id}`} method="post"><input type="hidden" name="decision" value="approved" /><button type="submit" className="btn accent">{a.action === "send_draft" ? "Aprobar y enviar" : "Aprobar y escribir"}</button></form>
-            <form action={`/api/approvals/${a.id}`} method="post"><input type="hidden" name="decision" value="rejected" /><button type="submit" className="secondary">Rechazar</button></form>
-          </div>
+        <div className="queue-audit">
+          {approvals.map((a, i) => (
+            <div key={a.id} className="decision">
+              <span className="pill pending">{a.action === "send_draft" ? `Enviar por ${drafts[i]?.channel ?? "mensaje"}` : "Escribir en el sistema de gestión"}</span>
+              {drafts[i] && (
+                <form action={`/api/documents/${doc.id}/correct`} method="post" className="draft">
+                  <div className="small muted">Para: {drafts[i]!.to}{drafts[i]!.subject ? ` · Asunto: ${drafts[i]!.subject}` : ""}</div>
+                  <input type="hidden" name="field" value="draft.body" />
+                  <input type="hidden" name="draftId" value={drafts[i]!.id} />
+                  <textarea name="value" defaultValue={drafts[i]!.body} rows={7} className="input" />
+                  <button type="submit" className="btn ghost sm">Guardar cambios del mensaje</button>
+                </form>
+              )}
+              <div className="queue-actions">
+                <form action={`/api/approvals/${a.id}`} method="post"><input type="hidden" name="decision" value="approved" /><button type="submit" className="btn accent">{a.action === "send_draft" ? "Aprobar y enviar" : "Aprobar y escribir"}</button></form>
+                <form action={`/api/approvals/${a.id}`} method="post"><input type="hidden" name="decision" value="rejected" /><button type="submit" className="btn ghost">Rechazar</button></form>
+              </div>
+            </div>
+          ))}
+          <span className="trail">registro · recibido {new Date(doc.createdAt).toLocaleString("es-ES", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })} · {extraction ? "leído" : "sin leer"} · {validation ? (validation.ok ? "validado" : `validado: ${missing} ${missing === 1 ? "elemento falta" : "elementos faltan"}`) : "sin validar"} · {approvals.length} {approvals.length === 1 ? "aprobación pendiente" : "aprobaciones pendientes"}</span>
         </div>
-      ))}
+      </div>
     </div>
   );
 }

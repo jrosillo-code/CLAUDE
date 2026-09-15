@@ -61,8 +61,8 @@ export default async function Liquidaciones({ params, searchParams }: { params: 
   return (
     <main className="app-wrap">
       <AppNav slug={slug} firmName={firm.name} userLabel={userLabel} mode={rt.mode} active="liquidaciones" logout={supabaseAuthConfigured()} />
-      <h1 style={{ marginTop: 18 }}>Liquidaciones de comisiones</h1>
-      {error && <div className="card" style={{ borderColor: "var(--bad)" }}>{error}</div>}
+      <div className="page-head"><h1>Liquidaciones de comisiones</h1></div>
+      {error && <div className="notice err">{error}</div>}
 
       <div className="proof" style={{ margin: "20px 0 8px" }}>
         <div className="stat"><div className="n mono">{records.length}</div><div className="l">Liquidaciones conciliadas</div></div>
