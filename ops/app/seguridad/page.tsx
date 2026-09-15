@@ -25,7 +25,7 @@ export default function Seguridad() {
         <p className="lede">No tenemos todavía una ISO 27001; tenemos un sistema diseñado para despachos regulados en España y la lista de lo que hace cada control. Cuando la certificación llegue, se añadirá aquí.</p>
       </section>
 
-      <Section eyebrow="Controles" title="Qué hace el sistema, y cómo se comprueba.">
+      <Section band eyebrow="Controles" title="Qué hace el sistema, y cómo se comprueba.">
         <table>
           <thead><tr><th>Control</th><th>Qué hace</th><th>Cómo se comprueba</th></tr></thead>
           <tbody>{CONTROLS.map(([c, w, h]) => <tr key={c}><td><strong>{c}</strong></td><td className="muted">{w}</td><td className="muted">{h}</td></tr>)}</tbody>

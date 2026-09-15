@@ -29,7 +29,7 @@ export default function Kit() {
         <div className="ctas no-print"><Link className="btn" href="/contacto">Pedir el kit con el contrato de encargo</Link><Link className="btn ghost" href="/seguridad">Ver los controles técnicos</Link></div>
       </section>
 
-      <Section eyebrow="Los siete puntos" title="Qué garantiza cada uno, cómo lo hace el sistema y dónde se ve.">
+      <Section band eyebrow="Los siete puntos" title="Qué garantiza cada uno, cómo lo hace el sistema y dónde se ve.">
         <div className="rows">
           {ITEMS.map((it) => (
             <div key={it.n}>
