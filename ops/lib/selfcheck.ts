@@ -118,7 +118,7 @@ export async function runSelfCheck(env: NodeJS.ProcessEnv = process.env): Promis
   }));
   checks.push(await check("cron", "Ejecutor de trabajos", async () => {
     if (!env.CRON_SECRET && !env.OPS_API_KEY) throw new Error("falta CRON_SECRET");
-    return env.CRON_SECRET ? "CRON_SECRET configurado; vercel.json programa /api/jobs/run cada minuto" : "sin CRON_SECRET; el cron usará OPS_API_KEY si se configura en Vercel";
+    return env.CRON_SECRET ? "CRON_SECRET configurado; vercel.json programa /api/jobs/run a diario a las 06:00 UTC; en el plan Pro puede pasar a cada minuto" : "sin CRON_SECRET; el cron usará OPS_API_KEY si se configura en Vercel";
   }));
   checks.push(await check("senders", "Envíos", async () => {
     const email = env.SMTP_URL && env.MAIL_FROM ? "correo por SMTP" : "correo solo en registro";
