@@ -1,4 +1,5 @@
 import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, AuditMock, DisclosureLine } from "@/components/site";
+import { MeshCanvas } from "@/components/mesh-canvas";
 
 export const metadata = { title: "Seguridad y cumplimiento", description: "Controles técnicos y contractuales: RGPD y encargo del tratamiento, datos en la UE, sin entrenamiento, seguridad por filas, registro de actividad inmutable, revisión humana, aviso de IA, presupuesto de modelo." };
 
@@ -20,6 +21,7 @@ export default function Seguridad() {
     <div className="wrap">
       <SiteNav current="/seguridad" />
       <section className="page-hero">
+        <MeshCanvas intensity={0.7} />
         <div className="eyebrow">Seguridad y cumplimiento</div>
         <h1>Sin sellos que no tenemos. Con los controles, uno por uno.</h1>
         <p className="lede">No tenemos todavía una ISO 27001; tenemos un sistema diseñado para despachos regulados en España y la lista de lo que hace cada control. Cuando la certificación llegue, se añadirá aquí.</p>

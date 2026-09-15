@@ -1,4 +1,5 @@
 import { SiteNav, SiteFooter, CONTACT } from "@/components/site";
+import { MeshCanvas } from "@/components/mesh-canvas";
 
 export const metadata = { title: "Contacto", description: "Cuéntanos tu flujo más lento. Te decimos en 30 minutos si se puede automatizar y cuánto costaría." };
 export const dynamic = "force-dynamic";
@@ -9,6 +10,7 @@ export default async function Contacto({ searchParams }: { searchParams: Promise
     <div className="wrap">
       <SiteNav current="/contacto" />
       <section className="page-hero">
+        <MeshCanvas intensity={0.7} />
         <div className="eyebrow">Contacto</div>
         <h1>Cuéntame tu flujo más lento.</h1>
         <p className="lede">Te digo en 30 minutos si se puede automatizar y cuánto costaría. Respondo el mismo día laborable.</p>

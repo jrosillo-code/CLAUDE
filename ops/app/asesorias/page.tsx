@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MeshCanvas } from "@/components/mesh-canvas";
 import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, Faq, JsonLd, faqJsonLd } from "@/components/site";
 
 export const metadata = { title: "Para asesorías y gestorías", description: "Entrada y validación de facturas de clientes, reclamación de lo que falta y preparación para Verifactu 2027, con revisión humana e integración con Holded, A3, Sage, Anfix y Quipu." };
@@ -15,6 +16,7 @@ export default function Asesorias() {
       <JsonLd data={faqJsonLd(FAQ)} />
       <SiteNav current="/asesorias" />
       <section className="page-hero">
+        <MeshCanvas intensity={0.7} />
         <div className="eyebrow">Asesorías y gestorías</div>
         <h1>Las facturas de tus clientes, completas y validadas antes de que alguien tenga que perseguirlas.</h1>
         <p className="lede">Desde 2027, Verifactu para todos. Tus clientes seguirán mandando lo que puedan, como puedan. El sistema recibe, lee con cita, comprueba NIF, importes y fechas, y pide lo que falta. Tu equipo aprueba y contabiliza.</p>

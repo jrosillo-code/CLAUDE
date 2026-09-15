@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MeshCanvas } from "@/components/mesh-canvas";
 import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, AuditMock, DisclosureLine } from "@/components/site";
 
 export const metadata = { title: "Cómo funciona", description: "El recorrido de un documento: entrada, extracción con cita, validación determinista, tareas, borrador con aviso de IA, aprobación humana, escritura en el sistema de gestión y registro de auditoría." };
@@ -8,6 +9,7 @@ export default function ComoFunciona() {
     <div className="wrap">
       <SiteNav current="/como-funciona" />
       <section className="page-hero">
+        <MeshCanvas intensity={0.7} />
         <div className="eyebrow">Cómo funciona</div>
         <h1>Un documento, siete pasos, un clic humano.</h1>
         <p className="lede">Esto no es un chatbot. Es una cadena en la que la IA lee y propone, el código comprueba, y una persona decide. Así es el recorrido de cada documento, y así se ve en pantalla.</p>

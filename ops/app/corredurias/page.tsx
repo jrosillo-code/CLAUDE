@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MeshCanvas } from "@/components/mesh-canvas";
 import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, SettlementMock, Faq, JsonLd, faqJsonLd } from "@/components/site";
 
 export const metadata = { title: "Para corredurías de seguros", description: "Conciliación de liquidaciones de comisiones, documentación de siniestros y renovaciones con revisión humana, integrado con ebroker, segElevia, Avant2, Mediator y ficheros EIAC." };
@@ -15,6 +16,7 @@ export default function Corredurias() {
       <JsonLd data={faqJsonLd(FAQ)} />
       <SiteNav current="/corredurias" />
       <section className="page-hero">
+        <MeshCanvas intensity={0.7} />
         <div className="eyebrow">Corredurías de seguros</div>
         <h1>Cerramos las liquidaciones del mes en horas, no en días. Y te decimos qué comisiones no te han pagado.</h1>
         <p className="lede">Cada aseguradora liquida en un formato distinto. Alguien las abre una a una y las cruza con la cartera. Ese trabajo, y las comisiones que se pierden por el camino, es el primer flujo que automatizamos en una correduría.</p>

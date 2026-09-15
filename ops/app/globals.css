@@ -383,3 +383,19 @@ p a:hover { text-decoration-color: currentColor; }
 @keyframes vt-in { from { opacity: 0; transform: translateY(6px); } }
 @media (max-width: 640px) { .rows::before { left: 17px; } .hero .ledger { display: none; } }
 @media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } .rows::before { transform: none; } .rows > div::before { color: var(--ink); } }
+
+/* Atmospheric backdrop: the gradient mesh behind heroes, full-bleed, in the palette. Static fallback below. */
+.page-hero { position: relative; isolation: isolate; }
+.page-hero > * { position: relative; z-index: 1; }
+.mesh { position: absolute; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; max-width: none; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 70% at 18% 30%, #f3eee2 0%, transparent 70%),
+    radial-gradient(50% 60% at 78% 20%, #dfece3 0%, transparent 70%),
+    radial-gradient(55% 55% at 60% 80%, #e2e5ea 0%, transparent 70%),
+    linear-gradient(180deg, var(--ground) 0%, var(--ground) 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent 100%); mask-image: linear-gradient(180deg, #000 60%, transparent 100%); }
+.mesh.live { background: none; -webkit-mask-image: none; mask-image: none; }
+.hero .ledger { z-index: 0; }
+.hero > .mesh, .hero > .ledger { position: absolute; }
+.hero { overflow: visible; }
+.hero-art .queue, .hero-art .settle { background: var(--surface); }

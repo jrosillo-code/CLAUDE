@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MeshCanvas } from "@/components/mesh-canvas";
 import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, Faq, JsonLd, faqJsonLd, ORG_JSONLD } from "@/components/site";
 
 export const metadata = { title: "Precios", description: "Auditoría de flujos de 1.500 a 3.000 €, sprint de automatización de 6.000 a 12.000 € en dos semanas, operaciones gestionadas de 2.000 a 6.000 € al mes. Precios públicos." };
@@ -17,6 +18,7 @@ export default function Precios() {
       <JsonLd data={faqJsonLd(FAQ)} />
       <SiteNav current="/precios" />
       <section className="page-hero">
+        <MeshCanvas intensity={0.7} />
         <div className="eyebrow">Precios</div>
         <h1>Precios públicos. Alcance cerrado por escrito. 50 % al inicio.</h1>
         <p className="lede">Vendemos alcance, no horas. Empezamos por el flujo que más tiempo te cuesta y medimos antes y después.</p>

@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: operaciones-con-ia
-description: The design system for "Operaciones con IA para corredurías y asesorías", a services-to-product company selling document operations with human review to Spanish insurance brokerages and accounting firms. Paper-white ground, near-black ink, hairline rules, one deep-green accent reserved for the moment a person approves something, an editorial serif for headings over a humanist grotesque for reading, and mono for labels and figures. Real product UI is the imagery; there are no illustrations, gradients or stock photographs. Covers the landing page, the reviewer's screen, the status page, the legal pages and every client-facing document.
+description: The design system for "Operaciones con IA para corredurías y asesorías", a services-to-product company selling document operations with human review to Spanish insurance brokerages and accounting firms. Paper-white ground, near-black ink, hairline rules, one deep-green accent reserved for the moment a person approves something, an editorial serif for headings over a humanist grotesque for reading, and mono for labels and figures. Real product UI is the imagery, over one atmospheric gradient mesh behind the heroes; there are no illustrations or stock photographs. Covers the landing page, the reviewer's screen, the status page, the legal pages and every client-facing document.
 
 colors:
   ground: "#f7f6f2"
@@ -334,7 +334,7 @@ detail, and a mono `pre` block for copying.
 
 ### Don't
 
-- No stock photography, handshakes, isometric robots, 3D shapes or gradients.
+- No stock photography, handshakes, isometric robots or 3D shapes. The only gradient is the hero mesh; none on cards, buttons or bands.
 - No purple or blue "AI" accents; no dark hero; no neon.
 - No emoji as section markers; no numbered markers unless the content is a sequence.
 - No shadows for hierarchy; no rounded-everything; no cards for things that are not
@@ -404,9 +404,17 @@ to read the page (without JavaScript everything is simply visible):
   97%; links in prose underline in full on hover; pages cross-fade with the View
   Transitions API.
 
+- **The mesh** (`components/mesh-canvas.tsx`). The one atmospheric backdrop, decided by
+  the founder: a WebGL gradient mesh behind every hero, full-bleed, drawn by a shader
+  from four palette colors (paper, cream `#f3eee2`, sage `#dfece3`, mist `#e2e5ea`) with
+  a 10% breath of the accent where the noise peaks and a warmer pool that follows the
+  cursor. Half resolution, low-power context, paused off-screen. Phones, reduced motion
+  and no-WebGL get the same composition as static CSS radial gradients. It lives only
+  behind heroes; cards, buttons and bands stay flat.
+
 Everything degrades to the static page: no JavaScript, reduced motion or a touch screen
-each remove a layer and nothing else changes. No gradients or shadows anywhere: the
-motion shows the product working and nothing else.
+each remove a layer and nothing else changes. Shadows stay out; the gradient exists in
+exactly one place, the hero backdrop.
 
 ## Known gaps
 

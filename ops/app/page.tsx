@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, QueueMock, SettlementMock, AuditMock, Faq, JsonLd, faqJsonLd, ORG_JSONLD, CONTACT } from "@/components/site";
 import { LedgerCanvas } from "@/components/ledger-canvas";
+import { MeshCanvas } from "@/components/mesh-canvas";
 
 const FAQ: Array<[string, string]> = [
   ["¿Qué pasa cuando la IA se equivoca?", "Se ve. Cada dato extraído muestra el texto del que se leyó; si no hay texto, el campo aparece como ausente y nunca como un valor. Una persona aprueba, corrige o rechaza antes de que nada salga del despacho. Las correcciones quedan registradas y miden el acierto por tipo de documento."],
@@ -18,6 +19,7 @@ export default function Home() {
       <SiteNav current="/" />
 
       <section className="hero">
+        <MeshCanvas />
         <LedgerCanvas />
         <div>
           <div className="eyebrow">Corredurías de seguros · Asesorías y gestorías · España</div>

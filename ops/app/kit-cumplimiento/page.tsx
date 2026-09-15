@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MeshCanvas } from "@/components/mesh-canvas";
 import { SiteNav, SiteFooter, StickyCta, Section, FinalCta, AuditMock, DisclosureLine, JsonLd, ORG_JSONLD } from "@/components/site";
 
 export const metadata = { title: "Kit de cumplimiento", description: "Los siete controles que lleva cada flujo desde el primer día: aviso de IA (art. 50 del Reglamento de IA), revisión humana, registro de actividad exportable, trazabilidad de cada dato, contrato de encargo y datos en la UE, facturación con motor certificado Verifactu, presupuesto de modelo con aviso." };
@@ -23,6 +24,7 @@ export default function Kit() {
       <JsonLd data={ORG_JSONLD} />
       <SiteNav current="/kit-cumplimiento" />
       <section className="page-hero">
+        <MeshCanvas intensity={0.7} />
         <div className="eyebrow">Kit de cumplimiento</div>
         <h1>Siete controles que lleva cada flujo desde el primer día.</h1>
         <p className="lede">No es un chatbot cualquiera: es un flujo auditable diseñado para despachos regulados en España. Esta página es el kit completo, tal como se entrega con cada sprint; imprímela para tu delegado de protección de datos.</p>
