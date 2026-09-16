@@ -7,6 +7,7 @@ import "@fontsource/ibm-plex-sans/600.css";
 import "@fontsource/ibm-plex-mono/400.css";
 import "@fontsource/ibm-plex-mono/500.css";
 import "./globals.css";
+import { getLang } from "@/lib/i18n";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://claude-tawny-tau.vercel.app";
 
@@ -20,9 +21,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const lang = await getLang();
   return (
-    <html lang="es">
+    <html lang={lang}>
       <body>{children}</body>
     </html>
   );

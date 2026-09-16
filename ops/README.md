@@ -48,6 +48,10 @@ npm run onboard -- --name "Despacho" --kind correduria --email persona@despacho.
   action on the page is "Aprobar y enviar", and nothing reaches the insurer before it.
   The page also imports the expected receipts (CSV) and uploads a statement; in keyless
   mode one button loads the example statement so the flow can be tried.
+- The public site is bilingual: the ES/EN switch in the nav calls `/lang/{code}`, which
+  sets a one-year cookie and returns to the page; every site page and the shared chrome
+  pick their copy from it (`lib/i18n.ts`). The app screens and the legal texts stay in
+  Spanish, and the English footer says so.
 - `/app/{firmId}/informe` is the pilot report: the two pages the agreement promises,
   computed from the activity log for a period (documents per week, cycle time from
   arrival to first approval, fields approved without correction, euros found, corrections

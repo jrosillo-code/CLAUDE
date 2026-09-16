@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Effects } from "./effects";
 import { Motion } from "./motion";
+import { getLang, t, type Lang } from "@/lib/i18n";
 
 // Shared site chrome and the signature components, built from DESIGN.md.
 // Everything here is server-rendered; the only client behaviour is CSS.
@@ -13,61 +14,67 @@ export const CONTACT = {
   brand: "Operaciones con IA",
 };
 
-const NAV = [
-  ["/corredurias", "Corredurías"],
-  ["/asesorias", "Asesorías"],
-  ["/como-funciona", "Cómo funciona"],
-  ["/precios", "Precios"],
-  ["/seguridad", "Seguridad"],
-  ["/contacto", "Contacto"],
-] as const;
+const NAV: Record<Lang, ReadonlyArray<readonly [string, string]>> = {
+  es: [["/corredurias", "Corredurías"], ["/asesorias", "Asesorías"], ["/como-funciona", "Cómo funciona"], ["/precios", "Precios"], ["/seguridad", "Seguridad"], ["/contacto", "Contacto"]],
+  en: [["/corredurias", "Brokerages"], ["/asesorias", "Accounting firms"], ["/como-funciona", "How it works"], ["/precios", "Pricing"], ["/seguridad", "Security"], ["/contacto", "Contact"]],
+};
 
-export function SiteNav({ current }: { current?: string }) {
+/** The language switch: one link that sets the cookie and comes back to this page. */
+export function LangSwitch({ lang, className }: { lang: Lang; className?: string }) {
+  const other: Lang = lang === "en" ? "es" : "en";
+  return <a href={`/lang/${other}`} className={className ?? "lang-switch"} hrefLang={other} lang={other} aria-label={other === "en" ? "Switch to English" : "Cambiar a español"}>{other.toUpperCase()}</a>;
+}
+
+export async function SiteNav({ current }: { current?: string }) {
+  const lang = await getLang();
   return (
-    <nav className="nav" aria-label="Principal">
+    <nav className="nav" aria-label={t(lang, "Principal", "Main")}>
       <span className="nav-progress" aria-hidden="true" />
       <Link className="brand" href="/">{CONTACT.brand}</Link>
       <div className="nav-links">
-        {NAV.map(([href, label]) => <Link key={href} href={href} aria-current={current === href ? "page" : undefined} className={current === href ? "active" : undefined}>{label}</Link>)}
+        {NAV[lang].map(([href, label]) => <Link key={href} href={href} aria-current={current === href ? "page" : undefined} className={current === href ? "active" : undefined}>{label}</Link>)}
         <a href={CONTACT.whatsapp} className="nav-wa">WhatsApp</a>
-        <Link href="/contacto" className="btn">Auditoría</Link>
+        <LangSwitch lang={lang} />
+        <Link href="/contacto" className="btn">{t(lang, "Auditoría", "Audit")}</Link>
       </div>
     </nav>
   );
 }
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const lang = await getLang();
+  const en = lang === "en";
   return (
     <footer>
       <Effects />
       <Motion />
       <div className="col">
         <Link className="brand" href="/">{CONTACT.brand}</Link>
-        <span>Automatización con revisión humana para corredurías de seguros y asesorías en España.</span>
+        <span>{t(lang, "Automatización con revisión humana para corredurías de seguros y asesorías en España.", "Automation with human review for insurance brokerages and accounting firms in Spain.")}</span>
         <span>{CONTACT.phone} · <a href={CONTACT.whatsapp}>WhatsApp</a> · <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></span>
       </div>
       <div className="col">
-        <span className="eyebrow">Producto</span>
-        <Link href="/corredurias">Corredurías</Link>
-        <Link href="/asesorias">Asesorías</Link>
-        <Link href="/como-funciona">Cómo funciona</Link>
-        <Link href="/precios">Precios</Link>
+        <span className="eyebrow">{t(lang, "Producto", "Product")}</span>
+        <Link href="/corredurias">{t(lang, "Corredurías", "Brokerages")}</Link>
+        <Link href="/asesorias">{t(lang, "Asesorías", "Accounting firms")}</Link>
+        <Link href="/como-funciona">{t(lang, "Cómo funciona", "How it works")}</Link>
+        <Link href="/precios">{t(lang, "Precios", "Pricing")}</Link>
       </div>
       <div className="col">
-        <span className="eyebrow">Confianza</span>
-        <Link href="/seguridad">Seguridad</Link>
-        <Link href="/kit-cumplimiento">Kit de cumplimiento</Link>
-        <Link href="/estado">Estado del sistema</Link>
-        <Link href="/diseno">Sistema de diseño</Link>
+        <span className="eyebrow">{t(lang, "Confianza", "Trust")}</span>
+        <Link href="/seguridad">{t(lang, "Seguridad", "Security")}</Link>
+        <Link href="/kit-cumplimiento">{t(lang, "Kit de cumplimiento", "Compliance kit")}</Link>
+        <Link href="/estado">{t(lang, "Estado del sistema", "System status")}</Link>
+        <Link href="/diseno">{t(lang, "Sistema de diseño", "Design system")}</Link>
       </div>
       <div className="col">
         <span className="eyebrow">Legal</span>
-        <Link href="/legal/aviso">Aviso legal</Link>
-        <Link href="/legal/privacidad">Privacidad</Link>
-        <Link href="/legal/encargo">Contrato de encargo</Link>
-        <Link href="/contacto">Contacto</Link>
+        <Link href="/legal/aviso">{t(lang, "Aviso legal", "Legal notice (Spanish)")}</Link>
+        <Link href="/legal/privacidad">{t(lang, "Privacidad", "Privacy (Spanish)")}</Link>
+        <Link href="/legal/encargo">{t(lang, "Contrato de encargo", "Processing agreement (Spanish)")}</Link>
+        <Link href="/contacto">{t(lang, "Contacto", "Contact")}</Link>
       </div>
-      <div className="legal"><span>{CONTACT.brand} · {CONTACT.founder} · NIF pendiente</span><span>ES · EN próximamente</span></div>
+      <div className="legal"><span>{CONTACT.brand} · {CONTACT.founder} · {t(lang, "NIF pendiente", "Tax id pending")}</span><span>{en ? <><LangSwitch lang={lang} className="" /> · <strong>EN</strong></> : <><strong>ES</strong> · <LangSwitch lang={lang} className="" /></>}</span></div>
     </footer>
   );
 }
@@ -117,10 +124,11 @@ export function DisclosureLine({ firm = "Correduría Ejemplo" }: { firm?: string
   return <div className="disclosure">{firm}<br />Este mensaje se ha preparado con ayuda de un sistema de inteligencia artificial y ha sido revisado por una persona antes de enviarse.</div>;
 }
 
-export function StickyCta() {
+export async function StickyCta() {
+  const lang = await getLang();
   return (
     <div className="sticky-cta" aria-hidden="true">
-      <a className="btn" href={`mailto:${CONTACT.email}?subject=Auditoría de 30 minutos`}>Pide una auditoría</a>
+      <a className="btn" href={`mailto:${CONTACT.email}?subject=${encodeURIComponent(t(lang, "Auditoría de 30 minutos", "30-minute audit"))}`}>{t(lang, "Pide una auditoría", "Book an audit")}</a>
       <a className="btn ghost" href={CONTACT.whatsapp}>WhatsApp</a>
     </div>
   );
@@ -139,14 +147,16 @@ export function Section({ id, eyebrow, title, lede, band = false, children }: { 
   );
 }
 
-export function FinalCta({ title = "Cuéntame tu flujo más lento. Te digo en 30 minutos si se puede automatizar y cuánto costaría." }: { title?: string }) {
+export async function FinalCta({ title }: { title?: string }) {
+  const lang = await getLang();
+  const heading = title ?? t(lang, "Cuéntame tu flujo más lento. Te digo en 30 minutos si se puede automatizar y cuánto costaría.", "Tell me your slowest workflow. In 30 minutes I will tell you whether it can be automated and what it would cost.");
   return (
     <section>
-      <div className="section-head"><h2>{title}</h2></div>
+      <div className="section-head"><h2>{heading}</h2></div>
       <div className="row">
-        <a className="btn" href="/contacto">Escribir</a>
-        <a className="btn ghost" href={CONTACT.whatsapp}>Abrir WhatsApp</a>
-        <span className="small muted">{CONTACT.phone} · respuesta el mismo día</span>
+        <a className="btn" href="/contacto">{t(lang, "Escribir", "Write to me")}</a>
+        <a className="btn ghost" href={CONTACT.whatsapp}>{t(lang, "Abrir WhatsApp", "Open WhatsApp")}</a>
+        <span className="small muted">{CONTACT.phone} · {t(lang, "respuesta el mismo día", "same-day reply")}</span>
       </div>
     </section>
   );
