@@ -6,7 +6,7 @@ import { useEffect } from "react";
 // simply show. Reduced-motion users get none of it.
 
 const GROUPS = ".bento, .steps, .offers, .trust, .proof, .rows, .two, .check, .compare tbody, .strip-track";
-const SINGLES = ".section-head, .page-hero > :not(canvas), .hero > :not(canvas), .frame, .settle, .audit, .disclosure, .pull, details, .queue:not(.hero-art .queue)";
+const SINGLES = ".section-head, .page-hero > .eyebrow, .hero > :not(canvas), .frame, .settle, .audit, .disclosure, .pull, details, .queue:not(.hero-art .queue)";
 
 export function Effects() {
   useEffect(() => {
