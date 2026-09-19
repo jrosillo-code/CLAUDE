@@ -1,0 +1,4701 @@
+{
+  "id": "hikes",
+  "label": "Hikes",
+  "blurb": "Great day hikes and multi-day treks, ranked by the outdoor press.",
+  "sources": [
+    "National Geographic",
+    "Lonely Planet Epic Hikes",
+    "Outside Magazine",
+    "AllTrails Top Trails",
+    "Classic multi-day treks"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "hikes-tour-du-mont-blanc",
+      "name": "Tour du Mont Blanc",
+      "lat": 45.8922,
+      "lng": 6.7994,
+      "countryCode": "FR",
+      "region": "Les Houches, France",
+      "why": "Circles the Mont Blanc massif through three countries on hut-linked trails; start at the Les Houches trailhead.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut"
+      ],
+      "source": "Classic multi-day trek"
+    },
+    {
+      "id": "hikes-gr20",
+      "name": "GR20",
+      "lat": 42.5167,
+      "lng": 8.95,
+      "countryCode": "FR",
+      "region": "Calenzana, Corsica",
+      "why": "Europe's toughest long trail, a chain of granite ridges and refuges across Corsica; starts at the Calenzana trailhead.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-west-highland-way",
+      "name": "West Highland Way",
+      "lat": 55.94,
+      "lng": -4.32,
+      "countryCode": "GB",
+      "region": "Milngavie, Scotland",
+      "why": "Scotland's original long-distance path from lowland Milngavie to Fort William beneath Ben Nevis; trailhead in Milngavie.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine"
+      ],
+      "source": "Classic multi-day trek"
+    },
+    {
+      "id": "hikes-camino-frances",
+      "name": "Camino de Santiago (Camino Frances)",
+      "lat": 43.1633,
+      "lng": -1.2379,
+      "countryCode": "FR",
+      "region": "Saint-Jean-Pied-de-Port, France",
+      "why": "The classic 780 km pilgrim route to Santiago de Compostela, walked hostel to hostel; trailhead in Saint-Jean-Pied-de-Port.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "hut-to-hut"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-haute-route",
+      "name": "Haute Route (Chamonix to Zermatt)",
+      "lat": 45.9237,
+      "lng": 6.8694,
+      "countryCode": "FR",
+      "region": "Chamonix, France",
+      "why": "A glaciated high-level traverse linking Chamonix to Zermatt past four of the Alps' highest peaks; trailhead in Chamonix.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-alta-via-1",
+      "name": "Alta Via 1",
+      "lat": 46.695,
+      "lng": 12.0858,
+      "countryCode": "IT",
+      "region": "Lago di Braies, Dolomites",
+      "why": "The best-known Dolomites traverse, refuge to refuge past the Tofane and Marmolada; trailhead at Lago di Braies.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-e5-alpine-crossing",
+      "name": "E5 Alpine Crossing",
+      "lat": 47.4022,
+      "lng": 10.2788,
+      "countryCode": "DE",
+      "region": "Oberstdorf, Germany",
+      "why": "The classic hut-to-hut crossing of the Alps from Bavaria to South Tyrol, with the exposed Heilbronner Weg en route; trailhead in Oberstdorf.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-kungsleden",
+      "name": "Kungsleden",
+      "lat": 68.3557,
+      "lng": 18.7917,
+      "countryCode": "SE",
+      "region": "Abisko, Swedish Lapland",
+      "why": "The 'King's Trail' through Arctic Sweden's fells and reindeer country, hut to hut above the tree line; trailhead in Abisko.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-karhunkierros",
+      "name": "Karhunkierros Trail",
+      "lat": 66.372,
+      "lng": 29.29,
+      "countryCode": "FI",
+      "region": "Kuusamo, Finland",
+      "why": "The 'Bear's Trail' through the Oulanka canyon along the Russian border, with suspension bridges over rapids; trailhead at Kiutakongas.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-gr70-stevenson",
+      "name": "Robert Louis Stevenson Trail (GR70)",
+      "lat": 45.043,
+      "lng": 3.885,
+      "countryCode": "FR",
+      "region": "Le Puy-en-Velay, France",
+      "why": "Retraces Stevenson's 1878 donkey trek across the volcanic Cevennes; trailhead in Le Puy-en-Velay.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day"
+      ],
+      "source": "Classic multi-day trek"
+    },
+    {
+      "id": "hikes-pennine-way",
+      "name": "Pennine Way",
+      "lat": 53.366,
+      "lng": -1.813,
+      "countryCode": "GB",
+      "region": "Edale, England",
+      "why": "England's oldest national trail, up the Pennine spine through peat moor and limestone dale; trailhead in Edale.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-coast-to-coast",
+      "name": "Coast to Coast Walk",
+      "lat": 54.493,
+      "lng": -3.598,
+      "countryCode": "GB",
+      "region": "St Bees, England",
+      "why": "Wainwright's unofficial classic across three national parks from the Irish Sea to the North Sea; trailhead at St Bees.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "coastal"
+      ],
+      "source": "Classic multi-day trek"
+    },
+    {
+      "id": "hikes-sw-coast-path",
+      "name": "South West Coast Path",
+      "lat": 51.205,
+      "lng": -3.475,
+      "countryCode": "GB",
+      "region": "Minehead, England",
+      "why": "Britain's longest national trail, 1,014 km of clifftop path around the southwest peninsula; northern trailhead at Minehead.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "coastal"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-skye-trail",
+      "name": "Skye Trail",
+      "lat": 57.236,
+      "lng": -5.906,
+      "countryCode": "GB",
+      "region": "Broadford, Isle of Skye",
+      "why": "An unmarked traverse of Skye's wildest coast and the Trotternish and Cuillin ridges; trailhead near Broadford.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "coastal",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-cape-wrath-trail",
+      "name": "Cape Wrath Trail",
+      "lat": 56.82,
+      "lng": -5.105,
+      "countryCode": "GB",
+      "region": "Fort William, Scotland",
+      "why": "Britain's toughest long walk, an unmarked route through the empty Northwest Highlands to Cape Wrath; trailhead in Fort William.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-rota-vicentina",
+      "name": "Rota Vicentina (Fishermen's Trail)",
+      "lat": 37.853,
+      "lng": -8.796,
+      "countryCode": "PT",
+      "region": "Porto Covo, Portugal",
+      "why": "A sandy clifftop path down Portugal's wild Alentejo and Algarve coast; trailhead in Porto Covo.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "coastal"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-lycian-way",
+      "name": "Lycian Way",
+      "lat": 36.621,
+      "lng": 29.116,
+      "countryCode": "TR",
+      "region": "Fethiye, Turkey",
+      "why": "An ancient shepherd's path along Turkey's turquoise coast, past Lycian tombs and pine forest; trailhead in Fethiye.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "coastal"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-selvaggio-blu",
+      "name": "Selvaggio Blu",
+      "lat": 40.023,
+      "lng": 9.706,
+      "countryCode": "IT",
+      "region": "Pedra Longa, Sardinia",
+      "why": "Italy's hardest trek, an exposed scramble along Sardinia's Gulf of Orosei limestone coast; trailhead at Pedra Longa.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "coastal",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-cinque-terre",
+      "name": "Cinque Terre coastal path",
+      "lat": 44.158,
+      "lng": 9.621,
+      "countryCode": "IT",
+      "region": "Monterosso al Mare, Italy",
+      "why": "Terraced vineyards and pastel villages linked by cliffside trail above the Ligurian Sea; key viewpoint at Punta Mesco.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "coastal"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-preikestolen",
+      "name": "Preikestolen (Pulpit Rock)",
+      "lat": 58.9866,
+      "lng": 6.1903,
+      "countryCode": "NO",
+      "region": "Lysefjorden, Norway",
+      "why": "A sheer 604 m granite plateau over Lysefjord, Norway's most photographed viewpoint.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-trolltunga",
+      "name": "Trolltunga",
+      "lat": 60.124,
+      "lng": 6.74,
+      "countryCode": "NO",
+      "region": "Odda, Norway",
+      "why": "A rock slab jutting horizontally 700 m above Lake Ringedalsvatnet, reached by a long alpine day hike.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-besseggen",
+      "name": "Besseggen Ridge",
+      "lat": 61.499,
+      "lng": 8.7,
+      "countryCode": "NO",
+      "region": "Jotunheimen, Norway",
+      "why": "A knife-edge ridge between two lakes of different colour in Jotunheimen National Park; key viewpoint atop the ridge.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-kjeragbolten",
+      "name": "Kjeragbolten",
+      "lat": 59.139,
+      "lng": 6.573,
+      "countryCode": "NO",
+      "region": "Kjerag, Norway",
+      "why": "A boulder wedged in a crevasse a thousand metres above Lysefjord, the ultimate photo op of the Kjerag massif.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-zugspitze",
+      "name": "Zugspitze via Hoellental",
+      "lat": 47.421,
+      "lng": 10.985,
+      "countryCode": "DE",
+      "region": "Garmisch-Partenkirchen, Germany",
+      "why": "Germany's highest summit, reached via the glaciated Hoellental valley and via-ferrata sections.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-schilthorn",
+      "name": "Schilthorn hike",
+      "lat": 46.557,
+      "lng": 7.836,
+      "countryCode": "CH",
+      "region": "Muerren, Switzerland",
+      "why": "A high balcony trail below the Eiger, Moench and Jungfrau, ending at the Schilthorn's 360-degree summit viewpoint.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-tre-cime",
+      "name": "Tre Cime di Lavaredo loop",
+      "lat": 46.618,
+      "lng": 12.303,
+      "countryCode": "IT",
+      "region": "Auronzo di Cadore, Italy",
+      "why": "A loop beneath the Dolomites' most famous three-peaked spire, viewpoint at Rifugio Locatelli.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-seceda",
+      "name": "Seceda Ridgeline",
+      "lat": 46.576,
+      "lng": 11.728,
+      "countryCode": "IT",
+      "region": "Val Gardena, Italy",
+      "why": "A jagged green ridgeline with the Odle peaks behind, one of the Dolomites' most photographed viewpoints.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-mount-olympus",
+      "name": "Mount Olympus (Mytikas)",
+      "lat": 40.0855,
+      "lng": 22.3585,
+      "countryCode": "GR",
+      "region": "Litochoro, Greece",
+      "why": "The mythical home of the gods, a two-day scramble to Mytikas' 2,918 m summit via mountain refuges.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-samaria-gorge",
+      "name": "Samaria Gorge",
+      "lat": 35.323,
+      "lng": 23.933,
+      "countryCode": "GR",
+      "region": "Xyloskalo, Crete",
+      "why": "Europe's longest gorge walk, descending 16 km from the Omalos plateau to the Libyan Sea; trailhead at Xyloskalo.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "coastal"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-vikos-gorge",
+      "name": "Vikos Gorge",
+      "lat": 39.81,
+      "lng": 20.758,
+      "countryCode": "GR",
+      "region": "Zagori, Greece",
+      "why": "One of the world's deepest gorges relative to width, viewed from the Oxya viewpoint above the Zagori villages.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-triglav",
+      "name": "Triglav",
+      "lat": 46.3783,
+      "lng": 13.8353,
+      "countryCode": "SI",
+      "region": "Julian Alps, Slovenia",
+      "why": "Slovenia's highest peak and national symbol, a two-day via-ferrata-assisted climb from mountain huts.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-durmitor-bobotov-kuk",
+      "name": "Bobotov Kuk, Durmitor",
+      "lat": 43.137,
+      "lng": 19.033,
+      "countryCode": "ME",
+      "region": "Zabljak, Montenegro",
+      "why": "Montenegro's highest summit above the glacial lakes of Durmitor National Park.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-rysy",
+      "name": "Rysy",
+      "lat": 49.1793,
+      "lng": 20.088,
+      "countryCode": "PL",
+      "region": "Zakopane, Poland",
+      "why": "The highest summit reachable by hiking in the High Tatras, straddling the Polish-Slovak border.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-musala",
+      "name": "Musala",
+      "lat": 42.1811,
+      "lng": 23.5864,
+      "countryCode": "BG",
+      "region": "Borovets, Bulgaria",
+      "why": "The Balkans' highest peak, a long day hike through the Rila Mountains above Borovets.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-ruta-del-cares",
+      "name": "Ruta del Cares",
+      "lat": 43.232,
+      "lng": -4.839,
+      "countryCode": "ES",
+      "region": "Cain, Picos de Europa",
+      "why": "A cliffside path carved into the Cares Gorge between Cain and Poncebos, the Picos de Europa's signature walk.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-caminito-del-rey",
+      "name": "Caminito del Rey",
+      "lat": 36.937,
+      "lng": -4.758,
+      "countryCode": "ES",
+      "region": "Ardales, Spain",
+      "why": "A restored boardwalk clinging to the Gaitanes Gorge walls a hundred metres above the Guadalhorce river.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-pedraforca",
+      "name": "Pedraforca",
+      "lat": 42.239,
+      "lng": 1.701,
+      "countryCode": "ES",
+      "region": "Bergueda, Catalonia",
+      "why": "A twin-pronged limestone massif and Catalonia's most iconic scramble, summit views over the Pyrenees.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-teide",
+      "name": "Mount Teide",
+      "lat": 28.2717,
+      "lng": -16.6423,
+      "countryCode": "ES",
+      "region": "Tenerife, Canary Islands",
+      "why": "Spain's highest peak, a volcanic summit above a sea of clouds; permit required for the final stretch at dawn.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-caldera-taburiente",
+      "name": "Caldera de Taburiente",
+      "lat": 28.71,
+      "lng": -17.88,
+      "countryCode": "ES",
+      "region": "La Palma, Canary Islands",
+      "why": "An eight-kilometre-wide eroded volcanic crater, viewed from the Mirador de los Roques de los Muchachos.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-pico-ruivo",
+      "name": "Vereda do Pico Ruivo",
+      "lat": 32.759,
+      "lng": -16.939,
+      "countryCode": "PT",
+      "region": "Madeira, Portugal",
+      "why": "Madeira's highest summit, a cloud-forest ridge walk above the island's central peaks.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-peneda-geres",
+      "name": "Peneda-Geres viewpoint trail",
+      "lat": 41.793,
+      "lng": -8.166,
+      "countryCode": "PT",
+      "region": "Geres, Portugal",
+      "why": "Granite peaks and waterfalls in Portugal's only national park, viewpoint at Pedra Bela.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-sorvagsvatn",
+      "name": "Lake Sorvagsvatn / Traelanipa",
+      "lat": 62.064,
+      "lng": -7.322,
+      "countryCode": "FO",
+      "region": "Vagar, Faroe Islands",
+      "why": "An optical-illusion lake seeming to hang above the ocean, viewpoint at the Traelanipa cliff.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "coastal"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-kallur-lighthouse",
+      "name": "Kallur Lighthouse, Kalsoy",
+      "lat": 62.328,
+      "lng": -6.708,
+      "countryCode": "FO",
+      "region": "Kalsoy, Faroe Islands",
+      "why": "A narrow island ridge walk to a lighthouse perched between two sheer drops to the sea.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "coastal"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-kebnekaise",
+      "name": "Kebnekaise",
+      "lat": 67.901,
+      "lng": 18.582,
+      "countryCode": "SE",
+      "region": "Kebnekaise, Swedish Lapland",
+      "why": "Sweden's highest peak, a glacier route from mountain stations above the Arctic Circle.",
+      "bestMonths": [
+        7,
+        8
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-laugavegur",
+      "name": "Laugavegur Trail",
+      "lat": 63.993,
+      "lng": -19.059,
+      "countryCode": "IS",
+      "region": "Landmannalaugar, Iceland",
+      "why": "Iceland's classic multi-day trek through rhyolite mountains, obsidian fields and glacial rivers; trailhead at Landmannalaugar.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "volcano",
+        "hut-to-hut"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-fimmvorduhals",
+      "name": "Fimmvorduhals",
+      "lat": 63.531,
+      "lng": -19.511,
+      "countryCode": "IS",
+      "region": "Skogar, Iceland",
+      "why": "A day-long crossing between two glaciers past young lava fields from the 2010 Eyjafjallajokull eruption; trailhead at Skogar.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-glymur",
+      "name": "Glymur",
+      "lat": 64.398,
+      "lng": -21.254,
+      "countryCode": "IS",
+      "region": "Hvalfjordur, Iceland",
+      "why": "A hike to the viewpoint above Iceland's second-highest waterfall, crossing the river on a fallen log.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-storurd",
+      "name": "Storurd",
+      "lat": 65.592,
+      "lng": -14.017,
+      "countryCode": "IS",
+      "region": "Borgarfjordur eystri, Iceland",
+      "why": "Giant boulders scattered beside turquoise tarns below jagged peaks in Iceland's East Fjords.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-puy-de-sancy",
+      "name": "Puy de Sancy",
+      "lat": 45.528,
+      "lng": 2.814,
+      "countryCode": "FR",
+      "region": "Auvergne, France",
+      "why": "The highest point in the Massif Central, an extinct volcano summit over the Chaine des Puys.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "volcano"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-pic-du-midi-ossau",
+      "name": "Pic du Midi d'Ossau",
+      "lat": 42.845,
+      "lng": -0.439,
+      "countryCode": "FR",
+      "region": "Bearn, Pyrenees",
+      "why": "A dramatic twin-peaked volcanic plug and one of the Pyrenees' great scrambles.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-lac-blanc",
+      "name": "Lac Blanc, Aiguilles Rouges",
+      "lat": 45.997,
+      "lng": 6.931,
+      "countryCode": "FR",
+      "region": "Chamonix, France",
+      "why": "An alpine tarn with a postcard reflection of the Mont Blanc massif across the valley.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-aletsch-bettmerhorn",
+      "name": "Aletsch Glacier viewpoint",
+      "lat": 46.427,
+      "lng": 8.068,
+      "countryCode": "CH",
+      "region": "Bettmeralp, Switzerland",
+      "why": "A balcony trail above the Alps' longest glacier, viewpoint at the Bettmerhorn.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-cinque-laghi",
+      "name": "Five Lakes Walk (Funf-Seenweg)",
+      "lat": 45.993,
+      "lng": 7.75,
+      "countryCode": "CH",
+      "region": "Zermatt, Switzerland",
+      "why": "Five alpine lakes strung beneath the Matterhorn, each with its own reflected view of the peak.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-mont-blanc-gouter",
+      "name": "Mont Blanc summit route",
+      "lat": 45.8326,
+      "lng": 6.8652,
+      "countryCode": "FR",
+      "region": "Chamonix, France",
+      "why": "Western Europe's highest summit via the classic Gouter route, a glaciated multi-day climb from mountain huts.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "Classic multi-day trek"
+    },
+    {
+      "id": "hikes-ben-nevis",
+      "name": "Ben Nevis",
+      "lat": 56.7969,
+      "lng": -5.0036,
+      "countryCode": "GB",
+      "region": "Fort William, Scotland",
+      "why": "Britain's highest summit, a long climb from Glen Nevis up the Pony Track.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-snowdon",
+      "name": "Snowdon via Pyg Track",
+      "lat": 53.0685,
+      "lng": -4.0761,
+      "countryCode": "GB",
+      "region": "Llanberis, Wales",
+      "why": "Wales' highest peak, reached via the exposed Pyg Track above Llyn Llydaw.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-scafell-pike",
+      "name": "Scafell Pike",
+      "lat": 54.4542,
+      "lng": -3.21,
+      "countryCode": "GB",
+      "region": "Wasdale, England",
+      "why": "England's highest summit, a rocky climb from Wasdale through the heart of the Lake District.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-helvellyn-striding-edge",
+      "name": "Helvellyn via Striding Edge",
+      "lat": 54.5271,
+      "lng": -3.0166,
+      "countryCode": "GB",
+      "region": "Glenridding, England",
+      "why": "A narrow, exposed scramble along a knife-edge ridge to one of the Lake District's finest summits.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-cadair-idris",
+      "name": "Cadair Idris",
+      "lat": 52.689,
+      "lng": -3.908,
+      "countryCode": "GB",
+      "region": "Dolgellau, Wales",
+      "why": "A dramatic glaciated summit above a corrie lake in southern Snowdonia.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-pen-y-fan",
+      "name": "Pen y Fan",
+      "lat": 51.8837,
+      "lng": -3.4373,
+      "countryCode": "GB",
+      "region": "Brecon Beacons, Wales",
+      "why": "The highest peak in southern Britain, a short, popular climb used by military training and walkers alike.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-kumano-kodo",
+      "name": "Kumano Kodo (Nakahechi route)",
+      "lat": 33.833,
+      "lng": 135.534,
+      "countryCode": "JP",
+      "region": "Tanabe, Japan",
+      "why": "A thousand-year-old pilgrimage route through cedar forest to the Kumano Sanzan shrines; trailhead at Takijiri-oji.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine"
+      ],
+      "source": "UNESCO / Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-everest-base-camp",
+      "name": "Everest Base Camp Trek",
+      "lat": 27.6869,
+      "lng": 86.7297,
+      "countryCode": "NP",
+      "region": "Lukla, Nepal",
+      "why": "The world's most famous trek, teahouse to teahouse beneath the highest peak on Earth; trailhead in Lukla.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-annapurna-circuit",
+      "name": "Annapurna Circuit",
+      "lat": 28.231,
+      "lng": 84.369,
+      "countryCode": "NP",
+      "region": "Besisahar, Nepal",
+      "why": "A classic circumnavigation of the Annapurna massif over the Thorong La pass; trailhead in Besisahar.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-annapurna-base-camp",
+      "name": "Annapurna Base Camp Trek",
+      "lat": 28.335,
+      "lng": 83.77,
+      "countryCode": "NP",
+      "region": "Nayapul, Nepal",
+      "why": "A teahouse trek into the natural amphitheatre of Annapurna Sanctuary; trailhead in Nayapul.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-poon-hill",
+      "name": "Poon Hill",
+      "lat": 28.399,
+      "lng": 83.697,
+      "countryCode": "NP",
+      "region": "Ghorepani, Nepal",
+      "why": "A short pre-dawn climb to a sweeping sunrise viewpoint over the Annapurna and Dhaulagiri ranges.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-manaslu-circuit",
+      "name": "Manaslu Circuit",
+      "lat": 28.367,
+      "lng": 84.833,
+      "countryCode": "NP",
+      "region": "Soti Khola, Nepal",
+      "why": "A remote, restricted-area trek around the world's eighth-highest peak over the Larkya La pass; trailhead at Soti Khola.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-langtang-valley",
+      "name": "Langtang Valley Trek",
+      "lat": 28.167,
+      "lng": 85.35,
+      "countryCode": "NP",
+      "region": "Syabrubesi, Nepal",
+      "why": "A quieter Himalayan valley trek to glacier viewpoints below Langtang Lirung; trailhead in Syabrubesi.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-mardi-himal",
+      "name": "Mardi Himal Trek",
+      "lat": 28.326,
+      "lng": 83.809,
+      "countryCode": "NP",
+      "region": "Kande, Nepal",
+      "why": "A less-crowded ridge trek to a dramatic close-up base camp view of Machapuchare; trailhead at Kande.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-gokyo-ri",
+      "name": "Gokyo Ri",
+      "lat": 27.952,
+      "lng": 86.693,
+      "countryCode": "NP",
+      "region": "Gokyo, Nepal",
+      "why": "A steep climb above turquoise glacial lakes for one of the best panoramas of Everest and Cho Oyu.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "permit"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-roopkund",
+      "name": "Roopkund Trek",
+      "lat": 30.045,
+      "lng": 79.728,
+      "countryCode": "IN",
+      "region": "Lohajung, India",
+      "why": "A high-altitude trek to a mysterious skeleton lake in the Garhwal Himalaya; trailhead in Lohajung.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-valley-of-flowers",
+      "name": "Valley of Flowers Trek",
+      "lat": 30.685,
+      "lng": 79.601,
+      "countryCode": "IN",
+      "region": "Ghangaria, India",
+      "why": "A UNESCO alpine valley that erupts into wildflower meadows each monsoon; trailhead in Ghangaria.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-hampta-pass",
+      "name": "Hampta Pass Trek",
+      "lat": 32.248,
+      "lng": 77.228,
+      "countryCode": "IN",
+      "region": "Jobra, Himachal Pradesh",
+      "why": "A dramatic crossing from green Kullu valley to the arid Lahaul desert over a high pass; trailhead at Jobra.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-chadar-trek",
+      "name": "Chadar Trek",
+      "lat": 34.193,
+      "lng": 77.311,
+      "countryCode": "IN",
+      "region": "Chilling, Ladakh",
+      "why": "A walk on the frozen Zanskar river, one of the world's most extreme winter treks; trailhead at Chilling.",
+      "bestMonths": [
+        1,
+        2
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-markha-valley",
+      "name": "Markha Valley Trek",
+      "lat": 34.228,
+      "lng": 77.356,
+      "countryCode": "IN",
+      "region": "Zingchen, Ladakh",
+      "why": "A high desert trek past Ladakhi villages and monasteries beneath Kang Yatse; trailhead at Zingchen.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "desert",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-tigers-nest",
+      "name": "Tiger's Nest (Paro Taktsang)",
+      "lat": 27.492,
+      "lng": 89.363,
+      "countryCode": "BT",
+      "region": "Paro, Bhutan",
+      "why": "A monastery clinging to a cliff 900 m above the Paro valley, Bhutan's most sacred pilgrimage climb.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-snowman-trek",
+      "name": "Snowman Trek",
+      "lat": 27.533,
+      "lng": 89.321,
+      "countryCode": "BT",
+      "region": "Drukgyel Dzong, Bhutan",
+      "why": "Widely called the world's hardest trek, three weeks of high passes through Bhutan's remote north; trailhead at Drukgyel Dzong.",
+      "bestMonths": [
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-tiger-leaping-gorge",
+      "name": "Tiger Leaping Gorge",
+      "lat": 27.228,
+      "lng": 100.08,
+      "countryCode": "CN",
+      "region": "Qiaotou, Yunnan",
+      "why": "A trail along one of the world's deepest gorges, the Jinsha River roaring below jagged peaks; trailhead in Qiaotou.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-huashan",
+      "name": "Huashan plank walk",
+      "lat": 34.49,
+      "lng": 110.085,
+      "countryCode": "CN",
+      "region": "Huayin, Shaanxi",
+      "why": "A vertigo-inducing plank bolted to a cliff face on China's most dangerous sacred mountain.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-huangshan",
+      "name": "Huangshan (Yellow Mountain)",
+      "lat": 30.136,
+      "lng": 118.167,
+      "countryCode": "CN",
+      "region": "Anhui, China",
+      "why": "Granite pillars, pine trees and sea-of-clouds views that inspired centuries of Chinese landscape painting.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-jiankou-great-wall",
+      "name": "Great Wall of China, Jiankou section",
+      "lat": 40.431,
+      "lng": 116.552,
+      "countryCode": "CN",
+      "region": "Huairou, Beijing",
+      "why": "The wildest, unrestored stretch of the Great Wall, crumbling along a knife-edge ridgeline.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-kailash-kora",
+      "name": "Mount Kailash Kora",
+      "lat": 31.009,
+      "lng": 81.307,
+      "countryCode": "CN",
+      "region": "Darchen, Tibet",
+      "why": "A three-day pilgrimage circuit around Tibet's most sacred peak, crossing the 5,630 m Dolma La pass; trailhead in Darchen.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-k2-base-camp",
+      "name": "K2 Base Camp Trek",
+      "lat": 35.698,
+      "lng": 75.806,
+      "countryCode": "PK",
+      "region": "Askole, Pakistan",
+      "why": "A remote glacier trek through the Karakoram to the base of the world's second-highest peak; trailhead in Askole.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-fairy-meadows",
+      "name": "Fairy Meadows",
+      "lat": 35.397,
+      "lng": 74.587,
+      "countryCode": "PK",
+      "region": "Raikot, Pakistan",
+      "why": "A grassy plateau with a head-on view of Nanga Parbat's Rupal Face, reached by jeep track and short trek.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-yushan",
+      "name": "Yushan (Jade Mountain)",
+      "lat": 23.47,
+      "lng": 120.957,
+      "countryCode": "TW",
+      "region": "Nantou, Taiwan",
+      "why": "Northeast Asia's highest peak outside the Himalaya, a permitted overnight climb to a sunrise summit.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-zhuilu-old-trail",
+      "name": "Zhuilu Old Trail",
+      "lat": 24.181,
+      "lng": 121.498,
+      "countryCode": "TW",
+      "region": "Taroko Gorge, Taiwan",
+      "why": "A narrow cliffside path carved into a marble gorge wall hundreds of metres above the river; permit required.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "permit",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-mount-fuji",
+      "name": "Mount Fuji",
+      "lat": 35.3606,
+      "lng": 138.7274,
+      "countryCode": "JP",
+      "region": "Fujinomiya, Japan",
+      "why": "Japan's sacred, near-perfect volcanic cone, climbed overnight for a summit sunrise in the short official season.",
+      "bestMonths": [
+        7,
+        8
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-takao-san",
+      "name": "Mount Takao",
+      "lat": 35.625,
+      "lng": 139.243,
+      "countryCode": "JP",
+      "region": "Hachioji, Japan",
+      "why": "One of the world's most-climbed mountains, a forested day trip from central Tokyo with a temple-topped summit.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-mount-aso",
+      "name": "Mount Aso crater rim",
+      "lat": 32.884,
+      "lng": 131.104,
+      "countryCode": "JP",
+      "region": "Kumamoto, Japan",
+      "why": "A walk along the rim of one of the world's largest active calderas, steam rising from the crater below.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "volcano"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-yakushima-jomon-sugi",
+      "name": "Yakushima Jomon Sugi Trail",
+      "lat": 30.34,
+      "lng": 130.537,
+      "countryCode": "JP",
+      "region": "Yakushima, Japan",
+      "why": "A mossy, ancient cedar forest trail to Japan's oldest tree, said to be over 2,000 years old.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "jungle"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-seongsan-ilchulbong",
+      "name": "Seongsan Ilchulbong",
+      "lat": 33.4586,
+      "lng": 126.9427,
+      "countryCode": "KR",
+      "region": "Jeju Island, South Korea",
+      "why": "A short climb up a tuff volcanic cone rising straight from the sea, famous for sunrise views.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "coastal",
+        "volcano"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-seoraksan-ulsanbawi",
+      "name": "Seoraksan (Ulsanbawi)",
+      "lat": 38.169,
+      "lng": 128.465,
+      "countryCode": "KR",
+      "region": "Sokcho, South Korea",
+      "why": "A steep staircase climb to six granite peaks fused into one dramatic summit ridge.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-mount-kinabalu",
+      "name": "Mount Kinabalu",
+      "lat": 6.01,
+      "lng": 116.546,
+      "countryCode": "MY",
+      "region": "Kinabalu Park, Sabah",
+      "why": "Southeast Asia's highest peak, a permitted two-day climb over granite slabs to a sunrise summit; trailhead at Timpohon Gate.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-rinjani",
+      "name": "Mount Rinjani summit trek",
+      "lat": -8.366,
+      "lng": 116.541,
+      "countryCode": "ID",
+      "region": "Sembalun, Lombok",
+      "why": "A three-day volcano trek to a crater lake and a punishing sunrise summit push; trailhead in Sembalun.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "volcano",
+        "technical",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-mount-batur",
+      "name": "Mount Batur sunrise trek",
+      "lat": -8.2422,
+      "lng": 115.3752,
+      "countryCode": "ID",
+      "region": "Kintamani, Bali",
+      "why": "A pre-dawn climb up an active volcano for a sunrise view over Bali's crater lake.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "volcano"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-mount-bromo",
+      "name": "Mount Bromo, Penanjakan viewpoint",
+      "lat": -7.942,
+      "lng": 112.952,
+      "countryCode": "ID",
+      "region": "Bromo Tengger Semeru, Java",
+      "why": "A smoking volcanic cone rising from a sea of ash, viewed at sunrise from Mount Penanjakan.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "volcano"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-mount-pulag",
+      "name": "Mount Pulag",
+      "lat": 16.592,
+      "lng": 120.899,
+      "countryCode": "PH",
+      "region": "Benguet, Philippines",
+      "why": "The Philippines' third-highest peak, famous for its 'sea of clouds' summit sunrise over grassland ridges.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-fansipan",
+      "name": "Fansipan",
+      "lat": 22.3033,
+      "lng": 103.775,
+      "countryCode": "VN",
+      "region": "Sa Pa, Vietnam",
+      "why": "Indochina's highest peak, climbed through cloud forest from Sa Pa's terraced valleys.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-jebel-shams-balcony",
+      "name": "Jebel Shams Balcony Walk",
+      "lat": 23.226,
+      "lng": 57.266,
+      "countryCode": "OM",
+      "region": "Al Hamra, Oman",
+      "why": "A vertigo trail along the rim of Oman's 'Grand Canyon', clinging to cliffs a kilometre above the wadi floor.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "desert",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-edge-of-the-world",
+      "name": "Edge of the World (Jebel Fihrayn)",
+      "lat": 24.933,
+      "lng": 45.933,
+      "countryCode": "SA",
+      "region": "Riyadh, Saudi Arabia",
+      "why": "A dramatic 300 m escarpment along the ancient Tuwaiq Mountains, an abrupt edge over the desert plain.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "desert"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-petra-al-khubtha",
+      "name": "Al-Khubtha Trail, Petra",
+      "lat": 30.328,
+      "lng": 35.449,
+      "countryCode": "JO",
+      "region": "Petra, Jordan",
+      "why": "A steep climb above the Treasury for the classic bird's-eye viewpoint over Petra's rock-cut facade.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "desert"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-jordan-trail",
+      "name": "Jordan Trail",
+      "lat": 32.656,
+      "lng": 35.689,
+      "countryCode": "JO",
+      "region": "Umm Qais, Jordan",
+      "why": "A 675 km cross-country route from the Sea of Galilee to the Red Sea through desert, canyon and village; trailhead at Umm Qais.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "desert"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-masada-snake-path",
+      "name": "Masada Snake Path",
+      "lat": 31.3157,
+      "lng": 35.3536,
+      "countryCode": "IL",
+      "region": "Judean Desert, Israel",
+      "why": "A pre-dawn switchback climb up Herod's cliff-top fortress above the Dead Sea.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "desert"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-kilimanjaro-machame",
+      "name": "Kilimanjaro, Machame Route",
+      "lat": -3.232,
+      "lng": 37.312,
+      "countryCode": "TZ",
+      "region": "Machame Gate, Tanzania",
+      "why": "Africa's highest peak via its most scenic route, camping through five climate zones; trailhead at Machame Gate.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "volcano",
+        "alpine",
+        "permit",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-kilimanjaro-marangu",
+      "name": "Kilimanjaro, Marangu Route",
+      "lat": -3.281,
+      "lng": 37.549,
+      "countryCode": "TZ",
+      "region": "Marangu Gate, Tanzania",
+      "why": "The original 'Coca-Cola' route to Uhuru Peak, the only one with sleeping huts; trailhead at Marangu Gate.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "volcano",
+        "alpine",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-mount-meru",
+      "name": "Mount Meru",
+      "lat": -3.25,
+      "lng": 36.833,
+      "countryCode": "TZ",
+      "region": "Momella Gate, Arusha",
+      "why": "A steep, wildlife-flanked volcano climb often used to acclimatise before Kilimanjaro; trailhead at Momella Gate.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "volcano",
+        "alpine",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-ol-doinyo-lengai",
+      "name": "Ol Doinyo Lengai",
+      "lat": -2.761,
+      "lng": 35.914,
+      "countryCode": "TZ",
+      "region": "Lake Natron, Tanzania",
+      "why": "An active volcano sacred to the Maasai, climbed overnight on loose ash to its carbonatite crater.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-mount-kenya-lenana",
+      "name": "Mount Kenya, Point Lenana",
+      "lat": -0.15,
+      "lng": 37.133,
+      "countryCode": "KE",
+      "region": "Naro Moru, Kenya",
+      "why": "Africa's second-highest mountain, a multi-day trek past glacial tarns to a non-technical trekking summit; trailhead at Naro Moru Gate.",
+      "bestMonths": [
+        1,
+        2,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-rwenzori-central-circuit",
+      "name": "Rwenzori Mountains Central Circuit",
+      "lat": 0.367,
+      "lng": 29.933,
+      "countryCode": "UG",
+      "region": "Nyakalengija, Uganda",
+      "why": "The 'Mountains of the Moon', a muddy, hut-to-hut trek through bizarre afro-alpine vegetation; trailhead at Nyakalengija.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-simien-mountains",
+      "name": "Simien Mountains Trek",
+      "lat": 13.152,
+      "lng": 37.901,
+      "countryCode": "ET",
+      "region": "Debark, Ethiopia",
+      "why": "Jagged escarpments and gelada baboon troops on a camping trek through Ethiopia's dramatic highlands; trailhead in Debark.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-mount-toubkal",
+      "name": "Mount Toubkal",
+      "lat": 31.139,
+      "lng": -7.917,
+      "countryCode": "MA",
+      "region": "Imlil, Morocco",
+      "why": "North Africa's highest peak, a two-day trek and scramble from the Berber village of Imlil.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-todra-gorge",
+      "name": "Todra Gorge",
+      "lat": 31.533,
+      "lng": -5.58,
+      "countryCode": "MA",
+      "region": "Tinerhir, Morocco",
+      "why": "A narrow limestone canyon with walls up to 300 m high, a favourite Atlas Mountains day walk.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "desert"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-fish-river-canyon",
+      "name": "Fish River Canyon Trail",
+      "lat": -27.567,
+      "lng": 17.733,
+      "countryCode": "NA",
+      "region": "Hobas, Namibia",
+      "why": "One of Africa's largest canyons, a five-day self-supported desert trek along the dry riverbed; trailhead at Hobas.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "desert",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-otter-trail",
+      "name": "Otter Trail",
+      "lat": -33.964,
+      "lng": 23.889,
+      "countryCode": "ZA",
+      "region": "Storms River Mouth, South Africa",
+      "why": "South Africa's most famous coastal trail, hut to hut along the Garden Route's cliffs and beaches; trailhead at Storms River Mouth.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "coastal",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-drakensberg-grand-traverse",
+      "name": "Drakensberg Grand Traverse",
+      "lat": -28.744,
+      "lng": 28.913,
+      "countryCode": "ZA",
+      "region": "Sentinel Car Park, South Africa",
+      "why": "An unmarked, high-altitude traverse of the Drakensberg escarpment for experienced mountaineers; trailhead at Sentinel Car Park.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-table-mountain",
+      "name": "Table Mountain, Platteklip Gorge",
+      "lat": -33.9628,
+      "lng": 18.4098,
+      "countryCode": "ZA",
+      "region": "Cape Town, South Africa",
+      "why": "The steep, direct route up Cape Town's flat-topped icon, one of the New7Wonders of Nature.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-lions-head",
+      "name": "Lion's Head",
+      "lat": -33.936,
+      "lng": 18.388,
+      "countryCode": "ZA",
+      "region": "Cape Town, South Africa",
+      "why": "A spiralling summit trail with chains and ladders and a 360-degree view over Cape Town and the Atlantic.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-andringitra-pic-boby",
+      "name": "Pic Boby, Andringitra",
+      "lat": -22.217,
+      "lng": 46.917,
+      "countryCode": "MG",
+      "region": "Andringitra National Park, Madagascar",
+      "why": "Madagascar's second-highest peak, a granite massif trek through unique highland flora.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-piton-de-la-fournaise",
+      "name": "Piton de la Fournaise",
+      "lat": -21.244,
+      "lng": 55.713,
+      "countryCode": "RE",
+      "region": "Reunion Island",
+      "why": "One of the world's most active volcanoes, a black lava-field walk to the crater rim.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "volcano"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-cirque-de-cilaos",
+      "name": "Cirque de Cilaos trek (GR R2)",
+      "lat": -21.133,
+      "lng": 55.472,
+      "countryCode": "RE",
+      "region": "Cilaos, Reunion Island",
+      "why": "A hut-to-hut trek through Reunion's dramatic volcanic cirques and needle peaks; trailhead in Cilaos.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-appalachian-trail",
+      "name": "Appalachian Trail",
+      "lat": 34.627,
+      "lng": -84.194,
+      "countryCode": "US",
+      "region": "Springer Mountain, Georgia",
+      "why": "The original American long-distance trail, 3,500 km through 14 states; southern trailhead at Springer Mountain.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-pacific-crest-trail",
+      "name": "Pacific Crest Trail",
+      "lat": 32.591,
+      "lng": -116.467,
+      "countryCode": "US",
+      "region": "Campo, California",
+      "why": "A desert-to-alpine trail from Mexico to Canada along the crest of the Sierra and Cascades; southern trailhead at Campo.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "desert",
+        "permit",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-john-muir-trail",
+      "name": "John Muir Trail",
+      "lat": 37.73,
+      "lng": -119.557,
+      "countryCode": "US",
+      "region": "Happy Isles, Yosemite",
+      "why": "A high Sierra classic from Yosemite Valley to Mount Whitney; trailhead at Happy Isles.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-wonderland-trail",
+      "name": "Wonderland Trail",
+      "lat": 46.75,
+      "lng": -121.813,
+      "countryCode": "US",
+      "region": "Longmire, Mount Rainier",
+      "why": "A full loop around Mount Rainier through old growth, meadow and glacier valley; trailhead at Longmire.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-colorado-trail",
+      "name": "Colorado Trail",
+      "lat": 39.488,
+      "lng": -105.169,
+      "countryCode": "US",
+      "region": "Waterton Canyon, Denver",
+      "why": "A high-altitude trail from Denver to Durango across eight mountain ranges; trailhead at Waterton Canyon.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-long-trail",
+      "name": "Long Trail",
+      "lat": 45.014,
+      "lng": -72.317,
+      "countryCode": "US",
+      "region": "North Troy, Vermont",
+      "why": "America's oldest long-distance trail, the length of Vermont along the Green Mountains; northern trailhead near the Canadian border.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut"
+      ],
+      "source": "Classic multi-day trek"
+    },
+    {
+      "id": "hikes-enchantments-traverse",
+      "name": "Enchantments Traverse",
+      "lat": 47.463,
+      "lng": -120.833,
+      "countryCode": "US",
+      "region": "Stuart Lake trailhead, Washington",
+      "why": "A permit-lottery classic through granite basins and alpine larch beneath the Stuart Range.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-rae-lakes-loop",
+      "name": "Rae Lakes Loop",
+      "lat": 36.784,
+      "lng": -118.576,
+      "countryCode": "US",
+      "region": "Road's End, Kings Canyon",
+      "why": "A high Sierra loop past a chain of alpine lakes beneath the Painted Lady; trailhead at Road's End.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-presidential-traverse",
+      "name": "Presidential Traverse",
+      "lat": 44.366,
+      "lng": -71.283,
+      "countryCode": "US",
+      "region": "Appalachia trailhead, New Hampshire",
+      "why": "A committing above-treeline traverse of the White Mountains' Presidential Range, notorious for sudden weather.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-zion-narrows-topdown",
+      "name": "Zion Narrows (top-down)",
+      "lat": 37.446,
+      "lng": -112.871,
+      "countryCode": "US",
+      "region": "Chamberlain's Ranch, Zion",
+      "why": "A permitted wade down the Virgin River through Zion's slot-canyon narrows; trailhead at Chamberlain's Ranch.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "desert",
+        "permit",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-rim-to-rim",
+      "name": "Grand Canyon Rim-to-Rim",
+      "lat": 36.0499,
+      "lng": -111.952,
+      "countryCode": "US",
+      "region": "South Kaibab trailhead, Arizona",
+      "why": "A classic crossing of the Grand Canyon from the South Kaibab to North Kaibab trailheads.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "desert",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-havasu-falls",
+      "name": "Havasu Falls Trek",
+      "lat": 36.197,
+      "lng": -112.698,
+      "countryCode": "US",
+      "region": "Hualapai Hilltop, Arizona",
+      "why": "A desert descent to turquoise waterfalls on Havasupai tribal land; trailhead at Hualapai Hilltop.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "desert",
+        "permit"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-chilkoot-trail",
+      "name": "Chilkoot Trail",
+      "lat": 59.514,
+      "lng": -135.398,
+      "countryCode": "US",
+      "region": "Dyea, Alaska",
+      "why": "The 1898 Klondike Gold Rush route from tidewater to a high alpine pass; trailhead in Dyea.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-kalalau-trail",
+      "name": "Kalalau Trail",
+      "lat": 22.221,
+      "lng": -159.58,
+      "countryCode": "US",
+      "region": "Ke'e Beach, Kauai",
+      "why": "A permit-only trail along Kauai's sheer Na Pali cliffs to a remote beach valley; trailhead at Ke'e Beach.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "coastal",
+        "permit",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-west-coast-trail",
+      "name": "West Coast Trail",
+      "lat": 48.769,
+      "lng": -125.098,
+      "countryCode": "CA",
+      "region": "Pachena Bay, British Columbia",
+      "why": "A demanding coastal trail of ladders, cable cars and surge channels along Vancouver Island; trailhead at Pachena Bay.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "coastal",
+        "permit",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-berg-lake-trail",
+      "name": "Berg Lake Trail",
+      "lat": 53.098,
+      "lng": -119.158,
+      "countryCode": "CA",
+      "region": "Mount Robson, British Columbia",
+      "why": "A trek to a glacier-fed turquoise lake beneath the Canadian Rockies' highest peak; trailhead near Kinney Lake.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-skoki-loop",
+      "name": "Skoki Loop",
+      "lat": 51.436,
+      "lng": -116.181,
+      "countryCode": "CA",
+      "region": "Lake Louise, Alberta",
+      "why": "A historic backcountry loop past alpine lakes to Canada's oldest ski lodge; trailhead near Lake Louise.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-skyline-trail-cape-breton",
+      "name": "Skyline Trail",
+      "lat": 46.746,
+      "lng": -60.856,
+      "countryCode": "CA",
+      "region": "Cape Breton Highlands, Nova Scotia",
+      "why": "A headland loop ending on a boardwalk over the Gulf of St. Lawrence, famous for sunset views.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "coastal",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-grouse-grind",
+      "name": "Grouse Grind",
+      "lat": 49.38,
+      "lng": -123.098,
+      "countryCode": "CA",
+      "region": "North Vancouver, British Columbia",
+      "why": "A relentless staircase climb up Grouse Mountain, Vancouver's favourite fitness test.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-stawamus-chief",
+      "name": "Stawamus Chief",
+      "lat": 49.68,
+      "lng": -123.144,
+      "countryCode": "CA",
+      "region": "Squamish, British Columbia",
+      "why": "A granite monolith with chained scrambles to three summit peaks above Howe Sound.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-plain-of-six-glaciers",
+      "name": "Plain of Six Glaciers",
+      "lat": 51.423,
+      "lng": -116.246,
+      "countryCode": "CA",
+      "region": "Lake Louise, Alberta",
+      "why": "A teahouse trail from Lake Louise into a glacier-ringed valley in the Canadian Rockies.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-garibaldi-lake",
+      "name": "Garibaldi Lake",
+      "lat": 49.928,
+      "lng": -123.025,
+      "countryCode": "CA",
+      "region": "Whistler, British Columbia",
+      "why": "A vivid turquoise glacial lake beneath volcanic peaks, one of British Columbia's classic day hikes.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-half-dome",
+      "name": "Half Dome",
+      "lat": 37.7459,
+      "lng": -119.5332,
+      "countryCode": "US",
+      "region": "Yosemite Valley, California",
+      "why": "A permit-only cable ascent up Yosemite's granite icon for one of America's great summit views.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "permit",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-angels-landing",
+      "name": "Angels Landing",
+      "lat": 37.2692,
+      "lng": -112.9481,
+      "countryCode": "US",
+      "region": "Zion National Park, Utah",
+      "why": "A chain-assisted scramble along a knife-edge sandstone fin above Zion Canyon; permit required.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "desert",
+        "permit",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-precipice-trail",
+      "name": "Precipice Trail",
+      "lat": 44.34,
+      "lng": -68.189,
+      "countryCode": "US",
+      "region": "Acadia National Park, Maine",
+      "why": "An iron rung and ladder scramble up a granite cliff face above Frenchman Bay.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "coastal",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-longs-peak-keyhole",
+      "name": "Longs Peak, Keyhole Route",
+      "lat": 40.2549,
+      "lng": -105.6151,
+      "countryCode": "US",
+      "region": "Rocky Mountain National Park, Colorado",
+      "why": "Colorado's northernmost fourteener, a long exposed scramble past the famous Keyhole formation.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-mount-whitney",
+      "name": "Mount Whitney",
+      "lat": 36.5786,
+      "lng": -118.2923,
+      "countryCode": "US",
+      "region": "Lone Pine, California",
+      "why": "The highest summit in the contiguous United States, a long permitted day climb from the Sierra Nevada.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "permit",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-angels-rest",
+      "name": "Angel's Rest",
+      "lat": 45.576,
+      "lng": -122.145,
+      "countryCode": "US",
+      "region": "Columbia River Gorge, Oregon",
+      "why": "A basalt outcrop viewpoint high above the Columbia River Gorge's waterfalls.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-diamond-head",
+      "name": "Diamond Head",
+      "lat": 21.262,
+      "lng": -157.806,
+      "countryCode": "US",
+      "region": "Oahu, Hawaii",
+      "why": "A short climb through a WWII bunker tunnel to the rim of an extinct volcanic crater above Waikiki.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "volcano"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-pikes-peak-barr-trail",
+      "name": "Pikes Peak, Barr Trail",
+      "lat": 38.8409,
+      "lng": -105.0423,
+      "countryCode": "US",
+      "region": "Manitou Springs, Colorado",
+      "why": "The peak that inspired 'America the Beautiful', climbed via a long, well-graded switchback trail.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-mount-katahdin",
+      "name": "Mount Katahdin, Knife Edge",
+      "lat": 45.9044,
+      "lng": -68.9214,
+      "countryCode": "US",
+      "region": "Baxter State Park, Maine",
+      "why": "The Appalachian Trail's dramatic northern terminus, crossed via an exposed granite arete.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-old-rag-mountain",
+      "name": "Old Rag Mountain",
+      "lat": 38.567,
+      "lng": -78.296,
+      "countryCode": "US",
+      "region": "Shenandoah, Virginia",
+      "why": "A boulder-scrambling ridge climb through granite chutes to a 360-degree Blue Ridge summit.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-camelback-mountain",
+      "name": "Camelback Mountain",
+      "lat": 33.5185,
+      "lng": -111.9647,
+      "countryCode": "US",
+      "region": "Phoenix, Arizona",
+      "why": "A steep desert scramble with hand cables to the highest point in central Phoenix.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "desert",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-mount-si",
+      "name": "Mount Si",
+      "lat": 47.485,
+      "lng": -121.728,
+      "countryCode": "US",
+      "region": "North Bend, Washington",
+      "why": "A steep, popular Cascades foothill climb to a rocky summit above the Snoqualmie Valley.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-cascade-pass",
+      "name": "Cascade Pass",
+      "lat": 48.477,
+      "lng": -121.068,
+      "countryCode": "US",
+      "region": "North Cascades, Washington",
+      "why": "A switchbacking climb to a high alpine pass ringed by glaciers, one of the North Cascades' finest views.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-highline-trail-glacier",
+      "name": "Highline Trail",
+      "lat": 48.697,
+      "lng": -113.717,
+      "countryCode": "US",
+      "region": "Glacier National Park, Montana",
+      "why": "A cliff-edge trail below the Garden Wall with near-constant views over the Continental Divide.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-grinnell-glacier-trail",
+      "name": "Grinnell Glacier Trail",
+      "lat": 48.766,
+      "lng": -113.728,
+      "countryCode": "US",
+      "region": "Glacier National Park, Montana",
+      "why": "A trail past a chain of alpine lakes to a viewpoint over one of the park's last remaining glaciers.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-the-wave",
+      "name": "The Wave, Coyote Buttes",
+      "lat": 36.996,
+      "lng": -112.006,
+      "countryCode": "US",
+      "region": "Coyote Buttes North, Arizona",
+      "why": "A permit-lottery sandstone formation of swirling, wave-like erosion patterns on the Utah-Arizona line.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "desert",
+        "permit",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-delicate-arch",
+      "name": "Delicate Arch Trail",
+      "lat": 38.7436,
+      "lng": -109.4993,
+      "countryCode": "US",
+      "region": "Arches National Park, Utah",
+      "why": "A slickrock climb to Utah's most iconic freestanding sandstone arch, best at sunset.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "day-hike",
+        "desert"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-franconia-ridge",
+      "name": "Franconia Ridge Loop",
+      "lat": 44.1607,
+      "lng": -71.6447,
+      "countryCode": "US",
+      "region": "White Mountains, New Hampshire",
+      "why": "An above-treeline ridge walk over Little Haystack, Lincoln and Lafayette, one of the East's best alpine hikes.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-mount-marcy",
+      "name": "Mount Marcy",
+      "lat": 44.1128,
+      "lng": -73.9237,
+      "countryCode": "US",
+      "region": "Adirondacks, New York",
+      "why": "New York's highest summit, a long forested climb in the High Peaks Wilderness.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-maroon-bells",
+      "name": "Maroon Bells, Crater Lake",
+      "lat": 39.098,
+      "lng": -106.989,
+      "countryCode": "US",
+      "region": "Aspen, Colorado",
+      "why": "One of the most photographed views in America, twin fourteeners reflected in an alpine lake.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-nevado-de-toluca",
+      "name": "Nevado de Toluca",
+      "lat": 19.108,
+      "lng": -99.758,
+      "countryCode": "MX",
+      "region": "Toluca, Mexico",
+      "why": "A dormant volcano with two crater lakes inside its caldera, a high-altitude day climb near Mexico City.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-pico-de-orizaba",
+      "name": "Pico de Orizaba",
+      "lat": 19.03,
+      "lng": -97.27,
+      "countryCode": "MX",
+      "region": "Veracruz, Mexico",
+      "why": "North America's third-highest peak and highest volcano, a glaciated technical climb from mountain huts.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "multi-day",
+        "volcano",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-copper-canyon",
+      "name": "Copper Canyon (Urique) Trek",
+      "lat": 27.533,
+      "lng": -107.75,
+      "countryCode": "MX",
+      "region": "Divisadero, Chihuahua",
+      "why": "A descent into a canyon system larger and deeper than the Grand Canyon, through Raramuri territory; trailhead at Divisadero.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "multi-day",
+        "desert",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-acatenango",
+      "name": "Acatenango Volcano",
+      "lat": 14.501,
+      "lng": -90.876,
+      "countryCode": "GT",
+      "region": "Antigua, Guatemala",
+      "why": "An overnight camp on a volcano's flank for a front-row view of neighbouring Fuego erupting through the night.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "volcano",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-pacaya-volcano",
+      "name": "Pacaya Volcano",
+      "lat": 14.381,
+      "lng": -90.601,
+      "countryCode": "GT",
+      "region": "Antigua, Guatemala",
+      "why": "An active volcano day climb over cooled lava fields, close enough to roast marshmallows on residual heat.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "volcano"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-cerro-chirripo",
+      "name": "Cerro Chirripo",
+      "lat": 9.489,
+      "lng": -83.489,
+      "countryCode": "CR",
+      "region": "San Gerardo de Rivas, Costa Rica",
+      "why": "Costa Rica's highest peak, a permitted two-day climb through cloud forest to a paramo summit.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-arenal-1968-trail",
+      "name": "Arenal 1968 Trail",
+      "lat": 10.463,
+      "lng": -84.703,
+      "countryCode": "CR",
+      "region": "La Fortuna, Costa Rica",
+      "why": "A walk over hardened lava flows from Arenal Volcano's last major eruption, with views of the cone.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "jungle"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-volcan-baru",
+      "name": "Volcan Baru",
+      "lat": 8.808,
+      "lng": -82.543,
+      "countryCode": "PA",
+      "region": "Boquete, Panama",
+      "why": "Panama's highest point and only volcano, climbed overnight for a rare view of both oceans at once.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-waitukubuli-trail",
+      "name": "Waitukubuli National Trail",
+      "lat": 15.217,
+      "lng": -61.367,
+      "countryCode": "DM",
+      "region": "Scotts Head, Dominica",
+      "why": "The Eastern Caribbean's first long-distance trail, through rainforest and along volcanic coast; trailhead at Scotts Head.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "jungle",
+        "coastal"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-gros-piton",
+      "name": "Gros Piton",
+      "lat": 13.808,
+      "lng": -61.067,
+      "countryCode": "LC",
+      "region": "Soufriere, Saint Lucia",
+      "why": "A steep, guide-required climb up Saint Lucia's iconic volcanic plug for a Caribbean panorama.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "day-hike",
+        "jungle",
+        "technical",
+        "permit"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-blue-mountain-peak",
+      "name": "Blue Mountain Peak",
+      "lat": 18.05,
+      "lng": -76.576,
+      "countryCode": "JM",
+      "region": "Blue Mountains, Jamaica",
+      "why": "Jamaica's highest peak, usually climbed overnight through coffee farms for a Caribbean sunrise.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "jungle"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-pico-duarte",
+      "name": "Pico Duarte",
+      "lat": 19.023,
+      "lng": -71.093,
+      "countryCode": "DO",
+      "region": "Jarabacoa, Dominican Republic",
+      "why": "The Caribbean's highest summit, a multi-day pine forest trek with mules carrying camp gear.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-el-yunque-peak",
+      "name": "El Yunque Peak",
+      "lat": 18.287,
+      "lng": -65.783,
+      "countryCode": "PR",
+      "region": "El Yunque National Forest, Puerto Rico",
+      "why": "A climb through the only tropical rainforest in the US National Forest System to a misty summit.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "jungle"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-inca-trail",
+      "name": "Inca Trail",
+      "lat": -13.193,
+      "lng": -72.446,
+      "countryCode": "PE",
+      "region": "Piscacucho (Km 82), Peru",
+      "why": "The classic permitted route to Machu Picchu over three Andean passes; trailhead at Km 82.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "permit",
+        "hut-to-hut"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-salkantay-trek",
+      "name": "Salkantay Trek",
+      "lat": -13.431,
+      "lng": -72.478,
+      "countryCode": "PE",
+      "region": "Mollepata, Peru",
+      "why": "An unpermitted alternative to the Inca Trail beneath a sacred glaciated peak; trailhead in Mollepata.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-choquequirao-trek",
+      "name": "Choquequirao Trek",
+      "lat": -13.43,
+      "lng": -72.838,
+      "countryCode": "PE",
+      "region": "Cachora, Peru",
+      "why": "A steep canyon trek to a remote, rarely visited sister city of Machu Picchu; trailhead in Cachora.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-huayhuash-circuit",
+      "name": "Huayhuash Circuit",
+      "lat": -10.083,
+      "lng": -76.933,
+      "countryCode": "PE",
+      "region": "Llamac, Peru",
+      "why": "A high circuit past turquoise lakes and some of the Andes' most dramatic ice peaks; trailhead in Llamac.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-ausangate-trek",
+      "name": "Ausangate Trek",
+      "lat": -13.783,
+      "lng": -71.217,
+      "countryCode": "PE",
+      "region": "Tinki, Peru",
+      "why": "A circuit of a sacred glaciated peak past the Rainbow Mountain and alpine lakes; trailhead in Tinki.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-colca-canyon",
+      "name": "Colca Canyon Trek",
+      "lat": -15.621,
+      "lng": -71.988,
+      "countryCode": "PE",
+      "region": "Cabanaconde, Peru",
+      "why": "A descent into one of the world's deepest canyons to an oasis, home to condors overhead; trailhead in Cabanaconde.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "multi-day",
+        "desert",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-torres-del-paine-w",
+      "name": "Torres del Paine W Trek",
+      "lat": -50.95,
+      "lng": -72.833,
+      "countryCode": "CL",
+      "region": "Laguna Amarga, Chile",
+      "why": "Patagonia's signature trek past granite towers, glaciers and turquoise lakes; trailhead at the Laguna Amarga entrance.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-dientes-de-navarino",
+      "name": "Dientes de Navarino Circuit",
+      "lat": -54.935,
+      "lng": -67.616,
+      "countryCode": "CL",
+      "region": "Puerto Williams, Chile",
+      "why": "The world's southernmost trek, an unmarked circuit of jagged peaks at the tip of South America; trailhead in Puerto Williams.",
+      "bestMonths": [
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-cerro-castillo-trek",
+      "name": "Cerro Castillo Trek",
+      "lat": -46.117,
+      "lng": -72.15,
+      "countryCode": "CL",
+      "region": "Villa Cerro Castillo, Chile",
+      "why": "A dramatic crossing beneath a castle-like granite massif on Chile's Carretera Austral; trailhead in Villa Cerro Castillo.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-volcan-villarrica",
+      "name": "Volcan Villarrica",
+      "lat": -39.42,
+      "lng": -71.933,
+      "countryCode": "CL",
+      "region": "Pucon, Chile",
+      "why": "A crampons-and-ice-axe climb up one of Chile's most active volcanoes to a smoking crater rim.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "technical"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-fitz-roy-laguna-de-los-tres",
+      "name": "Fitz Roy, Laguna de los Tres",
+      "lat": -49.331,
+      "lng": -72.886,
+      "countryCode": "AR",
+      "region": "El Chalten, Argentina",
+      "why": "A steep final climb to an alpine lake beneath Mount Fitz Roy's granite spires; trailhead in El Chalten.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-quilotoa-loop",
+      "name": "Quilotoa Loop",
+      "lat": -0.855,
+      "lng": -78.901,
+      "countryCode": "EC",
+      "region": "Quilotoa, Ecuador",
+      "why": "A trek between indigenous highland villages to a turquoise crater lake; trailhead at Quilotoa.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "volcano"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-cotopaxi",
+      "name": "Cotopaxi",
+      "lat": -0.652,
+      "lng": -78.438,
+      "countryCode": "EC",
+      "region": "Cotopaxi National Park, Ecuador",
+      "why": "One of the world's highest active volcanoes, a glaciated overnight climb from a mountain refuge.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "multi-day",
+        "volcano",
+        "alpine",
+        "technical",
+        "hut-to-hut"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-roraima-trek",
+      "name": "Mount Roraima Trek",
+      "lat": 5.333,
+      "lng": -60.75,
+      "countryCode": "VE",
+      "region": "Paraitepui, Venezuela",
+      "why": "A trek to the flat-topped tepui that inspired 'The Lost World', with its own alien ecosystem on top; trailhead in Paraitepui.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "jungle",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-ciudad-perdida-trek",
+      "name": "Lost City Trek (Ciudad Perdida)",
+      "lat": 11.217,
+      "lng": -73.917,
+      "countryCode": "CO",
+      "region": "Machete Pelao, Colombia",
+      "why": "A jungle trek to a pre-Columbian city older than Machu Picchu, crossing rivers by foot; trailhead at Machete Pelao.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "multi-day",
+        "jungle",
+        "technical"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-pico-da-bandeira",
+      "name": "Pico da Bandeira",
+      "lat": -20.439,
+      "lng": -41.799,
+      "countryCode": "BR",
+      "region": "Espirito Santo, Brazil",
+      "why": "One of Brazil's highest peaks, a short climb through granite boulder fields for a sunrise above the clouds.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-pedra-da-gavea",
+      "name": "Pedra da Gavea",
+      "lat": -22.989,
+      "lng": -43.283,
+      "countryCode": "BR",
+      "region": "Rio de Janeiro, Brazil",
+      "why": "A jungle scramble with fixed ropes to the world's largest coastal monolith, overlooking Rio's beaches.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "jungle",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-pao-de-acucar-trail",
+      "name": "Pao de Acucar hiking trail",
+      "lat": -22.949,
+      "lng": -43.155,
+      "countryCode": "BR",
+      "region": "Rio de Janeiro, Brazil",
+      "why": "A rock-climbing approach trail up Sugarloaf Mountain for views over Guanabara Bay.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-vale-do-pati",
+      "name": "Vale do Pati Trek",
+      "lat": -12.567,
+      "lng": -41.5,
+      "countryCode": "BR",
+      "region": "Vale do Capao, Chapada Diamantina",
+      "why": "A multi-day trek through Brazil's Chapada Diamantina past waterfalls, mesas and highland valleys; trailhead at Vale do Capao.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "alpine"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-overland-track",
+      "name": "Overland Track",
+      "lat": -41.646,
+      "lng": 145.944,
+      "countryCode": "AU",
+      "region": "Ronny Creek, Tasmania",
+      "why": "Tasmania's premier alpine trek past Cradle Mountain and ancient rainforest; trailhead at Ronny Creek.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-cradle-mountain-summit",
+      "name": "Cradle Mountain Summit",
+      "lat": -41.657,
+      "lng": 145.95,
+      "countryCode": "AU",
+      "region": "Dove Lake, Tasmania",
+      "why": "A boulder-scramble climb above Dove Lake to Tasmania's most recognisable summit.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "alpine",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-wineglass-bay-lookout",
+      "name": "Wineglass Bay Lookout",
+      "lat": -42.158,
+      "lng": 148.298,
+      "countryCode": "AU",
+      "region": "Freycinet, Tasmania",
+      "why": "A short climb to the classic viewpoint over one of the world's most perfect curved white-sand bays.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "coastal"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-great-ocean-walk",
+      "name": "Great Ocean Walk",
+      "lat": -38.758,
+      "lng": 143.67,
+      "countryCode": "AU",
+      "region": "Apollo Bay, Victoria",
+      "why": "A coastal trek past the Twelve Apostles' limestone stacks along Victoria's shipwreck coast; trailhead in Apollo Bay.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "coastal"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-cape-to-cape-track",
+      "name": "Cape to Cape Track",
+      "lat": -33.536,
+      "lng": 115.017,
+      "countryCode": "AU",
+      "region": "Cape Naturaliste, Western Australia",
+      "why": "A wildflower-lined coastal trek between two lighthouses on the Margaret River coast; trailhead at Cape Naturaliste.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "multi-day",
+        "coastal"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-bibbulmun-track",
+      "name": "Bibbulmun Track",
+      "lat": -31.97,
+      "lng": 116.053,
+      "countryCode": "AU",
+      "region": "Kalamunda, Western Australia",
+      "why": "A long-distance trail through jarrah forest and karri giants to the south coast; trailhead in Kalamunda.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "multi-day"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-larapinta-trail",
+      "name": "Larapinta Trail",
+      "lat": -23.671,
+      "lng": 133.671,
+      "countryCode": "AU",
+      "region": "Alice Springs, Northern Territory",
+      "why": "A remote desert ridge-walk along the West MacDonnell Ranges; trailhead at Simpsons Gap near Alice Springs.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "desert",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-kosciuszko-summit",
+      "name": "Mount Kosciuszko",
+      "lat": -36.456,
+      "lng": 148.263,
+      "countryCode": "AU",
+      "region": "Thredbo, New South Wales",
+      "why": "Australia's highest peak, a gentle boardwalk climb through alpine wildflower country.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-grampians-pinnacle",
+      "name": "The Pinnacle, Grampians",
+      "lat": -37.158,
+      "lng": 142.509,
+      "countryCode": "AU",
+      "region": "Halls Gap, Victoria",
+      "why": "A sandstone lookout wedged between cliffs, the signature view of the Grampians ranges.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-figure-eight-pools",
+      "name": "Figure Eight Pools coastal walk",
+      "lat": -34.202,
+      "lng": 151.048,
+      "countryCode": "AU",
+      "region": "Royal National Park, New South Wales",
+      "why": "A tide-dependent coastal scramble to natural rock pools carved into a sandstone shelf.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "coastal",
+        "technical"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-uluru-base-walk",
+      "name": "Uluru Base Walk",
+      "lat": -25.3444,
+      "lng": 131.0369,
+      "countryCode": "AU",
+      "region": "Uluru-Kata Tjuta, Northern Territory",
+      "why": "A circuit around the base of Australia's most sacred monolith, past waterholes and rock art.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "day-hike",
+        "desert"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-tongariro-alpine-crossing",
+      "name": "Tongariro Alpine Crossing",
+      "lat": -39.169,
+      "lng": 175.642,
+      "countryCode": "NZ",
+      "region": "Mangatepopo, New Zealand",
+      "why": "New Zealand's most popular day hike, over active volcanic craters and the emerald-green Ngauruhoe cone.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "volcano",
+        "alpine",
+        "technical"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-milford-track",
+      "name": "Milford Track",
+      "lat": -44.908,
+      "lng": 167.899,
+      "countryCode": "NZ",
+      "region": "Glade Wharf, Fiordland",
+      "why": "New Zealand's 'finest walk', through glacier-carved valleys to Milford Sound; trailhead at Glade Wharf.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "National Geographic"
+    },
+    {
+      "id": "hikes-routeburn-track",
+      "name": "Routeburn Track",
+      "lat": -44.658,
+      "lng": 168.117,
+      "countryCode": "NZ",
+      "region": "Routeburn Shelter, New Zealand",
+      "why": "A hut-to-hut Great Walk over an alpine pass between Fiordland and Mount Aspiring; trailhead at Routeburn Shelter.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut",
+        "permit"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-kepler-track",
+      "name": "Kepler Track",
+      "lat": -45.028,
+      "lng": 167.687,
+      "countryCode": "NZ",
+      "region": "Kepler Control Gates, New Zealand",
+      "why": "A loop over exposed alpine tussock ridgelines above Lake Te Anau; trailhead at the Kepler Control Gates.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "hut-to-hut"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-abel-tasman-coast-track",
+      "name": "Abel Tasman Coast Track",
+      "lat": -41.021,
+      "lng": 173.0,
+      "countryCode": "NZ",
+      "region": "Marahau, New Zealand",
+      "why": "A golden-beach coastal Great Walk through New Zealand's smallest national park; trailhead in Marahau.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "multi-day",
+        "coastal",
+        "hut-to-hut"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-heaphy-track",
+      "name": "Heaphy Track",
+      "lat": -41.199,
+      "lng": 172.698,
+      "countryCode": "NZ",
+      "region": "Brown Hut, New Zealand",
+      "why": "A varied Great Walk from beech forest over open tops to nikau-palm-lined west coast beaches; trailhead at Brown Hut.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "multi-day",
+        "alpine",
+        "coastal",
+        "hut-to-hut"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    },
+    {
+      "id": "hikes-rakiura-track",
+      "name": "Rakiura Track",
+      "lat": -46.902,
+      "lng": 168.13,
+      "countryCode": "NZ",
+      "region": "Oban, Stewart Island",
+      "why": "A muddy, birdsong-filled loop through native forest on New Zealand's southernmost inhabited island; trailhead in Oban.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "multi-day",
+        "coastal",
+        "hut-to-hut"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-roys-peak",
+      "name": "Roys Peak",
+      "lat": -44.607,
+      "lng": 169.048,
+      "countryCode": "NZ",
+      "region": "Wanaka, New Zealand",
+      "why": "A switchbacking climb to a viewpoint over Lake Wanaka and the Southern Alps, one of New Zealand's most Instagrammed.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-hooker-valley-track",
+      "name": "Hooker Valley Track",
+      "lat": -43.728,
+      "lng": 170.108,
+      "countryCode": "NZ",
+      "region": "Aoraki/Mount Cook, New Zealand",
+      "why": "A swing-bridge trail to a glacial lake with icebergs beneath New Zealand's highest peak.",
+      "bestMonths": [],
+      "tags": [
+        "day-hike",
+        "alpine"
+      ],
+      "source": "AllTrails Top Trails"
+    },
+    {
+      "id": "hikes-kokoda-track",
+      "name": "Kokoda Track",
+      "lat": -9.474,
+      "lng": 147.474,
+      "countryCode": "PG",
+      "region": "Owers' Corner, Papua New Guinea",
+      "why": "A gruelling WWII-history jungle trek across the Owen Stanley Range; trailhead at Owers' Corner.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "multi-day",
+        "jungle",
+        "technical",
+        "permit"
+      ],
+      "source": "Outside Magazine"
+    },
+    {
+      "id": "hikes-lavena-coastal-walk",
+      "name": "Lavena Coastal Walk",
+      "lat": -16.842,
+      "lng": -179.859,
+      "countryCode": "FJ",
+      "region": "Taveuni, Fiji",
+      "why": "A palm-lined coastal walk on Fiji's 'Garden Island', ending at a waterfall swimming hole.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "day-hike",
+        "coastal",
+        "jungle"
+      ],
+      "source": "Lonely Planet Epic Hikes"
+    }
+  ]
+}
