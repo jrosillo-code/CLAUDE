@@ -20,19 +20,19 @@ export const TERRAIN_ATTRIBUTION = "Elevation: Mapzen / AWS Terrain Tiles";
 // sharp ones land, instead of the background colour.
 export const VECTOR_TILES_URL = "https://tiles.openfreemap.org/planet";
 
-// The sky over satellite imagery is the same in every theme: a bright blue
-// atmosphere rim over black space and next to no fog. The Midnight theme's
-// own sky (dark navy rim, heavy dark ground fog) is right for its street
-// map but smothered the imagery — switching to a light theme "fixed" it
-// because the light themes carry a clear sky.
+// The sky over satellite imagery is the same in every theme, and it is the
+// Midnight theme's sky: deep-blue rim, dark ground fog, a thin atmosphere.
+// The light themes' skies carry a pale, near-white fog (right for a paper
+// street map) that washed the imagery out — switching to Midnight "fixed"
+// it, so Midnight's values are the ones imagery always gets.
 export const SATELLITE_SKY: SkySpecification = {
-  "sky-color": "#0b1a2b",
-  "sky-horizon-blend": 0.5,
-  "horizon-color": "#8ec2ee",
-  "horizon-fog-blend": 0.15,
-  "fog-color": "#0b1a2b",
-  "fog-ground-blend": 0.15,
-  "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.6, 4, 0.3, 7, 0],
+  "sky-color": "#27486e",
+  "sky-horizon-blend": 0.4,
+  "horizon-color": "#1a2c47",
+  "horizon-fog-blend": 0.35,
+  "fog-color": "#0e1929",
+  "fog-ground-blend": 0.9,
+  "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.45, 4, 0.25, 7, 0],
 };
 const ESRI_IMAGERY = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
 const ESRI_REFERENCE = "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";

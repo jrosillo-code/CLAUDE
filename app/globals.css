@@ -323,13 +323,15 @@ body {
   will-change: transform, opacity;
 }
 
-/* The field-brief button after a search: a soft accent pulse that says
-   "this is the next tap" without another card on the map. */
+/* The field-brief button after a search: a quick accent pulse — a bright
+   flash and an expanding ring three times a second-and-a-half — so the eye
+   lands on it without another card on the map. */
 @keyframes wp-brief-glow {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 55%, transparent), 0 6px 20px rgba(0, 0, 0, 0.18); transform: scale(1); }
-  50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--color-accent) 0%, transparent), 0 6px 24px color-mix(in srgb, var(--color-accent) 45%, transparent); transform: scale(1.06); }
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 70%, transparent), 0 0 18px 4px color-mix(in srgb, var(--color-accent) 60%, transparent); transform: scale(1); filter: brightness(1.25); }
+  45% { box-shadow: 0 0 0 14px color-mix(in srgb, var(--color-accent) 0%, transparent), 0 0 6px 0 color-mix(in srgb, var(--color-accent) 20%, transparent); transform: scale(1.1); filter: brightness(1); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 0%, transparent), 0 0 0 0 transparent; transform: scale(1); filter: brightness(1); }
 }
-.wp-brief-glow { animation: wp-brief-glow 1.6s ease-in-out infinite; }
+.wp-brief-glow { animation: wp-brief-glow 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) infinite; }
 @media (prefers-reduced-motion: reduce) {
-  .wp-brief-glow { animation: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 35%, transparent); }
+  .wp-brief-glow { animation: none; box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-accent) 40%, transparent); }
 }

@@ -7,6 +7,7 @@ import { acceptedFriendIds, canView, coverUrl, distanceKm } from "@/lib/data";
 import { googleMapsDirectionsUrl } from "@/lib/directions";
 import { reverseGeocode, searchPlaces, type GeoResult } from "@/lib/geocode";
 import type { Pin, User } from "@/lib/types";
+import { LIST_META, LIST_HONESTY, listPlacesNear } from "@/lib/lists";
 
 // "Top spots": the most-liked places near a real location — your current one
 // (browser geolocation, asked politely) or any region you search (a province,
@@ -94,6 +95,8 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
 
   const anchor: Anchor | null =
     mode === "near" ? geoAnchor : mode === "search" ? searchAnchor : null;
+  const selectListPlace = useStore((s) => s.selectListPlace);
+  const listNearby = useMemo(() => (anchor ? listPlacesNear(anchor.lat, anchor.lng, RADIUS_KM * 2, 6) : []), [anchor]);
 
   const ranked = useMemo(() => {
     const friendIds = acceptedFriendIds(friendships, viewerId);
@@ -232,9 +235,33 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
         )}
 
         {(anchor || mode === "view") && ranked.length === 0 && !(mode === "near" && geoStatus !== "ok") && (
-          <StatusCard emoji="🧭" title="No pins around here yet">
-            Nothing within {RADIUS_KM} km — try a bigger region, or be the first to drop a pin.
-          </StatusCard>
+          <>
+            <StatusCard emoji="🧭" title="No pins around here yet">
+              Nothing within {RADIUS_KM} km — try a bigger region, or be the first to drop a pin.
+            </StatusCard>
+            {anchor && listNearby.length > 0 && (
+              <div className="rounded-2xl border border-line bg-paper-2/40 p-3" data-testid="topspots-lists">
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-ink-3">From the world lists near here</div>
+                <ul className="mt-2 space-y-1.5">
+                  {listNearby.map((p) => (
+                    <li key={p.id}>
+                      <button
+                        onClick={() => { selectListPlace(p.id); requestFlyTo(p.lng, p.lat, 7, { flat: true }); onClose(); }}
+                        className="flex w-full items-center gap-2.5 rounded-xl bg-paper px-2.5 py-2 text-left hover:bg-paper-2"
+                      >
+                        <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-base" style={{ background: `${LIST_META[p.list].color}1f`, boxShadow: `inset 0 0 0 1.5px ${LIST_META[p.list].color}` }}>{LIST_META[p.list].glyph}</span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-medium">{p.name}</span>
+                          <span className="block truncate text-[11px] text-ink-3">{LIST_META[p.list].label} · {p.region} · {Math.round(p.distanceKm)} km</span>
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-2 text-[10px] text-ink-3">{LIST_HONESTY}</p>
+              </div>
+            )}
+          </>
         )}
 
         {ranked.map((r, i) => (

@@ -153,14 +153,24 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
     };
     window.addEventListener("resize", onResize);
 
-    // Frame-scoped projection state (set at the top of draw).
+    // Frame-scoped projection state (set at the top of draw). Desktop is a
+    // flat cover-fill; phones draw a turning globe (orthographic), because a
+    // whole flat world at phone width is an equirectangular map — Greenland
+    // and Siberia balloon and everything else squashes.
     let pScale = 1;
     let pCx = 0;
     let pCy = 0;
-    const project = (lng: number, lat: number): [number, number] => [
-      pCx + (lng - 12) * pScale,
-      pCy - (lat - 18) * pScale,
-    ];
+    let globe: { r: number; lam0: number; tilt: number } | null = null;
+    const RAD = Math.PI / 180;
+    /** [x, y, visible]. On the globe, `visible` is false on the far side. */
+    const project = (lng: number, lat: number): [number, number, boolean] => {
+      if (!globe) return [pCx + (lng - 12) * pScale, pCy - (lat - 18) * pScale, true];
+      const phi = lat * RAD, dl = (lng - globe.lam0) * RAD, phi0 = globe.tilt * RAD;
+      const cosc = Math.sin(phi0) * Math.sin(phi) + Math.cos(phi0) * Math.cos(phi) * Math.cos(dl);
+      const x = pCx + globe.r * Math.cos(phi) * Math.sin(dl);
+      const y = pCy - globe.r * (Math.cos(phi0) * Math.sin(phi) - Math.sin(phi0) * Math.cos(phi) * Math.cos(dl));
+      return [x, y, cosc > 0.02];
+    };
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // Night mode: shooting stars cross the constellation now and then.
@@ -179,15 +189,20 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
       const drift = reduced ? 0 : Math.sin(t * 0.07) * 10;
 
       const mobile = w < 640;
-      // Desktop covers the viewport; phones fit the world by width and let it
-      // float as a band — measured elements scale with the projection.
+      // Desktop covers the viewport; phones get a globe above the hero card,
+      // turning once every two minutes, tilted a little towards the viewer.
       pScale = mobile ? (w / 360) * 1.06 : Math.max(w / 360, h / 150) * 1.08;
       const sz = mobile ? 1 : Math.min(1.5, Math.max(1, pScale / 4.5));
-      pCx = w / 2 + (mobile ? drift * 0.4 : drift);
-      // Phones: the band sits ABOVE the avatar, under the back link, where it
-      // is actually visible — centred behind the hero it was hidden by the
-      // glass wash and the pins never showed.
-      pCy = mobile ? Math.min(h * 0.4, 165) : h / 2;
+      if (mobile) {
+        const r = Math.min(w * 0.33, 150);
+        globe = { r, lam0: reduced ? 10 : 10 + (t * 3) % 360, tilt: 18 };
+        pCx = w / 2;
+        pCy = 34 + r;
+      } else {
+        globe = null;
+        pCx = w / 2 + drift;
+        pCy = h / 2;
+      }
 
       ctx.clearRect(0, 0, w, h);
 
@@ -216,6 +231,25 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
         }
       }
 
+      // The globe itself (phones): a faint rim and a soft inner glow so the
+      // sphere reads even where no coast crosses it.
+      if (globe) {
+        const glow = ctx.createRadialGradient(pCx, pCy - globe.r * 0.2, globe.r * 0.2, pCx, pCy, globe.r);
+        glow.addColorStop(0, dark ? "rgba(90, 120, 170, 0.10)" : "rgba(10, 132, 255, 0.10)");
+        glow.addColorStop(1, dark ? "rgba(90, 120, 170, 0.02)" : "rgba(10, 132, 255, 0.02)");
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(pCx, pCy, globe.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = dark ? 0.16 : 0.2;
+        ctx.strokeStyle = inkColor;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(pCx, pCy, globe.r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
       // Constellation lines — consecutive coastline stars, faint.
       ctx.lineWidth = 1;
       ctx.strokeStyle = inkColor;
@@ -225,10 +259,11 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
         const a = stars[i - 1];
         const b = stars[i];
         if (a.ring !== b.ring || b.idx !== a.idx + 1) continue;
-        const [x1, y1] = project(a.lng, a.lat);
-        const [x2, y2] = project(b.lng, b.lat);
+        const [x1, y1, v1] = project(a.lng, a.lat);
+        const [x2, y2, v2] = project(b.lng, b.lat);
+        if (!v1 || !v2) continue;
         if ((x1 < -40 && x2 < -40) || (x1 > w + 40 && x2 > w + 40)) continue;
-        if (Math.hypot(x2 - x1, y2 - y1) > pScale * 17) continue;
+        if (Math.hypot(x2 - x1, y2 - y1) > (globe ? globe.r * 0.3 : pScale * 17)) continue;
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
       }
@@ -241,7 +276,7 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
       const breath = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.45);
       const ripplePeriod = 6.5; // seconds from centre to the far coast
       const rippleR = reduced ? -1 : ((t % ripplePeriod) / ripplePeriod) * 1.15; // 0..1.15 of the half-diagonal
-      const half = Math.hypot(w, h) / 2;
+      const half = globe ? globe.r * 1.15 : Math.hypot(w, h) / 2;
       const pulseAt = (x: number, y: number): number => {
         if (rippleR < 0) return 0;
         const d = Math.hypot(x - pCx, y - pCy) / half;
@@ -255,7 +290,8 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
         if (mobile && !s.bright && i % 3 !== 0) continue;
-        const [x, y] = project(s.lng, s.lat);
+        const [x, y, vis] = project(s.lng, s.lat);
+        if (!vis) continue;
         if (x < -10 || x > w + 10 || y < -10 || y > h + 10) continue;
         const tw = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.9 + s.phase);
         const pulse = pulseAt(x, y);
@@ -290,7 +326,8 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
       const pinSz = (mobile ? 0.85 : 1) * sz;
       for (let i = 0; i < pinList.length; i++) {
         const p = pinList[i];
-        const [x, y] = project(p.lng, p.lat);
+        const [x, y, vis] = project(p.lng, p.lat);
+        if (!vis) continue;
         if (x < -12 || x > w + 12 || y < -16 || y > h + 12) continue;
         const phase = ((p.lng * 1301 + p.lat * 7919) % 6.28318 + 6.28318) % 6.28318;
         // a sharp flick: mostly dim, then a quick bright flash

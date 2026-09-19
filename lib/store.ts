@@ -20,6 +20,7 @@ import type {
 import type { ThemeId } from "./themes";
 import { THEMES } from "./themes";
 import type { OverlayId } from "./overlays";
+import type { WorldListId } from "./lists/schema";
 import {
   CURRENT_USER_ID,
   friendships as seedFriendships,
@@ -134,6 +135,16 @@ interface WaypointState {
   setShowStadiums: (v: boolean) => void;
   selectedLandmarkId: string | null;
   selectLandmark: (id: string | null) => void;
+  /** World lists (beaches, hikes…) switched on in the Layers card. */
+  activeLists: WorldListId[];
+  toggleList: (id: WorldListId) => void;
+  clearLists: () => void;
+  /** A tapped list place → its card. */
+  selectedListPlaceId: string | null;
+  selectListPlace: (id: string | null) => void;
+  /** List places you saved; kept on this device (localStorage), shown with Saved. */
+  savedListPlaceIds: Set<string>;
+  toggleSavedListPlace: (id: string) => void;
   /** A tapped overlay feature (airport / station / stadium) → info card. */
   selectedOverlay: {
     kind: OverlayId;
@@ -628,11 +639,36 @@ export const useStore = create<WaypointState>((set, get) => ({
   showStadiums: false,
   setShowStadiums: (v) => set({ showStadiums: v }),
   selectedLandmarkId: null,
-  selectLandmark: (id) => set({ selectedLandmarkId: id, selectedOverlay: null, searchedPlace: null }),
+  selectLandmark: (id) => set({ selectedLandmarkId: id, selectedOverlay: null, searchedPlace: null, selectedListPlaceId: null }),
+  activeLists: [],
+  toggleList: (id) =>
+    set((s) => ({ activeLists: s.activeLists.includes(id) ? s.activeLists.filter((x) => x !== id) : [...s.activeLists, id], selectedListPlaceId: null })),
+  clearLists: () => set({ activeLists: [], selectedListPlaceId: null }),
+  selectedListPlaceId: null,
+  selectListPlace: (id) => set({ selectedListPlaceId: id, selectedLandmarkId: null, selectedOverlay: null, selectedPinId: null, searchedPlace: null }),
+  savedListPlaceIds: (() => {
+    try {
+      const raw = typeof window !== "undefined" ? window.localStorage.getItem("wp-saved-lists") : null;
+      return new Set<string>(raw ? (JSON.parse(raw) as string[]) : []);
+    } catch {
+      return new Set<string>();
+    }
+  })(),
+  toggleSavedListPlace: (id) =>
+    set((s) => {
+      const next = new Set(s.savedListPlaceIds);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      try {
+        window.localStorage.setItem("wp-saved-lists", JSON.stringify([...next]));
+      } catch {
+        /* private mode */
+      }
+      return { savedListPlaceIds: next };
+    }),
   selectedOverlay: null,
-  selectOverlay: (v) => set({ selectedOverlay: v, selectedLandmarkId: null, selectedPinId: null, searchedPlace: null }),
+  selectOverlay: (v) => set({ selectedOverlay: v, selectedLandmarkId: null, selectedPinId: null, searchedPlace: null, selectedListPlaceId: null }),
   searchedPlace: null,
-  setSearchedPlace: (v) => set({ searchedPlace: v, selectedPinId: null, selectedLandmarkId: null, selectedOverlay: null }),
+  setSearchedPlace: (v) => set({ searchedPlace: v, selectedPinId: null, selectedLandmarkId: null, selectedOverlay: null, selectedListPlaceId: null }),
 
   theme: "daylight",
   setTheme: (t) => {
@@ -1066,7 +1102,7 @@ export const useStore = create<WaypointState>((set, get) => ({
   },
 
   selectedPinId: null,
-  selectPin: (id) => set({ selectedPinId: id, addDraft: null, selectedOverlay: null, searchedPlace: null }),
+  selectPin: (id) => set({ selectedPinId: id, addDraft: null, selectedOverlay: null, searchedPlace: null, selectedListPlaceId: null }),
 
   addDraft: null,
   startAddPin: (d) => set({ addDraft: d, selectedPinId: null }),

@@ -144,7 +144,7 @@ export default function ProfileView({ handle }: { handle: string }) {
 
       {/* Phones: the hero starts lower so the whole constellation band — and
           your pins on it — sits in clear sky above the card. */}
-      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-64 sm:px-6 sm:pt-24">
+      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-[21.5rem] sm:px-6 sm:pt-24">
         {/* Identity card — frosted glass floating over the constellation. */}
         <div className="relative rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:px-8">
         <div className="flex flex-col items-center text-center">

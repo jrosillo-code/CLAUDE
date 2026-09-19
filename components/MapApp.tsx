@@ -18,6 +18,7 @@ import TripGuidePanel from "./TripGuidePanel";
 import TripDraftBar from "./TripDraftBar";
 import TopSpotsPanel from "./TopSpotsPanel";
 import LandmarkCard from "./LandmarkCard";
+import ListPlaceCard from "./ListPlaceCard";
 import OverlayCard from "./OverlayCard";
 import CrossingsPanel from "./CrossingsPanel";
 import SearchPlaceCard from "./SearchPlaceCard";
@@ -272,6 +273,7 @@ export default function MapApp() {
       )}
 
       {mapMode === "pins" && !selectedPinId && <LandmarkCard />}
+      {mapMode === "pins" && !selectedPinId && <ListPlaceCard />}
       {mapMode === "pins" && !selectedPinId && <OverlayCard />}
       {mapMode === "pins" && !selectedPinId && <SearchPlaceCard />}
       {selectedPinId && <PinSheet />}

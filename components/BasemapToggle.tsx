@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { THEMES, THEME_ORDER } from "@/lib/themes";
 import { BriefIcon } from "./BriefIcon";
+import { LIST_IDS, LIST_META, WORLD_LISTS } from "@/lib/lists";
 
 // Bottom-left map controls: ONE Layers button on every screen size, opening a
 // single glass card — Map/Satellite, 3D, Landmarks, Saved, themes, and the
@@ -34,7 +35,12 @@ export default function BasemapToggle() {
   const setShowStadiums = useStore((s) => s.setShowStadiums);
   const showWishlist = useStore((s) => s.showWishlist);
   const setShowWishlist = useStore((s) => s.setShowWishlist);
-  const savedCount = useStore((s) => s.savedPinIds.size);
+  const savedCount = useStore((s) => s.savedPinIds.size + s.savedListPlaceIds.size);
+  const activeLists = useStore((s) => s.activeLists);
+  const toggleList = useStore((s) => s.toggleList);
+  const clearLists = useStore((s) => s.clearLists);
+  const [listsOpen, setListsOpen] = useState(activeLists.length > 0);
+  const availableLists = LIST_IDS.filter((id) => WORLD_LISTS.some((l) => l.id === id && l.places.length > 0));
   const [open, setOpen] = useState(false);
   const extrasCount = [showLandmarks, showAirports, showStations, showStadiums].filter(Boolean).length;
   const [extrasOpen, setExtrasOpen] = useState(extrasCount > 0);
@@ -115,6 +121,61 @@ export default function BasemapToggle() {
                   setShowScout(on);
                 }}
               />
+
+              {/* World lists — the best beaches, hikes, breaks… from public
+                  rankings, so a brand-new map has somewhere to go. Folded,
+                  with a badge for how many are on. */}
+              {availableLists.length > 0 && (
+                <>
+                  <button
+                    onClick={() => setListsOpen((o) => !o)}
+                    className="flex w-full items-center gap-2.5 rounded-xl px-2 py-2 text-sm hover:bg-paper-2"
+                    data-testid="lists-fold"
+                  >
+                    <span className={`grid h-7 w-7 place-items-center rounded-full ${activeLists.length ? "bg-ink text-paper" : "bg-paper-2 text-ink-2"}`}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h13" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" /><circle cx="19" cy="17.5" r="2.2" stroke="currentColor" strokeWidth="1.7" /></svg>
+                    </span>
+                    <span className={listsOpen || activeLists.length ? "text-ink" : "text-ink-2"}>World lists</span>
+                    {activeLists.length > 0 && (
+                      <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-paper">{activeLists.length}</span>
+                    )}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className={`ml-auto text-ink-3 transition-transform ${listsOpen ? "rotate-180" : ""}`}>
+                      <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </button>
+                  {listsOpen && (
+                    <div className="ml-3.5 border-l border-line pl-2">
+                      <div className="flex flex-wrap gap-1.5 px-1 py-1.5">
+                        {availableLists.map((id) => {
+                          const m = LIST_META[id];
+                          const on = activeLists.includes(id);
+                          return (
+                            <button
+                              key={id}
+                              onClick={() => toggleList(id)}
+                              aria-pressed={on}
+                              data-testid={`list-chip-${id}`}
+                              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors ${on ? "text-paper" : "bg-paper-2 text-ink-2 hover:bg-line"}`}
+                              style={on ? { background: m.color } : undefined}
+                            >
+                              <span aria-hidden>{m.glyph}</span>
+                              {m.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <p className="px-1 pb-1 text-[10px] leading-snug text-ink-3">
+                        Public rankings, not friends&apos; tips.
+                        {activeLists.length > 0 && (
+                          <>
+                            {" "}<button onClick={clearLists} className="text-accent underline-offset-2 hover:underline">Clear</button>
+                          </>
+                        )}
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
 
               {/* Extras — the reference overlays, folded away so the card stays
                   tidy; the badge shows how many are on. */}

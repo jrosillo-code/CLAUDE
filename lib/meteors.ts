@@ -18,11 +18,19 @@ export interface Meteor {
   glow: number;
 }
 
+/** A disc to keep meteors out of: the globe's silhouette on the map, where
+ *  the space canvas is masked away and a streak would fly unseen. */
+export interface Avoid {
+  cx: number;
+  cy: number;
+  r: number;
+}
+
 export interface MeteorField {
   /** Advance and draw. Returns true when something was drawn. */
-  draw: (ctx: CanvasRenderingContext2D, w: number, h: number, nowMs: number) => boolean;
+  draw: (ctx: CanvasRenderingContext2D, w: number, h: number, nowMs: number, avoid?: Avoid | null) => boolean;
   /** Force one now (used by tests and screenshots). */
-  spawn: (w: number, h: number, nowMs: number) => void;
+  spawn: (w: number, h: number, nowMs: number, avoid?: Avoid | null) => void;
   count: () => number;
 }
 
@@ -37,37 +45,57 @@ export interface MeteorOptions {
 
 export function createMeteorField(opts: MeteorOptions = {}): MeteorField {
   const rnd = opts.rnd ?? Math.random;
-  const minGap = (opts.minGapS ?? 2.5) * 1000;
-  const maxGap = (opts.maxGapS ?? 7) * 1000;
+  const minGap = (opts.minGapS ?? 1.6) * 1000;
+  const maxGap = (opts.maxGapS ?? 4.5) * 1000;
   const color = opts.color ?? "rgba(226, 236, 255, 1)";
   const rgb = color.match(/\d+\s*,\s*\d+\s*,\s*\d+/)?.[0] ?? "226, 236, 255";
   let meteors: Meteor[] = [];
   let nextAt = -1;
 
-  const spawn = (w: number, h: number, nowMs: number) => {
-    // Start in the top two-thirds, fly down-and-across at 15–40° below the
-    // horizontal, left or right, fast enough to cross a phone in a second.
+  const spawn = (w: number, h: number, nowMs: number, avoid?: Avoid | null) => {
+    // Start in the upper part of the sky, outside the globe when there is
+    // one, and fly down-and-across at 15–40° below the horizontal — fast
+    // enough to cross a phone in about a second.
     const angle = ((15 + rnd() * 25) * Math.PI) / 180;
     const dir = rnd() < 0.5 ? 1 : -1;
-    const speed = 520 + rnd() * 420; // px/s
+    const speed = 420 + rnd() * 380; // px/s
+    let x = 0, y = 0;
+    if (avoid) {
+      // Sample in the ring of sky around the planet — mostly above it — so
+      // the streak starts where the space canvas is actually visible.
+      const margin = avoid.r * 1.12 + 12;
+      const maxD = Math.max(margin + 40, Math.hypot(Math.max(avoid.cx, w - avoid.cx), Math.max(avoid.cy, h - avoid.cy)));
+      let placed = false;
+      for (let tries = 0; tries < 24; tries++) {
+        const theta = Math.PI + rnd() * Math.PI * 1.3 - Math.PI * 0.15; // upper half, spilling a little past the equator
+        const d = margin + rnd() * (maxD - margin);
+        x = avoid.cx + Math.cos(theta) * d;
+        y = avoid.cy + Math.sin(theta) * d;
+        if (x >= 0 && x <= w && y >= 0 && y <= h) { placed = true; break; }
+      }
+      if (!placed) return; // the sky is all planet right now — skip this one
+    } else {
+      x = dir > 0 ? rnd() * w * 0.6 : w * 0.4 + rnd() * w * 0.6;
+      y = rnd() * h * 0.6;
+    }
     meteors.push({
-      x: dir > 0 ? rnd() * w * 0.6 : w * 0.4 + rnd() * w * 0.6,
-      y: rnd() * h * 0.55,
+      x,
+      y,
       vx: Math.cos(angle) * speed * dir,
       vy: Math.sin(angle) * speed,
       bornMs: nowMs,
-      lifeMs: 650 + rnd() * 550,
-      tail: 80 + rnd() * 120,
-      glow: rnd() < 0.25 ? 1 : 0.6 + rnd() * 0.3,
+      lifeMs: 900 + rnd() * 600,
+      tail: 110 + rnd() * 130,
+      glow: rnd() < 0.3 ? 1 : 0.65 + rnd() * 0.3,
     });
   };
 
-  const draw = (ctx: CanvasRenderingContext2D, w: number, h: number, nowMs: number): boolean => {
+  const draw = (ctx: CanvasRenderingContext2D, w: number, h: number, nowMs: number, avoid?: Avoid | null): boolean => {
     if (nextAt < 0) nextAt = nowMs + minGap + rnd() * (maxGap - minGap);
     if (nowMs >= nextAt) {
-      spawn(w, h, nowMs);
+      spawn(w, h, nowMs, avoid);
       // now and then two come together
-      if (rnd() < 0.18) spawn(w, h, nowMs + 120);
+      if (rnd() < 0.18) spawn(w, h, nowMs + 120, avoid);
       nextAt = nowMs + minGap + rnd() * (maxGap - minGap);
     }
     meteors = meteors.filter((m) => nowMs - m.bornMs < m.lifeMs && nowMs >= m.bornMs);
@@ -90,7 +118,7 @@ export function createMeteorField(opts: MeteorOptions = {}): MeteorField {
       grad.addColorStop(0.7, `rgba(${rgb}, ${(0.55 * alpha).toFixed(3)})`);
       grad.addColorStop(1, `rgba(${rgb}, ${alpha.toFixed(3)})`);
       ctx.strokeStyle = grad;
-      ctx.lineWidth = 1.2 + m.glow * 0.8;
+      ctx.lineWidth = 1.4 + m.glow * 1.1;
       ctx.beginPath();
       ctx.moveTo(tx, ty);
       ctx.lineTo(hx, hy);

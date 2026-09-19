@@ -16,6 +16,7 @@ import {
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
+import { LIST_META, allListPlaces, listPlaceById } from "@/lib/lists";
 import { ICON_MINZOOM, OVERLAYS, type OverlayId } from "@/lib/overlays";
 import { visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
@@ -47,6 +48,8 @@ const DEM_SOURCE = "waypoint-dem";
 const TRIPS_SOURCE = "waypoint-trips";
 const LM_SOURCE = "waypoint-landmarks";
 const LM_LAYER = "waypoint-landmarks-lyr";
+const WL_SOURCE = "waypoint-lists";
+const WL_LAYER = "waypoint-lists-lyr";
 
 // The landmark layer is GPU-rendered (one symbol layer, built-in collision
 // decluttering) instead of 563 DOM markers. Icons are canvas-drawn badges.
@@ -175,6 +178,23 @@ function overlayIconImage(kind: "plane" | "train" | "stadium", color: string): I
   return ctx.getImageData(0, 0, s, s);
 }
 
+// Every world-list place in one source; the layer's filter picks the lists
+// that are switched on (plus anything saved, when Saved is on).
+let listsFCCache: GeoJSON.FeatureCollection | null = null;
+function listsFC(): GeoJSON.FeatureCollection {
+  if (!listsFCCache) {
+    listsFCCache = {
+      type: "FeatureCollection",
+      features: allListPlaces().map((p) => ({
+        type: "Feature",
+        properties: { id: p.id, list: p.list, name: p.name },
+        geometry: { type: "Point", coordinates: [p.lng, p.lat] },
+      })),
+    };
+  }
+  return listsFCCache;
+}
+
 const landmarksFC: GeoJSON.FeatureCollection = {
   type: "FeatureCollection",
   features: LANDMARKS.map((lm) => ({
@@ -287,6 +307,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
   modeRef.current = mapMode;
   const landmarksRef = useRef({ show: showLandmarks, selected: selectedLandmarkId });
   landmarksRef.current = { show: showLandmarks, selected: selectedLandmarkId };
+  const activeLists = useStore((s) => s.activeLists);
+  const selectedListPlaceId = useStore((s) => s.selectedListPlaceId);
+  const savedListPlaceIds = useStore((s) => s.savedListPlaceIds);
+  const selectListPlace = useStore((s) => s.selectListPlace);
+  const listsRef = useRef({ active: activeLists, selected: selectedListPlaceId, saved: savedListPlaceIds, showSaved: showWishlist });
+  listsRef.current = { active: activeLists, selected: selectedListPlaceId, saved: savedListPlaceIds, showSaved: showWishlist };
+  const selectListPlaceRef = useRef(selectListPlace);
+  selectListPlaceRef.current = selectListPlace;
   const selectLandmarkRef = useRef(selectLandmark);
   selectLandmarkRef.current = selectLandmark;
   const showAirports = useStore((s) => s.showAirports);
@@ -371,7 +399,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
-      drewLast = field.draw(ctx, w, h, ms);
+      // keep the streaks in the sky that is actually visible around the globe
+      const sil = lastSilRef.current;
+      drewLast = field.draw(ctx, w, h, ms, sil ? { cx: sil.cx, cy: sil.cy, r: sil.r } : null);
     };
     meteorRafRef.current = requestAnimationFrame(tick);
   }
@@ -597,6 +627,72 @@ export default function MapCanvas({ placing, onPick }: Props) {
       updateLandmarksLayer(map);
     } catch {
       /* style mid-swap */
+    }
+  }
+
+  // World lists as one symbol layer, filtered to the active lists (and to
+  // saved places when Saved is on). Re-added after every style swap.
+  function syncListsLayer(map: maplibregl.Map) {
+    try {
+      for (const [id, meta] of Object.entries(LIST_META)) {
+        const name = `wl-${id}`;
+        if (!map.hasImage(name)) map.addImage(name, landmarkIconImage(meta.glyph, meta.color), { pixelRatio: 2 });
+      }
+      if (!map.getSource(WL_SOURCE)) map.addSource(WL_SOURCE, { type: "geojson", data: listsFC() });
+      if (!map.getLayer(WL_LAYER)) {
+        map.addLayer({
+          id: WL_LAYER,
+          type: "symbol",
+          source: WL_SOURCE,
+          minzoom: 1.05,
+          layout: {
+            "icon-image": ["concat", "wl-", ["get", "list"]],
+            "icon-size": 0.9,
+            "icon-allow-overlap": false,
+            "icon-padding": 2,
+            "text-field": ["step", ["zoom"], "", 6, ["get", "name"]],
+            "text-font": ["Noto Sans Regular"],
+            "text-size": 11,
+            "text-offset": [0, 1.4],
+            "text-anchor": "top",
+            "text-optional": true,
+          },
+          paint: { "text-color": themeRef.current.labelColor, "text-halo-color": themeRef.current.labelHalo, "text-halo-width": 1.2 },
+        });
+        map.on("click", WL_LAYER, (e) => {
+          const f = e.features?.[0];
+          const id = f?.properties?.id as string | undefined;
+          if (!id || placingRef.current) return;
+          selectListPlaceRef.current(id);
+          const p = listPlaceById(id);
+          if (p) map.flyTo({ center: [p.lng, p.lat], zoom: Math.max(map.getZoom(), 6), duration: 700 });
+        });
+        map.on("mouseenter", WL_LAYER, () => (map.getCanvas().style.cursor = "pointer"));
+        map.on("mouseleave", WL_LAYER, () => (map.getCanvas().style.cursor = ""));
+      }
+      updateListsLayer(map);
+    } catch {
+      /* style mid-swap */
+    }
+  }
+
+  function updateListsLayer(map: maplibregl.Map) {
+    try {
+      if (!map.getLayer(WL_LAYER)) return;
+      const { active, selected, saved, showSaved } = listsRef.current;
+      const on = (active.length > 0 || (showSaved && saved.size > 0)) && modeRef.current === "pins";
+      map.setLayoutProperty(WL_LAYER, "visibility", on ? "visible" : "none");
+      if (!on) return;
+      map.setFilter(WL_LAYER, [
+        "any",
+        ["in", ["get", "list"], ["literal", active]],
+        ["in", ["get", "id"], ["literal", showSaved ? [...saved] : []]],
+      ]);
+      map.setLayoutProperty(WL_LAYER, "icon-size", ["case", ["==", ["get", "id"], selected ?? ""], 1.25, 0.9]);
+      map.setPaintProperty(WL_LAYER, "text-color", themeRef.current.labelColor);
+      map.setPaintProperty(WL_LAYER, "text-halo-color", themeRef.current.labelHalo);
+    } catch {
+      /* layer not ready */
     }
   }
 
@@ -944,6 +1040,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       applyThemeTint(map);
       syncTripThreads(map);
       syncLandmarksLayer(map);
+      syncListsLayer(map);
       syncOverlays(map);
       if (readyRef.current) return;
       readyRef.current = true;
@@ -1173,6 +1270,13 @@ export default function MapCanvas({ placing, onPick }: Props) {
     if (map && readyRef.current) updateLandmarksLayer(map);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showLandmarks, selectedLandmarkId, mapMode]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !readyRef.current) return;
+    updateListsLayer(map);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeLists, selectedListPlaceId, savedListPlaceIds, showWishlist, mapMode, themeId]);
 
   useEffect(() => {
     const map = mapRef.current;
