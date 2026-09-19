@@ -1,0 +1,4032 @@
+{
+  "id": "beaches",
+  "label": "Beaches",
+  "blurb": "The world's most-ranked beaches, from Lonely Planet to Condé Nast.",
+  "sources": [
+    "Lonely Planet",
+    "Condé Nast Traveler",
+    "Travel + Leisure",
+    "TripAdvisor Travellers' Choice",
+    "Beach Atlas Golden Beach Awards 2024–2026"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "beaches-grace-bay",
+      "name": "Grace Bay",
+      "lat": 21.7965,
+      "lng": -72.2438,
+      "countryCode": "TC",
+      "region": "Providenciales",
+      "why": "Three miles of powder-fine sand over a shallow turquoise shelf, calm enough for kids and repeatedly voted the world's top beach.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-eagle-beach",
+      "name": "Eagle Beach",
+      "lat": 12.5583,
+      "lng": -70.0483,
+      "countryCode": "AW",
+      "region": "Palm Beach area, Aruba",
+      "why": "Wide white sand with the two lone fofoti trees everyone photographs; trade winds keep it cooler than the Caribbean norm.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-seven-mile-beach-grand-cayman",
+      "name": "Seven Mile Beach, Grand Cayman",
+      "lat": 19.3364,
+      "lng": -81.3823,
+      "countryCode": "KY",
+      "region": "George Town, Grand Cayman",
+      "why": "A long developed strip of soft sand and calm, clear water right along the main hotel row.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-varadero-beach",
+      "name": "Varadero Beach",
+      "lat": 23.138,
+      "lng": -81.279,
+      "countryCode": "CU",
+      "region": "Varadero",
+      "why": "A 20 km sand spit shared by resorts, still one of the most consistently turquoise stretches in the Caribbean.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "party"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-trunk-bay",
+      "name": "Trunk Bay",
+      "lat": 18.3572,
+      "lng": -64.7639,
+      "countryCode": "VI",
+      "region": "Virgin Islands National Park, St John",
+      "why": "An underwater snorkel trail rings the bay, though cruise-day crowds can overwhelm the small beach.",
+      "bestMonths": [],
+      "tags": [
+        "snorkel",
+        "white-sand",
+        "family"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-playa-norte",
+      "name": "Playa Norte",
+      "lat": 21.2597,
+      "lng": -86.7317,
+      "countryCode": "MX",
+      "region": "Isla Mujeres, Quintana Roo",
+      "why": "Shallow, current-free water off a small ferry-town island makes this one of the calmest swims in the Mexican Caribbean.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-playa-paraiso",
+      "name": "Playa Paraiso",
+      "lat": 20.228,
+      "lng": -87.43,
+      "countryCode": "MX",
+      "region": "Tulum, Quintana Roo",
+      "why": "Backed by a Maya clifftop ruin, the water stays a startling turquoise even a few strokes out.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "cliffs",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-playa-flamenco",
+      "name": "Playa Flamenco",
+      "lat": 18.3181,
+      "lng": -65.3086,
+      "countryCode": "PR",
+      "region": "Culebra",
+      "why": "A mile of white sand shaped like a horseshoe, kept undeveloped since the US Navy left the island.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "remote",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-shoal-bay-east",
+      "name": "Shoal Bay East",
+      "lat": 18.245,
+      "lng": -63.018,
+      "countryCode": "AI",
+      "region": "Anguilla",
+      "why": "A reef just offshore keeps the surf gentle over sand that stays powder-white even at midday.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "snorkel",
+        "remote"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-pink-sands-beach",
+      "name": "Pink Sands Beach",
+      "lat": 25.501,
+      "lng": -76.635,
+      "countryCode": "BS",
+      "region": "Harbour Island, Eleuthera",
+      "why": "Crushed coral gives the three-mile beach a genuine pink tint, most visible at the north end near sunset.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "remote",
+        "family"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-horseshoe-bay",
+      "name": "Horseshoe Bay",
+      "lat": 32.2477,
+      "lng": -64.8378,
+      "countryCode": "BM",
+      "region": "Southampton Parish, Bermuda",
+      "why": "Pink-tinted sand between coral outcrops, sheltered enough for swimming even when the Atlantic is up.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "cliffs",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-seven-mile-beach-negril",
+      "name": "Seven Mile Beach, Negril",
+      "lat": 18.2765,
+      "lng": -78.3572,
+      "countryCode": "JM",
+      "region": "Negril",
+      "why": "An uninterrupted arc of white sand lined with beach bars, warmer and calmer than Jamaica's north coast.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "party",
+        "family"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-bavaro-beach",
+      "name": "Bavaro Beach",
+      "lat": 18.6606,
+      "lng": -68.4295,
+      "countryCode": "DO",
+      "region": "Punta Cana",
+      "why": "Barrier reef keeps the surf down along this long resort coastline, one of the busiest beaches in the Caribbean.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "snorkel"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-playa-rincon",
+      "name": "Playa Rincon",
+      "lat": 19.249,
+      "lng": -69.367,
+      "countryCode": "DO",
+      "region": "Samaná Peninsula",
+      "why": "A three-kilometre wild beach backed by coconut palms and a mountain, reachable only by boat or dirt track.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-manuel-antonio-beach",
+      "name": "Manuel Antonio Beach",
+      "lat": 9.3925,
+      "lng": -84.1425,
+      "countryCode": "CR",
+      "region": "Manuel Antonio National Park",
+      "why": "Rainforest runs down to the sand inside a national park small enough that capuchin monkeys turn up on the beach.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "snorkel"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-red-frog-beach",
+      "name": "Red Frog Beach",
+      "lat": 9.327,
+      "lng": -82.193,
+      "countryCode": "PA",
+      "region": "Bastimentos, Bocas del Toro",
+      "why": "A jungle boat ride gets you to this surf-exposed beach named for the tiny red poison-dart frogs in the woods behind it.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-grand-anse-beach-grenada",
+      "name": "Grand Anse Beach, Grenada",
+      "lat": 12.0167,
+      "lng": -61.7667,
+      "countryCode": "GD",
+      "region": "St George's, Grenada",
+      "why": "Two miles of soft sand a short ride from the capital, gently shelving and rarely crowded for its size.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-anse-chastanet",
+      "name": "Anse Chastanet",
+      "lat": 13.857,
+      "lng": -61.074,
+      "countryCode": "LC",
+      "region": "Soufrière, St Lucia",
+      "why": "Volcanic dark-and-gold sand under the Pitons, with a reef close enough to snorkel straight from shore.",
+      "bestMonths": [],
+      "tags": [
+        "black-sand",
+        "snorkel",
+        "cliffs"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-playa-blanca-bar",
+      "name": "Playa Blanca, Barú",
+      "lat": 10.169,
+      "lng": -75.612,
+      "countryCode": "CO",
+      "region": "Isla Barú, near Cartagena",
+      "why": "The whitest sand near Cartagena, a short boat ride from the colonial city and busy with day-trippers by late morning.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "party",
+        "family"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-cabo-san-juan",
+      "name": "Cabo San Juan",
+      "lat": 11.3283,
+      "lng": -73.9539,
+      "countryCode": "CO",
+      "region": "Parque Tayrona, Magdalena",
+      "why": "A rock outcrop splits two coves inside a jungle-and-desert national park with no road access.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "cliffs",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-m-ncora-beach",
+      "name": "Máncora Beach",
+      "lat": -4.1046,
+      "lng": -81.0475,
+      "countryCode": "PE",
+      "region": "Máncora, Piura",
+      "why": "Peru's warmest coastal water and a reliable left-hand point break draw surfers and beach-bar crowds alike.",
+      "bestMonths": [],
+      "tags": [
+        "party",
+        "swim",
+        "dunes"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-tortuga-bay",
+      "name": "Tortuga Bay",
+      "lat": -0.7621,
+      "lng": -90.3392,
+      "countryCode": "EC",
+      "region": "Santa Cruz, Galápagos",
+      "why": "A 45-minute walk from town reaches this surf beach and, past the point, a calmer lagoon where marine iguanas bask.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-playa-el-tunco",
+      "name": "Playa El Tunco",
+      "lat": 13.4931,
+      "lng": -89.3778,
+      "countryCode": "SV",
+      "region": "La Libertad, El Salvador",
+      "why": "A black volcanic-sand beach around a distinctive rock islet, the hub of El Salvador's surf scene.",
+      "bestMonths": [],
+      "tags": [
+        "black-sand",
+        "party",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-playa-santa-teresa",
+      "name": "Playa Santa Teresa",
+      "lat": 9.6425,
+      "lng": -85.1656,
+      "countryCode": "CR",
+      "region": "Nicoya Peninsula, Costa Rica",
+      "why": "A laid-back surf-town beach on a peninsula reached mostly by unpaved roads, known for its sunsets.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "remote",
+        "swim",
+        "party"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-playa-conchal",
+      "name": "Playa Conchal",
+      "lat": 10.4058,
+      "lng": -85.7817,
+      "countryCode": "CR",
+      "region": "Guanacaste, Costa Rica",
+      "why": "Crushed seashells instead of sand give this beach its pale, crunchy texture underfoot.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-bah-a-de-las-guilas",
+      "name": "Bahía de las Águilas",
+      "lat": 17.7833,
+      "lng": -71.65,
+      "countryCode": "DO",
+      "region": "Jaragua National Park, Dominican Republic",
+      "why": "A remote seven-kilometre beach inside a national park, reachable only by boat or a rough dirt track.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "dunes"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-orient-bay-beach",
+      "name": "Orient Bay Beach",
+      "lat": 18.1,
+      "lng": -63.0167,
+      "countryCode": "MF",
+      "region": "Saint Martin (French side)",
+      "why": "A long resort beach on the French side of a divided island, split between family and clothing-optional sections.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "white-sand",
+        "party",
+        "family"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-big-major-cay-pig-beach",
+      "name": "Big Major Cay (Pig Beach)",
+      "lat": 24.1128,
+      "lng": -76.4522,
+      "countryCode": "BS",
+      "region": "Exuma Cays, Bahamas",
+      "why": "Swimming pigs wade out to greet boats on this uninhabited cay, now one of the most photographed beaches in the Bahamas.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-playa-kenepa-grandi",
+      "name": "Playa Kenepa Grandi",
+      "lat": 12.3389,
+      "lng": -69.1656,
+      "countryCode": "CW",
+      "region": "Curaçao",
+      "why": "A cliff-backed cove on Curaçao's rugged west coast, calmer than the open Caribbean side of the island.",
+      "bestMonths": [],
+      "tags": [
+        "cliffs",
+        "snorkel",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-sorobon-beach",
+      "name": "Sorobon Beach",
+      "lat": 12.1,
+      "lng": -68.2167,
+      "countryCode": "BQ",
+      "region": "Lac Bay, Bonaire",
+      "why": "A shallow, reef-protected lagoon makes this the Caribbean's most reliable flat-water windsurf beach.",
+      "bestMonths": [],
+      "tags": [
+        "lagoon",
+        "family",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-maracas-bay",
+      "name": "Maracas Bay",
+      "lat": 10.75,
+      "lng": -61.4167,
+      "countryCode": "TT",
+      "region": "North Coast, Trinidad",
+      "why": "Trinidad's most popular beach, a curved bay backed by rainforest hills and famous for its bake-and-shark stalls.",
+      "bestMonths": [],
+      "tags": [
+        "family",
+        "swim",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-copacabana-beach",
+      "name": "Copacabana Beach",
+      "lat": -22.9711,
+      "lng": -43.1822,
+      "countryCode": "BR",
+      "region": "Rio de Janeiro",
+      "why": "Four kilometres of promenade and sand backed by the city itself, packed on weekends with football games and vendors.",
+      "bestMonths": [],
+      "tags": [
+        "party",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-ipanema-beach",
+      "name": "Ipanema Beach",
+      "lat": -22.9868,
+      "lng": -43.2075,
+      "countryCode": "BR",
+      "region": "Rio de Janeiro",
+      "why": "Framed by the Dois Irmãos peaks, split into numbered postos where different Rio social scenes each claim a stretch.",
+      "bestMonths": [],
+      "tags": [
+        "party",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-ba-a-do-sancho",
+      "name": "Baía do Sancho",
+      "lat": -3.8503,
+      "lng": -32.4344,
+      "countryCode": "BR",
+      "region": "Fernando de Noronha",
+      "why": "Reached by a ladder down a cliff crack, this reef-sheltered bay admits only a limited number of visitors a day.",
+      "bestMonths": [],
+      "tags": [
+        "cliffs",
+        "snorkel",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-praia-do-rosa",
+      "name": "Praia do Rosa",
+      "lat": -28.1167,
+      "lng": -48.6167,
+      "countryCode": "BR",
+      "region": "Imbituba, Santa Catarina",
+      "why": "A surf town beach where southern right whales calve just offshore between June and November.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "swim",
+        "remote",
+        "cliffs"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-praia-da-ferradura",
+      "name": "Praia da Ferradura",
+      "lat": -22.766,
+      "lng": -41.88,
+      "countryCode": "BR",
+      "region": "Búzios, Rio de Janeiro state",
+      "why": "A near-closed horseshoe bay keeps the water flat calm, a favourite for families and stand-up paddling.",
+      "bestMonths": [],
+      "tags": [
+        "family",
+        "swim",
+        "lagoon"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-playa-brava",
+      "name": "Playa Brava",
+      "lat": -34.97,
+      "lng": -54.943,
+      "countryCode": "UY",
+      "region": "Punta del Este",
+      "why": "The open-ocean side of the peninsula, rougher and less crowded than the bay beach a few blocks over.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "swim",
+        "party"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-cabo-polonio",
+      "name": "Cabo Polonio",
+      "lat": -34.4,
+      "lng": -53.7833,
+      "countryCode": "UY",
+      "region": "Rocha, Uruguay",
+      "why": "No grid power and no paved road; a 4x4 truck across the dunes is the only way in, past a sea lion colony.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "dunes",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-bah-a-inglesa",
+      "name": "Bahía Inglesa",
+      "lat": -27.1,
+      "lng": -70.85,
+      "countryCode": "CL",
+      "region": "Caldera, Atacama coast",
+      "why": "Turquoise water more Caribbean than Pacific, cooled by the Humboldt current despite the desert backdrop.",
+      "bestMonths": [
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-punta-sal",
+      "name": "Punta Sal",
+      "lat": -3.9833,
+      "lng": -80.8667,
+      "countryCode": "PE",
+      "region": "Tumbes, Peru",
+      "why": "Calm, warm water near the Ecuadorian border, quieter than Máncora and popular with Peruvian families.",
+      "bestMonths": [],
+      "tags": [
+        "family",
+        "swim",
+        "white-sand"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-waikiki-beach",
+      "name": "Waikiki Beach",
+      "lat": 21.2761,
+      "lng": -157.8278,
+      "countryCode": "US",
+      "region": "Honolulu, Oahu",
+      "why": "The most famous stretch of sand in the Pacific, backed wall-to-wall by hotels and almost always crowded.",
+      "bestMonths": [],
+      "tags": [
+        "family",
+        "party",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-lanikai-beach",
+      "name": "Lanikai Beach",
+      "lat": 21.3931,
+      "lng": -157.7147,
+      "countryCode": "US",
+      "region": "Kailua, Oahu",
+      "why": "Powder-soft sand facing two small offshore islets, with residential streets as the only public access.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-hanalei-bay",
+      "name": "Hanalei Bay",
+      "lat": 22.2036,
+      "lng": -159.5,
+      "countryCode": "US",
+      "region": "Kauai's North Shore",
+      "why": "A two-mile crescent under jagged green cliffs, calm in summer and a serious big-wave break in winter.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "cliffs",
+        "family"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-wailea-beach",
+      "name": "Wailea Beach",
+      "lat": 20.6866,
+      "lng": -156.4419,
+      "countryCode": "US",
+      "region": "Wailea, Maui",
+      "why": "Calm, resort-lined sand with some of Maui's best snorkeling right off the shore at either point.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "snorkel",
+        "family"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-papohaku-beach",
+      "name": "Papohaku Beach",
+      "lat": 21.1394,
+      "lng": -157.2703,
+      "countryCode": "US",
+      "region": "West Molokai",
+      "why": "Three miles of wide sand with almost no development and a shorebreak too rough for most swimming.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "dunes"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-papakolea-green-sand-beach",
+      "name": "Papakolea Green Sand Beach",
+      "lat": 18.9186,
+      "lng": -155.6531,
+      "countryCode": "US",
+      "region": "Ka'u District, Big Island",
+      "why": "Olivine crystals from a collapsed cinder cone give this remote beach its distinctive green tint.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "black-sand",
+        "cliffs"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-siesta-key-beach",
+      "name": "Siesta Key Beach",
+      "lat": 27.2633,
+      "lng": -82.5479,
+      "countryCode": "US",
+      "region": "Sarasota, Florida",
+      "why": "Quartz sand so fine it stays cool underfoot even at midday, on a wide Gulf Coast beach with a party pier nearby.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "party"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-south-beach",
+      "name": "South Beach",
+      "lat": 25.7826,
+      "lng": -80.1341,
+      "countryCode": "US",
+      "region": "Miami Beach, Florida",
+      "why": "Art Deco lifeguard towers line a wide beach that doubles as the city's most visible social scene.",
+      "bestMonths": [],
+      "tags": [
+        "party",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-cannon-beach",
+      "name": "Cannon Beach",
+      "lat": 45.8918,
+      "lng": -123.9615,
+      "countryCode": "US",
+      "region": "Cannon Beach, Oregon",
+      "why": "Cold Pacific water and the 235-foot Haystack Rock make this one for walking and tide pools, not swimming.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "remote",
+        "family"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-coronado-beach",
+      "name": "Coronado Beach",
+      "lat": 32.6825,
+      "lng": -117.1831,
+      "countryCode": "US",
+      "region": "San Diego, California",
+      "why": "Mica flecks in the sand catch the light, on a wide beach beside the historic Hotel del Coronado.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-el-matador-beach",
+      "name": "El Matador Beach",
+      "lat": 34.0378,
+      "lng": -118.8631,
+      "countryCode": "US",
+      "region": "Malibu, California",
+      "why": "Sea-stack rocks and a steep bluff staircase make this small Malibu cove better for photos than long swims.",
+      "bestMonths": [],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-ocracoke-cape-hatteras",
+      "name": "Ocracoke / Cape Hatteras",
+      "lat": 35.1132,
+      "lng": -75.9827,
+      "countryCode": "US",
+      "region": "Outer Banks, North Carolina",
+      "why": "Undeveloped barrier-island sand backed by dunes and a wild pony herd a short ferry ride from the mainland.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "remote",
+        "family"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-myrtle-beach",
+      "name": "Myrtle Beach",
+      "lat": 33.6891,
+      "lng": -78.8867,
+      "countryCode": "US",
+      "region": "Myrtle Beach, South Carolina",
+      "why": "60 miles of wide, flat sand built around boardwalks, mini-golf and family resorts on the Grand Strand.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "family",
+        "party",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-coast-guard-beach",
+      "name": "Coast Guard Beach",
+      "lat": 41.8437,
+      "lng": -69.9578,
+      "countryCode": "US",
+      "region": "Cape Cod National Seashore",
+      "why": "Wide Atlantic sand backed by dunes, cold water even in summer, and a grey seal colony often visible offshore.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "dunes",
+        "family",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-assateague-island",
+      "name": "Assateague Island",
+      "lat": 38.235,
+      "lng": -75.16,
+      "countryCode": "US",
+      "region": "Assateague Island, Maryland",
+      "why": "A barrier-island beach where feral horses wander onto the sand, undeveloped along its whole federal stretch.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "remote",
+        "family"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-chesterman-beach",
+      "name": "Chesterman Beach",
+      "lat": 49.118,
+      "lng": -125.908,
+      "countryCode": "CA",
+      "region": "Tofino, British Columbia",
+      "why": "A cold-water surf beach on temperate rainforest coast, tidal enough to walk out to Frank Island at low tide.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "remote",
+        "cliffs",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-cavendish-beach",
+      "name": "Cavendish Beach",
+      "lat": 46.4972,
+      "lng": -63.4342,
+      "countryCode": "CA",
+      "region": "Cavendish, PEI",
+      "why": "Red sandstone cliffs meet fine sand on the island's north shore, warm enough to swim by regional standards in summer.",
+      "bestMonths": [
+        7,
+        8
+      ],
+      "tags": [
+        "cliffs",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-wasaga-beach",
+      "name": "Wasaga Beach",
+      "lat": 44.5167,
+      "lng": -80.0167,
+      "countryCode": "CA",
+      "region": "Wasaga Beach, Ontario",
+      "why": "The world's longest freshwater beach on Georgian Bay, a summer-only inland-sea swim for Toronto day-trippers.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "family",
+        "dunes",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-playa-balandra",
+      "name": "Playa Balandra",
+      "lat": 24.3167,
+      "lng": -110.3167,
+      "countryCode": "MX",
+      "region": "La Paz, Baja California Sur",
+      "why": "A shallow, protected cove on the Sea of Cortés known for a wind-carved mushroom rock and near-zero waves.",
+      "bestMonths": [],
+      "tags": [
+        "lagoon",
+        "family",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-playa-zipolite",
+      "name": "Playa Zipolite",
+      "lat": 15.6667,
+      "lng": -96.5167,
+      "countryCode": "MX",
+      "region": "Zipolite, Oaxaca",
+      "why": "A strong shorebreak and undertow keep this bohemian beach for wading, not casual swimming.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "party",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-playa-delfines",
+      "name": "Playa Delfines",
+      "lat": 21.0631,
+      "lng": -86.7614,
+      "countryCode": "MX",
+      "region": "Cancún Hotel Zone",
+      "why": "One of the few free public beaches in Cancún's hotel strip, with a strong shorebreak and the city's photo sign.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-navagio-beach",
+      "name": "Navagio Beach",
+      "lat": 37.8599,
+      "lng": 20.6242,
+      "countryCode": "GR",
+      "region": "Zakynthos",
+      "why": "A rusted shipwreck sits on white sand under towering limestone cliffs, reachable only by boat.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "white-sand",
+        "remote"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-elafonissi-beach",
+      "name": "Elafonissi Beach",
+      "lat": 35.2706,
+      "lng": 23.5406,
+      "countryCode": "GR",
+      "region": "Chania, Crete",
+      "why": "Crushed shell gives parts of the sand a pink tint across a shallow lagoon that wading families cross at low tide.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "family",
+        "white-sand"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-balos-lagoon",
+      "name": "Balos Lagoon",
+      "lat": 35.5486,
+      "lng": 23.5931,
+      "countryCode": "GR",
+      "region": "Kissamos, Crete",
+      "why": "A shifting sandbar splits turquoise lagoon from open sea, reached by a rough dirt road or tour boat.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-myrtos-beach",
+      "name": "Myrtos Beach",
+      "lat": 38.3714,
+      "lng": 20.5253,
+      "countryCode": "GR",
+      "region": "Kefalonia",
+      "why": "White pebble and sand drop steeply into deep blue water below a switchback cliff road that frames every photo.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-sarakiniko-beach",
+      "name": "Sarakiniko Beach",
+      "lat": 36.7439,
+      "lng": 24.4519,
+      "countryCode": "GR",
+      "region": "Milos",
+      "why": "Wind-carved white volcanic rock looks lunar rather than tropical; there is barely any sand to speak of.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "swim",
+        "remote"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-voidokilia-beach",
+      "name": "Voidokilia Beach",
+      "lat": 36.9569,
+      "lng": 21.66,
+      "countryCode": "GR",
+      "region": "Messinia, Peloponnese",
+      "why": "A near-perfect sand crescent backed by dunes and a lagoon, overlooked by a Frankish castle on the headland.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "lagoon",
+        "family"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-egremni-beach",
+      "name": "Egremni Beach",
+      "lat": 38.5069,
+      "lng": 20.5814,
+      "countryCode": "GR",
+      "region": "Lefkada, Ionian Islands",
+      "why": "White cliffs drop 200 metres to a long sand beach rebuilt with steps after a 2015 earthquake landslide.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "white-sand",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-porto-katsiki",
+      "name": "Porto Katsiki",
+      "lat": 38.4964,
+      "lng": 20.5372,
+      "countryCode": "GR",
+      "region": "Lefkada, Ionian Islands",
+      "why": "White cliffs drop to a small beach reached by a steep staircase, one of the most photographed in the Ionian.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "white-sand",
+        "remote"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-playa-de-ses-illetes",
+      "name": "Playa de Ses Illetes",
+      "lat": 38.7328,
+      "lng": 1.4225,
+      "countryCode": "ES",
+      "region": "Formentera, Balearic Islands",
+      "why": "Caribbean-clear shallows over white sand, day-tripped hard from Ibiza in summer.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "party",
+        "family"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-cala-macarelleta",
+      "name": "Cala Macarelleta",
+      "lat": 39.9367,
+      "lng": 3.8564,
+      "countryCode": "ES",
+      "region": "Menorca",
+      "why": "A small pine-backed cove next to its larger sibling Macarella, reached by a coastal footpath, no road access.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-cala-comte",
+      "name": "Cala Comte",
+      "lat": 38.9481,
+      "lng": 1.2181,
+      "countryCode": "ES",
+      "region": "Sant Josep, Ibiza",
+      "why": "Rock islets offshore and a west-facing shore make this the island's best-known sunset beach.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "party",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-playa-de-bolonia",
+      "name": "Playa de Bolonia",
+      "lat": 36.0883,
+      "lng": -5.7739,
+      "countryCode": "ES",
+      "region": "Tarifa, Cádiz",
+      "why": "A wide Atlantic beach beneath Europe's tallest coastal sand dune, backed by a Roman ruin, not a hotel.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "remote",
+        "white-sand"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-playa-de-las-catedrales",
+      "name": "Playa de las Catedrales",
+      "lat": 43.5583,
+      "lng": -7.1667,
+      "countryCode": "ES",
+      "region": "Galicia, Spain",
+      "why": "Cathedral-like sea arches only show at low tide; a permit is required in summer to walk the sand.",
+      "bestMonths": [],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-la-concha-beach",
+      "name": "La Concha Beach",
+      "lat": 43.3183,
+      "lng": -1.9878,
+      "countryCode": "ES",
+      "region": "San Sebastián, Basque Country",
+      "why": "An urban shell-shaped bay ranked among Europe's best city beaches, calm behind Isla de Santa Clara.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "family",
+        "swim",
+        "white-sand"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-praia-da-marinha",
+      "name": "Praia da Marinha",
+      "lat": 37.0906,
+      "lng": -8.4128,
+      "countryCode": "PT",
+      "region": "Algarve, Portugal",
+      "why": "Ochre limestone stacks and sea caves ring a small beach reached by a steep staircase cut into the cliff.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "swim",
+        "remote"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-praia-da-fal-sia",
+      "name": "Praia da Falésia",
+      "lat": 37.0894,
+      "lng": -8.1614,
+      "countryCode": "PT",
+      "region": "Albufeira, Algarve",
+      "why": "Six kilometres of ochre cliffs above pale sand, one of the Algarve's longest and least crowded main beaches.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "family",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-praia-do-guincho",
+      "name": "Praia do Guincho",
+      "lat": 38.7325,
+      "lng": -9.4728,
+      "countryCode": "PT",
+      "region": "Cascais, Portugal",
+      "why": "Consistent Atlantic wind and swell make this a windsurf and kitesurf beach, not a swimming one.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-praia-do-camilo",
+      "name": "Praia do Camilo",
+      "lat": 37.0847,
+      "lng": -8.6797,
+      "countryCode": "PT",
+      "region": "Lagos, Algarve",
+      "why": "A wooden staircase drops through an ochre rock cleft to a tiny cove threaded with sea arches.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "swim",
+        "remote"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-praia-da-adraga",
+      "name": "Praia da Adraga",
+      "lat": 38.79,
+      "lng": -9.47,
+      "countryCode": "PT",
+      "region": "Sintra, Portugal",
+      "why": "Rock stacks and a strong Atlantic swell make this a surfers' beach below the Sintra hills, cold water year-round.",
+      "bestMonths": [],
+      "tags": [
+        "cliffs",
+        "swim",
+        "remote"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-praia-de-odeceixe",
+      "name": "Praia de Odeceixe",
+      "lat": 37.4267,
+      "lng": -8.7822,
+      "countryCode": "PT",
+      "region": "Aljezur, Alentejo coast",
+      "why": "A river meets the Atlantic here, so a warm lagoon sits beside cold ocean surf at the same beach.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "remote",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-sperlonga-beach",
+      "name": "Sperlonga Beach",
+      "lat": 41.2617,
+      "lng": 13.4342,
+      "countryCode": "IT",
+      "region": "Sperlonga, Lazio",
+      "why": "A whitewashed hill town looks down on a long sandy beach split by a rock promontory with Roman grotto ruins.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "cliffs"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-cala-goloritz",
+      "name": "Cala Goloritzé",
+      "lat": 40.0994,
+      "lng": 9.6931,
+      "countryCode": "IT",
+      "region": "Baunei, Sardinia",
+      "why": "A UNESCO-listed cove under a limestone spire, reached only by boat or a 90-minute hike down the Selvaggio Blu coast.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-cala-mariolu",
+      "name": "Cala Mariolu",
+      "lat": 40.1358,
+      "lng": 9.7169,
+      "countryCode": "IT",
+      "region": "Baunei, Sardinia",
+      "why": "Small white pebbles known locally as 'grains of rice' shelve into vivid blue water below sheer limestone walls.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-spiaggia-dei-conigli",
+      "name": "Spiaggia dei Conigli",
+      "lat": 35.4989,
+      "lng": 12.5439,
+      "countryCode": "IT",
+      "region": "Lampedusa, Sicily",
+      "why": "Loggerhead turtles nest on this protected beach, accessible only on foot down a cliff staircase.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "white-sand",
+        "remote"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-spiaggia-del-principe",
+      "name": "Spiaggia del Principe",
+      "lat": 41.1358,
+      "lng": 9.5164,
+      "countryCode": "IT",
+      "region": "Arzachena, Costa Smeralda",
+      "why": "Pink-grey granite boulders shelter a small cove that is the Costa Smeralda's most exclusive stretch of sand.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "white-sand",
+        "party"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-zlatni-rat",
+      "name": "Zlatni Rat",
+      "lat": 43.2578,
+      "lng": 16.6392,
+      "countryCode": "HR",
+      "region": "Bol, Brač Island",
+      "why": "A pale pebble spit that shifts shape with the current, backed by pine woods and windsurf schools.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "party"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-sveti-stefan-beach",
+      "name": "Sveti Stefan Beach",
+      "lat": 42.2564,
+      "lng": 18.8933,
+      "countryCode": "ME",
+      "region": "Budva Riviera, Montenegro",
+      "why": "Pink pebble sand facing a fortified islet village, split between a public stretch and the resort's private side.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "cliffs",
+        "family",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-durdle-door",
+      "name": "Durdle Door",
+      "lat": 50.6208,
+      "lng": -2.2764,
+      "countryCode": "GB",
+      "region": "Lulworth, Dorset",
+      "why": "A natural limestone arch frames a steep-shingle Jurassic Coast beach, cold-water swimming only.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-woolacombe-beach",
+      "name": "Woolacombe Beach",
+      "lat": 51.175,
+      "lng": -4.205,
+      "countryCode": "GB",
+      "region": "Woolacombe, Devon",
+      "why": "Three miles of Atlantic-facing sand with a reliable beginner surf break and dunes behind.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "dunes",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-rhossili-bay",
+      "name": "Rhossili Bay",
+      "lat": 51.5686,
+      "lng": -4.2942,
+      "countryCode": "GB",
+      "region": "Gower Peninsula, Wales",
+      "why": "A five-kilometre sweep of sand below a clifftop path, exposed enough that a shipwreck skeleton still shows at low tide.",
+      "bestMonths": [],
+      "tags": [
+        "cliffs",
+        "dunes",
+        "remote"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-luskentyre-beach",
+      "name": "Luskentyre Beach",
+      "lat": 57.9167,
+      "lng": -6.95,
+      "countryCode": "GB",
+      "region": "Isle of Harris, Outer Hebrides",
+      "why": "Turquoise water and white shell sand look tropical, until the Atlantic wind and cold water say otherwise.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "dunes"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-camber-sands",
+      "name": "Camber Sands",
+      "lat": 50.9214,
+      "lng": 0.7889,
+      "countryCode": "GB",
+      "region": "Camber, East Sussex",
+      "why": "The only large dune system on England's southeast coast, wide enough at low tide to lose the crowds.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "dunes",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-tretat-beach",
+      "name": "Étretat Beach",
+      "lat": 49.7075,
+      "lng": 0.2039,
+      "countryCode": "FR",
+      "region": "Étretat, Normandy",
+      "why": "Chalk cliffs and a natural arch made this pebble beach a favourite subject of Monet and Courbet.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-plage-de-palombaggia",
+      "name": "Plage de Palombaggia",
+      "lat": 41.5664,
+      "lng": 9.3272,
+      "countryCode": "FR",
+      "region": "Porto-Vecchio, Corsica",
+      "why": "Pink-tinted sand under umbrella pines, backed by red rock and busy with day-trippers from Porto-Vecchio in summer.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "party"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-pampelonne-beach",
+      "name": "Pampelonne Beach",
+      "lat": 43.2183,
+      "lng": 6.6828,
+      "countryCode": "FR",
+      "region": "Ramatuelle, Côte d'Azur",
+      "why": "Five kilometres of sand lined with exclusive beach clubs, the social centre of the French Riviera summer scene.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "party",
+        "family",
+        "white-sand"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-reynisfjara",
+      "name": "Reynisfjara",
+      "lat": 63.4038,
+      "lng": -19.0446,
+      "countryCode": "IS",
+      "region": "Vík í Mýrdal, Iceland",
+      "why": "Black basalt sand, hexagonal columns and a dangerous sneaker-wave surf make this one to watch, not swim.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "black-sand",
+        "cliffs",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-haukland-beach",
+      "name": "Haukland Beach",
+      "lat": 68.2333,
+      "lng": 13.5167,
+      "countryCode": "NO",
+      "region": "Vestvågøy, Lofoten Islands",
+      "why": "White sand and turquoise water under jagged Arctic peaks, cold enough to swim in only briefly even in July.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "white-sand",
+        "remote",
+        "cliffs"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-nida-beach",
+      "name": "Nida Beach",
+      "lat": 55.3011,
+      "lng": 21.0058,
+      "countryCode": "LT",
+      "region": "Nida, Curonian Spit",
+      "why": "A wide Baltic beach backed by Europe's tallest shifting sand dunes on a forested spit shared with Russia's Kaliningrad.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "dunes",
+        "family",
+        "remote"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-j-rmala-beach",
+      "name": "Jūrmala Beach",
+      "lat": 56.968,
+      "lng": 23.62,
+      "countryCode": "LV",
+      "region": "Jūrmala, near Riga",
+      "why": "A 32-kilometre Baltic sand strip and pine forest that has been Riga's seaside retreat since the 19th century.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "family",
+        "dunes",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-kaputa-beach",
+      "name": "Kaputaş Beach",
+      "lat": 36.1667,
+      "lng": 29.4333,
+      "countryCode": "TR",
+      "region": "Kaş, Antalya Province",
+      "why": "A narrow gorge staircase of some 180 steps drops to a small, brilliantly turquoise cove.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "swim",
+        "remote"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-l-deniz-beach",
+      "name": "Ölüdeniz Beach",
+      "lat": 36.5483,
+      "lng": 29.1197,
+      "countryCode": "TR",
+      "region": "Fethiye, Turkey",
+      "why": "A lagoon closed off by a sand spit is the landing zone for paragliders launching off Babadağ mountain above.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "family",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-patara-beach",
+      "name": "Patara Beach",
+      "lat": 36.2667,
+      "lng": 29.3167,
+      "countryCode": "TR",
+      "region": "Kalkan, Antalya Province",
+      "why": "An 18-kilometre undeveloped dune beach doubles as a loggerhead turtle nesting site behind Lycian ruins.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "remote",
+        "white-sand"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-blue-lagoon-comino",
+      "name": "Blue Lagoon, Comino",
+      "lat": 36.0161,
+      "lng": 14.3306,
+      "countryCode": "MT",
+      "region": "Comino, Malta",
+      "why": "A shallow sandbar between two islets colours the water an intense turquoise, mobbed by day-trip boats in summer.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "party",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-nissi-beach",
+      "name": "Nissi Beach",
+      "lat": 34.9856,
+      "lng": 33.9686,
+      "countryCode": "CY",
+      "region": "Ayia Napa, Cyprus",
+      "why": "A sandbar to a small islet lets you wade out into open water, backed by one of Cyprus's busiest party strips.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "party",
+        "family"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-camps-bay-beach",
+      "name": "Camps Bay Beach",
+      "lat": -33.9506,
+      "lng": 18.3775,
+      "countryCode": "ZA",
+      "region": "Cape Town, South Africa",
+      "why": "The Twelve Apostles mountains drop straight to white sand and a cold Atlantic, backed by a palm-lined promenade.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "white-sand",
+        "cliffs",
+        "party"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-boulders-beach",
+      "name": "Boulders Beach",
+      "lat": -34.1966,
+      "lng": 18.4498,
+      "countryCode": "ZA",
+      "region": "Simon's Town, South Africa",
+      "why": "Granite boulders shelter a small beach shared with a breeding colony of African penguins.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-noordhoek-beach",
+      "name": "Noordhoek Beach",
+      "lat": -34.0964,
+      "lng": 18.3736,
+      "countryCode": "ZA",
+      "region": "Noordhoek, Cape Town",
+      "why": "A wide, wild eight-kilometre beach with a strong current that makes it better for horseback rides than swimming.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "dunes",
+        "white-sand"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-anse-lazio",
+      "name": "Anse Lazio",
+      "lat": -4.3167,
+      "lng": 55.7167,
+      "countryCode": "SC",
+      "region": "Praslin, Seychelles",
+      "why": "Granite boulders bookend a white-sand bay repeatedly rated one of the world's best, no road runs along it.",
+      "bestMonths": [
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "white-sand",
+        "cliffs",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-anse-source-d-argent",
+      "name": "Anse Source d'Argent",
+      "lat": -4.3717,
+      "lng": 55.8283,
+      "countryCode": "SC",
+      "region": "La Digue, Seychelles",
+      "why": "Pink granite boulders and shallow reef-protected water make this the most photographed beach in the Seychelles.",
+      "bestMonths": [
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "white-sand",
+        "cliffs",
+        "snorkel"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-anse-georgette",
+      "name": "Anse Georgette",
+      "lat": -4.2967,
+      "lng": 55.7139,
+      "countryCode": "SC",
+      "region": "Praslin, Seychelles",
+      "why": "Only reachable by boat or through a golf course, this stays quieter than its neighbour Anse Lazio.",
+      "bestMonths": [
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "remote",
+        "white-sand",
+        "cliffs"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-anse-volbert",
+      "name": "Anse Volbert",
+      "lat": -4.3167,
+      "lng": 55.75,
+      "countryCode": "SC",
+      "region": "Praslin, Seychelles",
+      "why": "Shallow and reef-protected, this is the most swimmable of Praslin's main beaches, lined with small guesthouses.",
+      "bestMonths": [
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "lagoon",
+        "family",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-belle-mare-beach",
+      "name": "Belle Mare Beach",
+      "lat": -20.2167,
+      "lng": 57.7667,
+      "countryCode": "MU",
+      "region": "Belle Mare, Mauritius",
+      "why": "A long lagoon-protected east coast beach lined with resorts, calm enough for swimming at any tide.",
+      "bestMonths": [],
+      "tags": [
+        "lagoon",
+        "family",
+        "white-sand"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-le-morne-beach",
+      "name": "Le Morne Beach",
+      "lat": -20.4547,
+      "lng": 57.3167,
+      "countryCode": "MU",
+      "region": "Le Morne, Mauritius",
+      "why": "A UNESCO basalt monolith towers over a lagoon that draws kitesurfers to its protected reef pass.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "cliffs",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-nungwi-beach",
+      "name": "Nungwi Beach",
+      "lat": -5.7239,
+      "lng": 39.2953,
+      "countryCode": "TZ",
+      "region": "Nungwi, Zanzibar",
+      "why": "Deep water close to shore means swimming here isn't ruled by the tide the way much of Zanzibar's coast is.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "white-sand",
+        "party",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-paje-beach",
+      "name": "Paje Beach",
+      "lat": -6.2667,
+      "lng": 39.5333,
+      "countryCode": "TZ",
+      "region": "Paje, Zanzibar",
+      "why": "Wide tidal flats turn into a reliable kitesurf launch when the wind picks up over the reef.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "dunes",
+        "party",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-diani-beach",
+      "name": "Diani Beach",
+      "lat": -4.3167,
+      "lng": 39.5833,
+      "countryCode": "KE",
+      "region": "Diani, Kenya",
+      "why": "A barrier reef holds back the Indian Ocean swell along a long, white coral-sand beach south of Mombasa.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "snorkel",
+        "family"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-watamu-beach",
+      "name": "Watamu Beach",
+      "lat": -3.35,
+      "lng": 40.0167,
+      "countryCode": "KE",
+      "region": "Watamu, Kenya",
+      "why": "A marine national park just offshore protects coral gardens that snorkelers can reach straight from the sand.",
+      "bestMonths": [],
+      "tags": [
+        "snorkel",
+        "white-sand",
+        "remote"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-benguerra-island-beach",
+      "name": "Benguerra Island Beach",
+      "lat": -21.9167,
+      "lng": 35.45,
+      "countryCode": "MZ",
+      "region": "Bazaruto Archipelago, Mozambique",
+      "why": "Dhow sails pass a remote archipelago beach known for giant dune systems and dugong sightings offshore.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "remote",
+        "dunes",
+        "snorkel"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-tofo-beach",
+      "name": "Tofo Beach",
+      "lat": -23.85,
+      "lng": 35.55,
+      "countryCode": "MZ",
+      "region": "Inhambane, Mozambique",
+      "why": "Whale sharks and manta rays gather offshore, drawing divers to a laid-back fishing-village beach.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "swim",
+        "white-sand"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-anakao-beach",
+      "name": "Anakao Beach",
+      "lat": -23.65,
+      "lng": 43.6667,
+      "countryCode": "MG",
+      "region": "Toliara, Madagascar",
+      "why": "A Vezo fishing village beach reachable only by boat, facing a barrier reef with almost no development.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "remote",
+        "white-sand",
+        "snorkel"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-andilana-beach",
+      "name": "Andilana Beach",
+      "lat": -13.2833,
+      "lng": 48.2667,
+      "countryCode": "MG",
+      "region": "Nosy Be, Madagascar",
+      "why": "Calm, shallow water over white sand at the quiet north end of Madagascar's main resort island.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-essaouira-beach",
+      "name": "Essaouira Beach",
+      "lat": 31.5085,
+      "lng": -9.7756,
+      "countryCode": "MA",
+      "region": "Essaouira, Morocco",
+      "why": "Steady trade winds off a wide Atlantic beach have made this Morocco's windsurf and kitesurf capital.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "remote",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-legzira-beach",
+      "name": "Legzira Beach",
+      "lat": 29.75,
+      "lng": -10.0833,
+      "countryCode": "MA",
+      "region": "Sidi Ifni, Morocco",
+      "why": "Ochre-red sea arches once flanked this beach; one collapsed in 2016, and the surf here keeps swimming risky.",
+      "bestMonths": [],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-grand-anse-r-union",
+      "name": "Grand Anse, Réunion",
+      "lat": -21.366,
+      "lng": 55.531,
+      "countryCode": "RE",
+      "region": "Petite-Île, Réunion",
+      "why": "A lagoon pool cut into black volcanic rock offers safe swimming beside a beach with dangerous open-ocean currents.",
+      "bestMonths": [],
+      "tags": [
+        "black-sand",
+        "lagoon",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-santa-monica-beach",
+      "name": "Santa Monica Beach",
+      "lat": 15.9667,
+      "lng": -22.8333,
+      "countryCode": "CV",
+      "region": "Boa Vista, Cape Verde",
+      "why": "A 24-kilometre dune-backed Atlantic beach with almost no shade and a surf too rough for casual swimming.",
+      "bestMonths": [],
+      "tags": [
+        "dunes",
+        "remote",
+        "white-sand"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-kribi-beach",
+      "name": "Kribi Beach",
+      "lat": 2.9333,
+      "lng": 9.9167,
+      "countryCode": "CM",
+      "region": "Kribi, Cameroon",
+      "why": "Fine sand beaches either side of a fishing town, with the Lobé Falls dropping straight into the sea nearby.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-tarkwa-bay-beach",
+      "name": "Tarkwa Bay Beach",
+      "lat": 6.4,
+      "lng": 3.3667,
+      "countryCode": "NG",
+      "region": "Lagos, Nigeria",
+      "why": "A boat-only sandbar beach cut off from Lagos traffic by the harbour channel, popular for a car-free day out.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-busua-beach",
+      "name": "Busua Beach",
+      "lat": 4.7833,
+      "lng": -1.95,
+      "countryCode": "GH",
+      "region": "Western Region, Ghana",
+      "why": "A relaxed surf-town beach on the Gulf of Guinea, one of the few in West Africa with a beginner surf school.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "swim",
+        "party"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-cap-skirring-beach",
+      "name": "Cap Skirring Beach",
+      "lat": 12.4,
+      "lng": -16.75,
+      "countryCode": "SN",
+      "region": "Casamance, Senegal",
+      "why": "A quiet palm-lined Atlantic beach in Senegal's greener south, well off the main Dakar tourist route.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "remote",
+        "white-sand",
+        "family"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-jumeirah-beach",
+      "name": "Jumeirah Beach",
+      "lat": 25.1412,
+      "lng": 55.1853,
+      "countryCode": "AE",
+      "region": "Dubai, UAE",
+      "why": "A groomed urban beach facing the Burj Al Arab, popular for its skyline view more than its swimming.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "family",
+        "white-sand",
+        "party"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-bandar-khayran-beach",
+      "name": "Bandar Khayran Beach",
+      "lat": 23.5333,
+      "lng": 58.6833,
+      "countryCode": "OM",
+      "region": "Muscat, Oman",
+      "why": "A fjord-like inlet beach reached only by boat, known for coral and dolphin sightings just offshore.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "remote",
+        "snorkel",
+        "cliffs"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-ras-al-jinz-beach",
+      "name": "Ras Al Jinz Beach",
+      "lat": 22.4167,
+      "lng": 59.8333,
+      "countryCode": "OM",
+      "region": "Sur, Oman",
+      "why": "Green turtles nest on this remote beach in numbers rare outside a handful of sites worldwide.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "remote",
+        "dunes",
+        "white-sand"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-gordon-s-beach",
+      "name": "Gordon's Beach",
+      "lat": 32.0833,
+      "lng": 34.7667,
+      "countryCode": "IL",
+      "region": "Tel Aviv, Israel",
+      "why": "A busy, Blue-Flag city beach that anchors Tel Aviv's promenade, popular with paddleboarders at dawn.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "family",
+        "party",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-ras-um-sid-beach",
+      "name": "Ras Um Sid Beach",
+      "lat": 27.8283,
+      "lng": 34.335,
+      "countryCode": "EG",
+      "region": "Sharm el-Sheikh, Egypt",
+      "why": "A coral reef drops close to shore beneath a lighthouse, one of the Red Sea's easiest shore dives from a beach.",
+      "bestMonths": [],
+      "tags": [
+        "snorkel",
+        "cliffs",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-ramlet-al-baida",
+      "name": "Ramlet al-Baida",
+      "lat": 33.8783,
+      "lng": 35.4839,
+      "countryCode": "LB",
+      "region": "Beirut, Lebanon",
+      "why": "Beirut's last public sandy beach, a busy strip against a skyline of high-rises.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "family",
+        "party",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-umluj-beaches",
+      "name": "Umluj Beaches",
+      "lat": 25.05,
+      "lng": 37.2667,
+      "countryCode": "SA",
+      "region": "Umluj, Red Sea coast",
+      "why": "Turquoise lagoons and white sand along Saudi Arabia's Red Sea coast have earned it the nickname 'the Maldives of Saudi'.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "white-sand",
+        "remote"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-radhanagar-beach",
+      "name": "Radhanagar Beach",
+      "lat": 11.9814,
+      "lng": 92.9539,
+      "countryCode": "IN",
+      "region": "Havelock Island, Andaman Islands",
+      "why": "Untouched forest runs to the sand on an island reachable only by ferry from Port Blair.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "white-sand",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-palolem-beach",
+      "name": "Palolem Beach",
+      "lat": 15.01,
+      "lng": 74.0233,
+      "countryCode": "IN",
+      "region": "South Goa, India",
+      "why": "A calm, palm-lined crescent bay that stays gentle enough to swim across most of the year.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "family",
+        "swim",
+        "white-sand"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-varkala-beach",
+      "name": "Varkala Beach",
+      "lat": 8.7379,
+      "lng": 76.7163,
+      "countryCode": "IN",
+      "region": "Varkala, Kerala",
+      "why": "Red laterite cliffs top a beach lined with cafes, one of the few places in Kerala where cliff meets sand.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "cliffs",
+        "swim",
+        "party"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-om-beach",
+      "name": "Om Beach",
+      "lat": 14.5,
+      "lng": 74.3167,
+      "countryCode": "IN",
+      "region": "Gokarna, Karnataka",
+      "why": "Twin coves shaped like the Om symbol, quieter and less developed than Goa's beaches to the north.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "remote",
+        "swim",
+        "cliffs"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-agatti-beach",
+      "name": "Agatti Beach",
+      "lat": 10.8467,
+      "lng": 72.1833,
+      "countryCode": "IN",
+      "region": "Agatti Island, Lakshadweep",
+      "why": "A shallow turquoise lagoon rings this coral island beach, one of the few Lakshadweep atolls open to visitors.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "remote",
+        "snorkel"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-unawatuna-beach",
+      "name": "Unawatuna Beach",
+      "lat": 6.0108,
+      "lng": 80.2489,
+      "countryCode": "LK",
+      "region": "Galle, Sri Lanka",
+      "why": "A sheltered bay reef keeps the water calm, making this Sri Lanka's most reliable swimming beach.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "snorkel",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-mirissa-beach",
+      "name": "Mirissa Beach",
+      "lat": 5.9483,
+      "lng": 80.4589,
+      "countryCode": "LK",
+      "region": "Matara, Sri Lanka",
+      "why": "A crescent fishing-town bay that doubles as the launch point for the island's best blue whale watching.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "swim",
+        "family",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-cox-s-bazar-beach",
+      "name": "Cox's Bazar Beach",
+      "lat": 21.4272,
+      "lng": 91.9776,
+      "countryCode": "BD",
+      "region": "Cox's Bazar, Bangladesh",
+      "why": "A 120-kilometre unbroken sand beach, among the longest natural beaches anywhere, backed by a busy tourist town.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "dunes"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-maafushi-beach",
+      "name": "Maafushi Beach",
+      "lat": 3.9403,
+      "lng": 73.49,
+      "countryCode": "MV",
+      "region": "Maafushi, South Malé Atoll",
+      "why": "One of the few Maldivian beaches on an inhabited local island rather than a private resort, with a bikini section marked off.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "swim",
+        "snorkel"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-vaadhoo-bioluminescent-beach",
+      "name": "Vaadhoo Bioluminescent Beach",
+      "lat": 3.9925,
+      "lng": 72.9931,
+      "countryCode": "MV",
+      "region": "Vaadhoo, Raa Atoll",
+      "why": "Bioluminescent plankton light the shallows blue on clear, moonless nights, best seen well after sunset.",
+      "bestMonths": [],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-nacpan-beach",
+      "name": "Nacpan Beach",
+      "lat": 11.2144,
+      "lng": 119.4903,
+      "countryCode": "PH",
+      "region": "El Nido, Palawan",
+      "why": "Twin four-kilometre beaches split by a headland, still mostly undeveloped despite El Nido's tourist boom.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "white-sand",
+        "remote",
+        "dunes"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-white-beach-boracay",
+      "name": "White Beach, Boracay",
+      "lat": 11.9674,
+      "lng": 121.9248,
+      "countryCode": "PH",
+      "region": "Boracay Island",
+      "why": "Four kilometres of fine white sand along the island's main strip, closed and rehabilitated for pollution in 2018.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "white-sand",
+        "party",
+        "family"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-alona-beach",
+      "name": "Alona Beach",
+      "lat": 9.5439,
+      "lng": 123.7822,
+      "countryCode": "PH",
+      "region": "Panglao Island, Bohol",
+      "why": "A dive hub beach with easy reef access, busier and more developed than the rest of Panglao's coast.",
+      "bestMonths": [],
+      "tags": [
+        "snorkel",
+        "white-sand",
+        "party"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-railay-beach-west",
+      "name": "Railay Beach (West)",
+      "lat": 8.0104,
+      "lng": 98.8372,
+      "countryCode": "TH",
+      "region": "Railay, Krabi",
+      "why": "Limestone cliffs cut this peninsula off from the road network entirely; longtail boats are the only access.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "cliffs",
+        "white-sand",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-maya-bay",
+      "name": "Maya Bay",
+      "lat": 7.6792,
+      "lng": 98.7647,
+      "countryCode": "TH",
+      "region": "Koh Phi Phi Leh",
+      "why": "Closed to overnight visitors and boat mooring for long stretches since 2018 to let the reef recover from the crowds.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "cliffs",
+        "snorkel",
+        "remote"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-freedom-beach",
+      "name": "Freedom Beach",
+      "lat": 7.7961,
+      "lng": 98.2892,
+      "countryCode": "TH",
+      "region": "Patong, Phuket",
+      "why": "A boat- or trail-only cove that stays calmer and cleaner than the developed beaches of Phuket's west coast.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-nai-harn-beach",
+      "name": "Nai Harn Beach",
+      "lat": 7.7742,
+      "lng": 98.3025,
+      "countryCode": "TH",
+      "region": "Rawai, Phuket",
+      "why": "A lagoon-like bay beside a lake, calm in the dry season and a serious surf break when the monsoon swell turns on.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-sunrise-beach-koh-lipe",
+      "name": "Sunrise Beach, Koh Lipe",
+      "lat": 6.4867,
+      "lng": 99.305,
+      "countryCode": "TH",
+      "region": "Koh Lipe, Satun Province",
+      "why": "The busiest of Koh Lipe's three beaches, with a shallow reef flat that empties out at low tide.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "white-sand",
+        "party",
+        "snorkel"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-nai-yang-beach",
+      "name": "Nai Yang Beach",
+      "lat": 8.1094,
+      "lng": 98.2967,
+      "countryCode": "TH",
+      "region": "Sirinat National Park, Phuket",
+      "why": "A national-park beach near the airport, quieter than Phuket's tourist strip and shaded by casuarina trees.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "family",
+        "remote",
+        "white-sand"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-klong-prao-beach",
+      "name": "Klong Prao Beach",
+      "lat": 12.0333,
+      "lng": 102.3167,
+      "countryCode": "TH",
+      "region": "Koh Chang, Trat Province",
+      "why": "Koh Chang's longest beach, backed by a lagoon and mangrove, quieter than the island's northern strip.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "lagoon",
+        "family",
+        "remote"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-kuta-beach",
+      "name": "Kuta Beach",
+      "lat": -8.7183,
+      "lng": 115.1686,
+      "countryCode": "ID",
+      "region": "Kuta, Bali",
+      "why": "Bali's original surf-and-sunset beach, now a wide stretch of sand backed by dense shopping streets.",
+      "bestMonths": [],
+      "tags": [
+        "party",
+        "swim",
+        "family"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-nusa-dua-beach",
+      "name": "Nusa Dua Beach",
+      "lat": -8.7997,
+      "lng": 115.2247,
+      "countryCode": "ID",
+      "region": "Nusa Dua, Bali",
+      "why": "A reef offshore keeps the water calm along this manicured resort-enclave beach on Bali's southern tip.",
+      "bestMonths": [],
+      "tags": [
+        "family",
+        "white-sand",
+        "snorkel"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-kelingking-beach",
+      "name": "Kelingking Beach",
+      "lat": -8.7503,
+      "lng": 115.4694,
+      "countryCode": "ID",
+      "region": "Nusa Penida, Bali",
+      "why": "A steep, unofficial cliff trail down a T-rex-shaped headland reaches a small beach with a dangerous current.",
+      "bestMonths": [],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-pink-beach-komodo",
+      "name": "Pink Beach, Komodo",
+      "lat": -8.5878,
+      "lng": 119.6742,
+      "countryCode": "ID",
+      "region": "Komodo National Park",
+      "why": "Red coral fragments tint the sand pink, on a beach reachable only by boat inside the national park.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "snorkel",
+        "remote",
+        "white-sand"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-gili-trawangan-beach",
+      "name": "Gili Trawangan Beach",
+      "lat": -8.35,
+      "lng": 116.0333,
+      "countryCode": "ID",
+      "region": "Gili Trawangan, Lombok",
+      "why": "No motor vehicles on the island at all; horse carts and bicycles reach a beach known for turtle snorkeling.",
+      "bestMonths": [],
+      "tags": [
+        "snorkel",
+        "party",
+        "white-sand"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-an-bang-beach",
+      "name": "An Bang Beach",
+      "lat": 15.9167,
+      "lng": 108.35,
+      "countryCode": "VN",
+      "region": "Hoi An, Vietnam",
+      "why": "A laid-back fishing-village beach a short bike ride from Hoi An's old town, with a strong seasonal undertow.",
+      "bestMonths": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "family",
+        "swim",
+        "remote"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-my-khe-beach",
+      "name": "My Khe Beach",
+      "lat": 16.061,
+      "lng": 108.247,
+      "countryCode": "VN",
+      "region": "Da Nang, Vietnam",
+      "why": "A long, flat city beach that Forbes once rated among Asia's finest, now backed by a fast-growing skyline.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "family",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-sao-beach",
+      "name": "Sao Beach",
+      "lat": 10.0833,
+      "lng": 104,
+      "countryCode": "VN",
+      "region": "Phú Quốc Island, Vietnam",
+      "why": "White sand and shallow turquoise water on the quieter south of an island now connected by direct flights.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-ti-top-island-beach",
+      "name": "Ti Top Island Beach",
+      "lat": 20.8964,
+      "lng": 107.0619,
+      "countryCode": "VN",
+      "region": "Ha Long Bay, Vietnam",
+      "why": "A small beach at the foot of an island viewpoint, the only easy swim stop among Ha Long Bay's limestone karsts.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cliffs",
+        "swim",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-tanjung-rhu-beach",
+      "name": "Tanjung Rhu Beach",
+      "lat": 6.4667,
+      "lng": 99.8167,
+      "countryCode": "MY",
+      "region": "Langkawi, Malaysia",
+      "why": "A quiet north-shore beach facing a mangrove estuary, calmer and less developed than Langkawi's main Pantai Cenang.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "remote",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-perhentian-kecil-beach",
+      "name": "Perhentian Kecil Beach",
+      "lat": 5.9061,
+      "lng": 102.7386,
+      "countryCode": "MY",
+      "region": "Perhentian Islands, Terengganu",
+      "why": "A backpacker-favourite island beach with easy reef snorkeling, closed to visitors during the monsoon each year.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "snorkel",
+        "white-sand",
+        "remote"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-sipadan-beach",
+      "name": "Sipadan Beach",
+      "lat": 4.115,
+      "lng": 118.629,
+      "countryCode": "MY",
+      "region": "Sipadan Island, Sabah",
+      "why": "A tiny oceanic island beach with a strict daily diver cap, sitting atop a wall that drops 600 metres just offshore.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "snorkel",
+        "remote",
+        "white-sand"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-ngapali-beach",
+      "name": "Ngapali Beach",
+      "lat": 18.4167,
+      "lng": 94.3333,
+      "countryCode": "MM",
+      "region": "Thandwe, Rakhine State",
+      "why": "A quiet fishing-coast beach with a gentle slope and few of the crowds found elsewhere in Southeast Asia.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "remote",
+        "white-sand",
+        "family"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-otres-beach",
+      "name": "Otres Beach",
+      "lat": 10.5667,
+      "lng": 103.5,
+      "countryCode": "KH",
+      "region": "Sihanoukville, Cambodia",
+      "why": "A quieter alternative to Sihanoukville's main strip, backed by low-key beach bars rather than casinos.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "remote",
+        "swim",
+        "white-sand"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-koh-rong-beach",
+      "name": "Koh Rong Beach",
+      "lat": 10.6167,
+      "lng": 103.2333,
+      "countryCode": "KH",
+      "region": "Koh Rong, Cambodia",
+      "why": "A long, undeveloped white-sand beach with bioluminescent plankton visible in the shallows after dark.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-kabira-bay",
+      "name": "Kabira Bay",
+      "lat": 24.4536,
+      "lng": 124.1522,
+      "countryCode": "JP",
+      "region": "Ishigaki Island, Okinawa",
+      "why": "A glass-boat bay too current-prone for swimming, known instead for black pearl farms and coral viewed from the surface.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "snorkel",
+        "cliffs",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-yonaha-maehama-beach",
+      "name": "Yonaha Maehama Beach",
+      "lat": 24.7383,
+      "lng": 125.1697,
+      "countryCode": "JP",
+      "region": "Miyako Island, Okinawa",
+      "why": "Seven kilometres of fine white sand along a shallow, reef-protected Okinawan coast.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "snorkel"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-emerald-beach",
+      "name": "Emerald Beach",
+      "lat": 26.6942,
+      "lng": 127.8778,
+      "countryCode": "JP",
+      "region": "Motobu, Okinawa Island",
+      "why": "A man-made but reef-fringed beach beside the Okinawa Churaumi Aquarium, calm and shallow for families.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "family",
+        "snorkel",
+        "white-sand"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-yalong-bay",
+      "name": "Yalong Bay",
+      "lat": 18.2833,
+      "lng": 109.6167,
+      "countryCode": "CN",
+      "region": "Sanya, Hainan Island",
+      "why": "A resort-lined bay marketed as China's tropical beach answer to Hawaii, warm year-round.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "family",
+        "party"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-hyeopjae-beach",
+      "name": "Hyeopjae Beach",
+      "lat": 33.3944,
+      "lng": 126.2394,
+      "countryCode": "KR",
+      "region": "Jeju Island, South Korea",
+      "why": "White coral sand faces a small volcanic islet, one of the calmest and most photographed beaches on Jeju.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-haeundae-beach",
+      "name": "Haeundae Beach",
+      "lat": 35.1587,
+      "lng": 129.1604,
+      "countryCode": "KR",
+      "region": "Busan, South Korea",
+      "why": "Korea's most famous city beach, packed shoulder to shoulder with sun umbrellas every summer weekend.",
+      "bestMonths": [
+        7,
+        8
+      ],
+      "tags": [
+        "party",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-baisha-bay",
+      "name": "Baisha Bay",
+      "lat": 21.9833,
+      "lng": 120.69,
+      "countryCode": "TW",
+      "region": "Kenting, Taiwan",
+      "why": "Fine white sand at Taiwan's southern tip, used as a filming location and busiest during the summer festival season.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-shek-o-beach",
+      "name": "Shek O Beach",
+      "lat": 22.2306,
+      "lng": 114.2453,
+      "countryCode": "HK",
+      "region": "Shek O, Hong Kong Island",
+      "why": "A sheltered bay beach on the quiet side of Hong Kong Island, popular with surfers when a typhoon swell rolls in.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "family",
+        "swim",
+        "remote"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-whitehaven-beach",
+      "name": "Whitehaven Beach",
+      "lat": -20.2833,
+      "lng": 149.0333,
+      "countryCode": "AU",
+      "region": "Whitsunday Islands, Queensland",
+      "why": "Silica sand so pure it stays cool underfoot, swirling into the turquoise shallows at Hill Inlet next door.",
+      "bestMonths": [],
+      "tags": [
+        "white-sand",
+        "remote",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-bondi-beach",
+      "name": "Bondi Beach",
+      "lat": -33.8908,
+      "lng": 151.2743,
+      "countryCode": "AU",
+      "region": "Sydney, New South Wales",
+      "why": "Australia's best-known city beach, a surf break, ocean pool and coastal walk within a single suburb.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "party",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-cable-beach",
+      "name": "Cable Beach",
+      "lat": -17.9614,
+      "lng": 122.2081,
+      "countryCode": "AU",
+      "region": "Broome, Western Australia",
+      "why": "22 kilometres of sand famous for camel trains at sunset, with tides among the most extreme in Australia.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "remote",
+        "family"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-wineglass-bay",
+      "name": "Wineglass Bay",
+      "lat": -42.1592,
+      "lng": 148.3072,
+      "countryCode": "AU",
+      "region": "Freycinet National Park, Tasmania",
+      "why": "A perfect curve of white sand seen best from the ridge above, cold water even at the height of summer.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "white-sand",
+        "cliffs",
+        "remote"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-turquoise-bay",
+      "name": "Turquoise Bay",
+      "lat": -22.0983,
+      "lng": 113.8567,
+      "countryCode": "AU",
+      "region": "Ningaloo Reef, Western Australia",
+      "why": "A drift snorkel lets you float over coral just metres from shore, one of the easiest reef swims anywhere.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "snorkel",
+        "white-sand",
+        "remote"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-hyams-beach",
+      "name": "Hyams Beach",
+      "lat": -35.0972,
+      "lng": 150.6919,
+      "countryCode": "AU",
+      "region": "Jervis Bay, New South Wales",
+      "why": "Long listed for having some of the whitest sand on record, though summer weekends bring parking chaos.",
+      "bestMonths": [
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-cottesloe-beach",
+      "name": "Cottesloe Beach",
+      "lat": -31.9956,
+      "lng": 115.7539,
+      "countryCode": "AU",
+      "region": "Perth, Western Australia",
+      "why": "A Perth institution for a sunset swim, with a groyne-protected patch that stays calm even with an onshore wind.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "family",
+        "party",
+        "swim"
+      ],
+      "source": "Travel + Leisure 2025"
+    },
+    {
+      "id": "beaches-four-mile-beach",
+      "name": "Four Mile Beach",
+      "lat": -16.4833,
+      "lng": 145.4667,
+      "countryCode": "AU",
+      "region": "Port Douglas, Queensland",
+      "why": "A stinger net marks a safe swimming patch during jellyfish season on this long, flat tropical beach.",
+      "bestMonths": [],
+      "tags": [
+        "family",
+        "dunes",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-lucky-bay",
+      "name": "Lucky Bay",
+      "lat": -33.9833,
+      "lng": 122.2167,
+      "countryCode": "AU",
+      "region": "Cape Le Grand National Park, WA",
+      "why": "Kangaroos regularly lie on the sand here, on a beach whose whiteness rivals anywhere in Australia.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "white-sand",
+        "remote",
+        "family"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-palm-cove-beach",
+      "name": "Palm Cove Beach",
+      "lat": -16.75,
+      "lng": 145.6833,
+      "countryCode": "AU",
+      "region": "Cairns, Queensland",
+      "why": "A shaded, paperbark-lined beach north of Cairns, calmer than the open coast but still under stinger nets.",
+      "bestMonths": [],
+      "tags": [
+        "family",
+        "white-sand",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-squeaky-beach",
+      "name": "Squeaky Beach",
+      "lat": -39.0306,
+      "lng": 146.3167,
+      "countryCode": "AU",
+      "region": "Wilsons Promontory, Victoria",
+      "why": "Quartz sand grains squeak underfoot, on a beach at the southernmost tip of mainland Australia.",
+      "bestMonths": [
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "white-sand",
+        "remote",
+        "cliffs"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-ninety-mile-beach",
+      "name": "Ninety Mile Beach",
+      "lat": -34.8333,
+      "lng": 172.9333,
+      "countryCode": "NZ",
+      "region": "Northland, New Zealand",
+      "why": "A single unbroken Tasman Sea beach long enough that a public road once ran along the sand at low tide.",
+      "bestMonths": [
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dunes",
+        "remote",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-cathedral-cove",
+      "name": "Cathedral Cove",
+      "lat": -36.8306,
+      "lng": 175.7856,
+      "countryCode": "NZ",
+      "region": "Coromandel Peninsula, New Zealand",
+      "why": "A limestone archway frames the beach, reachable only by a coastal walking track or by kayak.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "cliffs",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-hot-water-beach",
+      "name": "Hot Water Beach",
+      "lat": -36.8867,
+      "lng": 175.8103,
+      "countryCode": "NZ",
+      "region": "Coromandel Peninsula, New Zealand",
+      "why": "Dig a shallow pit at low tide and geothermal water seeps up hot enough to sit in beside the cold surf.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "remote",
+        "swim",
+        "family"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-piha-beach",
+      "name": "Piha Beach",
+      "lat": -36.9558,
+      "lng": 174.4711,
+      "countryCode": "NZ",
+      "region": "Waitakere Ranges, Auckland",
+      "why": "Black iron-sand surf beach overlooked by Lion Rock, with a dangerous rip that claims lives most summers.",
+      "bestMonths": [
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "black-sand",
+        "remote",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-onetangi-beach",
+      "name": "Onetangi Beach",
+      "lat": -36.7967,
+      "lng": 175.0219,
+      "countryCode": "NZ",
+      "region": "Waiheke Island, New Zealand",
+      "why": "The longest beach on a vineyard-covered island a short ferry ride from Auckland.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "family",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-matira-beach",
+      "name": "Matira Beach",
+      "lat": -16.5389,
+      "lng": -151.7472,
+      "countryCode": "PF",
+      "region": "Bora Bora, French Polynesia",
+      "why": "One of the few genuinely public beaches on an island otherwise ringed by private resort motu.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "lagoon",
+        "family"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-muri-beach",
+      "name": "Muri Beach",
+      "lat": -21.2394,
+      "lng": -159.7508,
+      "countryCode": "CK",
+      "region": "Rarotonga, Cook Islands",
+      "why": "A shallow lagoon with four small motu islands offshore, calm enough to wade out for a long way.",
+      "bestMonths": [],
+      "tags": [
+        "lagoon",
+        "family",
+        "snorkel"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-champagne-beach",
+      "name": "Champagne Beach",
+      "lat": -15.5333,
+      "lng": 167.1833,
+      "countryCode": "VU",
+      "region": "Espiritu Santo, Vanuatu",
+      "why": "Fine white sand that fizzes underfoot at the waterline gives this remote beach its name.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "remote",
+        "white-sand",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-natadola-beach",
+      "name": "Natadola Beach",
+      "lat": -18.2167,
+      "lng": 177.3833,
+      "countryCode": "FJ",
+      "region": "Coral Coast, Viti Levu",
+      "why": "One of the few white-sand beaches on Fiji's main island with no fringing reef right at the shoreline, so waves break on the sand.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "family",
+        "swim"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-waya-island-beach",
+      "name": "Waya Island Beach",
+      "lat": -16.95,
+      "lng": 177.1,
+      "countryCode": "FJ",
+      "region": "Yasawa Islands, Fiji",
+      "why": "A remote island-hopping chain reached only by boat, with beaches split among small backpacker resorts.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "remote",
+        "white-sand",
+        "snorkel"
+      ],
+      "source": "Beach Atlas Golden Beach Awards 2025"
+    },
+    {
+      "id": "beaches-anse-vata-beach",
+      "name": "Anse Vata Beach",
+      "lat": -22.2917,
+      "lng": 166.4386,
+      "countryCode": "NC",
+      "region": "Nouméa, New Caledonia",
+      "why": "A city beach inside the world's second-largest lagoon, calm and shallow thanks to the barrier reef far offshore.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "family",
+        "swim"
+      ],
+      "source": "Condé Nast Traveler 2025"
+    },
+    {
+      "id": "beaches-long-beach-peleliu",
+      "name": "Long Beach, Peleliu",
+      "lat": 7.0011,
+      "lng": 134.24,
+      "countryCode": "PW",
+      "region": "Peleliu, Palau",
+      "why": "A sandbar in the middle of the lagoon appears only at low tide, a stop on Rock Islands boat tours.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "lagoon",
+        "remote",
+        "swim"
+      ],
+      "source": "Lonely Planet 2025"
+    },
+    {
+      "id": "beaches-lalomanu-beach",
+      "name": "Lalomanu Beach",
+      "lat": -14.0167,
+      "lng": -171.4167,
+      "countryCode": "WS",
+      "region": "Upolu, Samoa",
+      "why": "A palm-backed beach with traditional open-air fales for sleeping right on the sand, rebuilt after the 2009 tsunami.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "white-sand",
+        "remote",
+        "family"
+      ],
+      "source": "TripAdvisor Travellers' Choice 2025"
+    },
+    {
+      "id": "beaches-ha-atafu-beach",
+      "name": "Ha'atafu Beach",
+      "lat": -21.0667,
+      "lng": -175.3333,
+      "countryCode": "TO",
+      "region": "Tongatapu, Tonga",
+      "why": "The only reliable surf break beach on Tonga's main island, with a marine reserve reef just offshore.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "remote",
+        "snorkel",
+        "white-sand"
+      ],
+      "source": "Lonely Planet 2025"
+    }
+  ]
+}
