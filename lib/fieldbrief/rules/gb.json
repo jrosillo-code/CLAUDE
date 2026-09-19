@@ -1,0 +1,61 @@
+{
+  "countryCode": "GB",
+  "countryName": "United Kingdom",
+  "regime": "national",
+  "reviewTier": "desk-review",
+  "coverage": "national",
+  "scope": "Selected national requirements only; local restrictions, filming permissions and customs are not fully covered.",
+  "authorityName": "UK Civil Aviation Authority",
+  "authorityUrl": "https://www.caa.co.uk/drones/open-category/drone-code/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Operator ID: 250 g or more, or 100 g or more with a camera."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Flyer ID is required from 100 g. Additional competence depends on the operation."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "Open-category baseline: 120 m above the surface; see the Drone Code for exceptions and local restrictions.",
+  "maxDistanceRule": "Keep the drone in direct sight and the surrounding airspace visible.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Not verified in this summary. Check the national authority for your aircraft and operation."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment requirements have not been verified."
+  },
+  "noFlyHighlights": [],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "CAA Drone Code and airspace guidance",
+    "url": "https://www.caa.co.uk/drones/open-category/drone-code/"
+  },
+  "sourceUrls": [
+    "https://www.caa.co.uk/drones/open-category/drone-code/getting-what-you-need-to-fly-legally/",
+    "https://www.caa.co.uk/drones/open-category/drone-code/flying-safely-and-responsibly-points-1-and-2/",
+    "https://www.caa.co.uk/media/csmfqbs1/the-drone-code-march-2026.pdf"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "codex-source-review",
+  "notes": "Desk research from official sources, not firsthand flight verification. Check current notices and site permissions before a flight.",
+  "cityNotes": [
+    {
+      "city": "London",
+      "note": "Almost all of central London is inside the Heathrow and City FRZs or royal-park bylaws; assume no.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Edinburgh",
+      "note": "The castle and Old Town sit inside the airport FRZ.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Lake District",
+      "note": "Open access, but the national park asks for permission at popular sites.",
+      "reviewTier": "unverified"
+    }
+  ]
+}

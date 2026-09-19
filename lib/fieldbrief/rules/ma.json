@@ -1,0 +1,42 @@
+{
+  "countryCode": "MA",
+  "countryName": "Morocco",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "DGAC Morocco (ONDA)",
+  "authorityUrl": "https://www.onda.ma/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for registration."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": null,
+  "altitudeNote": "Private flights are not permitted.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "banned",
+    "note": "Drones are confiscated at customs and returned on departure at best."
+  },
+  "noFlyHighlights": [
+    "Nationwide without a permit that tourists do not get"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [],
+  "sourceUrls": [
+    "https://www.onda.ma/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

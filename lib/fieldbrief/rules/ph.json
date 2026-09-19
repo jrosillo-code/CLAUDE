@@ -1,0 +1,55 @@
+{
+  "countryCode": "PH",
+  "countryName": "Philippines",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAAP",
+  "authorityUrl": "https://caap.gov.ph/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Recreational drones under 7 kg are exempt from CAAP registration if flown outside controlled areas; commercial use needs a certificate."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 122,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Metro Manila and NAIA airspace",
+    "Boracay by local ordinance",
+    "Within 10 km of airports"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Manila",
+      "note": "Controlled airspace; CAAP permit needed.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Palawan",
+      "note": "El Nido and Coron are commonly flown outside airport zones; the park office may ask.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://caap.gov.ph/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

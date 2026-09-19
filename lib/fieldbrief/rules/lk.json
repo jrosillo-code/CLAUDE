@@ -1,0 +1,55 @@
+{
+  "countryCode": "LK",
+  "countryName": "Sri Lanka",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAA Sri Lanka",
+  "authorityUrl": "https://www.caa.lk/",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration with CAASL from 250 g; foreigners register online."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Sigiriya and other archaeological sites",
+    "Within 5 km of airports",
+    "Military areas in the north and east"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Sigiriya",
+      "note": "Flights near the rock require Department of Archaeology permission.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Ella",
+      "note": "Popular and usually tolerated away from the rail line and people.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.caa.lk/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

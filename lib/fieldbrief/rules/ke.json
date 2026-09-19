@@ -1,0 +1,55 @@
+{
+  "countryCode": "KE",
+  "countryName": "Kenya",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "KCAA",
+  "authorityUrl": "https://www.kcaa.or.ke/",
+  "registrationRequired": {
+    "value": true,
+    "note": "KCAA registration and an operator permit are required; foreigners must import with KCAA approval."
+  },
+  "pilotCertRequired": {
+    "value": true,
+    "note": "A remote pilot licence is required."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": true,
+    "note": "Liability insurance is required."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Import needs prior KCAA approval; customs holds drones without it."
+  },
+  "noFlyHighlights": [
+    "National parks and reserves (KWS permit required)",
+    "Within 5 km of airports",
+    "Nairobi centre"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Maasai Mara",
+      "note": "KWS and conservancy permits are required and rarely granted to tourists.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Nairobi",
+      "note": "Registration and a permit for any city flight.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.kcaa.or.ke/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

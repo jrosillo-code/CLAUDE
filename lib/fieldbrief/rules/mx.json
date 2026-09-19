@@ -1,0 +1,60 @@
+{
+  "countryCode": "MX",
+  "countryName": "Mexico",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "AFAC (Agencia Federal de Aviación Civil)",
+  "authorityUrl": "https://www.gob.mx/afac",
+  "registrationRequired": {
+    "value": null,
+    "note": "Registration with AFAC is required above 250 g; below that recreational flights are largely exempt."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "No licence for recreational sub-250 g; heavier and commercial classes need AFAC procedures."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 122,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Customs may ask for the AFAC registration or a declaration; travellers report inconsistent handling."
+  },
+  "noFlyHighlights": [
+    "Archaeological sites (INAH requires a permit)",
+    "Within 9 km of airports",
+    "Over crowds and government buildings"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Mexico City",
+      "note": "Heavily restricted: airport approaches and government zones; INAH covers Teotihuacán and the Zócalo area.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Cancún",
+      "note": "Hotel-zone flights sit under the airport approach; resorts have their own rules.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Oaxaca",
+      "note": "Monte Albán and the historic centre require INAH permission.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.gob.mx/afac"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

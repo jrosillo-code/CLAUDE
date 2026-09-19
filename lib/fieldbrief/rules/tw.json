@@ -1,0 +1,53 @@
+{
+  "countryCode": "TW",
+  "countryName": "Taiwan",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAA Taiwan",
+  "authorityUrl": "https://www.caa.gov.tw/",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration from 250 g; drones over 2 kg need an operator certificate."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Taipei city without municipal approval",
+    "Within airport control zones",
+    "National parks (Taroko, Yushan) without a permit"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "CAA drone map",
+    "url": "https://drone.caa.gov.tw/"
+  },
+  "cityNotes": [
+    {
+      "city": "Taipei",
+      "note": "The city requires prior approval for most areas; Elephant Mountain views are commonly refused.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.caa.gov.tw/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

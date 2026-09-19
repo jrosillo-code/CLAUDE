@@ -1,0 +1,49 @@
+{
+  "countryCode": "ME",
+  "countryName": "Montenegro",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAA Montenegro",
+  "authorityUrl": "https://caa.me/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for registration."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 100,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Kotor bay under Tivat airport approach",
+    "National parks"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Kotor",
+      "note": "The bay is under Tivat's approach; check with the CAA.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://caa.me/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

@@ -1,0 +1,58 @@
+{
+  "countryCode": "AE",
+  "countryName": "United Arab Emirates",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "GCAA / Dubai Civil Aviation Authority",
+  "authorityUrl": "https://www.gcaa.gov.ae/",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration is mandatory for all drones; tourists can register on the app but permits are rarely granted."
+  },
+  "pilotCertRequired": {
+    "value": true,
+    "note": "A certificate is required for heavier drones and any commercial use."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Declare on entry; unregistered drones have been held at the airport."
+  },
+  "noFlyHighlights": [
+    "Dubai: no flying without DCAA registration and a permit; most of the city is no-fly",
+    "Abu Dhabi: everything needs a permit",
+    "Near airports and the palm islands"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "DCAA / GCAA registration",
+    "url": "https://www.dcaa.gov.ae/"
+  },
+  "cityNotes": [
+    {
+      "city": "Dubai",
+      "note": "Recreational flights are only allowed in designated flying zones, with registration; the marina and downtown are no-fly.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Abu Dhabi",
+      "note": "Permit required for any flight.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.gcaa.gov.ae/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

@@ -1,0 +1,55 @@
+{
+  "countryCode": "EC",
+  "countryName": "Ecuador",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "DGAC Ecuador",
+  "authorityUrl": "https://www.aviacioncivil.gob.ec/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for registration."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 122,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Galápagos (national park prohibits drones without a research permit)",
+    "Within 9 km of airports",
+    "Over crowds"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Galápagos",
+      "note": "Drones are prohibited in the national park; do not bring one expecting to fly.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Quito",
+      "note": "The historic centre and airport approaches restrict flights.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.aviacioncivil.gob.ec/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

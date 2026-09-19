@@ -1,4 +1,5 @@
-import { type CountryRules, daysSinceVerified, isStale, rulesFor as defaultRulesFor, sourceLabel } from "./rules";
+import { type CountryRules, type CityNote, type ReviewTier, TIER_LABEL, authorityFor, daysSinceVerified, isDeskReview, isStale, reviewTierOf, rulesFor as defaultRulesFor, sourceLabel } from "./rules";
+import { type AirfieldNear, nearestAirfields as defaultNearestAirfields } from "./airfields";
 import { lightWindows, type LightWindows } from "./light";
 import { fetchWind as defaultFetchWind, type WindResult } from "./wind";
 
@@ -19,6 +20,15 @@ export interface RulesSummary {
   verifiedBy: string;
   stale: boolean;
   daysSinceVerified: number;
+  /** true when the record is a desk review, not a pilot's verification. */
+  deskReview: boolean;
+  reviewTier: ReviewTier;
+  /** The label every surface shows for this tier. */
+  tierLabel: string;
+  /** Place-specific notes; the client shows the ones matching the place name. */
+  cityNotes: CityNote[];
+  coverage: CountryRules["coverage"];
+  scope: string;
   regime: CountryRules["regime"];
   authority: { name: string; url: string };
   registrationRequired: CountryRules["registrationRequired"];
@@ -87,6 +97,8 @@ export interface FieldBrief {
   legality: RulesSummary | Uncovered;
   light: LightWindows;
   wind: WindResult;
+  /** Nearest airfields — a distance, never an airspace check. */
+  airfields: AirfieldNear[];
   nearby: NearbySummary;
   narrative?: string;
 }
@@ -105,6 +117,7 @@ export interface AssembleDeps {
   /** May return a promise that was started earlier — the route begins the
    *  wind lookup before the country is known so the two don't add up. */
   fetchWind?: (lat: number, lng: number, date: string) => Promise<WindResult>;
+  nearestAirfields?: (lat: number, lng: number) => AirfieldNear[];
   now?: () => Date;
 }
 
@@ -120,6 +133,12 @@ export function summarizeRules(rules: CountryRules, now = new Date()): RulesSumm
     verifiedBy: rules.verifiedBy,
     stale: isStale(rules, now),
     daysSinceVerified: daysSinceVerified(rules, now),
+    deskReview: isDeskReview(rules),
+    reviewTier: reviewTierOf(rules),
+    tierLabel: TIER_LABEL[reviewTierOf(rules)],
+    cityNotes: (rules.cityNotes ?? []).map((n) => ({ ...n, reviewTier: n.reviewTier ?? reviewTierOf(rules) })),
+    coverage: rules.coverage,
+    scope: rules.scope ?? "",
     regime: rules.regime,
     authority: { name: rules.authorityName, url: rules.authorityUrl },
     registrationRequired: rules.registrationRequired,
@@ -142,10 +161,14 @@ const EMPTY_NEARBY: NearbySummary = { scoutPins: [], reports: [] };
 export async function assembleBrief(input: AssembleInput, deps: AssembleDeps = {}): Promise<FieldBrief> {
   const rulesFor = deps.rulesFor ?? defaultRulesFor;
   const fetchWind = deps.fetchWind ?? ((lat, lng, date) => defaultFetchWind(lat, lng, date));
+  const nearestAirfields = deps.nearestAirfields ?? ((lat, lng) => defaultNearestAirfields(lat, lng));
   const now = deps.now ? deps.now() : new Date();
   const cc = input.countryCode ? input.countryCode.toUpperCase() : null;
   const rules = rulesFor(cc);
-  const legality: RulesSummary | Uncovered = rules ? summarizeRules(rules, now) : { covered: false, countryCode: cc };
+  const authority = rules ? null : authorityFor(cc);
+  const legality: RulesSummary | Uncovered = rules
+    ? summarizeRules(rules, now)
+    : { covered: false, countryCode: cc, ...(authority ? { authority: { name: authority.authorityName, url: authority.authorityUrl } } : {}) };
 
   // Light is pure math; wind is the only network call and it never blocks the
   // brief past its own timeout — and never fails it: a thrown lookup becomes
@@ -162,6 +185,7 @@ export async function assembleBrief(input: AssembleInput, deps: AssembleDeps = {
     legality,
     light,
     wind,
+    airfields: safeAirfields(() => nearestAirfields(input.lat, input.lng)),
     nearby: sanitizeNearby(input.nearby),
   };
 }
@@ -191,4 +215,13 @@ export function sanitizeNearby(n: NearbySummary | undefined): NearbySummary {
       placeName: r.placeName ? clip(r.placeName, 120) : undefined,
     })),
   };
+}
+
+/** The airfield list can never fail the brief: a broken file reads as none. */
+function safeAirfields(get: () => AirfieldNear[]): AirfieldNear[] {
+  try {
+    return get().slice(0, 3);
+  } catch {
+    return [];
+  }
 }

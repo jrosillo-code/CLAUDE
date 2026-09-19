@@ -1,0 +1,64 @@
+{
+  "countryCode": "AU",
+  "countryName": "Australia",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CASA",
+  "authorityUrl": "https://www.casa.gov.au/drones",
+  "registrationRequired": {
+    "value": null,
+    "note": "Recreational drones need no registration or accreditation as of the last known rules; commercial use above 250 g requires registration and RePL or an excluded-category notice."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "No licence for recreational use; RePL for commercial above 2 kg."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "none",
+    "note": "No import restriction known for personal drones."
+  },
+  "noFlyHighlights": [
+    "Within 5.5 km of controlled aerodromes",
+    "Over people and populous areas",
+    "National parks by state rules (NSW, VIC and others prohibit without permission)",
+    "Sydney Harbour and the CBD"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "OpenSky / CASA-verified drone safety apps",
+    "url": "https://www.casa.gov.au/knowyourdrone/drone-safety-apps"
+  },
+  "cityNotes": [
+    {
+      "city": "Sydney",
+      "note": "The harbour, Bondi and the CBD sit inside Sydney Airport's zone and helicopter lanes.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Uluru",
+      "note": "Drones are prohibited in the national park.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Great Ocean Road",
+      "note": "Twelve Apostles is inside Port Campbell national park; Parks Victoria prohibits drones.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.casa.gov.au/drones"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

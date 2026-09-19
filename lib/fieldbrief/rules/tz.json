@@ -1,0 +1,54 @@
+{
+  "countryCode": "TZ",
+  "countryName": "Tanzania",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "TCAA",
+  "authorityUrl": "https://www.tcaa.go.tz/",
+  "registrationRequired": {
+    "value": true,
+    "note": "TCAA registration and a permit are required for foreigners."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Declare on arrival with the TCAA permit."
+  },
+  "noFlyHighlights": [
+    "Serengeti, Ngorongoro and all national parks without TANAPA permission",
+    "Zanzibar Stone Town"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Zanzibar",
+      "note": "Beaches are commonly flown; Stone Town and the airport zone are restricted.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Serengeti",
+      "note": "TANAPA permit required; expensive and slow.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.tcaa.go.tz/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

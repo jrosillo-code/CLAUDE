@@ -1,0 +1,55 @@
+{
+  "countryCode": "CL",
+  "countryName": "Chile",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "DGAC Chile",
+  "authorityUrl": "https://www.dgac.gob.cl/",
+  "registrationRequired": {
+    "value": true,
+    "note": "DGAC registration and a credential are required for flights over populated areas; rural recreational flights under 750 g are lighter-touch."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 130,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": true,
+    "note": "Insurance is required for flights over populated areas."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Populated areas without DGAC authorization (DAN 151)",
+    "Within 2 km of aerodromes",
+    "Torres del Paine and other CONAF parks"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Santiago",
+      "note": "Urban flights fall under DAN 151 authorization; the airport approach covers the north-west.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Torres del Paine",
+      "note": "CONAF prohibits drones in the park.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.dgac.gob.cl/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

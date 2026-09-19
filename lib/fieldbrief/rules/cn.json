@@ -1,0 +1,63 @@
+{
+  "countryCode": "CN",
+  "countryName": "China",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAAC (UOM)",
+  "authorityUrl": "https://uom.caac.gov.cn/",
+  "registrationRequired": {
+    "value": true,
+    "note": "Real-name registration on UOM for any drone above 250 g; foreign passports are accepted on the site."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Declare the drone; DJI units are ubiquitous but customs can ask for registration."
+  },
+  "noFlyHighlights": [
+    "Beijing inside the 6th ring road",
+    "All cities' controlled airspace without approval",
+    "Border regions and Tibet"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "UOM (Unmanned aircraft Operation Management)",
+    "url": "https://uom.caac.gov.cn/"
+  },
+  "cityNotes": [
+    {
+      "city": "Beijing",
+      "note": "The city is a no-fly zone for civilian drones.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Shanghai",
+      "note": "Most of the centre is restricted; the Bund is enforced.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Guilin/Yangshuo",
+      "note": "Widely flown by visitors but formally requires approval.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://uom.caac.gov.cn/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

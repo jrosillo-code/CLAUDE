@@ -1,0 +1,43 @@
+{
+  "countryCode": "GH",
+  "countryName": "Ghana",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "GCAA Ghana",
+  "authorityUrl": "https://www.gcaa.com.gh/",
+  "registrationRequired": {
+    "value": true,
+    "note": "GCAA registration is required; foreigners register through an agent."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Import permit required."
+  },
+  "noFlyHighlights": [
+    "Accra airport zone",
+    "Government buildings"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [],
+  "sourceUrls": [
+    "https://www.gcaa.com.gh/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

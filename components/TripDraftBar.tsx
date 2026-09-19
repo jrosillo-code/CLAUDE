@@ -47,12 +47,18 @@ export default function TripDraftBar() {
     <div className="fixed bottom-6 left-1/2 z-30 w-[min(94vw,480px)] -translate-x-1/2">
       <div className="animate-sheet rounded-3xl bg-paper/95 p-4 shadow-float backdrop-blur">
         <div className="flex items-center justify-between gap-3">
-          <input
-            value={draft.title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Name this trip…"
-            className="min-w-0 flex-1 bg-transparent font-display text-xl outline-none placeholder:text-ink-3"
-          />
+          <label className="flex min-w-0 flex-1 flex-col">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-ink-3">Trip name</span>
+            <input
+              value={draft.title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Name this trip…"
+              autoFocus={!draft.title}
+              aria-label="Trip name"
+              data-testid="trip-draft-title"
+              className="min-w-0 rounded-xl border border-line bg-paper px-3 py-1.5 font-display text-lg outline-none placeholder:text-ink-3 focus:border-ink"
+            />
+          </label>
           <div className="flex shrink-0 gap-1 rounded-full bg-paper-2 p-1">
             <button
               onClick={() => setVisibility("private")}

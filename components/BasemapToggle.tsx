@@ -21,6 +21,8 @@ export default function BasemapToggle() {
   const setShowLandmarks = useStore((s) => s.setShowLandmarks);
   const showScout = useStore((s) => s.showScout);
   const setShowScout = useStore((s) => s.setShowScout);
+  const showFlights = useStore((s) => s.showFlights);
+  const setShowFlights = useStore((s) => s.setShowFlights);
   const showAirports = useStore((s) => s.showAirports);
   const setShowAirports = useStore((s) => s.setShowAirports);
   const showStations = useStore((s) => s.showStations);
@@ -104,6 +106,14 @@ export default function BasemapToggle() {
                 label="Scout pins"
                 active={showScout}
                 onClick={() => setShowScout(!showScout)}
+              />
+              {/* Flights: field reports on the map, coloured by what happened
+                  (flew / refused / fined / didn't try). Not an airspace map. */}
+              <RowToggle
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 16.5 20 5M4 16.5l3.5 1.2M4 16.5 6.2 13m1.3 4.7 1.7 3.3 2.3-6.2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="18.5" cy="6.5" r="2" fill="currentColor" /></svg>}
+                label="Flights"
+                active={showFlights}
+                onClick={() => setShowFlights(!showFlights)}
               />
 
               {/* Extras — the reference overlays, folded away so the card stays

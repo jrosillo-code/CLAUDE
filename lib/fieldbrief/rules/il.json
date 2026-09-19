@@ -1,0 +1,55 @@
+{
+  "countryCode": "IL",
+  "countryName": "Israel",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAAI",
+  "authorityUrl": "https://www.gov.il/en/departments/civil_aviation_authority",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration and a licence are required above 250 g."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 50,
+  "altitudeNote": "50 m general ceiling for hobby flights without authorization.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Declare the drone at customs; registration or a permit may be asked for."
+  },
+  "noFlyHighlights": [
+    "Jerusalem Old City and most of the centre",
+    "Airports and military zones (extensive)",
+    "Border areas"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Jerusalem",
+      "note": "The Old City and its surroundings are no-fly.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Tel Aviv",
+      "note": "Beach flights sit under Ben Gurion's airspace; check the CAAI map.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.gov.il/en/departments/civil_aviation_authority"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

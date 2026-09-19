@@ -9,6 +9,8 @@ import { track } from "@/lib/analytics";
 import { REPORT_OUTCOME_LABELS, TIME_OF_DAY_LABELS, type FieldReport, type ScoutNote } from "@/lib/types";
 import type { FieldBrief, NearbySummary } from "@/lib/fieldbrief/assemble";
 import { calmWindows, CALM_GUST_KMH } from "@/lib/fieldbrief/wind";
+import { isWetHour, skyFor, weatherSummary } from "@/lib/fieldbrief/weather";
+import { cityNotesFor } from "@/lib/fieldbrief/rules";
 
 // The field brief: for a place and a date, can I legally fly and film here
 // (as of a date, per a source — never "legal"), when is the light good, what
@@ -138,6 +140,8 @@ export default function FieldBriefPanel() {
 
   const legality = brief?.legality;
   const wind = brief?.wind;
+  const weather = wind && !("unavailable" in wind) ? weatherSummary(wind.hours) : null;
+  const cityNotes = legality?.covered ? cityNotesFor(legality, target.placeName) : [];
   const calm = wind && !("unavailable" in wind) ? calmWindows(wind.hours) : [];
   const gustMax = wind && !("unavailable" in wind) ? Math.max(1, ...wind.hours.map((h) => h.gust10m)) : 1;
 
@@ -182,6 +186,11 @@ export default function FieldBriefPanel() {
         <Card title="Rules" hint={legality?.covered ? legality.asOf : undefined} loading={state === "loading"}>
           {legality && legality.covered ? (
             <div className="space-y-2 text-[13px] leading-relaxed">
+              {legality.reviewTier !== "verified" && (
+                <p className={`rounded-xl px-3 py-2 text-xs text-ink-2 ${legality.reviewTier === "unverified" ? "bg-accent/15" : "bg-paper-2"}`} data-testid="brief-tier">
+                  <strong className="text-ink">{legality.reviewTier === "unverified" ? "Unverified" : "Desk review"}</strong> — {legality.tierLabel}
+                </p>
+              )}
               {legality.stale && (
                 <p className="rounded-xl bg-accent/10 px-3 py-2 text-xs text-ink-2">
                   <strong className="text-ink">Needs re-verification</strong> — last checked {legality.daysSinceVerified} days ago.
@@ -193,6 +202,23 @@ export default function FieldBriefPanel() {
               <p><span className="font-medium">Ceiling</span> <span className="text-ink-2">{legality.maxAltitudeM != null ? `${legality.maxAltitudeM} m` : "not verified"} · {legality.maxDistanceRule}</span></p>
               {legality.noFlyHighlights.length > 0 && (
                 <p className="text-ink-2"><span className="font-medium text-ink">Often off limits:</span> {legality.noFlyHighlights.join(" · ")}</p>
+              )}
+              {cityNotes.length > 0 && (
+                <ul className="space-y-1" data-testid="brief-city-notes">
+                  {cityNotes.map((n) => (
+                    <li key={n.city} className="text-ink-2">
+                      <span className="font-medium text-ink">{n.city}:</span> {n.note}
+                      {n.reviewTier === "unverified" ? <span className="text-ink-3"> (unverified)</span> : null}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {brief && brief.airfields.length > 0 && (
+                <p className="text-ink-2" data-testid="brief-airfields">
+                  <span className="font-medium text-ink">Nearest airfield:</span>{" "}
+                  {brief.airfields.map((a) => `${a.name}${a.iata ? ` (${a.iata})` : ""} ${a.distanceKm < 10 ? a.distanceKm.toFixed(1) : Math.round(a.distanceKm)} km ${bearingWord(a.bearingDeg)}`).join(" · ")}
+                  <span className="text-ink-3"> — a distance, not an airspace check.</span>
+                </p>
               )}
               <p className="text-xs text-ink-3">
                 Waypoint doesn&apos;t check airspace.{" "}
@@ -206,6 +232,11 @@ export default function FieldBriefPanel() {
           ) : legality ? (
             <p className="text-[13px] leading-relaxed text-ink-2">
               {legality.countryCode ? `${legality.countryCode} is not yet covered` : "Country unknown — not yet covered"}. Nobody has verified these rules for Waypoint, so nothing is shown rather than a guess.{" "}
+              {legality.authority && (
+                <>
+                  Start at <a href={legality.authority.url} target="_blank" rel="noreferrer" className="text-accent underline-offset-4 hover:underline">{legality.authority.name} ↗</a>.{" "}
+                </>
+              )}
               <Link href="/fly" className="text-accent underline-offset-4 hover:underline">Covered countries</Link>
             </p>
           ) : null}
@@ -228,7 +259,55 @@ export default function FieldBriefPanel() {
           )}
         </Card>
 
-        {/* 3. Wind: gust sparkline, calm windows highlighted */}
+        {/* 3. Weather: sky, rain and temperature hour by hour, from the same forecast as wind */}
+        <Card title="Weather" hint={weather ? `Open-Meteo · ${clockLabel}` : undefined} loading={state === "loading"}>
+          {wind && "unavailable" in wind ? (
+            <p className="text-[13px] text-ink-2">Weather unavailable — {wind.reason}</p>
+          ) : wind && !weather ? (
+            <p className="text-[13px] text-ink-2">The forecast came back without sky conditions for this date.</p>
+          ) : wind && weather ? (
+            <div>
+              <p className="text-[13px] leading-relaxed">
+                <span className="text-lg" aria-hidden>{weather.dominant.glyph}</span>{" "}
+                <span className="font-medium">{weather.dominant.label}</span>
+                <span className="text-ink-2">
+                  {" "}for most of the day
+                  {weather.rainHours > 0 ? ` · ${weather.rainHours} of ${weather.totalHours} hours likely wet` : " · no wet hours forecast"}
+                  {weather.tempMinC != null && weather.tempMaxC != null ? ` · ${Math.round(weather.tempMinC)}–${Math.round(weather.tempMaxC)} °C` : ""}
+                </span>
+              </p>
+              {weather.rainHours > 0 && weather.dryWindows.length > 0 && (
+                <p className="mt-1 text-[13px] text-ink-2">
+                  <span className="font-medium text-ink">Dry windows:</span>{" "}
+                  {weather.dryWindows.map((w) => `${hhmm(w.start)}–${hhmm(w.end)}`).join(", ")}
+                </p>
+              )}
+              <div className="scroll-thin mt-2 overflow-x-auto" data-testid="weather-hours">
+                <table className="tnum w-full text-[11px]">
+                  <thead className="text-left text-[10px] uppercase tracking-wide text-ink-3">
+                    <tr><th className="py-1 font-medium">Hour</th><th className="py-1 font-medium">Sky</th><th className="py-1 font-medium">Rain</th><th className="py-1 font-medium">Temp</th><th className="py-1 font-medium">Cloud</th></tr>
+                  </thead>
+                  <tbody>
+                    {wind.hours.map((h) => {
+                      const sky = skyFor(h.weatherCode);
+                      return (
+                        <tr key={h.time} className={isWetHour(h) ? "text-ink-3" : "text-ink"}>
+                          <td className="py-0.5">{hhmm(h.time)}</td>
+                          <td className="py-0.5"><span aria-hidden>{sky.glyph}</span> {sky.label}</td>
+                          <td className="py-0.5">{h.precipProb != null ? `${Math.round(h.precipProb)} %` : "—"}{h.precipMm ? ` · ${h.precipMm.toFixed(1)} mm` : ""}</td>
+                          <td className="py-0.5">{h.tempC != null ? `${Math.round(h.tempC)} °` : "—"}</td>
+                          <td className="py-0.5">{h.cloudCover != null ? `${Math.round(h.cloudCover)} %` : "—"}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : null}
+        </Card>
+
+        {/* 4. Wind: gust sparkline, calm windows highlighted */}
         <Card title="Wind" hint={wind && !("unavailable" in wind) ? `Open-Meteo · gusts, km/h · ${clockLabel}` : undefined} loading={state === "loading"}>
           {wind && "unavailable" in wind ? (
             <p className="text-[13px] text-ink-2">Wind unavailable — {wind.reason}</p>
@@ -288,7 +367,7 @@ export default function FieldBriefPanel() {
           ) : null}
         </Card>
 
-        {/* 4. Nearby: your circle's scout pins and field reports */}
+        {/* 5. Nearby: your circle's scout pins and field reports */}
         <Card title="Nearby" hint={`${nearby.notes.length} scout ${nearby.notes.length === 1 ? "pin" : "pins"} · ${nearby.reports.length} ${nearby.reports.length === 1 ? "report" : "reports"}`}>
           {nearby.notes.length === 0 && nearby.reports.length === 0 ? (
             <p className="text-[13px] text-ink-2">Nobody in your circle has scouted or reported here yet. Add scout details to a pin, or a field report after you fly.</p>

@@ -2,8 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { validateRules, EXPIRED_AFTER_DAYS, daysSinceVerified } from "../lib/fieldbrief/rules";
+import { validateRules, EXPIRED_AFTER_DAYS, daysSinceVerified, cityNotesFor, countriesByTier } from "../lib/fieldbrief/rules";
 import { RULE_FILES } from "../lib/fieldbrief/rules/index";
+import { authorityFor } from "../lib/fieldbrief/rules";
+import authorityRows from "../lib/fieldbrief/authorities.json";
 
 // Every curated country file must parse, match the schema, cite at least one
 // source, have been verified within a year, and be named after its code.
@@ -41,16 +43,54 @@ test("validation rejects a record without sources or with a bad date", () => {
   assert.ok(validateRules({ ...tpl, countryCode: "prt" }).some((p) => p.startsWith("countryCode")));
 });
 
-test("research drafts are never registered or loaded", () => {
-  const draftDir = join(DIR, "drafts");
-  const drafts = readdirSync(draftDir).filter((f) => /^[a-z]{2}\.json$/.test(f));
-  assert.ok(drafts.length > 0, "drafts folder holds the desk-review files");
-  for (const f of drafts) {
-    const cc = f.slice(0, 2).toUpperCase();
-    assert.ok(!(cc in RULE_FILES) || files.includes(f), `${cc} is registered but only exists as a draft`);
+test("every desk-review record is labelled as such and never attributed to a person", () => {
+  for (const cc of Object.keys(RULE_FILES)) {
+    const r = RULE_FILES[cc];
+    if (r.reviewTier === "desk-review") {
+      assert.equal(r.verifiedBy, "codex-source-review", `${cc}: desk reviews carry the review's own tag, not a handle`);
+    }
   }
-  const registry = readFileSync(join(DIR, "index.ts"), "utf8");
-  assert.ok(!/drafts\//.test(registry), "rules/index.ts must not import from drafts/");
+});
+
+test("every unverified record says so in its notes and is never attributed to a person", () => {
+  for (const cc of Object.keys(RULE_FILES)) {
+    const r = RULE_FILES[cc];
+    if (r.reviewTier === "unverified") {
+      assert.equal(r.verifiedBy, "claude-general-knowledge", `${cc}: unverified records carry the generator's tag, not a handle`);
+      assert.match(r.notes, /not verified/i, `${cc}: notes must say the record is not verified`);
+      for (const n of r.cityNotes ?? []) assert.equal(n.reviewTier ?? "unverified", "unverified", `${cc}/${n.city}: a city note inside an unverified record cannot claim a higher tier`);
+    }
+  }
+});
+
+test("city notes validate and match a place name loosely", () => {
+  const tpl = JSON.parse(readFileSync(join(DIR, "_template.json"), "utf8"));
+  assert.deepEqual(validateRules({ ...tpl, cityNotes: [] }), []);
+  assert.deepEqual(validateRules({ ...tpl, cityNotes: [{ city: "Lisbon", note: "Old town is a no-fly zone." }] }), []);
+  assert.ok(validateRules({ ...tpl, cityNotes: [{ city: "", note: "x" }] }).some((p) => p.startsWith("cityNotes")));
+  assert.ok(validateRules({ ...tpl, cityNotes: [{ city: "Lisbon", note: "x", reviewTier: "guess" }] }).some((p) => p.startsWith("cityNotes")));
+  const r = { reviewTier: "desk-review" as const, cityNotes: [{ city: "Lisbon", note: "a" }, { city: "Porto", note: "b", reviewTier: "unverified" as const }] };
+  assert.deepEqual(cityNotesFor(r, "Lisbon, Portugal").map((n) => [n.city, n.reviewTier]), [["Lisbon", "desk-review"]]);
+  assert.deepEqual(cityNotesFor(r, "Porto").map((n) => n.reviewTier), ["unverified"]);
+  assert.deepEqual(cityNotesFor(r, "Faro"), []);
+  assert.deepEqual(cityNotesFor(null, "Lisbon"), []);
+});
+
+test("countries group by tier and every record lands in exactly one group", () => {
+  const g = countriesByTier();
+  const total = g.verified.length + g["desk-review"].length + g.unverified.length;
+  assert.equal(total, Object.keys(RULE_FILES).length);
+});
+
+test("authority links: every entry has a code, a name and an https URL; rules and authorities agree", () => {
+  for (const a of authorityRows as { countryCode: string; name: string; authorityName: string; authorityUrl: string }[]) {
+    assert.match(a.countryCode, /^[A-Z]{2}$/);
+    assert.ok(a.name && a.authorityName);
+    assert.ok(a.authorityUrl.startsWith("https://"), `${a.countryCode} authority URL must be https`);
+  }
+  for (const cc of Object.keys(RULE_FILES)) {
+    assert.ok(authorityFor(cc), `${cc} has rules but no authority entry`);
+  }
 });
 
 test("unknown is distinct from false: a null flag needs its condition in the note", () => {

@@ -1,0 +1,72 @@
+{
+  "countryCode": "CA",
+  "countryName": "Canada",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "Transport Canada",
+  "authorityUrl": "https://tc.canada.ca/en/aviation/drone-safety",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration and a pilot certificate (basic or advanced) apply from 250 g; sub-250 g drones are exempt from both but not from the rules."
+  },
+  "pilotCertRequired": {
+    "value": true,
+    "note": "Basic or advanced certificate from 250 g; foreigners can sit the online basic exam."
+  },
+  "weightClasses": [
+    {
+      "maxGrams": 250,
+      "summary": "Micro: no registration or certificate, still no flying over people or near aircraft."
+    },
+    {
+      "maxGrams": 25000,
+      "summary": "Small: registration and basic/advanced certificate; NAV Drone for controlled airspace."
+    }
+  ],
+  "maxAltitudeM": 122,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "No general mandate; provincial and site rules vary."
+  },
+  "importRestriction": {
+    "value": "none",
+    "note": "No import restriction known for personal drones."
+  },
+  "noFlyHighlights": [
+    "Within 5.6 km of airports and 1.9 km of heliports without authorization",
+    "National parks (Parks Canada prohibits take-off and landing without a permit)",
+    "Over people and advertised events"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "NAV CANADA NAV Drone",
+    "url": "https://www.navcanada.ca/en/flight-planning/drone-flight-planning.aspx"
+  },
+  "cityNotes": [
+    {
+      "city": "Toronto",
+      "note": "Downtown is largely controlled airspace around Billy Bishop and Pearson; NAV Drone authorization applies.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Vancouver",
+      "note": "Harbour and downtown sit under YVR and harbour heliport airspace; parks require permission.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Banff",
+      "note": "Parks Canada bans drones in national parks without a permit.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://tc.canada.ca/en/aviation/drone-safety"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

@@ -1,0 +1,43 @@
+{
+  "countryCode": "KZ",
+  "countryName": "Kazakhstan",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "Aviation Administration of Kazakhstan",
+  "authorityUrl": "https://aak.gov.kz/",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration required above 1.5 kg; lighter drones have simpler rules."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Declare the drone at customs; registration or a permit may be asked for."
+  },
+  "noFlyHighlights": [
+    "Almaty and Astana without approval",
+    "Border zones and near Baikonur"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [],
+  "sourceUrls": [
+    "https://aak.gov.kz/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

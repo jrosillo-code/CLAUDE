@@ -1,0 +1,55 @@
+{
+  "countryCode": "CR",
+  "countryName": "Costa Rica",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "DGAC Costa Rica",
+  "authorityUrl": "https://www.dgac.go.cr/",
+  "registrationRequired": {
+    "value": true,
+    "note": "DGAC registration is required for drones over 250 g; foreigners register with a passport."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": true,
+    "note": "Liability insurance is required for registered drones."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "National parks (SINAC requires a permit)",
+    "Within 8 km of airports",
+    "Over people"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Manuel Antonio",
+      "note": "National park; drones prohibited without SINAC permission.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Arenal",
+      "note": "Volcano park area requires a permit.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.dgac.go.cr/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

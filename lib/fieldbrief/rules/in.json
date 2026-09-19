@@ -1,0 +1,63 @@
+{
+  "countryCode": "IN",
+  "countryName": "India",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "DGCA (Digital Sky)",
+  "authorityUrl": "https://digitalsky.dgca.gov.in/",
+  "registrationRequired": {
+    "value": true,
+    "note": "Every drone above 250 g needs a UIN on Digital Sky; foreign nationals cannot register in their own name and must go through an Indian entity."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Import requires DGCA approval; customs seizures of undeclared drones are common."
+  },
+  "noFlyHighlights": [
+    "Red zones around airports, borders and military areas",
+    "Delhi, Mumbai airports and much of the capital region",
+    "Monuments under the Archaeological Survey of India"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "Digital Sky airspace map",
+    "url": "https://digitalsky.dgca.gov.in/airspace-map/"
+  },
+  "cityNotes": [
+    {
+      "city": "Delhi",
+      "note": "Almost entirely red zone; no recreational flights.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Goa",
+      "note": "Beaches are largely yellow/green but airport approaches at Dabolim and Mopa cut across them.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Agra",
+      "note": "The Taj Mahal is a no-fly zone.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://digitalsky.dgca.gov.in/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

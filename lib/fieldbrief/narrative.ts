@@ -1,3 +1,4 @@
+import { weatherSummary } from "./weather";
 import type { FieldBrief } from "./assemble";
 
 // The optional warm voice, made safe by construction. A prompt that says
@@ -57,6 +58,19 @@ export function candidateSentences(b: FieldBrief): string[] {
     const calm = b.wind.hours.filter((h) => Number.isFinite(h.gust10m) && h.gust10m >= 0 && h.gust10m < 30);
     const maxGust = Math.max(...b.wind.hours.map((h) => h.gust10m));
     out.push(calm.length ? `${calm.length} of ${b.wind.hours.length} forecast hours have gusts under 30 km/h; the day's maximum gust is ${Math.round(maxGust)} km/h.` : `No forecast hour has gusts under 30 km/h; the maximum is ${Math.round(maxGust)} km/h.`);
+  }
+  if (!("unavailable" in b.wind)) {
+    const w = weatherSummary(b.wind.hours);
+    if (w) {
+      out.push(w.rainHours === 0
+        ? `The sky reads ${w.dominant.label.toLowerCase()} for the day with no forecast hour likely to be wet.`
+        : `The sky reads mostly ${w.dominant.label.toLowerCase()}, with ${w.rainHours} of ${w.totalHours} forecast hours likely wet.`);
+      if (w.tempMinC != null && w.tempMaxC != null) out.push(`Temperatures run from ${Math.round(w.tempMinC)} to ${Math.round(w.tempMaxC)} °C.`);
+    }
+  }
+  if (b.airfields.length) {
+    const a = b.airfields[0];
+    out.push(`The nearest listed airfield is ${a.name}${a.iata ? ` (${a.iata})` : ""}, about ${Math.round(a.distanceKm)} km away — a distance, not an airspace check.`);
   }
   const n = b.nearby;
   if (n.scoutPins.length || n.reports.length) {

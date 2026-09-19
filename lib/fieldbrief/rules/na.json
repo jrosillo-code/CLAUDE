@@ -1,0 +1,55 @@
+{
+  "countryCode": "NA",
+  "countryName": "Namibia",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "NCAA Namibia",
+  "authorityUrl": "https://www.ncaa.na/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Recreational drones need an NCAA authorisation letter, applied for in advance."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Customs asks for the NCAA letter."
+  },
+  "noFlyHighlights": [
+    "Sossusvlei and all national parks without MEFT permission",
+    "Etosha",
+    "Within 5 km of airports"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Sossusvlei",
+      "note": "NamibRand and the park require permits; commonly refused.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Swakopmund",
+      "note": "Coast flights are commonly done outside the airfield zone.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.ncaa.na/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

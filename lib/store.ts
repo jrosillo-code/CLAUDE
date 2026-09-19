@@ -174,7 +174,8 @@ interface WaypointState {
   /** Rename a saved trip (owner only). */
   renameTrip: (id: string, title: string) => void;
   tripDraft: { title: string; visibility: "friends" | "private"; stops: TripStop[] } | null;
-  startTripDraft: () => void;
+  /** Start planning; the name can be given up front and edited any time before saving. */
+  startTripDraft: (title?: string) => void;
   /** Fork a friend's trip into your own draft — their stops, your route now. */
   cloneTripToDraft: (tripId: string) => boolean;
   /** Mark your trip finished — the cue for the 60-second debrief. */
@@ -195,6 +196,9 @@ interface WaypointState {
   /** Layers card: show only pins that carry scout details. */
   showScout: boolean;
   setShowScout: (v: boolean) => void;
+  /** Layers card: field reports as outcome-coloured markers (flights layer). */
+  showFlights: boolean;
+  setShowFlights: (v: boolean) => void;
   briefTarget: {
     lat: number;
     lng: number;
@@ -777,9 +781,9 @@ export const useStore = create<WaypointState>((set, get) => ({
       };
     }),
   tripDraft: null,
-  startTripDraft: () =>
+  startTripDraft: (title = "") =>
     set({
-      tripDraft: { title: "", visibility: "friends", stops: [] },
+      tripDraft: { title: title.trim(), visibility: "friends", stops: [] },
       mapMode: "trips",
       selectedPinId: null,
       addDraft: null,
@@ -843,6 +847,8 @@ export const useStore = create<WaypointState>((set, get) => ({
   fieldReports: [...seedFieldReports],
   showScout: false,
   setShowScout: (v) => set({ showScout: v }),
+  showFlights: false,
+  setShowFlights: (v) => set({ showFlights: v }),
   briefTarget: null,
   openBrief: (t) => set({ briefTarget: t }),
   closeBrief: () => set({ briefTarget: null }),

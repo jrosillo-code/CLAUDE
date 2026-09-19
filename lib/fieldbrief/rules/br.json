@@ -1,0 +1,58 @@
+{
+  "countryCode": "BR",
+  "countryName": "Brazil",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "ANAC / DECEA",
+  "authorityUrl": "https://www.gov.br/anac/pt-br/assuntos/drones",
+  "registrationRequired": {
+    "value": true,
+    "note": "SISANT registration required above 250 g; every flight in controlled airspace needs a SARPAS request."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "No licence below 25 kg for recreational use; foreign operators register with a CPF or passport."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": true,
+    "note": "Third-party liability insurance is required above 250 g."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "ANATEL homologation of the radio equipment is formally required; customs may ask."
+  },
+  "noFlyHighlights": [
+    "Within airport control zones without DECEA authorization",
+    "Over crowds and within 30 m of people who have not consented",
+    "National parks without ICMBio permission"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "DECEA SARPAS",
+    "url": "https://sarpas.decea.mil.br/"
+  },
+  "cityNotes": [
+    {
+      "city": "Rio de Janeiro",
+      "note": "Copacabana, Sugarloaf and Christ the Redeemer sit in controlled airspace; SARPAS request needed.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "São Paulo",
+      "note": "Dense controlled airspace around Congonhas and Guarulhos.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.gov.br/anac/pt-br/assuntos/drones"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

@@ -11,7 +11,19 @@ export const TERRAIN_ATTRIBUTION = "Elevation: Mapzen / AWS Terrain Tiles";
 // ── Satellite basemap (the "Satellite" mode) ──
 // ESRI World Imagery + a boundaries/places reference overlay = Apple-style
 // hybrid. Keyless; attribution required and surfaced via AttributionControl.
-export function satelliteStyle(): StyleSpecification {
+//
+// Sharpness: ESRI serves 256 px tiles with no @2x variant. MapLibre picks the
+// tile zoom as map zoom + log2(512 / tileSize), so on a HiDPI screen a 256 px
+// tile stretched over 256 CSS px is drawn at half the device resolution and
+// reads soft. Declaring the tile as 128 px fetches one zoom level deeper —
+// four times the tiles, but every imagery pixel lands on a device pixel.
+// Only worth it when the screen can show the difference.
+export function satelliteTileSize(devicePixelRatio = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1): 128 | 256 {
+  return devicePixelRatio >= 1.5 ? 128 : 256;
+}
+
+export function satelliteStyle(devicePixelRatio?: number): StyleSpecification {
+  const tileSize = satelliteTileSize(devicePixelRatio);
   return {
     version: 8,
     glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
@@ -21,7 +33,9 @@ export function satelliteStyle(): StyleSpecification {
         tiles: [
           "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         ],
-        tileSize: 256,
+        tileSize,
+        // ESRI has imagery to 19 (more in cities); with the 128 px trick the
+        // deepest map zoom is one level lower than the tile zoom.
         maxzoom: 19,
         attribution:
           "Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community",
@@ -31,18 +45,25 @@ export function satelliteStyle(): StyleSpecification {
         tiles: [
           "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
         ],
-        tileSize: 256,
+        tileSize,
         maxzoom: 19,
       },
     },
     layers: [
       { id: "sat-bg", type: "background", paint: { "background-color": "#0b1a2b" } },
-      { id: "sat-imagery", type: "raster", source: "esri-imagery" },
+      {
+        id: "sat-imagery",
+        type: "raster",
+        source: "esri-imagery",
+        // No 300 ms cross-fade per tile: a loaded tile is drawn at once, so a
+        // pan settles as fast as the network delivers rather than a beat later.
+        paint: { "raster-fade-duration": 0, "raster-resampling": "linear" },
+      },
       {
         id: "sat-reference",
         type: "raster",
         source: "esri-reference",
-        paint: { "raster-opacity": 0.9 },
+        paint: { "raster-opacity": 0.9, "raster-fade-duration": 0 },
       },
     ],
   };

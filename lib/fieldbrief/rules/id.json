@@ -1,0 +1,55 @@
+{
+  "countryCode": "ID",
+  "countryName": "Indonesia",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "DGCA Indonesia (Kemenhub)",
+  "authorityUrl": "https://hubud.dephub.go.id/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Registration through the SIDOPI system applies to drones over 250 g; enforcement is uneven."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 150,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Within 15 km of airports",
+    "Bali temples and ceremonies (customary bans)",
+    "Komodo and other national parks without a permit"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Bali",
+      "note": "Ngurah Rai's approach covers Kuta to Sanur; temples like Uluwatu and Tanah Lot refuse drones.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Yogyakarta",
+      "note": "Borobudur and Prambanan require permits from the park authorities.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://hubud.dephub.go.id/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

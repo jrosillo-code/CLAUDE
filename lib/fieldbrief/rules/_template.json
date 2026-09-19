@@ -2,23 +2,58 @@
   "countryCode": "XX",
   "countryName": "Country name",
   "regime": "national",
+  "reviewTier": "verified",
+  "coverage": "national",
+  "scope": "One sentence on what this record does and does not cover.",
   "authorityName": "Name of the national aviation authority",
   "authorityUrl": "https://example.invalid/authority-drone-page",
-  "registrationRequired": { "value": true, "note": "Who must register, above what weight, and where." },
-  "pilotCertRequired": { "value": false, "note": "Which certificate, for which class of flying." },
+  "registrationRequired": {
+    "value": true,
+    "note": "Who must register, above what weight, and where."
+  },
+  "pilotCertRequired": {
+    "value": false,
+    "note": "Which certificate, for which class of flying."
+  },
   "weightClasses": [
-    { "maxGrams": 250, "summary": "What the lightest class may do." }
+    {
+      "maxGrams": 250,
+      "summary": "What the lightest class may do."
+    }
   ],
   "maxAltitudeM": 120,
   "maxDistanceRule": "Visual line of sight, or the national wording.",
-  "insuranceRequired": { "value": false, "note": "Whether third-party liability cover is mandatory." },
-  "importRestriction": { "value": "unknown", "note": "Whether drones must be declared or are banned at the border." },
+  "insuranceRequired": {
+    "value": false,
+    "note": "Whether third-party liability cover is mandatory."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Whether drones must be declared or are banned at the border."
+  },
   "noFlyHighlights": [
     "Short strings only: the capital, parks, coastlines, borders, airports."
   ],
-  "permitProcess": { "who": "Who grants filming or flight permits", "how": "How to apply", "leadTimeDays": 14, "url": "https://example.invalid/permits" },
-  "nationalApp": { "name": "Name of the official airspace map or app", "url": "https://example.invalid/airspace-map" },
-  "sourceUrls": ["https://example.invalid/regulation-text"],
+  "permitProcess": {
+    "who": "Who grants filming or flight permits",
+    "how": "How to apply",
+    "leadTimeDays": 14,
+    "url": "https://example.invalid/permits"
+  },
+  "nationalApp": {
+    "name": "Name of the official airspace map or app",
+    "url": "https://example.invalid/airspace-map"
+  },
+  "cityNotes": [
+    {
+      "city": "City or park name",
+      "note": "One place-specific rule a pilot should know.",
+      "reviewTier": "verified"
+    }
+  ],
+  "sourceUrls": [
+    "https://example.invalid/regulation-text"
+  ],
   "lastVerifiedOn": "2026-01-01",
   "verifiedBy": "handle",
   "notes": "Anything a pilot should know that does not fit above."

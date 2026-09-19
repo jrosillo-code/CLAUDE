@@ -1,0 +1,55 @@
+{
+  "countryCode": "ZA",
+  "countryName": "South Africa",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "SACAA",
+  "authorityUrl": "https://www.caa.co.za/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Private (hobby) use needs no registration; any commercial use requires an RPL and ROC, which take months."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "none",
+    "note": "No import restriction known for personal drones."
+  },
+  "noFlyHighlights": [
+    "Kruger and SANParks (drones prohibited)",
+    "Within 10 km of airports",
+    "Over people and near buildings without consent"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Cape Town",
+      "note": "Table Mountain national park prohibits drones; the city centre is under the airport approach.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Kruger",
+      "note": "SANParks bans drones; rangers enforce it.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.caa.co.za/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

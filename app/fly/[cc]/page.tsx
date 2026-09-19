@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { coveredCountries, daysSinceVerified, isStale, rulesFor, sourceLabel } from "@/lib/fieldbrief/rules";
+import { TIER_LABEL, authorityFor, coveredCountries, daysSinceVerified, isStale, reviewTierOf, rulesFor, sourceLabel } from "@/lib/fieldbrief/rules";
 import { publicReportsFor } from "@/lib/fieldbrief/reports";
 import FlyPageTracker from "@/components/FlyPageTracker";
 
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ cc: strin
   }
   return {
     title: `Drone rules in ${rules.countryName} (as of ${rules.lastVerifiedOn}) — Waypoint field brief`,
-    description: `Registration, pilot certificate, altitude, insurance and no-fly highlights for ${rules.countryName}, per ${sourceLabel(rules)}, verified ${rules.lastVerifiedOn}. Plus light, wind and where friends have flown.`,
+    description: `Registration, pilot certificate, altitude, insurance and no-fly highlights for ${rules.countryName}, per ${sourceLabel(rules)}, ${reviewTierOf(rules) === "verified" ? "verified" : reviewTierOf(rules) === "desk-review" ? "desk-reviewed" : "summarised, unverified,"} ${rules.lastVerifiedOn}. Plus light, weather, wind and where friends have flown.`,
     alternates: { canonical: `/fly/${cc.toLowerCase()}` },
   };
 }
@@ -48,16 +48,23 @@ export default async function FlyCountryPage({ params }: { params: Promise<{ cc:
   const rules = rulesFor(code);
 
   if (!rules) {
+    const authority = authorityFor(code);
     return (
       <main className="mx-auto min-h-screen max-w-3xl px-5 py-10 sm:py-16">
         <FlyPageTracker countryCode={code} />
         <p className="text-[11px] font-semibold uppercase tracking-wider text-accent">Waypoint field brief · {code}</p>
-        <h1 className="mt-2 font-display text-4xl leading-tight">Not yet covered</h1>
+        <h1 className="mt-2 font-display text-4xl leading-tight">{authority ? `${authority.name}: not yet covered` : "Not yet covered"}</h1>
         <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink-2">
-          Nobody has verified {code}&apos;s drone rules against their sources for Waypoint yet, so
+          Nobody has verified {authority?.name ?? code}&apos;s drone rules against their sources for Waypoint yet, so
           this page shows nothing rather than a guess. Check the national aviation authority
           directly before flying.
         </p>
+        {authority && (
+          <p className="mt-4 text-sm">
+            Start here:{" "}
+            <a href={authority.authorityUrl} target="_blank" rel="noreferrer" className="font-medium text-accent underline-offset-4 hover:underline">{authority.authorityName} ↗</a>
+          </p>
+        )}
         <p className="mt-8 text-sm text-ink-3">
           <Link href="/fly" className="text-accent underline-offset-4 hover:underline">Covered countries</Link>
           {" · "}
@@ -68,6 +75,7 @@ export default async function FlyCountryPage({ params }: { params: Promise<{ cc:
   }
 
   const stale = isStale(rules);
+  const tier = reviewTierOf(rules);
   const reports = await publicReportsFor(code);
   const flew = reports.filter((r) => r.outcome === "flew");
   const problems = reports.filter((r) => r.outcome !== "flew");
@@ -79,10 +87,22 @@ export default async function FlyCountryPage({ params }: { params: Promise<{ cc:
       <p className="text-[11px] font-semibold uppercase tracking-wider text-accent">Waypoint field brief · {code}</p>
       <h1 className="mt-2 font-display text-4xl leading-tight sm:text-5xl">Drone rules in {rules.countryName}</h1>
       <p className="mt-3 text-sm text-ink-3">
-        {asOf} · verified by @{rules.verifiedBy} · {rules.regime === "easa" ? "EASA harmonised rules" : "national rules"}
+        {asOf} · {tier === "verified" ? `verified by @${rules.verifiedBy}` : tier === "desk-review" ? "desk review" : "unverified summary"} · {rules.regime === "easa" ? "EASA harmonised rules" : "national rules"}
         {rules.coverage === "baseline" ? " · shared baseline only" : ""}
       </p>
       {rules.scope && <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-2">{rules.scope}</p>}
+
+      {tier !== "verified" && (
+        <div className={`mt-5 rounded-2xl border p-4 text-sm leading-relaxed text-ink-2 ${tier === "unverified" ? "border-accent/50 bg-accent/10" : "border-line bg-paper-2/60"}`} data-testid="tier-banner">
+          <strong className="text-ink">{tier === "unverified" ? "Unverified." : "Desk review."}</strong> {TIER_LABEL[tier]}
+          {tier === "unverified" ? (
+            <>
+              {" "}This summary was written from general knowledge without reading the sources; treat every line as a question to put to{" "}
+              <a href={rules.authorityUrl} target="_blank" rel="noreferrer" className="font-medium text-accent underline-offset-4 hover:underline">{rules.authorityName} ↗</a>.
+            </>
+          ) : null}
+        </div>
+      )}
 
       {stale && (
         <div className="mt-5 rounded-2xl border border-accent/40 bg-accent/10 p-4 text-sm leading-relaxed text-ink-2">
@@ -132,6 +152,24 @@ export default async function FlyCountryPage({ params }: { params: Promise<{ cc:
             ))}
           </ul>
           <p className="mt-2 text-xs text-ink-3">Highlights only — the official map below is the authority on airspace.</p>
+        </section>
+      )}
+
+      {rules.cityNotes && rules.cityNotes.length > 0 && (
+        <section className="mt-6" data-testid="city-notes">
+          <h2 className="text-[11px] font-semibold uppercase tracking-wider text-ink-3">Place by place</h2>
+          <ul className="mt-2 divide-y divide-line rounded-2xl border border-line">
+            {rules.cityNotes.map((n) => (
+              <li key={n.city} className="px-4 py-3 text-sm">
+                <span className="font-semibold">{n.city}</span>
+                <span className="text-ink-2"> — {n.note}</span>
+                {(n.reviewTier ?? tier) !== "verified" && (
+                  <span className="text-ink-3"> ({(n.reviewTier ?? tier) === "unverified" ? "unverified" : "desk review"})</span>
+                )}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-2 text-xs text-ink-3">Local by-laws change faster than national rules; the authority and the site itself have the last word.</p>
         </section>
       )}
 

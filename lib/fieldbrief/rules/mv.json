@@ -1,0 +1,49 @@
+{
+  "countryCode": "MV",
+  "countryName": "Maldives",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "Maldives Civil Aviation Authority",
+  "authorityUrl": "https://www.caa.gov.mv/",
+  "registrationRequired": {
+    "value": true,
+    "note": "MCAA registration is required; tourists register with a passport and resort letter."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Customs asks for the registration on arrival."
+  },
+  "noFlyHighlights": [
+    "Malé and Velana airport zone",
+    "Resort islands set their own rules; many prohibit drones"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Malé",
+      "note": "Airport island and the capital are restricted; resorts decide for their islands.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.caa.gov.mv/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

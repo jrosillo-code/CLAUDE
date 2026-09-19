@@ -1,0 +1,49 @@
+{
+  "countryCode": "SG",
+  "countryName": "Singapore",
+  "regime": "national",
+  "reviewTier": "desk-review",
+  "coverage": "national",
+  "scope": "Selected CAAS recreational outdoor-flight requirements; permits and location restrictions must be checked separately.",
+  "authorityName": "CAAS",
+  "authorityUrl": "https://www.caas.gov.sg/unmanned-aircraft/requirements-for-flying-ua/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Register aircraft above 250 g; outdoor operations above 250 g require Broadcast Remote Identification."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Above 1.5 kg through 7 kg: Basic Training Certificate or Pilot Licence. Above 7 kg: Pilot Licence."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": null,
+  "altitudeNote": "No altitude rule verified in this summary.",
+  "maxDistanceRule": "Check the authority's operating conditions.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Not verified in this summary. Check the national authority for your aircraft and operation."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment requirements have not been verified."
+  },
+  "noFlyHighlights": [],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "CAAS flight-area guidance",
+    "url": "https://www.caas.gov.sg/unmanned-aircraft/no-fly-zones-and-ua-flying-areas/"
+  },
+  "sourceUrls": [
+    "https://www.caas.gov.sg/unmanned-aircraft/requirements-for-flying-ua/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "codex-source-review",
+  "notes": "Desk research from official sources, not firsthand flight verification. Check current notices and site permissions before a flight.",
+  "cityNotes": [
+    {
+      "city": "Singapore",
+      "note": "Registration from 250 g; a permit is needed almost everywhere; fines are heavy.",
+      "reviewTier": "unverified"
+    }
+  ]
+}

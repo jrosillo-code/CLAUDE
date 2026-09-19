@@ -1,0 +1,58 @@
+{
+  "countryCode": "KR",
+  "countryName": "South Korea",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "MOLIT / KOCA",
+  "authorityUrl": "https://www.molit.go.kr/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Registration required above 250 g for hobby use; pilots of 250 g–7 kg need an online course, heavier need a licence."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Online course certificate from 250 g; licence above 7 kg."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 150,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Most of Seoul is prohibited (P-73) or restricted; the Han river has limited permitted zones",
+    "Within 9.3 km of airports",
+    "Near the DMZ and military installations"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "Ready to Fly (드론 원스톱)",
+    "url": "https://drone.onestop.go.kr/"
+  },
+  "cityNotes": [
+    {
+      "city": "Seoul",
+      "note": "Central Seoul is a no-fly zone; only a few designated riverside parks allow flights with prior approval.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Busan",
+      "note": "Beaches sit under Gimhae's airspace; check the app.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.molit.go.kr/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

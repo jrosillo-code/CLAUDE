@@ -34,6 +34,7 @@ export default function TripsPanel({
   const deleteTrip = useStore((s) => s.deleteTrip);
   const renameTrip = useStore((s) => s.renameTrip);
   const startTripDraft = useStore((s) => s.startTripDraft);
+  const [newTitle, setNewTitle] = useState("");
   const cloneTripToDraft = useStore((s) => s.cloneTripToDraft);
   const completeTrip = useStore((s) => s.completeTrip);
   const reflections = useStore((s) => s.reflections);
@@ -81,15 +82,32 @@ export default function TripsPanel({
           Plan a route stop by stop — a thread stitches it across the map. Trips stay
           private or friends-only, never public.
         </p>
-        <button
-          onClick={() => {
-            startTripDraft();
+        {/* Name first, then plan: the title is editable in the planning bar too. */}
+        <form
+          className="mt-3 flex gap-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            startTripDraft(newTitle);
+            setNewTitle("");
             onClose();
           }}
-          className="mt-3 w-full rounded-full bg-accent py-2.5 text-sm font-semibold text-paper"
         >
-          + Plan a trip
-        </button>
+          <input
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            placeholder="Name your trip (optional)"
+            aria-label="Trip name"
+            data-testid="trip-new-title"
+            className="min-w-0 flex-1 rounded-full border border-line bg-paper px-4 py-2.5 text-sm outline-none placeholder:text-ink-3 focus:border-ink"
+          />
+          <button
+            type="submit"
+            className="shrink-0 rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-paper"
+            data-testid="trip-plan"
+          >
+            + Plan a trip
+          </button>
+        </form>
       </div>
 
       <div className="scroll-thin flex-1 space-y-2.5 overflow-y-auto px-4 py-4">

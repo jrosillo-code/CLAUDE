@@ -1,0 +1,53 @@
+{
+  "countryCode": "HK",
+  "countryName": "Hong Kong",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAD Hong Kong",
+  "authorityUrl": "https://www.cad.gov.hk/english/sua.html",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration for drones over 250 g; A1 (sub-250 g) has fewer requirements."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 90,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": true,
+    "note": "Liability insurance is required from 250 g."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Victoria Harbour and most of Kowloon under the SUA rules",
+    "Within 5 km of the airport",
+    "Over people"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "eSUA portal",
+    "url": "https://esua.cad.gov.hk/"
+  },
+  "cityNotes": [
+    {
+      "city": "Hong Kong",
+      "note": "Category A2 (250 g–7 kg) needs registration and a course; the harbour skyline is restricted.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.cad.gov.hk/english/sua.html"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

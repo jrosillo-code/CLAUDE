@@ -1,0 +1,42 @@
+{
+  "countryCode": "UZ",
+  "countryName": "Uzbekistan",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "Uzaviation",
+  "authorityUrl": "https://uzaviation.uz/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for registration."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": null,
+  "altitudeNote": "Private flying is not permitted without a licence that tourists do not get.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "banned",
+    "note": "Drones are confiscated at the border without a permit."
+  },
+  "noFlyHighlights": [
+    "All private drone flights without a state permit"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [],
+  "sourceUrls": [
+    "https://uzaviation.uz/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

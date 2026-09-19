@@ -1,0 +1,43 @@
+{
+  "countryCode": "UY",
+  "countryName": "Uruguay",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "DINACIA",
+  "authorityUrl": "https://www.gub.uy/dinacia",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration required above 250 g."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": true,
+    "note": "Liability insurance is required for registered drones."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Within 5 km of airports",
+    "Over urban areas without authorization"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [],
+  "sourceUrls": [
+    "https://www.gub.uy/dinacia"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

@@ -1,0 +1,45 @@
+{
+  "countryCode": "US",
+  "countryName": "United States",
+  "regime": "national",
+  "reviewTier": "desk-review",
+  "coverage": "national",
+  "scope": "FAA recreational-flight baseline. Work-related filming requires a separate assessment under Part 107.",
+  "authorityName": "FAA",
+  "authorityUrl": "https://www.faa.gov/uas/recreational_flyers",
+  "registrationRequired": {
+    "value": null,
+    "note": "Recreational drones weighing 250 g or more require registration. International operators must check additional steps."
+  },
+  "pilotCertRequired": {
+    "value": true,
+    "note": "Recreational pilots must complete TRUST and carry proof."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 121.92,
+  "altitudeNote": "400 ft in Class G airspace. Controlled airspace requires prior FAA authorization and may have lower limits.",
+  "maxDistanceRule": "Keep the aircraft within visual line of sight (or use a co-located visual observer).",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Not verified in this summary. Check the national authority for your aircraft and operation."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment requirements have not been verified."
+  },
+  "noFlyHighlights": [
+    "Controlled airspace requires prior authorization.",
+    "Check temporary restrictions and the FAA's current airspace tools."
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "FAA airspace guidance",
+    "url": "https://www.faa.gov/uas"
+  },
+  "sourceUrls": [
+    "https://www.faa.gov/uas/recreational_flyers"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "codex-source-review",
+  "notes": "Registered aircraft generally require Remote ID unless operating within an applicable exception. This summary does not assess commercial filming, launch-site rules or foreign registration."
+}

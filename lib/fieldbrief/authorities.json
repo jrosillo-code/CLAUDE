@@ -1,0 +1,716 @@
+[
+  {
+    "countryCode": "AE",
+    "name": "United Arab Emirates",
+    "authorityName": "GCAA / Dubai Civil Aviation Authority",
+    "authorityUrl": "https://www.gcaa.gov.ae/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "AL",
+    "name": "Albania",
+    "authorityName": "AAC Albania",
+    "authorityUrl": "https://www.aac.gov.al/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "AM",
+    "name": "Armenia",
+    "authorityName": "GDCA Armenia",
+    "authorityUrl": "https://www.aviation.am/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "AR",
+    "name": "Argentina",
+    "authorityName": "ANAC Argentina",
+    "authorityUrl": "https://www.argentina.gob.ar/anac/vant",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "AT",
+    "name": "Austria",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "AU",
+    "name": "Australia",
+    "authorityName": "CASA",
+    "authorityUrl": "https://www.casa.gov.au/drones",
+    "region": "Oceania"
+  },
+  {
+    "countryCode": "BA",
+    "name": "Bosnia and Herzegovina",
+    "authorityName": "BHDCA",
+    "authorityUrl": "https://www.bhdca.gov.ba/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "BE",
+    "name": "Belgium",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "BG",
+    "name": "Bulgaria",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "BR",
+    "name": "Brazil",
+    "authorityName": "ANAC / DECEA",
+    "authorityUrl": "https://www.gov.br/anac/pt-br/assuntos/drones",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "BT",
+    "name": "Bhutan",
+    "authorityName": "BCAA",
+    "authorityUrl": "https://www.bcaa.gov.bt/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "BW",
+    "name": "Botswana",
+    "authorityName": "CAAB",
+    "authorityUrl": "https://www.caab.co.bw/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "CA",
+    "name": "Canada",
+    "authorityName": "Transport Canada",
+    "authorityUrl": "https://tc.canada.ca/en/aviation/drone-safety",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "CH",
+    "name": "Switzerland",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "CL",
+    "name": "Chile",
+    "authorityName": "DGAC Chile",
+    "authorityUrl": "https://www.dgac.gob.cl/",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "CN",
+    "name": "China",
+    "authorityName": "CAAC",
+    "authorityUrl": "https://www.caac.gov.cn/FWDT/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "CO",
+    "name": "Colombia",
+    "authorityName": "Aerocivil",
+    "authorityUrl": "https://www.aerocivil.gov.co/",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "CR",
+    "name": "Costa Rica",
+    "authorityName": "DGAC Costa Rica",
+    "authorityUrl": "https://www.dgac.go.cr/",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "CU",
+    "name": "Cuba",
+    "authorityName": "IACC",
+    "authorityUrl": "https://www.iacc.gob.cu/",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "CY",
+    "name": "Cyprus",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "CZ",
+    "name": "Czechia",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "DE",
+    "name": "Germany",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "DK",
+    "name": "Denmark",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "DO",
+    "name": "Dominican Republic",
+    "authorityName": "IDAC",
+    "authorityUrl": "https://www.idac.gob.do/",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "EC",
+    "name": "Ecuador",
+    "authorityName": "DGAC Ecuador",
+    "authorityUrl": "https://www.aviacioncivil.gob.ec/",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "EE",
+    "name": "Estonia",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "EG",
+    "name": "Egypt",
+    "authorityName": "ECAA",
+    "authorityUrl": "https://www.civilaviation.gov.eg/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "ES",
+    "name": "Spain",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "ET",
+    "name": "Ethiopia",
+    "authorityName": "ECAA Ethiopia",
+    "authorityUrl": "https://www.ecaa.gov.et/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "FI",
+    "name": "Finland",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "FJ",
+    "name": "Fiji",
+    "authorityName": "CAAF",
+    "authorityUrl": "https://www.caaf.org.fj/",
+    "region": "Oceania"
+  },
+  {
+    "countryCode": "FR",
+    "name": "France",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "GB",
+    "name": "United Kingdom",
+    "authorityName": "UK Civil Aviation Authority",
+    "authorityUrl": "https://www.caa.co.uk/drones/open-category/drone-code/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "GE",
+    "name": "Georgia",
+    "authorityName": "GCAA Georgia",
+    "authorityUrl": "https://gcaa.gov.ge/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "GH",
+    "name": "Ghana",
+    "authorityName": "GCAA Ghana",
+    "authorityUrl": "https://www.gcaa.com.gh/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "GR",
+    "name": "Greece",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "HK",
+    "name": "Hong Kong",
+    "authorityName": "CAD Hong Kong",
+    "authorityUrl": "https://www.cad.gov.hk/english/sua.html",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "HR",
+    "name": "Croatia",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "HU",
+    "name": "Hungary",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "ID",
+    "name": "Indonesia",
+    "authorityName": "Ministry of Transportation",
+    "authorityUrl": "https://dephub.go.id/portal-kemenhub/index.php/post/read/peluncuran-aplikasi-perizinan-drone",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "IE",
+    "name": "Ireland",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "IL",
+    "name": "Israel",
+    "authorityName": "CAAI",
+    "authorityUrl": "https://www.gov.il/en/departments/civil_aviation_authority",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "IN",
+    "name": "India",
+    "authorityName": "DGCA",
+    "authorityUrl": "https://www.dgca.gov.in/digigov-portal/?page=civilAviationRequirementPDF",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "IS",
+    "name": "Iceland",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "IT",
+    "name": "Italy",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "JO",
+    "name": "Jordan",
+    "authorityName": "CARC Jordan",
+    "authorityUrl": "https://carc.gov.jo/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "JP",
+    "name": "Japan",
+    "authorityName": "MLIT Civil Aviation Bureau",
+    "authorityUrl": "https://www.mlit.go.jp/en/koku/uas.html",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "KE",
+    "name": "Kenya",
+    "authorityName": "KCAA",
+    "authorityUrl": "https://www.kcaa.or.ke/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "KG",
+    "name": "Kyrgyzstan",
+    "authorityName": "Civil Aviation Agency of Kyrgyzstan",
+    "authorityUrl": "https://caa.gov.kg/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "KH",
+    "name": "Cambodia",
+    "authorityName": "SSCA",
+    "authorityUrl": "https://www.civilaviation.gov.kh/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "KR",
+    "name": "South Korea",
+    "authorityName": "Drone One Stop",
+    "authorityUrl": "https://drone.onestop.go.kr/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "KZ",
+    "name": "Kazakhstan",
+    "authorityName": "Aviation Administration of Kazakhstan",
+    "authorityUrl": "https://aak.gov.kz/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "LA",
+    "name": "Laos",
+    "authorityName": "DCA Laos",
+    "authorityUrl": "https://www.dca.gov.la/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "LI",
+    "name": "Liechtenstein",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "LK",
+    "name": "Sri Lanka",
+    "authorityName": "CAA Sri Lanka",
+    "authorityUrl": "https://www.caa.lk/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "LT",
+    "name": "Lithuania",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "LU",
+    "name": "Luxembourg",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "LV",
+    "name": "Latvia",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "MA",
+    "name": "Morocco",
+    "authorityName": "DGAC Morocco (ONDA)",
+    "authorityUrl": "https://www.onda.ma/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "ME",
+    "name": "Montenegro",
+    "authorityName": "CAA Montenegro",
+    "authorityUrl": "https://caa.me/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "MK",
+    "name": "North Macedonia",
+    "authorityName": "CAA North Macedonia",
+    "authorityUrl": "https://caa.gov.mk/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "MN",
+    "name": "Mongolia",
+    "authorityName": "CAA Mongolia",
+    "authorityUrl": "https://www.mcaa.gov.mn/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "MT",
+    "name": "Malta",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "MU",
+    "name": "Mauritius",
+    "authorityName": "DCA Mauritius",
+    "authorityUrl": "https://civil-aviation.govmu.org/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "MV",
+    "name": "Maldives",
+    "authorityName": "Maldives Civil Aviation Authority",
+    "authorityUrl": "https://www.caa.gov.mv/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "MX",
+    "name": "Mexico",
+    "authorityName": "AFAC (Agencia Federal de Aviación Civil)",
+    "authorityUrl": "https://www.gob.mx/afac",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "MY",
+    "name": "Malaysia",
+    "authorityName": "CAAM",
+    "authorityUrl": "https://www.caam.gov.my/public/unmanned-aircraft-system-uas/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "NA",
+    "name": "Namibia",
+    "authorityName": "NCAA Namibia",
+    "authorityUrl": "https://www.ncaa.na/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "NG",
+    "name": "Nigeria",
+    "authorityName": "NCAA Nigeria",
+    "authorityUrl": "https://ncaa.gov.ng/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "NL",
+    "name": "Netherlands",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "NO",
+    "name": "Norway",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "NP",
+    "name": "Nepal",
+    "authorityName": "CAAN",
+    "authorityUrl": "https://caanepal.gov.np/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "NZ",
+    "name": "New Zealand",
+    "authorityName": "CAA New Zealand",
+    "authorityUrl": "https://www.aviation.govt.nz/drones/",
+    "region": "Oceania"
+  },
+  {
+    "countryCode": "OM",
+    "name": "Oman",
+    "authorityName": "CAA Oman",
+    "authorityUrl": "https://www.caa.gov.om/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "PA",
+    "name": "Panama",
+    "authorityName": "AAC Panamá",
+    "authorityUrl": "https://www.aeronautica.gob.pa/",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "PE",
+    "name": "Peru",
+    "authorityName": "DGAC Perú (MTC)",
+    "authorityUrl": "https://www.gob.pe/mtc",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "PF",
+    "name": "French Polynesia",
+    "authorityName": "DGAC / SEAC Polynésie française",
+    "authorityUrl": "https://www.seac.pf/",
+    "region": "Oceania"
+  },
+  {
+    "countryCode": "PH",
+    "name": "Philippines",
+    "authorityName": "CAAP",
+    "authorityUrl": "https://www.caap.gov.ph/rpas-regulations/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "PL",
+    "name": "Poland",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "PT",
+    "name": "Portugal",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "QA",
+    "name": "Qatar",
+    "authorityName": "QCAA",
+    "authorityUrl": "https://www.caa.gov.qa/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "RO",
+    "name": "Romania",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "RS",
+    "name": "Serbia",
+    "authorityName": "CAD Serbia",
+    "authorityUrl": "https://cad.gov.rs/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "RW",
+    "name": "Rwanda",
+    "authorityName": "RCAA",
+    "authorityUrl": "https://www.rcaa.gov.rw/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "SA",
+    "name": "Saudi Arabia",
+    "authorityName": "GACA",
+    "authorityUrl": "https://gaca.gov.sa/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "SC",
+    "name": "Seychelles",
+    "authorityName": "SCAA",
+    "authorityUrl": "https://www.scaa.sc/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "SE",
+    "name": "Sweden",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "SG",
+    "name": "Singapore",
+    "authorityName": "CAAS",
+    "authorityUrl": "https://www.caas.gov.sg/unmanned-aircraft/requirements-for-flying-ua/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "SI",
+    "name": "Slovenia",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "SK",
+    "name": "Slovakia",
+    "authorityName": "EASA national authority directory",
+    "authorityUrl": "https://www.easa.europa.eu/en/domains/civil-drones/naa",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "TH",
+    "name": "Thailand",
+    "authorityName": "CAAT",
+    "authorityUrl": "https://uasportal.caat.or.th/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "TN",
+    "name": "Tunisia",
+    "authorityName": "OACA",
+    "authorityUrl": "https://www.oaca.nat.tn/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "TR",
+    "name": "Türkiye",
+    "authorityName": "SHGM (DGCA Türkiye)",
+    "authorityUrl": "https://web.shgm.gov.tr/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "TW",
+    "name": "Taiwan",
+    "authorityName": "CAA Taiwan",
+    "authorityUrl": "https://www.caa.gov.tw/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "TZ",
+    "name": "Tanzania",
+    "authorityName": "TCAA",
+    "authorityUrl": "https://www.tcaa.go.tz/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "UA",
+    "name": "Ukraine",
+    "authorityName": "State Aviation Service of Ukraine",
+    "authorityUrl": "https://avia.gov.ua/",
+    "region": "Europe"
+  },
+  {
+    "countryCode": "UG",
+    "name": "Uganda",
+    "authorityName": "UCAA",
+    "authorityUrl": "https://www.caa.go.ug/",
+    "region": "Africa"
+  },
+  {
+    "countryCode": "US",
+    "name": "United States",
+    "authorityName": "FAA",
+    "authorityUrl": "https://www.faa.gov/uas/recreational_flyers",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "UY",
+    "name": "Uruguay",
+    "authorityName": "DINACIA",
+    "authorityUrl": "https://www.gub.uy/dinacia",
+    "region": "Americas"
+  },
+  {
+    "countryCode": "UZ",
+    "name": "Uzbekistan",
+    "authorityName": "Uzaviation",
+    "authorityUrl": "https://uzaviation.uz/",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "VN",
+    "name": "Vietnam",
+    "authorityName": "Civil Aviation Authority of Vietnam",
+    "authorityUrl": "https://english.caa.gov.vn/doc/legislation-and-regulations.htm",
+    "region": "Asia"
+  },
+  {
+    "countryCode": "ZA",
+    "name": "South Africa",
+    "authorityName": "SACAA",
+    "authorityUrl": "https://www.caa.co.za/",
+    "region": "Africa"
+  }
+]

@@ -297,6 +297,25 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const wishlistRef = useRef<{ show: boolean; pins: PinWithOwner[] }>({ show: false, pins: [] });
   wishlistRef.current = { show: showWishlist, pins: wishlistPins };
 
+  // Flights layer: field reports that sit on a pin, coloured by outcome.
+  // Only reports the viewer may see are in the store (RLS in live mode;
+  // the seed follows the same rules), and drafts are owner-only.
+  const showFlights = useStore((s) => s.showFlights);
+  const fieldReports = useStore((s) => s.fieldReports);
+  const flightMarkers = useMemo<{ id: string; pinId: string; lng: number; lat: number; outcome: string; year: string }[]>(() => {
+    if (!showFlights) return [];
+    const pinsById = new Map(allPins.map((p) => [p.id, p]));
+    return fieldReports.flatMap((r) => {
+      if (!r.pinId) return [];
+      if (r.status !== "complete" && r.userId !== viewerId) return [];
+      const pin = pinsById.get(r.pinId);
+      if (!pin) return [];
+      return [{ id: r.id, pinId: r.pinId, lng: pin.lng, lat: pin.lat, outcome: r.outcome, year: r.flownOn.slice(0, 4) }];
+    });
+  }, [showFlights, fieldReports, allPins, viewerId]);
+  const flightsRef = useRef(flightMarkers);
+  flightsRef.current = flightMarkers;
+
   // Decorative "space" around the globe — a starfield on dark/satellite, a warm
   // sun glow on the light themes. Painted by an overlay that's masked to the
   // region OUTSIDE the globe silhouette, so it never touches the planet.
@@ -781,10 +800,16 @@ export default function MapCanvas({ placing, onPick }: Props) {
       // a white flash when panning fast or right after launch.
       fadeDuration: 0,
       // Keep more tiles warm — revisited areas (and the flight corridor)
-      // redraw instantly instead of re-fetching/re-rasterizing.
-      maxTileCacheSize: 512,
+      // redraw instantly instead of re-fetching/re-rasterizing. Satellite
+      // on a HiDPI screen fetches four tiles where it used to fetch one, so
+      // the cache is sized for that.
+      maxTileCacheSize: 1024,
     });
     mapRef.current = map;
+    // Sixteen concurrent tile images is MapLibre's default; the ESRI CDN
+    // happily serves more, and a fast pan across satellite is bounded by
+    // how many tiles are in flight at once.
+    if (maplibregl.getMaxParallelImageRequests() < 32) maplibregl.setMaxParallelImageRequests(32);
 
     // Snappier, more controllable wheel zoom (Apple-ish feel).
     map.scrollZoom.setWheelZoomRate(1 / 240);
@@ -1026,7 +1051,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   useEffect(() => {
     if (readyRef.current) render();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPinId, showWishlist, savedPinIds]);
+  }, [selectedPinId, showWishlist, savedPinIds, flightMarkers]);
 
   // Landmark layer visibility + selected emphasis.
   useEffect(() => {
@@ -1594,6 +1619,29 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }
     }
 
+    // Flights: one small outcome-coloured marker per field report, offset
+    // slightly so several reports on one pin fan out instead of stacking.
+    if (!inTripsMode && flightsRef.current.length) {
+      const perPin = new Map<string, number>();
+      for (const f of flightsRef.current) {
+        const n = perPin.get(f.pinId) ?? 0;
+        perPin.set(f.pinId, n + 1);
+        upsert(
+          `fl-${f.id}`,
+          f.lng,
+          f.lat,
+          `${f.outcome}|${f.year}|${n}`,
+          () => flightEl(f.outcome, f.year, n),
+          "2",
+          (ev) => {
+            ev.stopPropagation();
+            if (placingRef.current) return;
+            selectRef.current(f.pinId);
+          }
+        );
+      }
+    }
+
     // The blue you-are-here dot renders in every mode, above everything.
     const you = userLocationRef.current;
     if (you) {
@@ -1732,6 +1780,28 @@ function needleEl(opts: {
 // The blue you-are-here dot: white-ringed blue disc with a soft radar pulse,
 // like Apple/Google Maps. Marker anchor is "bottom", so the disc is drawn
 // hanging half below the wrapper — its center lands exactly on the location.
+/** Outcome colours for the flights layer: green flew, amber refused,
+ *  red fined, grey didn't try. Semantic, not the accent. */
+const FLIGHT_COLOR: Record<string, string> = { flew: "#2e9e5b", refused: "#d9962b", fined: "#d64545", did_not_try: "#8a8f98" };
+const FLIGHT_GLYPH: Record<string, string> = { flew: "✓", refused: "!", fined: "€", did_not_try: "–" };
+
+function flightEl(outcome: string, year: string, index: number): HTMLDivElement {
+  const wrap = document.createElement("div");
+  wrap.className = "marker-in select-none";
+  // fan the nth report on the same pin out to the right
+  wrap.style.cssText = `position:relative;width:26px;height:40px;cursor:pointer;transform:translateX(${index * 14}px);`;
+  const badge = document.createElement("div");
+  const color = FLIGHT_COLOR[outcome] ?? FLIGHT_COLOR.did_not_try;
+  badge.style.cssText = `position:absolute;left:50%;top:0;width:22px;height:22px;transform:translateX(-50%);border-radius:9999px;background:${color};color:#fff;font:700 12px/22px system-ui,sans-serif;text-align:center;box-shadow:0 0 0 2px #fff,0 1px 5px rgba(0,0,0,.35);`;
+  badge.textContent = FLIGHT_GLYPH[outcome] ?? "·";
+  badge.title = `${outcome.replace("_", " ")} · ${year}`;
+  wrap.appendChild(badge);
+  const stem = document.createElement("div");
+  stem.style.cssText = `position:absolute;left:50%;top:22px;width:2px;height:16px;transform:translateX(-50%);background:${color};opacity:.8;`;
+  wrap.appendChild(stem);
+  return wrap;
+}
+
 function locationDotEl(): HTMLDivElement {
   const wrap = document.createElement("div");
   wrap.className = "select-none";

@@ -1,0 +1,55 @@
+{
+  "countryCode": "PE",
+  "countryName": "Peru",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "DGAC Perú (MTC)",
+  "authorityUrl": "https://www.gob.pe/mtc",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration with DGAC is required; foreign visitors have reported it is slow to obtain."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Customs regularly asks for the registration; declare the drone."
+  },
+  "noFlyHighlights": [
+    "Machu Picchu and all Ministry of Culture archaeological sites",
+    "Within 4 km of airports",
+    "Over crowds"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Cusco",
+      "note": "Machu Picchu, Sacsayhuamán and the Sacred Valley sites ban drones; enforcement is active.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Lima",
+      "note": "Miraflores cliffs sit under the airport approach; municipal permission is asked.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.gob.pe/mtc"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

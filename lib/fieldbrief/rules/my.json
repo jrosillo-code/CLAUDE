@@ -1,0 +1,58 @@
+{
+  "countryCode": "MY",
+  "countryName": "Malaysia",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAAM",
+  "authorityUrl": "https://www.caam.gov.my/",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration on the CAAM portal from 250 g; the Authority to Fly is needed for many areas."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Kuala Lumpur city centre (KLCC/Petronas) without a permit",
+    "Within 5 km of airports",
+    "Putrajaya"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "CAAM UAS portal",
+    "url": "https://uas.caam.gov.my/"
+  },
+  "cityNotes": [
+    {
+      "city": "Kuala Lumpur",
+      "note": "The city centre is restricted; permits through CAAM's UAS portal.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Langkawi",
+      "note": "Airport approach covers much of the south-west; beaches to the north are commonly flown.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.caam.gov.my/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

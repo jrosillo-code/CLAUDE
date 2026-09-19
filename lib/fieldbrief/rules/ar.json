@@ -1,0 +1,55 @@
+{
+  "countryCode": "AR",
+  "countryName": "Argentina",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "ANAC Argentina",
+  "authorityUrl": "https://www.argentina.gob.ar/anac/vant",
+  "registrationRequired": {
+    "value": true,
+    "note": "Registration required from 250 g; sub-250 g recreational drones are exempt from registration but not from operating rules."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": true,
+    "note": "Liability insurance is mandatory for registered drones."
+  },
+  "importRestriction": {
+    "value": "unknown",
+    "note": "Import and radio-equipment rules not established in this summary."
+  },
+  "noFlyHighlights": [
+    "Within 5 km of airports",
+    "Over urban areas without authorization",
+    "National parks without APN permission"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Buenos Aires",
+      "note": "Urban flights need ANAC authorization; Puerto Madero and Palermo parks are commonly refused.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "El Calafate",
+      "note": "Los Glaciares national park bans drones without a permit.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.argentina.gob.ar/anac/vant"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

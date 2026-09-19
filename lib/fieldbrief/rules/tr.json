@@ -1,0 +1,58 @@
+{
+  "countryCode": "TR",
+  "countryName": "Türkiye",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "SHGM (DGCA Türkiye)",
+  "authorityUrl": "https://web.shgm.gov.tr/",
+  "registrationRequired": {
+    "value": true,
+    "note": "Drones over 500 g must be registered in the SHGM system; foreigners need a Turkish ID equivalent or an agent."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Customs may ask for the SHGM registration; declare drones over 500 g."
+  },
+  "noFlyHighlights": [
+    "Istanbul's historic peninsula and the Bosphorus without permission",
+    "Cappadocia balloon areas at flight times",
+    "Military zones and within 9 km of airports"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "İHA Kayıt Sistemi",
+    "url": "https://iha.shgm.gov.tr/"
+  },
+  "cityNotes": [
+    {
+      "city": "Istanbul",
+      "note": "Hagia Sophia, Topkapı and the Bosphorus are restricted; permits go through the governorship.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Cappadocia",
+      "note": "Balloon operations at dawn; flights near them are prohibited.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://web.shgm.gov.tr/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

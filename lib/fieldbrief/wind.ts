@@ -8,6 +8,16 @@ export interface WindHour {
   wind10m: number;
   wind120m: number;
   gust10m: number;
+  /** WMO weather code (0 clear … 99 thunderstorm with hail), when present. */
+  weatherCode?: number;
+  /** Chance of precipitation in that hour, 0–100. */
+  precipProb?: number;
+  /** Precipitation in that hour, mm. */
+  precipMm?: number;
+  /** Air temperature at 2 m, °C. */
+  tempC?: number;
+  /** Cloud cover, 0–100. */
+  cloudCover?: number;
 }
 
 export type WindResult =
@@ -45,7 +55,7 @@ export async function fetchWind(
 
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(4)}&longitude=${lng.toFixed(4)}` +
-    `&hourly=wind_speed_10m,wind_speed_120m,wind_gusts_10m&wind_speed_unit=kmh&timezone=auto` +
+    `&hourly=wind_speed_10m,wind_speed_120m,wind_gusts_10m,weather_code,precipitation_probability,precipitation,temperature_2m,cloud_cover&wind_speed_unit=kmh&timezone=auto` +
     `&start_date=${date}&end_date=${date}`;
   let result: WindResult;
   try {
@@ -56,7 +66,17 @@ export async function fetchWind(
       const data = (await res.json()) as {
         timezone?: string;
         utc_offset_seconds?: number;
-        hourly?: { time?: string[]; wind_speed_10m?: (number | null)[]; wind_speed_120m?: (number | null)[]; wind_gusts_10m?: (number | null)[] };
+        hourly?: {
+          time?: string[];
+          wind_speed_10m?: (number | null)[];
+          wind_speed_120m?: (number | null)[];
+          wind_gusts_10m?: (number | null)[];
+          weather_code?: (number | null)[];
+          precipitation_probability?: (number | null)[];
+          precipitation?: (number | null)[];
+          temperature_2m?: (number | null)[];
+          cloud_cover?: (number | null)[];
+        };
       };
       const h = data?.hourly;
       // timezone=auto returns wall-clock times in the place's zone; convert
@@ -81,7 +101,18 @@ export async function fetchWind(
         const w120 = speed(h?.wind_speed_120m?.[i]);
         const g10 = speed(h?.wind_gusts_10m?.[i]);
         if (w10 == null || g10 == null) return;
-        hours.push({ time, wind10m: w10, wind120m: w120 ?? w10, gust10m: g10 });
+        // Sky, rain and temperature ride along when present; a missing or
+        // malformed reading leaves the field out rather than inventing one.
+        const num = (v: unknown): number | undefined => (typeof v === "number" && Number.isFinite(v) ? v : undefined);
+        const pct = (v: unknown): number | undefined => { const n = num(v); return n != null && n >= 0 && n <= 100 ? n : undefined; };
+        const code = num(h?.weather_code?.[i]);
+        const hour: WindHour = { time, wind10m: w10, wind120m: w120 ?? w10, gust10m: g10 };
+        if (code != null && Number.isInteger(code) && code >= 0 && code <= 99) hour.weatherCode = code;
+        const pp = pct(h?.precipitation_probability?.[i]); if (pp != null) hour.precipProb = pp;
+        const pm = speed(h?.precipitation?.[i]); if (pm != null) hour.precipMm = pm;
+        const tc = num(h?.temperature_2m?.[i]); if (tc != null && tc > -90 && tc < 60) hour.tempC = tc;
+        const cl = pct(h?.cloud_cover?.[i]); if (cl != null) hour.cloudCover = cl;
+        hours.push(hour);
       });
       result = hours.length
         ? { source: "open-meteo", unit: "km/h", hours, timezone: tz, utcOffsetSeconds: tz ? offsetS : undefined }

@@ -1,0 +1,54 @@
+{
+  "countryCode": "VN",
+  "countryName": "Vietnam",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "Ministry of National Defence (via CAAV)",
+  "authorityUrl": "https://caa.gov.vn/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for registration."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": null,
+  "altitudeNote": "No general ceiling; every flight needs a permit that sets it.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Customs may hold drones without a permit letter; declare them."
+  },
+  "noFlyHighlights": [
+    "Everywhere without a Ministry of Defence permit, which foreigners rarely obtain",
+    "Ha Long Bay, Hanoi and Ho Chi Minh City centres"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Hanoi",
+      "note": "Old Quarter and Hoan Kiem are no-fly without a permit.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Ha Long Bay",
+      "note": "Tour boats ban drones; the bay is restricted.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://caa.gov.vn/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

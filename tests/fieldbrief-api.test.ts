@@ -57,9 +57,13 @@ test("no key: a live brief with no narrative, light computed, wind from the stub
   assert.equal(b.source, "live");
   assert.equal(b.narrative, undefined);
   assert.equal(b.place.countryCode, "PT", "reverse geocoded when the client sends no code");
-  assert.equal(b.legality.covered, false);
+  assert.equal(b.legality.covered, true, "Portugal has a desk-reviewed record");
+  assert.equal(b.legality.reviewTier, "desk-review");
+  assert.ok(b.legality.tierLabel.length > 0);
   assert.ok(b.light.sunrise);
   assert.equal(b.wind.hours.length, 2);
+  assert.ok(Array.isArray(b.airfields) && b.airfields.length >= 1, "nearest airfield from the bundled overlay");
+  assert.equal(b.airfields[0].iata, "LIS");
   assert.ok(calls.some((u) => /nominatim/.test(u)) && calls.some((u) => /open-meteo/.test(u)));
 });
 

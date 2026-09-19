@@ -1,0 +1,64 @@
+{
+  "countryCode": "NZ",
+  "countryName": "New Zealand",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAA New Zealand",
+  "authorityUrl": "https://www.aviation.govt.nz/drones/",
+  "registrationRequired": {
+    "value": false,
+    "note": "No registration for Part 101 recreational flying under 25 kg; consent of the landowner and people overflown is the binding rule."
+  },
+  "pilotCertRequired": {
+    "value": false,
+    "note": "No certificate under Part 101; Part 102 certification for anything outside those rules."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "none",
+    "note": "No import restriction known for personal drones."
+  },
+  "noFlyHighlights": [
+    "Within 4 km of aerodromes without permission",
+    "Over people or property without consent",
+    "DOC conservation land without a concession",
+    "Milford Sound and Queenstown (airport and heli traffic)"
+  ],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "AirShare",
+    "url": "https://www.airshare.co.nz/"
+  },
+  "cityNotes": [
+    {
+      "city": "Queenstown",
+      "note": "The airport zone covers the town; the lakefront is a no-fly.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Milford Sound",
+      "note": "DOC land and heavy scenic-flight traffic; drones are not permitted.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Auckland",
+      "note": "Council bylaws restrict parks; the harbour is under the airport approach.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://www.aviation.govt.nz/drones/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}

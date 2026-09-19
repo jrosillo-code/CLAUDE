@@ -1,0 +1,55 @@
+{
+  "countryCode": "NP",
+  "countryName": "Nepal",
+  "regime": "national",
+  "reviewTier": "unverified",
+  "coverage": "national",
+  "scope": "Unverified summary of the headline national rules for a visiting hobby pilot. Commercial filming, local by-laws and site permissions are not covered.",
+  "authorityName": "CAAN",
+  "authorityUrl": "https://caanepal.gov.np/",
+  "registrationRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for registration."
+  },
+  "pilotCertRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for pilot certification."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 120,
+  "altitudeNote": "General ceiling for hobby flights; lower limits apply near aerodromes and in restricted zones.",
+  "maxDistanceRule": "Visual line of sight at all times.",
+  "insuranceRequired": {
+    "value": null,
+    "note": "Depends on the aircraft and the operation; not established in this summary. Check the authority for insurance."
+  },
+  "importRestriction": {
+    "value": "declare",
+    "note": "Customs asks for a permit; drones are often held at the airport on arrival."
+  },
+  "noFlyHighlights": [
+    "Everest region and all national parks without a CAAN and park permit",
+    "Kathmandu valley heritage sites",
+    "Within 5 km of airports"
+  ],
+  "permitProcess": null,
+  "nationalApp": null,
+  "cityNotes": [
+    {
+      "city": "Kathmandu",
+      "note": "Durbar squares and Boudhanath refuse drones; airport approach covers the valley.",
+      "reviewTier": "unverified"
+    },
+    {
+      "city": "Everest region",
+      "note": "Sagarmatha park requires multiple permits; commonly refused to tourists.",
+      "reviewTier": "unverified"
+    }
+  ],
+  "sourceUrls": [
+    "https://caanepal.gov.np/"
+  ],
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "claude-general-knowledge",
+  "notes": "Written from general knowledge on 2026-09-19 without fetching the sources; not verified. Confirm on the authority page before flying."
+}
