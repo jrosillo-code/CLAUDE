@@ -1,0 +1,4151 @@
+{
+  "id": "ski",
+  "label": "Ski",
+  "blurb": "Resorts and backcountry areas with the runs people cross oceans for.",
+  "sources": [
+    "World Ski Awards 2025",
+    "Ski Magazine Resort Guide",
+    "OnTheSnow",
+    "Snow-Forecast",
+    "Powderhounds",
+    "World's 100 Best Ski Resorts"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "ski-vail",
+      "name": "Vail",
+      "lat": 39.6403,
+      "lng": -106.3742,
+      "countryCode": "US",
+      "region": "Vail, Colorado",
+      "why": "The largest single-mountain resort in the US, a sprawl of groomed Back Bowls that draws skiers from across the world.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-beaver-creek",
+      "name": "Beaver Creek",
+      "lat": 39.6042,
+      "lng": -106.5165,
+      "countryCode": "US",
+      "region": "Avon, Colorado",
+      "why": "A manicured, ski-in-ski-out sister to Vail known for grooming so precise locals call it corduroy heaven.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-aspen-mountain",
+      "name": "Aspen Mountain",
+      "lat": 39.1897,
+      "lng": -106.8175,
+      "countryCode": "US",
+      "region": "Aspen, Colorado",
+      "why": "Steep, lift-served terrain rising straight out of a historic mining town with no beginner runs to dilute it.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "village"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-aspen-highlands",
+      "name": "Aspen Highlands",
+      "lat": 39.1789,
+      "lng": -106.8464,
+      "countryCode": "US",
+      "region": "Aspen, Colorado",
+      "why": "Highland Bowl's 40-minute bootpack rewards skiers with some of the steepest inbounds pitches in North America.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "freeride",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-snowmass",
+      "name": "Snowmass",
+      "lat": 39.211,
+      "lng": -106.95,
+      "countryCode": "US",
+      "region": "Snowmass Village, Colorado",
+      "why": "The biggest of Aspen's four mountains, built for long cruisers and a family base village.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-breckenridge",
+      "name": "Breckenridge",
+      "lat": 39.4817,
+      "lng": -106.0384,
+      "countryCode": "US",
+      "region": "Breckenridge, Colorado",
+      "why": "Five peaks over 12,000 feet and an old mining-town base give it the biggest lift-served vertical in Colorado.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-keystone",
+      "name": "Keystone",
+      "lat": 39.6084,
+      "lng": -105.9436,
+      "countryCode": "US",
+      "region": "Keystone, Colorado",
+      "why": "Colorado's biggest night-skiing operation, with A-Basin-adjacent terrain and reliable family grooming.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-copper-mountain",
+      "name": "Copper Mountain",
+      "lat": 39.5022,
+      "lng": -106.1553,
+      "countryCode": "US",
+      "region": "Copper Mountain, Colorado",
+      "why": "Naturally divided terrain puts beginners, cruisers and experts on separate parts of the mountain by design.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-winter-park",
+      "name": "Winter Park",
+      "lat": 39.8868,
+      "lng": -105.7625,
+      "countryCode": "US",
+      "region": "Winter Park, Colorado",
+      "why": "Mary Jane's mogul fields are a rite of passage, right off Denver's Amtrak Winter Park Express.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-steamboat",
+      "name": "Steamboat",
+      "lat": 40.4572,
+      "lng": -106.8045,
+      "countryCode": "US",
+      "region": "Steamboat Springs, Colorado",
+      "why": "Champagne Powder country, with gladed aspen groves that made tree skiing a Colorado signature.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "family"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-telluride",
+      "name": "Telluride",
+      "lat": 37.9375,
+      "lng": -107.8123,
+      "countryCode": "US",
+      "region": "Telluride, Colorado",
+      "why": "A free gondola links a perfectly preserved Victorian mining town to some of Colorado's gnarliest extreme terrain.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "village"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-crested-butte",
+      "name": "Crested Butte",
+      "lat": 38.8992,
+      "lng": -106.965,
+      "countryCode": "US",
+      "region": "Crested Butte, Colorado",
+      "why": "Extreme Limits terrain off the North Face put this old coal town on the map for steep, technical skiing.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "freeride",
+        "resort"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-silverton",
+      "name": "Silverton Mountain",
+      "lat": 37.8542,
+      "lng": -107.6636,
+      "countryCode": "US",
+      "region": "Silverton, Colorado",
+      "why": "One double chair, mandatory guiding and avalanche gear, and nothing but big, steep, ungroomed terrain.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "freeride",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-wolf-creek",
+      "name": "Wolf Creek",
+      "lat": 37.4711,
+      "lng": -106.7911,
+      "countryCode": "US",
+      "region": "Pagosa Springs, Colorado",
+      "why": "No real-estate development at all, just Colorado's snowiest resort catching every storm off the San Juans.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-arapahoe-basin",
+      "name": "Arapahoe Basin",
+      "lat": 39.6425,
+      "lng": -105.8719,
+      "countryCode": "US",
+      "region": "Dillon, Colorado",
+      "why": "One of the highest lift-served ski areas in the US, often spinning lifts into June off its East Wall.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "resort",
+        "spring",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-monarch-mountain",
+      "name": "Monarch Mountain",
+      "lat": 38.5136,
+      "lng": -106.3325,
+      "countryCode": "US",
+      "region": "Salida, Colorado",
+      "why": "A small, unglitzy Continental Divide resort that quietly racks up some of Colorado's most consistent snowfall.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-park-city",
+      "name": "Park City Mountain",
+      "lat": 40.6514,
+      "lng": -111.5081,
+      "countryCode": "US",
+      "region": "Park City, Utah",
+      "why": "North America's largest single ski resort by acreage, joined to Canyons under one lift ticket.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-deer-valley",
+      "name": "Deer Valley",
+      "lat": 40.6374,
+      "lng": -111.4783,
+      "countryCode": "US",
+      "region": "Park City, Utah",
+      "why": "Skiers-only grooming and a famously polished guest-service standard, plus real Utah powder days.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-alta",
+      "name": "Alta",
+      "lat": 40.5884,
+      "lng": -111.6386,
+      "countryCode": "US",
+      "region": "Little Cottonwood Canyon, Utah",
+      "why": "Skiers-only since 1938, with some of the lightest, driest lake-effect powder anywhere on earth.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "backcountry"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-snowbird",
+      "name": "Snowbird",
+      "lat": 40.583,
+      "lng": -111.6556,
+      "countryCode": "US",
+      "region": "Little Cottonwood Canyon, Utah",
+      "why": "A tram climbing 2,900 vertical feet into some of the steepest, snowiest inbounds terrain in the Wasatch.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-snowbasin",
+      "name": "Snowbasin",
+      "lat": 41.216,
+      "lng": -111.856,
+      "countryCode": "US",
+      "region": "Huntsville, Utah",
+      "why": "2002 Olympic downhill terrain with a base lodge finish more like a national park than a ski hill.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-powder-mountain",
+      "name": "Powder Mountain",
+      "lat": 41.38,
+      "lng": -111.78,
+      "countryCode": "US",
+      "region": "Eden, Utah",
+      "why": "More skiable acres than lifts to reach them, so a huge share of the mountain stays untracked for days.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "powder",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-jackson-hole",
+      "name": "Jackson Hole",
+      "lat": 43.5875,
+      "lng": -110.828,
+      "countryCode": "US",
+      "region": "Teton Village, Wyoming",
+      "why": "Corbet's Couloir and 4,139 feet of continuous vertical made this the American benchmark for expert terrain.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "powder"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-grand-targhee",
+      "name": "Grand Targhee",
+      "lat": 43.7891,
+      "lng": -110.9583,
+      "countryCode": "US",
+      "region": "Alta, Wyoming",
+      "why": "On the quiet side of the Tetons, catching over 500 inches of some of the lightest snow in the Rockies.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-big-sky",
+      "name": "Big Sky",
+      "lat": 45.2871,
+      "lng": -111.4013,
+      "countryCode": "US",
+      "region": "Big Sky, Montana",
+      "why": "Lone Peak's tram opens genuine no-fall-zone couloirs above a resort with room for 5,800 skiers max.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-whitefish",
+      "name": "Whitefish Mountain Resort",
+      "lat": 48.4917,
+      "lng": -114.3572,
+      "countryCode": "US",
+      "region": "Whitefish, Montana",
+      "why": "Snow ghosts of rime-caked trees and views to Glacier National Park on a lightly crowded northern Rockies hill.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-bridger-bowl",
+      "name": "Bridger Bowl",
+      "lat": 45.8206,
+      "lng": -110.8917,
+      "countryCode": "US",
+      "region": "Bozeman, Montana",
+      "why": "A skier-owned nonprofit hill famous for the Ridge, a hike-to ridgeline of steep chutes above the lifts.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "freeride",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-sun-valley",
+      "name": "Sun Valley",
+      "lat": 43.6975,
+      "lng": -114.3524,
+      "countryCode": "US",
+      "region": "Sun Valley, Idaho",
+      "why": "America's first destination ski resort, opened in 1936, still grooming Bald Mountain to a glassy finish.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-schweitzer",
+      "name": "Schweitzer",
+      "lat": 48.3667,
+      "lng": -116.6222,
+      "countryCode": "US",
+      "region": "Sandpoint, Idaho",
+      "why": "Panhandle powder over views of Lake Pend Oreille, with far fewer crowds than its size deserves.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-palisades-tahoe",
+      "name": "Palisades Tahoe",
+      "lat": 39.1967,
+      "lng": -120.2356,
+      "countryCode": "US",
+      "region": "Olympic Valley, California",
+      "why": "Host of the 1960 Winter Olympics, with KT-22 among the most demanding lift-served faces in the Sierra.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-mammoth-mountain",
+      "name": "Mammoth Mountain",
+      "lat": 37.6308,
+      "lng": -119.0326,
+      "countryCode": "US",
+      "region": "Mammoth Lakes, California",
+      "why": "A volcanic dome catching Sierra cement in bulk, with a season that regularly runs into June.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "spring"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-heavenly",
+      "name": "Heavenly",
+      "lat": 38.9353,
+      "lng": -119.94,
+      "countryCode": "US",
+      "region": "South Lake Tahoe, California",
+      "why": "Gondola views straight down onto Lake Tahoe from runs that straddle the California-Nevada line.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-kirkwood",
+      "name": "Kirkwood",
+      "lat": 38.685,
+      "lng": -120.0653,
+      "countryCode": "US",
+      "region": "Kirkwood, California",
+      "why": "The snowiest resort in the Tahoe basin, with cliff-lined bowls that keep it a magnet for expert skiers.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "freeride",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-mount-bachelor",
+      "name": "Mount Bachelor",
+      "lat": 43.9792,
+      "lng": -121.6886,
+      "countryCode": "US",
+      "region": "Bend, Oregon",
+      "why": "A near-symmetrical volcanic cone with 360-degree lift-served terrain and a long, snowy spring season.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "spring"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-crystal-mountain-wa",
+      "name": "Crystal Mountain",
+      "lat": 46.928,
+      "lng": -121.4747,
+      "countryCode": "US",
+      "region": "Enumclaw, Washington",
+      "why": "Washington's biggest resort, with Mount Rainier filling the skyline from its high alpine bowls.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-mount-baker",
+      "name": "Mount Baker",
+      "lat": 48.857,
+      "lng": -121.681,
+      "countryCode": "US",
+      "region": "Deming, Washington",
+      "why": "Holder of the world record snowfall for a single season, with a laid-back, no-frills powder culture.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "powder",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-taos",
+      "name": "Taos Ski Valley",
+      "lat": 36.596,
+      "lng": -105.4524,
+      "countryCode": "US",
+      "region": "Taos, New Mexico",
+      "why": "A ski school founded on European technique and steep, high-altitude terrain above a small adobe base.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-stowe",
+      "name": "Stowe",
+      "lat": 44.5303,
+      "lng": -72.7815,
+      "countryCode": "US",
+      "region": "Stowe, Vermont",
+      "why": "Vermont's highest peak, Mount Mansfield, delivers New England's most genuinely steep lift-served skiing.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-killington",
+      "name": "Killington",
+      "lat": 43.6045,
+      "lng": -72.8201,
+      "countryCode": "US",
+      "region": "Killington, Vermont",
+      "why": "The Beast of the East runs 200-plus trails and often the longest season in the eastern US thanks to snowmaking.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-sugarbush",
+      "name": "Sugarbush",
+      "lat": 44.1358,
+      "lng": -72.8933,
+      "countryCode": "US",
+      "region": "Warren, Vermont",
+      "why": "Twin peaks of old-school Vermont steep and deep, with Castlerock left ungroomed on purpose.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-mad-river-glen",
+      "name": "Mad River Glen",
+      "lat": 44.2028,
+      "lng": -72.9192,
+      "countryCode": "US",
+      "region": "Waitsfield, Vermont",
+      "why": "Skier-owned and single-chair served, with a ridgeline so ungroomed the motto is simply Ski It If You Can.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "freeride",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-sugarloaf",
+      "name": "Sugarloaf",
+      "lat": 45.0314,
+      "lng": -70.3131,
+      "countryCode": "US",
+      "region": "Carrabassett Valley, Maine",
+      "why": "The only lift-served above-treeline skiing in the eastern US, exposed on Maine's second-highest peak.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-whiteface",
+      "name": "Whiteface Mountain",
+      "lat": 44.3658,
+      "lng": -73.9026,
+      "countryCode": "US",
+      "region": "Wilmington, New York",
+      "why": "Site of the 1980 Lake Placid Olympic downhill, with the biggest vertical drop in the eastern US.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-alyeska",
+      "name": "Alyeska Resort",
+      "lat": 60.9613,
+      "lng": -149.0997,
+      "countryCode": "US",
+      "region": "Girdwood, Alaska",
+      "why": "Coastal Chugach snowfall dumped straight off the Gulf of Alaska onto lift-served, avalanche-controlled terrain.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-valdez-heli",
+      "name": "Valdez / Thompson Pass",
+      "lat": 61.1275,
+      "lng": -145.4667,
+      "countryCode": "US",
+      "region": "Valdez, Alaska",
+      "why": "The birthplace of big-mountain heli skiing, where Chugach spines rise straight out of the sea in near-constant snow.",
+      "bestMonths": [
+        3,
+        4
+      ],
+      "tags": [
+        "heli",
+        "freeride",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-haines-heli",
+      "name": "Haines",
+      "lat": 59.235,
+      "lng": -135.445,
+      "countryCode": "US",
+      "region": "Haines, Alaska",
+      "why": "Steep, glaciated Chilkat and Takshanuk terrain that made Southeast Alaska a heli-skiing pilgrimage.",
+      "bestMonths": [
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "heli",
+        "freeride",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-whistler-blackcomb",
+      "name": "Whistler Blackcomb",
+      "lat": 50.1163,
+      "lng": -122.9574,
+      "countryCode": "CA",
+      "region": "Whistler, British Columbia",
+      "why": "North America's biggest ski area by vertical, joined by the Peak 2 Peak gondola between two glaciated giants.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-revelstoke",
+      "name": "Revelstoke Mountain Resort",
+      "lat": 51.0,
+      "lng": -118.1957,
+      "countryCode": "CA",
+      "region": "Revelstoke, British Columbia",
+      "why": "North America's greatest continuous vertical drop, in the heart of the Selkirks' legendary snowfall.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "freeride"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-lake-louise",
+      "name": "Lake Louise",
+      "lat": 51.4419,
+      "lng": -116.162,
+      "countryCode": "CA",
+      "region": "Banff National Park, Alberta",
+      "why": "Four mountain faces above a turquoise glacial lake, inside one of the most scenic ski areas on the continent.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-sunshine-village",
+      "name": "Sunshine Village",
+      "lat": 51.0784,
+      "lng": -115.7631,
+      "countryCode": "CA",
+      "region": "Banff National Park, Alberta",
+      "why": "Straddling the Continental Divide with the most reliable natural snow in the Canadian Rockies.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-mount-norquay",
+      "name": "Mount Norquay",
+      "lat": 51.2027,
+      "lng": -115.6142,
+      "countryCode": "CA",
+      "region": "Banff, Alberta",
+      "why": "A steep, old-school Banff local's hill with the North American chairlift-served terrain that stays uncrowded.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "freeride",
+        "resort"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-kicking-horse",
+      "name": "Kicking Horse",
+      "lat": 51.2963,
+      "lng": -117.048,
+      "countryCode": "CA",
+      "region": "Golden, British Columbia",
+      "why": "One of the highest vertical drops in Canada, with alpine bowls above treeline reached straight from a gondola.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-fernie",
+      "name": "Fernie Alpine Resort",
+      "lat": 49.4631,
+      "lng": -115.089,
+      "countryCode": "CA",
+      "region": "Fernie, British Columbia",
+      "why": "Five alpine bowls in the Lizard Range catch huge Kootenay snowfall right off the lifts.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-red-mountain",
+      "name": "Red Mountain Resort",
+      "lat": 49.1041,
+      "lng": -117.8264,
+      "countryCode": "CA",
+      "region": "Rossland, British Columbia",
+      "why": "A gritty, uncrowded Kootenay classic with some of the best lift-served tree skiing anywhere.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-panorama",
+      "name": "Panorama Mountain Resort",
+      "lat": 50.4581,
+      "lng": -116.2372,
+      "countryCode": "CA",
+      "region": "Panorama, British Columbia",
+      "why": "Purcell Mountain views over a big vertical drop, plus cat-skiing access to terrain beyond the boundary.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "cat"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-big-white",
+      "name": "Big White",
+      "lat": 49.7225,
+      "lng": -118.9339,
+      "countryCode": "CA",
+      "region": "Kelowna, British Columbia",
+      "why": "Famous for its rime-frosted snow ghosts and deep, dry Okanagan powder on family-friendly slopes.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "powder"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-silver-star",
+      "name": "SilverStar Mountain Resort",
+      "lat": 50.3583,
+      "lng": -119.0567,
+      "countryCode": "CA",
+      "region": "Vernon, British Columbia",
+      "why": "A brightly painted Victorian-style village base with dry Okanagan powder and long groomers above.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-sun-peaks",
+      "name": "Sun Peaks Resort",
+      "lat": 50.8836,
+      "lng": -119.8867,
+      "countryCode": "CA",
+      "region": "Sun Peaks, British Columbia",
+      "why": "Canada's second-largest ski area, spread over three mountains with a walkable Alpine-style village.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-whitewater",
+      "name": "Whitewater Ski Resort",
+      "lat": 49.3339,
+      "lng": -117.1897,
+      "countryCode": "CA",
+      "region": "Nelson, British Columbia",
+      "why": "A small, snow-obsessed Kootenay hill with steep, ungroomed terrain and legendary powder days.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "powder",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-apex",
+      "name": "Apex Mountain Resort",
+      "lat": 49.3775,
+      "lng": -119.9008,
+      "countryCode": "CA",
+      "region": "Penticton, British Columbia",
+      "why": "A small, low-key Okanagan resort valued for uncrowded groomers and a tight, walkable base village.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-kimberley",
+      "name": "Kimberley Alpine Resort",
+      "lat": 49.6392,
+      "lng": -115.9722,
+      "countryCode": "CA",
+      "region": "Kimberley, British Columbia",
+      "why": "A Bavarian-themed East Kootenay town resort with reliable snow and none of the coastal crowds.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-castle-mountain",
+      "name": "Castle Mountain Resort",
+      "lat": 49.2725,
+      "lng": -114.44,
+      "countryCode": "CA",
+      "region": "Pincher Creek, Alberta",
+      "why": "A remote, uncrowded southern Alberta resort known among locals for its steep, wide-open alpine bowls.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-marmot-basin",
+      "name": "Marmot Basin",
+      "lat": 52.8092,
+      "lng": -118.1264,
+      "countryCode": "CA",
+      "region": "Jasper National Park, Alberta",
+      "why": "Wide, uncrowded alpine bowls inside Jasper National Park, with some of the driest snow in the Rockies.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-mont-tremblant",
+      "name": "Mont Tremblant",
+      "lat": 46.2093,
+      "lng": -74.5853,
+      "countryCode": "CA",
+      "region": "Mont-Tremblant, Quebec",
+      "why": "The Laurentians' biggest vertical and a lively pedestrian village built around a historic mountain.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-le-massif",
+      "name": "Le Massif de Charlevoix",
+      "lat": 47.2833,
+      "lng": -70.6167,
+      "countryCode": "CA",
+      "region": "Petite-Rivière-Saint-François, Quebec",
+      "why": "The highest vertical drop east of the Rockies, with runs that finish almost on the St. Lawrence shore.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-mont-sainte-anne",
+      "name": "Mont-Sainte-Anne",
+      "lat": 47.0833,
+      "lng": -70.9167,
+      "countryCode": "CA",
+      "region": "Beaupré, Quebec",
+      "why": "One of eastern Canada's biggest ski areas, close enough to Quebec City for an easy day trip.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-cmh-bugaboos",
+      "name": "CMH Bugaboo Lodge",
+      "lat": 50.7333,
+      "lng": -116.75,
+      "countryCode": "CA",
+      "region": "Bugaboo Mountains, British Columbia",
+      "why": "Where mechanized heli-skiing began in 1965, dropping skiers onto glaciated Purcell peaks all week from a fly-in lodge.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "heli",
+        "backcountry",
+        "glacier"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-cmh-monashees",
+      "name": "CMH Monashees",
+      "lat": 51.3667,
+      "lng": -118.5833,
+      "countryCode": "CA",
+      "region": "Monashee Mountains, British Columbia",
+      "why": "Deep, consistent Monashee snowfall and low-angle glades that made this one of CMH's most sought-after heli zones.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "heli",
+        "powder",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-selkirk-wilderness",
+      "name": "Selkirk Wilderness Skiing",
+      "lat": 50.2167,
+      "lng": -117.1,
+      "countryCode": "CA",
+      "region": "Meadow Creek, British Columbia",
+      "why": "One of the original cat-skiing operations, working legendary Selkirk snowfall from a single remote lodge.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "cat",
+        "backcountry",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-island-lake",
+      "name": "Island Lake Catskiing",
+      "lat": 49.4,
+      "lng": -115.2167,
+      "countryCode": "CA",
+      "region": "Fernie, British Columbia",
+      "why": "Cat-skiing through old-growth glades and alpine bowls on private tenure beside Fernie's resort boundary.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "cat",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-baldface",
+      "name": "Baldface Lodge",
+      "lat": 49.2333,
+      "lng": -117.1167,
+      "countryCode": "CA",
+      "region": "Nelson, British Columbia",
+      "why": "A remote, off-grid cat-ski lodge in the Selkirks known for steep tree runs and huge total snowfall.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "cat",
+        "backcountry",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-whistler-heli",
+      "name": "Whistler Heli-Skiing (Coast Mountains)",
+      "lat": 50.1,
+      "lng": -123.1,
+      "countryCode": "CA",
+      "region": "Whistler, British Columbia",
+      "why": "Coast Mountains heli access to glaciers and alpine bowls well beyond Whistler Blackcomb's lift network.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "heli",
+        "backcountry",
+        "glacier"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-chamonix",
+      "name": "Chamonix",
+      "lat": 45.9237,
+      "lng": 6.8694,
+      "countryCode": "FR",
+      "region": "Chamonix-Mont-Blanc",
+      "why": "Base town for the Vallée Blanche and the Aiguille du Midi téléphérique, the birthplace of extreme skiing.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "freeride",
+        "backcountry",
+        "glacier",
+        "village"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-vallee-blanche",
+      "name": "Vallée Blanche",
+      "lat": 45.8786,
+      "lng": 6.8873,
+      "countryCode": "FR",
+      "region": "Chamonix, Haute-Savoie",
+      "why": "A 20 km off-piste glacier descent from the Aiguille du Midi, the most famous ungroomed run in the world.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "backcountry",
+        "glacier",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-grands-montets",
+      "name": "Les Grands Montets",
+      "lat": 45.9797,
+      "lng": 6.9528,
+      "countryCode": "FR",
+      "region": "Argentière, Haute-Savoie",
+      "why": "Steep, high-alpine terrain above Argentière that has drawn extreme skiers since the 1970s.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "freeride",
+        "glacier"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-val-disere",
+      "name": "Val d'Isère",
+      "lat": 45.4489,
+      "lng": 6.9797,
+      "countryCode": "FR",
+      "region": "Val d'Isère, Savoie",
+      "why": "Half of the vast Espace Killy, with a race pedigree and some of the best off-piste terrain in the Alps.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "village"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-tignes",
+      "name": "Tignes",
+      "lat": 45.4686,
+      "lng": 6.9061,
+      "countryCode": "FR",
+      "region": "Tignes, Savoie",
+      "why": "Glacier skiing on the Grande Motte keeps runs open into autumn above Val d'Isère's shared valley.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "glacier",
+        "spring"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-courchevel",
+      "name": "Courchevel",
+      "lat": 45.4149,
+      "lng": 6.6339,
+      "countryCode": "FR",
+      "region": "Courchevel, Savoie",
+      "why": "The most polished of the Trois Vallées bases, with a valley-served altiport and Michelin-heavy après.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-meribel",
+      "name": "Méribel",
+      "lat": 45.398,
+      "lng": 6.5658,
+      "countryCode": "FR",
+      "region": "Méribel, Savoie",
+      "why": "The central hub of the Trois Vallées, the largest linked ski area on earth.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-val-thorens",
+      "name": "Val Thorens",
+      "lat": 45.2977,
+      "lng": 6.5799,
+      "countryCode": "FR",
+      "region": "Val Thorens, Savoie",
+      "why": "Europe's highest ski resort, with snow-sure glacier access at the top of the Trois Vallées.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "glacier",
+        "spring"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-les-deux-alpes",
+      "name": "Les Deux Alpes",
+      "lat": 45.0128,
+      "lng": 6.1233,
+      "countryCode": "FR",
+      "region": "Les Deux Alpes, Isère",
+      "why": "Year-round glacier skiing on the Dôme, plus a big French ski-town party scene at the base.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "glacier",
+        "spring"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-alpe-dhuez",
+      "name": "Alpe d'Huez",
+      "lat": 45.0909,
+      "lng": 6.0669,
+      "countryCode": "FR",
+      "region": "Alpe d'Huez, Isère",
+      "why": "The Sarenne, at 16 km one of the longest black runs in the world, drops off this sun-drenched resort.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-la-grave",
+      "name": "La Grave",
+      "lat": 45.0453,
+      "lng": 6.3083,
+      "countryCode": "FR",
+      "region": "La Grave, Hautes-Alpes",
+      "why": "A single téléphérique with no marked pistes at all, serving some of the most serious off-piste terrain in Europe.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "backcountry",
+        "freeride",
+        "glacier"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-serre-chevalier",
+      "name": "Serre Chevalier",
+      "lat": 44.9394,
+      "lng": 6.5511,
+      "countryCode": "FR",
+      "region": "Serre Chevalier, Hautes-Alpes",
+      "why": "A long, sunny valley of linked villages with a huge, varied terrain network in the southern French Alps.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-les-arcs",
+      "name": "Les Arcs",
+      "lat": 45.5719,
+      "lng": 6.8272,
+      "countryCode": "FR",
+      "region": "Les Arcs, Savoie",
+      "why": "Part of the Paradiski network, with wide-open alpine bowls built for high-speed cruising.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-la-plagne",
+      "name": "La Plagne",
+      "lat": 45.5069,
+      "lng": 6.6764,
+      "countryCode": "FR",
+      "region": "La Plagne, Savoie",
+      "why": "Ten linked villages and the 1992 Olympic bobsled track, joined to Les Arcs by the Vanoise Express.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-avoriaz",
+      "name": "Avoriaz / Portes du Soleil",
+      "lat": 46.1917,
+      "lng": 6.7761,
+      "countryCode": "FR",
+      "region": "Avoriaz, Haute-Savoie",
+      "why": "A car-free, timber-clad resort anchoring the cross-border Portes du Soleil, the world's largest linked lift network.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-megeve",
+      "name": "Megève",
+      "lat": 45.8566,
+      "lng": 6.6178,
+      "countryCode": "FR",
+      "region": "Megève, Haute-Savoie",
+      "why": "An elegant, low-key Haute-Savoie village resort favoured for gentle terrain and old-money charm.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-saint-lary",
+      "name": "Saint-Lary-Soulan",
+      "lat": 42.8117,
+      "lng": 0.3225,
+      "countryCode": "FR",
+      "region": "Saint-Lary-Soulan, Hautes-Pyrénées",
+      "why": "The biggest ski area in the French Pyrenees, with a cable car climbing straight from the village.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-zermatt",
+      "name": "Zermatt",
+      "lat": 46.0207,
+      "lng": 7.7491,
+      "countryCode": "CH",
+      "region": "Zermatt, Valais",
+      "why": "Skiing under the Matterhorn on a car-free glacier resort linked year-round across the border to Cervinia.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "glacier",
+        "village"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-verbier",
+      "name": "Verbier",
+      "lat": 46.0967,
+      "lng": 7.2286,
+      "countryCode": "CH",
+      "region": "Verbier, Valais",
+      "why": "The steep, off-piste heart of the Four Valleys, and one of freeriding's most storied resorts.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "village"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-st-moritz",
+      "name": "St. Moritz",
+      "lat": 46.4908,
+      "lng": 9.8355,
+      "countryCode": "CH",
+      "region": "St. Moritz, Graubünden",
+      "why": "Birthplace of Alpine winter tourism, with sun-soaked, wide-open Engadin terrain above a glamorous lake town.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-davos",
+      "name": "Davos",
+      "lat": 46.8027,
+      "lng": 9.836,
+      "countryCode": "CH",
+      "region": "Davos, Graubünden",
+      "why": "A high, snow-sure Graubünden town linking six separate ski areas across a broad alpine valley.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-klosters",
+      "name": "Klosters",
+      "lat": 46.8703,
+      "lng": 9.8767,
+      "countryCode": "CH",
+      "region": "Klosters, Graubünden",
+      "why": "Quieter and more traditional than neighbouring Davos, sharing the same Parsenn lift network.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-engelberg",
+      "name": "Engelberg-Titlis",
+      "lat": 46.8218,
+      "lng": 8.4045,
+      "countryCode": "CH",
+      "region": "Engelberg, Obwalden",
+      "why": "A rotating cable car up the glaciated Titlis gives lift-served access to steep off-piste above a monastery village.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "glacier"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-andermatt",
+      "name": "Andermatt",
+      "lat": 46.6336,
+      "lng": 8.5942,
+      "countryCode": "CH",
+      "region": "Andermatt, Uri",
+      "why": "Recently redeveloped and linked to Sedrun, with some of the most avalanche-prone, serious freeride terrain in Switzerland.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-saas-fee",
+      "name": "Saas-Fee",
+      "lat": 46.1097,
+      "lng": 7.9296,
+      "countryCode": "CH",
+      "region": "Saas-Fee, Valais",
+      "why": "A glacier village ringed by 4,000-metre peaks, with lift-served snow reliable almost year-round.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "glacier",
+        "village"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-grindelwald",
+      "name": "Grindelwald / Jungfrau",
+      "lat": 46.6244,
+      "lng": 8.0414,
+      "countryCode": "CH",
+      "region": "Grindelwald, Bern",
+      "why": "Runs directly under the north faces of the Eiger and Jungfrau, reached by cogwheel trains instead of roads.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-crans-montana",
+      "name": "Crans-Montana",
+      "lat": 46.3092,
+      "lng": 7.4794,
+      "countryCode": "CH",
+      "region": "Crans-Montana, Valais",
+      "why": "A sunny, south-facing balcony resort above the Rhône valley, popular for its long groomers and views.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-st-anton",
+      "name": "St. Anton am Arlberg",
+      "lat": 47.1287,
+      "lng": 10.2607,
+      "countryCode": "AT",
+      "region": "St. Anton am Arlberg, Tyrol",
+      "why": "The cradle of Alpine ski technique, now linked into the largest connected ski area in Austria.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "village"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-kitzbuhel",
+      "name": "Kitzbühel",
+      "lat": 47.4467,
+      "lng": 12.3922,
+      "countryCode": "AT",
+      "region": "Kitzbühel, Tyrol",
+      "why": "Home to the Hahnenkamm, the most feared downhill race course in the World Cup calendar.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-solden",
+      "name": "Sölden",
+      "lat": 46.9664,
+      "lng": 10.9932,
+      "countryCode": "AT",
+      "region": "Sölden, Tyrol",
+      "why": "Two glaciers keep this Ötztal resort snow-sure and it regularly opens the World Cup ski season in October.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "glacier"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-ischgl",
+      "name": "Ischgl",
+      "lat": 47.0175,
+      "lng": 10.2857,
+      "countryCode": "AT",
+      "region": "Ischgl, Tyrol",
+      "why": "High, snow-sure Silvretta terrain linked across the border to Samnaun, Switzerland, for duty-free shopping runs.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-zell-am-see",
+      "name": "Zell am See-Kaprun",
+      "lat": 47.3167,
+      "lng": 12.7833,
+      "countryCode": "AT",
+      "region": "Zell am See, Salzburg",
+      "why": "Lakeside town skiing linked to the Kitzsteinhorn glacier above Kaprun for near year-round snow.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "glacier",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-obergurgl",
+      "name": "Obergurgl-Hochgurgl",
+      "lat": 46.8681,
+      "lng": 11.0264,
+      "countryCode": "AT",
+      "region": "Obergurgl, Tyrol",
+      "why": "One of the highest villages in Austria, almost guaranteeing snow from November to May.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-mayrhofen",
+      "name": "Mayrhofen / Hintertux Glacier",
+      "lat": 47.07,
+      "lng": 11.7647,
+      "countryCode": "AT",
+      "region": "Mayrhofen, Tyrol",
+      "why": "Steep terrain and the Harakiri piste, plus the Hintertux Glacier's genuine 365-day skiing further up the valley.",
+      "bestMonths": [],
+      "tags": [
+        "resort",
+        "glacier",
+        "freeride"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-saalbach",
+      "name": "Saalbach-Hinterglemm",
+      "lat": 47.3897,
+      "lng": 12.6383,
+      "countryCode": "AT",
+      "region": "Saalbach, Salzburg",
+      "why": "A wide, sunny bowl of interlinked villages that forms one of Austria's biggest and liveliest ski circuits.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-lech-zurs",
+      "name": "Lech-Zürs",
+      "lat": 47.2089,
+      "lng": 10.1394,
+      "countryCode": "AT",
+      "region": "Lech am Arlberg, Vorarlberg",
+      "why": "The quiet, exclusive end of the Arlberg, with dependable snow and some of the most understated luxury in the Alps.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "powder"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-cortina",
+      "name": "Cortina d'Ampezzo",
+      "lat": 46.5405,
+      "lng": 12.1357,
+      "countryCode": "IT",
+      "region": "Cortina d'Ampezzo, Veneto",
+      "why": "Dolomite spires ring one of skiing's most scenic resorts, host of the 1956 and upcoming 2026 Winter Olympics.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village",
+        "family"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-val-gardena",
+      "name": "Val Gardena",
+      "lat": 46.5556,
+      "lng": 11.7549,
+      "countryCode": "IT",
+      "region": "Selva di Val Gardena, South Tyrol",
+      "why": "Part of the Sella Ronda circuit, a legendary lift-and-piste loop around the Sella massif in the Dolomites.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-alta-badia",
+      "name": "Alta Badia",
+      "lat": 46.55,
+      "lng": 11.9167,
+      "countryCode": "IT",
+      "region": "Corvara, South Tyrol",
+      "why": "The other flank of the Sella Ronda, known for scenic groomers and mountain-hut dining right on the piste.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-sestriere",
+      "name": "Sestriere",
+      "lat": 44.9575,
+      "lng": 6.8781,
+      "countryCode": "IT",
+      "region": "Sestriere, Piedmont",
+      "why": "Host of the 2006 Winter Olympics and the hub of the Milky Way's cross-border Italian-French ski link.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-livigno",
+      "name": "Livigno",
+      "lat": 46.5386,
+      "lng": 10.1347,
+      "countryCode": "IT",
+      "region": "Livigno, Lombardy",
+      "why": "A duty-free valley town at 1,800 m with reliably cold, dry snow into the shoulder seasons.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-courmayeur",
+      "name": "Courmayeur",
+      "lat": 45.7908,
+      "lng": 6.9689,
+      "countryCode": "IT",
+      "region": "Courmayeur, Aosta Valley",
+      "why": "The Italian side of Mont Blanc, joined by cable car to Chamonix's Vallée Blanche descent.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "glacier"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-madonna-di-campiglio",
+      "name": "Madonna di Campiglio",
+      "lat": 46.2306,
+      "lng": 10.8253,
+      "countryCode": "IT",
+      "region": "Madonna di Campiglio, Trentino",
+      "why": "An elegant Dolomite-adjacent resort with wide groomers and some of Italy's best-known off-piste, the Canalone Miramonti.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "village"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-bormio",
+      "name": "Bormio",
+      "lat": 46.4694,
+      "lng": 10.3697,
+      "countryCode": "IT",
+      "region": "Bormio, Lombardy",
+      "why": "A World Cup downhill venue, the Stelvio, dropping over 1,000 vertical metres from a historic spa town.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-passo-stelvio",
+      "name": "Passo dello Stelvio",
+      "lat": 46.5253,
+      "lng": 10.4525,
+      "countryCode": "IT",
+      "region": "Stelvio Pass, Lombardy/South Tyrol",
+      "why": "Summer glacier skiing on Europe's highest paved pass, a long-running training ground for racers.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "glacier",
+        "spring"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-garmisch",
+      "name": "Garmisch-Partenkirchen (Zugspitze)",
+      "lat": 47.4211,
+      "lng": 10.9852,
+      "countryCode": "DE",
+      "region": "Garmisch-Partenkirchen, Bavaria",
+      "why": "Lift-served glacier skiing on Germany's highest peak, plus classic Kandahar downhill terrain below.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "resort",
+        "glacier",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-kranjska-gora",
+      "name": "Kranjska Gora",
+      "lat": 46.4833,
+      "lng": 13.7889,
+      "countryCode": "SI",
+      "region": "Kranjska Gora",
+      "why": "Slovenia's biggest resort and a regular World Cup slalom venue beneath the Julian Alps.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-vogel",
+      "name": "Vogel",
+      "lat": 46.2597,
+      "lng": 13.8319,
+      "countryCode": "SI",
+      "region": "Bohinj, Julian Alps",
+      "why": "A cable-car-served balcony resort above Lake Bohinj inside Triglav National Park.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-baqueira-beret",
+      "name": "Baqueira-Beret",
+      "lat": 42.7,
+      "lng": 0.945,
+      "countryCode": "ES",
+      "region": "Vall d'Aran, Catalonia",
+      "why": "The largest and snowiest resort in the Spanish Pyrenees, long favoured by the Spanish royal family.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-sierra-nevada",
+      "name": "Sierra Nevada",
+      "lat": 37.0964,
+      "lng": -3.3978,
+      "countryCode": "ES",
+      "region": "Sierra Nevada, Granada",
+      "why": "Europe's southernmost major ski resort, close enough to the Mediterranean coast to ski and swim the same day.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-formigal",
+      "name": "Formigal",
+      "lat": 42.7833,
+      "lng": -0.3833,
+      "countryCode": "ES",
+      "region": "Formigal, Aragonese Pyrenees",
+      "why": "One of the largest resorts in the Pyrenees, with wide, sunny bowls above the Tena valley.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-grandvalira",
+      "name": "Grandvalira",
+      "lat": 42.57,
+      "lng": 1.66,
+      "countryCode": "AD",
+      "region": "Pas de la Casa/Soldeu, Andorra",
+      "why": "The biggest ski area in the Pyrenees and southern Europe, spanning Andorra's eastern valleys.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family",
+        "village"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-are",
+      "name": "Åre",
+      "lat": 63.399,
+      "lng": 13.081,
+      "countryCode": "SE",
+      "region": "Åre, Jämtland",
+      "why": "Scandinavia's premier ski resort and a regular World Cup slalom stop on a lake-side mountain.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-riksgransen",
+      "name": "Riksgränsen",
+      "lat": 68.429,
+      "lng": 18.133,
+      "countryCode": "SE",
+      "region": "Riksgränsen, Lapland",
+      "why": "Skiing under the midnight sun into June, this far above the Arctic Circle the season ends in daylight, not darkness.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "resort",
+        "spring",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-trysil",
+      "name": "Trysil",
+      "lat": 61.3167,
+      "lng": 12.2667,
+      "countryCode": "NO",
+      "region": "Trysil",
+      "why": "Norway's largest ski resort, a family-oriented mountain close to the Swedish border.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-hemsedal",
+      "name": "Hemsedal",
+      "lat": 60.8667,
+      "lng": 8.55,
+      "countryCode": "NO",
+      "region": "Hemsedal",
+      "why": "Norway's steepest lift-served terrain, nicknamed the Scandinavian Alps for its jagged skyline.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-narvikfjellet",
+      "name": "Narvikfjellet",
+      "lat": 68.409,
+      "lng": 17.426,
+      "countryCode": "NO",
+      "region": "Narvik",
+      "why": "Steep, fjord-side freeride terrain above the Arctic port that supplied Sweden's iron ore, with heli access nearby.",
+      "bestMonths": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "freeride",
+        "backcountry",
+        "heli"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-geilo",
+      "name": "Geilo",
+      "lat": 60.5333,
+      "lng": 8.2,
+      "countryCode": "NO",
+      "region": "Geilo",
+      "why": "One of Norway's oldest ski towns, with gentle terrain that has made it a family staple for a century.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-levi",
+      "name": "Levi",
+      "lat": 67.8054,
+      "lng": 24.8006,
+      "countryCode": "FI",
+      "region": "Levi, Lapland",
+      "why": "Finland's best-known resort and an annual World Cup slalom opener under frequent aurora displays.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-yllas",
+      "name": "Ylläs",
+      "lat": 67.5667,
+      "lng": 24.2333,
+      "countryCode": "FI",
+      "region": "Ylläs, Lapland",
+      "why": "Finland's biggest connected ski area, spread across twin fells inside Lapland's fell country.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-bansko",
+      "name": "Bansko",
+      "lat": 41.836,
+      "lng": 23.488,
+      "countryCode": "BG",
+      "region": "Bansko, Pirin Mountains",
+      "why": "Bulgaria's biggest and snowiest resort, valued across Europe for low prices and a long groomed run to town.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-borovets",
+      "name": "Borovets",
+      "lat": 42.2667,
+      "lng": 23.6167,
+      "countryCode": "BG",
+      "region": "Borovets, Rila Mountains",
+      "why": "Bulgaria's oldest resort, with wide, tree-lined pistes below Mount Musala.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-pamporovo",
+      "name": "Pamporovo",
+      "lat": 41.65,
+      "lng": 24.6833,
+      "countryCode": "BG",
+      "region": "Pamporovo, Rhodope Mountains",
+      "why": "A gentle, forested resort marketed as one of the sunniest in the Balkans.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-jahorina",
+      "name": "Jahorina",
+      "lat": 43.7333,
+      "lng": 18.5667,
+      "countryCode": "BA",
+      "region": "Pale, near Sarajevo",
+      "why": "A 1984 Winter Olympic downhill venue rebuilt into Bosnia's most developed ski area.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-kopaonik",
+      "name": "Kopaonik",
+      "lat": 43.2833,
+      "lng": 20.8167,
+      "countryCode": "RS",
+      "region": "Kopaonik National Park",
+      "why": "Serbia's largest resort, on a high, sunny plateau with the country's most reliable snow cover.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-poiana-brasov",
+      "name": "Poiana Brașov",
+      "lat": 45.5947,
+      "lng": 25.5589,
+      "countryCode": "RO",
+      "region": "Poiana Brașov, Transylvania",
+      "why": "Romania's best-known resort, a gondola ride above a medieval Transylvanian town.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-gudauri",
+      "name": "Gudauri",
+      "lat": 42.475,
+      "lng": 44.477,
+      "countryCode": "GE",
+      "region": "Gudauri, Greater Caucasus",
+      "why": "Wide-open, largely treeless Caucasus terrain that has made Georgia a fast-rising freeride destination.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-mestia",
+      "name": "Mestia (Hatsvali/Tetnuldi)",
+      "lat": 43.045,
+      "lng": 42.725,
+      "countryCode": "GE",
+      "region": "Mestia, Svaneti",
+      "why": "Remote Svaneti peaks above a UNESCO-listed medieval tower village, with heli access to untouched terrain.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "backcountry",
+        "heli",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-rosa-khutor",
+      "name": "Rosa Khutor",
+      "lat": 43.6789,
+      "lng": 40.3128,
+      "countryCode": "RU",
+      "region": "Krasnaya Polyana, Sochi",
+      "why": "The alpine venue of the 2014 Sochi Olympics, with the Caucasus's most modern lift infrastructure.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-elbrus",
+      "name": "Elbrus (Cheget/Terskol)",
+      "lat": 43.305,
+      "lng": 42.489,
+      "countryCode": "RU",
+      "region": "Terskol, Kabardino-Balkaria",
+      "why": "Skiing on the flanks of Europe's highest peak, a rugged, high-altitude freeride classic.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "freeride",
+        "backcountry",
+        "glacier"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-erciyes",
+      "name": "Erciyes",
+      "lat": 38.57,
+      "lng": 35.46,
+      "countryCode": "TR",
+      "region": "Kayseri",
+      "why": "Turkey's largest ski area, on the slopes of a dormant volcano above the Cappadocia region.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-palandoken",
+      "name": "Palandöken",
+      "lat": 39.85,
+      "lng": 41.2667,
+      "countryCode": "TR",
+      "region": "Erzurum",
+      "why": "High, snow-sure eastern Anatolian terrain with some of Turkey's longest and steepest runs.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-shymbulak",
+      "name": "Shymbulak",
+      "lat": 43.1567,
+      "lng": 77.0817,
+      "countryCode": "KZ",
+      "region": "Almaty",
+      "why": "Central Asia's biggest resort, a gondola ride above Almaty into the snowy Tian Shan foothills.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-mzaar-kfardebian",
+      "name": "Mzaar Kfardebian",
+      "lat": 33.995,
+      "lng": 35.833,
+      "countryCode": "LB",
+      "region": "Kfardebian, Mount Lebanon",
+      "why": "The largest ski area in the Middle East, close enough to Beirut for skiing and the coast in a single day.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-niseko",
+      "name": "Niseko (Grand Hirafu)",
+      "lat": 42.8636,
+      "lng": 140.687,
+      "countryCode": "JP",
+      "region": "Niseko, Hokkaido",
+      "why": "Siberian storms deliver some of the most consistent, driest powder on the planet to this Hokkaido town.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "backcountry"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-rusutsu",
+      "name": "Rusutsu",
+      "lat": 42.755,
+      "lng": 140.908,
+      "countryCode": "JP",
+      "region": "Rusutsu, Hokkaido",
+      "why": "Deep tree skiing across three interlinked peaks, quieter than neighbouring Niseko but just as snowy.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-kiroro",
+      "name": "Kiroro",
+      "lat": 43.0725,
+      "lng": 140.9469,
+      "countryCode": "JP",
+      "region": "Akaigawa, Hokkaido",
+      "why": "Among Hokkaido's snowiest resorts, with wide-open bowls and reliably light, dry snow.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-asahidake",
+      "name": "Asahidake",
+      "lat": 43.67,
+      "lng": 142.85,
+      "countryCode": "JP",
+      "region": "Asahikawa, Hokkaido",
+      "why": "A single ropeway onto Hokkaido's highest peak, opening backcountry powder terrain with no marked pistes.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "backcountry",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-tomamu",
+      "name": "Tomamu",
+      "lat": 43.15,
+      "lng": 142.75,
+      "countryCode": "JP",
+      "region": "Shimukappu, Hokkaido",
+      "why": "A purpose-built Hokkaido resort known for its cloud sea viewpoint and reliable, sheltered tree runs.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-hakuba",
+      "name": "Hakuba (Happo-One)",
+      "lat": 36.6989,
+      "lng": 137.8125,
+      "countryCode": "JP",
+      "region": "Hakuba, Nagano",
+      "why": "Host of the 1998 Nagano Olympics, with the biggest vertical and steepest terrain in the Japan Alps.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "freeride"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-nozawa-onsen",
+      "name": "Nozawa Onsen",
+      "lat": 36.9186,
+      "lng": 138.4406,
+      "countryCode": "JP",
+      "region": "Nozawa Onsen, Nagano",
+      "why": "A century-old hot-spring village resort with steep upper pitches and public bathhouses at the base.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "village"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-myoko-kogen",
+      "name": "Myoko Kogen",
+      "lat": 36.899,
+      "lng": 138.197,
+      "countryCode": "JP",
+      "region": "Myoko, Niigata",
+      "why": "Some of the heaviest snowfall in Japan, feeding old-school resorts on the flanks of a dormant volcano.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-shiga-kogen",
+      "name": "Shiga Kogen",
+      "lat": 36.7,
+      "lng": 138.51,
+      "countryCode": "JP",
+      "region": "Yamanouchi, Nagano",
+      "why": "Japan's largest ski area, 21 linked ski areas on one lift pass inside a national park.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-zao-onsen",
+      "name": "Zao Onsen",
+      "lat": 38.117,
+      "lng": 140.421,
+      "countryCode": "JP",
+      "region": "Yamagata",
+      "why": "Famous for its juhyo, wind-sculpted snow monsters formed on frozen fir trees along the upper runs.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-furano",
+      "name": "Furano",
+      "lat": 43.32,
+      "lng": 142.382,
+      "countryCode": "JP",
+      "region": "Furano, Hokkaido",
+      "why": "A former World Cup venue in central Hokkaido, prized for dry snow with far fewer crowds than the coast.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-naeba",
+      "name": "Naeba",
+      "lat": 36.8167,
+      "lng": 138.7833,
+      "countryCode": "JP",
+      "region": "Yuzawa, Niigata",
+      "why": "One of Japan's biggest single resorts, linked by gondola to Kagura for a huge combined terrain.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-appi-kogen",
+      "name": "Appi Kogen",
+      "lat": 39.9333,
+      "lng": 140.9333,
+      "countryCode": "JP",
+      "region": "Hachimantai, Iwate",
+      "why": "Long, wide groomers on volcanic Mount Iwate, developed with a resort standard rare in the Tohoku region.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-yongpyong",
+      "name": "Yongpyong",
+      "lat": 37.64,
+      "lng": 128.68,
+      "countryCode": "KR",
+      "region": "Pyeongchang",
+      "why": "South Korea's oldest and largest resort, and the alpine skiing venue for the 2018 Winter Olympics.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-high1",
+      "name": "High1 Resort",
+      "lat": 37.2,
+      "lng": 128.9833,
+      "countryCode": "KR",
+      "region": "Jeongseon",
+      "why": "Korea's highest-altitude resort, built on a former coal-mining mountain in Gangwon Province.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-yabuli",
+      "name": "Yabuli",
+      "lat": 44.5667,
+      "lng": 129.3167,
+      "countryCode": "CN",
+      "region": "Yabuli, Heilongjiang",
+      "why": "China's oldest major ski resort and long-time national training base, in the country's coldest province.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-changbaishan",
+      "name": "Changbaishan (Wanda)",
+      "lat": 42.0192,
+      "lng": 127.9948,
+      "countryCode": "CN",
+      "region": "Erdaobaihe, Jilin",
+      "why": "A purpose-built resort near the Changbai volcanic range, among China's snowiest ski destinations.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-gulmarg",
+      "name": "Gulmarg",
+      "lat": 34.0484,
+      "lng": 74.3805,
+      "countryCode": "IN",
+      "region": "Gulmarg, Kashmir",
+      "why": "Asia's highest cable car opens huge, ungroomed Himalayan bowls above a single sleepy meadow village.",
+      "bestMonths": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "backcountry",
+        "heli",
+        "freeride",
+        "powder"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-auli",
+      "name": "Auli",
+      "lat": 30.53,
+      "lng": 79.57,
+      "countryCode": "IN",
+      "region": "Joshimath, Uttarakhand",
+      "why": "A small Garhwal Himalaya resort with views of Nanda Devi, developed as India's main ski-racing venue.",
+      "bestMonths": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-solang-valley",
+      "name": "Solang Valley",
+      "lat": 32.3167,
+      "lng": 77.1667,
+      "countryCode": "IN",
+      "region": "Manali, Himachal Pradesh",
+      "why": "The most accessible ski slopes in the Indian Himalaya, a short drive above the backpacker town of Manali.",
+      "bestMonths": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "backcountry"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-malam-jabba",
+      "name": "Malam Jabba",
+      "lat": 34.8014,
+      "lng": 72.5698,
+      "countryCode": "PK",
+      "region": "Swat Valley",
+      "why": "Pakistan's only developed ski resort, rebuilt in the Swat Valley after years of closure.",
+      "bestMonths": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-naltar",
+      "name": "Naltar Valley",
+      "lat": 36.1667,
+      "lng": 74.1833,
+      "countryCode": "PK",
+      "region": "Gilgit-Baltistan",
+      "why": "A remote Karakoram valley used by Pakistan's ski federation, with untouched backcountry bowls.",
+      "bestMonths": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "backcountry",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-treble-cone",
+      "name": "Treble Cone",
+      "lat": -44.627,
+      "lng": 168.899,
+      "countryCode": "NZ",
+      "region": "Wanaka, South Island",
+      "why": "The biggest lift-served vertical and the steepest, widest open faces in the Southern Lakes region.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-cardrona",
+      "name": "Cardrona Alpine Resort",
+      "lat": -44.8686,
+      "lng": 168.9436,
+      "countryCode": "NZ",
+      "region": "Wanaka, South Island",
+      "why": "Wide, sunny beginner-to-intermediate basins that have made this one of New Zealand's most family-friendly resorts.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-coronet-peak",
+      "name": "Coronet Peak",
+      "lat": -44.9124,
+      "lng": 168.735,
+      "countryCode": "NZ",
+      "region": "Queenstown, South Island",
+      "why": "Queenstown's original ski field, with night skiing and views over the Wakatipu basin.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-the-remarkables",
+      "name": "The Remarkables",
+      "lat": -45.0464,
+      "lng": 168.8206,
+      "countryCode": "NZ",
+      "region": "Queenstown, South Island",
+      "why": "Jagged, alpine terrain named for the mountain range it sits in, above Lake Wakatipu.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-mt-hutt",
+      "name": "Mt Hutt",
+      "lat": -43.4864,
+      "lng": 171.5389,
+      "countryCode": "NZ",
+      "region": "Methven, South Island",
+      "why": "Canterbury's biggest ski area, exposed and often windy, but with one of the longest seasons on the South Island.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "OnTheSnow"
+    },
+    {
+      "id": "ski-craigieburn",
+      "name": "Craigieburn Valley",
+      "lat": -43.15,
+      "lng": 171.7167,
+      "countryCode": "NZ",
+      "region": "Craigieburn Range, South Island",
+      "why": "A rope-tow, club-run field with steep, ungroomed terrain that draws serious backcountry-minded skiers.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "backcountry",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-mt-olympus",
+      "name": "Mt Olympus",
+      "lat": -43.1333,
+      "lng": 171.5833,
+      "countryCode": "NZ",
+      "region": "Craigieburn Range, South Island",
+      "why": "A classic Kiwi club field: nutcracker rope tows, no snowmaking, and steep, ungroomed Canterbury terrain.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "backcountry",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-temple-basin",
+      "name": "Temple Basin",
+      "lat": -42.9167,
+      "lng": 171.5667,
+      "countryCode": "NZ",
+      "region": "Arthur's Pass, South Island",
+      "why": "A hike-in club field reached on foot from Arthur's Pass, with rope tows and a strong DIY culture.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "backcountry",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-whakapapa",
+      "name": "Whakapapa (Mt Ruapehu)",
+      "lat": -39.25,
+      "lng": 175.55,
+      "countryCode": "NZ",
+      "region": "Mt Ruapehu, North Island",
+      "why": "The North Island's largest ski area, on an active volcano with views across the whole central plateau.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-ohau",
+      "name": "Ohau Snow Fields",
+      "lat": -44.2333,
+      "lng": 169.8333,
+      "countryCode": "NZ",
+      "region": "Lake Ohau, South Island",
+      "why": "A tiny, uncrowded club-style field above Lake Ohau, run more for locals than tourists.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-perisher",
+      "name": "Perisher",
+      "lat": -36.4058,
+      "lng": 148.4131,
+      "countryCode": "AU",
+      "region": "Perisher Valley, New South Wales",
+      "why": "Australia's largest ski resort, four linked areas across the Snowy Mountains.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "World Ski Awards 2025"
+    },
+    {
+      "id": "ski-thredbo",
+      "name": "Thredbo",
+      "lat": -36.5039,
+      "lng": 148.304,
+      "countryCode": "AU",
+      "region": "Thredbo, New South Wales",
+      "why": "Australia's longest runs and biggest vertical drop, in an alpine village at the foot of Mount Kosciuszko.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Ski Magazine Resort Guide 2025"
+    },
+    {
+      "id": "ski-falls-creek",
+      "name": "Falls Creek",
+      "lat": -36.8676,
+      "lng": 147.2786,
+      "countryCode": "AU",
+      "region": "Falls Creek, Victoria",
+      "why": "A ski-in-ski-out Victorian alpine village with wide beginner terrain and a lively cross-country scene.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-mt-buller",
+      "name": "Mt Buller",
+      "lat": -37.1459,
+      "lng": 146.4423,
+      "countryCode": "AU",
+      "region": "Mt Buller, Victoria",
+      "why": "The closest major resort to Melbourne, with a small alpine village atop the mountain itself.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-hotham",
+      "name": "Mt Hotham",
+      "lat": -36.9767,
+      "lng": 147.1367,
+      "countryCode": "AU",
+      "region": "Hotham Heights, Victoria",
+      "why": "Victoria's highest resort, known for the most reliably powdery snow on Australia's mainland.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "powder"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-baw-baw",
+      "name": "Mt Baw Baw",
+      "lat": -37.8386,
+      "lng": 146.2814,
+      "countryCode": "AU",
+      "region": "Baw Baw Village, Victoria",
+      "why": "A small, family-run Victorian field, the closest ski area to Melbourne by driving distance.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-portillo",
+      "name": "Ski Portillo",
+      "lat": -32.8383,
+      "lng": -70.1275,
+      "countryCode": "CL",
+      "region": "Los Andes Province, Chile",
+      "why": "A yellow lakeside hotel below the Andes crest, closed to day visitors so the powder stays for guests all week.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "powder",
+        "family"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-valle-nevado",
+      "name": "Valle Nevado",
+      "lat": -33.3567,
+      "lng": -70.2506,
+      "countryCode": "CL",
+      "region": "Santiago Province, Chile",
+      "why": "The highest and largest of the resorts above Santiago, with heli-ski and cat-ski access beyond its lifts.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "heli",
+        "cat"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-la-parva",
+      "name": "La Parva",
+      "lat": -33.3333,
+      "lng": -70.2833,
+      "countryCode": "CL",
+      "region": "Santiago Province, Chile",
+      "why": "A quieter, more local resort in the Tres Valles above Santiago, linked to El Colorado and Valle Nevado.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-el-colorado",
+      "name": "El Colorado / Farellones",
+      "lat": -33.35,
+      "lng": -70.3,
+      "countryCode": "CL",
+      "region": "Santiago Province, Chile",
+      "why": "The closest ski area to Santiago, an easy day trip up from the capital into the Andes.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-nevados-de-chillan",
+      "name": "Nevados de Chillán",
+      "lat": -36.8977,
+      "lng": -71.4017,
+      "countryCode": "CL",
+      "region": "Las Trancas, Chile",
+      "why": "Volcanic terrain and Chile's longest run, plus natural hot springs at the base after a day of skiing.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-corralco",
+      "name": "Corralco",
+      "lat": -38.3833,
+      "lng": -71.5667,
+      "countryCode": "CL",
+      "region": "Volcán Lonquimay, Chile",
+      "why": "A small, uncrowded resort on an active volcano in Chile's Araucanía region, known for its tree skiing.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-villarrica",
+      "name": "Volcán Villarrica (Pucón)",
+      "lat": -39.42,
+      "lng": -71.75,
+      "countryCode": "CL",
+      "region": "Pucón, Chile",
+      "why": "Lift-served skiing on the flanks of one of South America's most active volcanoes, above the lakeside town of Pucón.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "freeride"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-antillanca",
+      "name": "Antillanca",
+      "lat": -40.7833,
+      "lng": -72.15,
+      "countryCode": "CL",
+      "region": "Puyehue National Park, Chile",
+      "why": "A remote volcanic-crater resort inside Puyehue National Park in Chile's Lake District.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-las-lenas",
+      "name": "Las Leñas",
+      "lat": -35.15,
+      "lng": -70.0864,
+      "countryCode": "AR",
+      "region": "Malargüe, Mendoza Province",
+      "why": "Legendary, treeless Andean bowls that made this Argentina's benchmark for extreme lift-served skiing.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "freeride",
+        "powder"
+      ],
+      "source": "World's 100 Best Ski Resorts"
+    },
+    {
+      "id": "ski-cerro-catedral",
+      "name": "Cerro Catedral",
+      "lat": -41.1667,
+      "lng": -71.45,
+      "countryCode": "AR",
+      "region": "Bariloche, Río Negro",
+      "why": "South America's biggest ski area, above a lakeside Patagonian town with Alpine-style architecture.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-chapelco",
+      "name": "Chapelco",
+      "lat": -40.1667,
+      "lng": -71.35,
+      "countryCode": "AR",
+      "region": "San Martín de los Andes, Neuquén",
+      "why": "Wide, tree-lined Patagonian terrain with views over Lanín volcano and the lakes district.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-cerro-bayo",
+      "name": "Cerro Bayo",
+      "lat": -40.7333,
+      "lng": -71.6167,
+      "countryCode": "AR",
+      "region": "Villa La Angostura, Neuquén",
+      "why": "A small, sheltered resort above a lakeside village on the Patagonian Seven Lakes route.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-cerro-castor",
+      "name": "Cerro Castor",
+      "lat": -54.6667,
+      "lng": -68.0333,
+      "countryCode": "AR",
+      "region": "Ushuaia, Tierra del Fuego",
+      "why": "The southernmost ski resort on earth, with a season stretching into October at the tip of Patagonia.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    },
+    {
+      "id": "ski-oukaimeden",
+      "name": "Oukaïmeden",
+      "lat": 31.205,
+      "lng": -7.858,
+      "countryCode": "MA",
+      "region": "High Atlas, Morocco",
+      "why": "Africa's highest ski resort, a single-lift outpost in the High Atlas above Marrakesh.",
+      "bestMonths": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "backcountry"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-afriski",
+      "name": "Afriski",
+      "lat": -28.9333,
+      "lng": 28.7333,
+      "countryCode": "LS",
+      "region": "Mahlasela Pass, Lesotho",
+      "why": "Southern Africa's only real ski resort, on a high, snow-catching pass in the Maloti Mountains.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Powderhounds"
+    },
+    {
+      "id": "ski-chrea",
+      "name": "Chréa",
+      "lat": 36.4167,
+      "lng": 2.8833,
+      "countryCode": "DZ",
+      "region": "Chréa National Park, Algeria",
+      "why": "A small, historic resort in the Atlas Mountains close enough to Algiers for a day trip to the snow.",
+      "bestMonths": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "resort",
+        "family"
+      ],
+      "source": "Snow-Forecast"
+    }
+  ]
+}

@@ -1,0 +1,3260 @@
+{
+  "id": "surf",
+  "label": "Surf",
+  "blurb": "Famous breaks for every level, from beginner beach breaks to big-wave reefs.",
+  "sources": [
+    "Surfline spot guides",
+    "Stormrider Guide",
+    "WSL championship tour and challenger venues",
+    "Red Bull big-wave venues",
+    "Lonely Planet Epic Surf Breaks"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "surf-mavericks",
+      "name": "Mavericks",
+      "lat": 37.4956,
+      "lng": -122.5013,
+      "countryCode": "US",
+      "region": "Half Moon Bay, California",
+      "why": "A cold-water freight-train reef that only turns on with big NW winter swell; several surfers have died here.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "big-wave",
+        "reef",
+        "right"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-steamer-lane",
+      "name": "Steamer Lane",
+      "lat": 36.9506,
+      "lng": -122.0256,
+      "countryCode": "US",
+      "region": "Santa Cruz, California",
+      "why": "A rock-ledge point off a lighthouse point, breaking rights across several take-off zones; classic and crowded.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "right",
+        "crowded"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-ocean-beach-sf",
+      "name": "Ocean Beach",
+      "lat": 37.7599,
+      "lng": -122.5108,
+      "countryCode": "US",
+      "region": "San Francisco, California",
+      "why": "Heavy, shifting beach-break peaks with strong rips and cold water; for experienced surfers only.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "beach-break",
+        "advanced"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-rincon-ca",
+      "name": "Rincon",
+      "lat": 34.3775,
+      "lng": -119.4767,
+      "countryCode": "US",
+      "region": "Santa Barbara/Ventura, California",
+      "why": "The 'Queen of the Coast' point, long peeling right walls over cobblestone on a good NW swell.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "point",
+        "right",
+        "intermediate"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-malibu-surfrider",
+      "name": "Malibu (Surfrider Beach)",
+      "lat": 34.0369,
+      "lng": -118.6786,
+      "countryCode": "US",
+      "region": "Malibu, California",
+      "why": "Three connecting longboard-friendly point sections that made California surf culture famous; packed most days.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "point",
+        "right",
+        "intermediate",
+        "crowded"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-lower-trestles",
+      "name": "Lower Trestles",
+      "lat": 33.3833,
+      "lng": -117.5883,
+      "countryCode": "US",
+      "region": "San Clemente, California",
+      "why": "A cobblestone-bottom point-reef with rippable rights and lefts; hosts the WSL Finals for its consistency.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "advanced",
+        "crowded"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-huntington-beach-pier",
+      "name": "Huntington Beach Pier",
+      "lat": 33.6553,
+      "lng": -117.9988,
+      "countryCode": "US",
+      "region": "Huntington Beach, California",
+      "why": "Punchy, consistent beach-break peaks either side of the pier; hosts the US Open of Surfing.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate",
+        "crowded"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-blacks-beach",
+      "name": "Blacks Beach",
+      "lat": 32.8862,
+      "lng": -117.253,
+      "countryCode": "US",
+      "region": "La Jolla, California",
+      "why": "A steep, powerful beach-break under the Torrey Pines cliffs, known for hollow, punishing close-outs.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "beach-break",
+        "advanced"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-the-wedge",
+      "name": "The Wedge",
+      "lat": 33.5952,
+      "lng": -117.883,
+      "countryCode": "US",
+      "region": "Newport Beach, California",
+      "why": "A jetty-refracted freak wave that doubles up into a huge, square barrel; famous and dangerous for bodysurfers.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beach-break",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-swamis",
+      "name": "Swami's",
+      "lat": 33.0281,
+      "lng": -117.2937,
+      "countryCode": "US",
+      "region": "Encinitas, California",
+      "why": "A user-friendly reef point below a clifftop meditation garden, with a long, workable right wall.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "reef",
+        "point",
+        "intermediate"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-pipeline",
+      "name": "Pipeline",
+      "lat": 21.665,
+      "lng": -158.0533,
+      "countryCode": "US",
+      "region": "North Shore, Oahu, Hawaii",
+      "why": "The world's most famous barrel: a shallow reef that turns winter swell into thick, hollow, dangerous lefts.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-waimea-bay",
+      "name": "Waimea Bay",
+      "lat": 21.6386,
+      "lng": -158.0669,
+      "countryCode": "US",
+      "region": "North Shore, Oahu, Hawaii",
+      "why": "The spot that started big-wave surfing; only breaks on major NW swells over 20 feet Hawaiian.",
+      "bestMonths": [
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "big-wave",
+        "right"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-sunset-beach-oahu",
+      "name": "Sunset Beach",
+      "lat": 21.6717,
+      "lng": -158.0408,
+      "countryCode": "US",
+      "region": "North Shore, Oahu, Hawaii",
+      "why": "A shifting, powerful reef break famous for peaky, unpredictable rights that punish poor positioning.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-jaws-peahi",
+      "name": "Jaws (Peʻahi)",
+      "lat": 20.933,
+      "lng": -156.3183,
+      "countryCode": "US",
+      "region": "Maui, Hawaii",
+      "why": "A deep-water reef that stands up into some of the tallest rideable waves on earth; tow-in and paddle big-wave venue.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "big-wave",
+        "right"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-honolua-bay",
+      "name": "Honolua Bay",
+      "lat": 21.0083,
+      "lng": -156.6403,
+      "countryCode": "US",
+      "region": "West Maui, Hawaii",
+      "why": "A long, mechanical right point inside a marine reserve bay, considered one of the best right points in the world.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-waikiki",
+      "name": "Waikiki",
+      "lat": 21.2761,
+      "lng": -157.8278,
+      "countryCode": "US",
+      "region": "Honolulu, Oahu, Hawaii",
+      "why": "Gentle, rolling reef and beach waves where modern surfing was popularized; crowded with beginners and canoes.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-hanalei-bay",
+      "name": "Hanalei Bay",
+      "lat": 22.205,
+      "lng": -159.5,
+      "countryCode": "US",
+      "region": "Kauai, Hawaii",
+      "why": "A scenic bay with several peaks from mellow beginner rollers to a solid outer reef on bigger swells.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-rincon-puerto-rico",
+      "name": "Tres Palmas",
+      "lat": 18.3556,
+      "lng": -67.2717,
+      "countryCode": "PR",
+      "region": "Rincón, Puerto Rico",
+      "why": "A big-wave reef inside a marine reserve, the Caribbean's premier winter swell magnet.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "reef",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-puerto-escondido-zicatela",
+      "name": "Zicatela Beach",
+      "lat": 15.842,
+      "lng": -97.0767,
+      "countryCode": "MX",
+      "region": "Puerto Escondido, Oaxaca, Mexico",
+      "why": "The 'Mexican Pipeline': a brutally powerful, hollow beach-break shorebreak for experienced surfers only.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "beach-break",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-pascuales",
+      "name": "Pascuales",
+      "lat": 18.758,
+      "lng": -103.889,
+      "countryCode": "MX",
+      "region": "Colima, Mexico",
+      "why": "An extremely heavy, shallow beach-break barrel that has broken boards and backs; not for the timid.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beach-break",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-sayulita",
+      "name": "Sayulita",
+      "lat": 20.87,
+      "lng": -105.44,
+      "countryCode": "MX",
+      "region": "Nayarit, Mexico",
+      "why": "A mellow, forgiving beach and point break that has become Mexico's go-to learner town.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "beach-break",
+        "point",
+        "beginner"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-todos-santos-killers",
+      "name": "Killers, Isla Todos Santos",
+      "lat": 31.7994,
+      "lng": -116.7247,
+      "countryCode": "MX",
+      "region": "Ensenada, Baja California, Mexico",
+      "why": "A big-wave reef off an island south of Ensenada, one of the best cold-water big-wave spots in North America.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "big-wave",
+        "reef"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-punta-mita",
+      "name": "Punta Mita",
+      "lat": 20.7734,
+      "lng": -105.5338,
+      "countryCode": "MX",
+      "region": "Nayarit, Mexico",
+      "why": "A gentle, long-running point wave over sand and rock, ideal for building confidence past whitewater.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "point",
+        "beginner"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-pavones",
+      "name": "Pavones",
+      "lat": 8.3833,
+      "lng": -83.15,
+      "countryCode": "CR",
+      "region": "Golfo Dulce, Costa Rica",
+      "why": "One of the longest lefts in the world, a river-mouth point that can run for well over a kilometre on a good swell.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "point",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-santa-teresa-cr",
+      "name": "Santa Teresa",
+      "lat": 9.6403,
+      "lng": -85.167,
+      "countryCode": "CR",
+      "region": "Nicoya Peninsula, Costa Rica",
+      "why": "A stretch of consistent beach-break peaks that suits everyone from first-timers to experienced surfers.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-salsa-brava",
+      "name": "Salsa Brava",
+      "lat": 9.655,
+      "lng": -82.753,
+      "countryCode": "CR",
+      "region": "Puerto Viejo de Talamanca, Costa Rica",
+      "why": "A shallow coral reef producing the Caribbean side's heaviest, most dangerous wave.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "reef",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-popoyo",
+      "name": "Popoyo",
+      "lat": 11.3903,
+      "lng": -86.199,
+      "countryCode": "NI",
+      "region": "Tola, Nicaragua",
+      "why": "A hollow, powerful A-frame reef-and-beach setup that put Nicaragua's offshore-blessed coast on the map.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        11,
+        12
+      ],
+      "tags": [
+        "reef",
+        "beach-break",
+        "advanced"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-el-sunzal",
+      "name": "El Sunzal",
+      "lat": 13.493,
+      "lng": -89.446,
+      "countryCode": "SV",
+      "region": "La Libertad, El Salvador",
+      "why": "A friendly, rippable right point that made El Salvador a growing warm-water destination.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "point",
+        "right",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-punta-roca",
+      "name": "Punta Roca",
+      "lat": 13.488,
+      "lng": -89.322,
+      "countryCode": "SV",
+      "region": "La Libertad, El Salvador",
+      "why": "El Salvador's best-known point, a long, powerful right that hosted the ISA World Surfing Games.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-santa-catalina-panama",
+      "name": "Santa Catalina",
+      "lat": 7.633,
+      "lng": -81.266,
+      "countryCode": "PA",
+      "region": "Veraguas, Panama",
+      "why": "A punchy, hollow point and reef combo facing the open Pacific, a launchpad for Coiba boat trips.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        10,
+        11
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-playa-hermosa-cr",
+      "name": "Playa Hermosa",
+      "lat": 9.582,
+      "lng": -84.633,
+      "countryCode": "CR",
+      "region": "Puntarenas, Costa Rica",
+      "why": "A powerful, consistent beach-break that hosted world-tour events and rewards strong paddling.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-chicama",
+      "name": "Chicama",
+      "lat": -7.7,
+      "lng": -79.446,
+      "countryCode": "PE",
+      "region": "Puerto Malabrigo, Peru",
+      "why": "The longest left-hand point wave in the world, with rides claimed to run over two kilometres.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "point",
+        "left",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-pico-alto",
+      "name": "Pico Alto",
+      "lat": -12.335,
+      "lng": -76.825,
+      "countryCode": "PE",
+      "region": "Punta Hermosa, Peru",
+      "why": "Peru's premier big-wave reef, a heavy right that only breaks on the biggest south swells.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "reef",
+        "big-wave",
+        "right"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-punta-rocas",
+      "name": "Punta Rocas",
+      "lat": -12.3556,
+      "lng": -76.8103,
+      "countryCode": "PE",
+      "region": "Punta Hermosa, Peru",
+      "why": "A long, powerful right point-reef that has hosted WSL Challenger Series events.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "right"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-cabo-blanco-peru",
+      "name": "Cabo Blanco",
+      "lat": -4.227,
+      "lng": -81.228,
+      "countryCode": "PE",
+      "region": "Piura, Peru",
+      "why": "A rocky point made famous when Hemingway fished nearby, still producing long, fast right walls.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-mancora",
+      "name": "Máncora",
+      "lat": -4.108,
+      "lng": -81.048,
+      "countryCode": "PE",
+      "region": "Piura, Peru",
+      "why": "A warm, easy point wave that anchors Peru's most popular beginner-friendly surf town.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "point",
+        "beginner"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-joaquina",
+      "name": "Praia da Joaquina",
+      "lat": -27.628,
+      "lng": -48.447,
+      "countryCode": "BR",
+      "region": "Florianópolis, Brazil",
+      "why": "Brazil's best-known beach-break, a consistent sandbar setup with regular national contests.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-itacare",
+      "name": "Praia da Tiririca",
+      "lat": -14.278,
+      "lng": -38.996,
+      "countryCode": "BR",
+      "region": "Itacaré, Bahia, Brazil",
+      "why": "A rivermouth point wrapped by rainforest, offering long, workable walls in warm water.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "point",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-cacimba-do-padre",
+      "name": "Cacimba do Padre",
+      "lat": -3.858,
+      "lng": -32.439,
+      "countryCode": "BR",
+      "region": "Fernando de Noronha, Brazil",
+      "why": "A powerful reef-and-beach wave on a remote volcanic archipelago, punchy on the seasonal south swell.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "reef",
+        "beach-break",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-saquarema",
+      "name": "Itaúna Beach",
+      "lat": -22.92,
+      "lng": -42.487,
+      "countryCode": "BR",
+      "region": "Saquarema, Brazil",
+      "why": "Brazil's most consistent heavy beach-break, home to a long-running WSL Challenger Series stop.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "beach-break",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-maresias",
+      "name": "Maresias Beach",
+      "lat": -23.787,
+      "lng": -45.572,
+      "countryCode": "BR",
+      "region": "São Sebastião, Brazil",
+      "why": "A lively, punchy beach-break popular with Brazil's competitive surf scene.",
+      "bestMonths": [
+        3,
+        4,
+        9,
+        10
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate",
+        "crowded"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-punta-de-lobos",
+      "name": "Punta de Lobos",
+      "lat": -34.418,
+      "lng": -72.023,
+      "countryCode": "CL",
+      "region": "Pichilemu, Chile",
+      "why": "A rocky point that throws up long, powerful lefts and doubles as a big-wave tow venue in size.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "point",
+        "left",
+        "big-wave"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-montanita",
+      "name": "Montañita",
+      "lat": -1.84,
+      "lng": -80.744,
+      "countryCode": "EC",
+      "region": "Santa Elena, Ecuador",
+      "why": "A friendly beach and point wave at the centre of Ecuador's most popular surf town.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "beach-break",
+        "point",
+        "beginner"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-la-barra-uruguay",
+      "name": "La Barra",
+      "lat": -34.898,
+      "lng": -54.839,
+      "countryCode": "UY",
+      "region": "Punta del Este, Uruguay",
+      "why": "A rivermouth-influenced beach and point setup that anchors Uruguay's small surf scene.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "beach-break",
+        "point",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-nazare",
+      "name": "Praia do Norte",
+      "lat": 39.6023,
+      "lng": -9.0703,
+      "countryCode": "PT",
+      "region": "Nazaré, Portugal",
+      "why": "A submarine canyon focuses swell into the biggest rideable waves ever surfed, tow and paddle big-wave surfing.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "big-wave"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-supertubos",
+      "name": "Supertubos",
+      "lat": 39.3517,
+      "lng": -9.3903,
+      "countryCode": "PT",
+      "region": "Peniche, Portugal",
+      "why": "One of Europe's heaviest beach-break barrels, host to a WSL Championship Tour event.",
+      "bestMonths": [
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "beach-break",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-coxos",
+      "name": "Coxos",
+      "lat": 38.988,
+      "lng": -9.436,
+      "countryCode": "PT",
+      "region": "Ericeira, Portugal",
+      "why": "A world-class right reef break inside Europe's first World Surfing Reserve.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-ribeira-dilhas",
+      "name": "Ribeira d'Ilhas",
+      "lat": 38.999,
+      "lng": -9.421,
+      "countryCode": "PT",
+      "region": "Ericeira, Portugal",
+      "why": "A long, consistent right point-reef that has hosted world-tour events for decades.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "right"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-carcavelos",
+      "name": "Carcavelos",
+      "lat": 38.68,
+      "lng": -9.335,
+      "countryCode": "PT",
+      "region": "Cascais, Portugal",
+      "why": "Lisbon's easy-access beach-break, the region's default learner and longboard spot.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-arrifana",
+      "name": "Arrifana",
+      "lat": 37.289,
+      "lng": -8.86,
+      "countryCode": "PT",
+      "region": "Aljezur, Algarve, Portugal",
+      "why": "A scenic reef-point below dramatic cliffs on Portugal's wild southwest coast.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "left"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-praia-do-amado",
+      "name": "Praia do Amado",
+      "lat": 37.181,
+      "lng": -8.921,
+      "countryCode": "PT",
+      "region": "Carrapateira, Algarve, Portugal",
+      "why": "A wide, forgiving beach-break that hosts Algarve surf schools year-round.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-mundaka",
+      "name": "Mundaka",
+      "lat": 43.4083,
+      "lng": -2.6997,
+      "countryCode": "ES",
+      "region": "Basque Country, Spain",
+      "why": "A rivermouth sandbar point producing one of Europe's best barrelling lefts, WSL tour history.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3
+      ],
+      "tags": [
+        "point",
+        "left",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-zarautz",
+      "name": "Zarautz",
+      "lat": 43.283,
+      "lng": -2.17,
+      "countryCode": "ES",
+      "region": "Basque Country, Spain",
+      "why": "A long, sandy beach-break that is the Basque coast's most popular learner and longboard spot.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-el-palmar-cadiz",
+      "name": "El Palmar",
+      "lat": 36.198,
+      "lng": -6.108,
+      "countryCode": "ES",
+      "region": "Cádiz, Spain",
+      "why": "An open, consistent Atlantic beach-break south of Cádiz, popular with schools.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        4,
+        5
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-playa-de-somo",
+      "name": "Playa de Somo",
+      "lat": 43.441,
+      "lng": -3.789,
+      "countryCode": "ES",
+      "region": "Cantabria, Spain",
+      "why": "A wide sandy beach-break across the bay from Santander, Cantabria's surf hub.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-pantin",
+      "name": "Playa de Pantín",
+      "lat": 43.509,
+      "lng": -8.199,
+      "countryCode": "ES",
+      "region": "Valdoviño, Galicia, Spain",
+      "why": "A powerful, consistent Galician beach-break that has hosted a long-running WQS/QS contest.",
+      "bestMonths": [
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-las-canteras",
+      "name": "Playa de Las Canteras",
+      "lat": 28.15,
+      "lng": -15.44,
+      "countryCode": "ES",
+      "region": "Las Palmas, Gran Canaria, Spain",
+      "why": "A reef-protected city beach with a gentle inside section for beginners and a punchier outer bank.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-el-quemao",
+      "name": "El Quemao",
+      "lat": 29.146,
+      "lng": -13.483,
+      "countryCode": "ES",
+      "region": "La Santa, Lanzarote, Spain",
+      "why": "A shallow, ledging left reef that becomes a serious big-wave venue on large north Atlantic swells.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-hossegor-graviere",
+      "name": "La Gravière",
+      "lat": 43.6704,
+      "lng": -1.4423,
+      "countryCode": "FR",
+      "region": "Hossegor, France",
+      "why": "A shifting sandbank beach-break that produces some of Europe's heaviest, most hollow barrels.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "beach-break",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-lafitenia",
+      "name": "Lafitenia",
+      "lat": 43.47,
+      "lng": -1.607,
+      "countryCode": "FR",
+      "region": "Saint-Jean-de-Luz, France",
+      "why": "A rocky point break giving the Basque coast's longest, most consistent right wall.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-guethary",
+      "name": "Guéthary",
+      "lat": 43.423,
+      "lng": -1.612,
+      "countryCode": "FR",
+      "region": "Basque Country, France",
+      "why": "A powerful reef point that turns on with size, one of the French coast's heaviest waves.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-biarritz-cote-des-basques",
+      "name": "Côte des Basques",
+      "lat": 43.479,
+      "lng": -1.561,
+      "countryCode": "FR",
+      "region": "Biarritz, France",
+      "why": "The birthplace of French surfing, a beach-break under the villa-lined cliffs, crowded and beginner-friendly.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-la-torche",
+      "name": "La Torche",
+      "lat": 47.839,
+      "lng": -4.348,
+      "countryCode": "FR",
+      "region": "Plomeur, Brittany, France",
+      "why": "Brittany's most famous beach-break, a punchy peak below a distinctive headland.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-belharra",
+      "name": "Belharra",
+      "lat": 43.38,
+      "lng": -1.79,
+      "countryCode": "FR",
+      "region": "Hendaye/Saint-Jean-de-Luz, France",
+      "why": "A deep-water reef offshore that only wakes up on huge Atlantic swells, tow-surfed by big-wave specialists.",
+      "bestMonths": [
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "big-wave",
+        "reef"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-fistral-beach",
+      "name": "Fistral Beach",
+      "lat": 50.416,
+      "lng": -5.101,
+      "countryCode": "GB",
+      "region": "Newquay, England",
+      "why": "England's best-known beach-break, a consistent, contest-hosting sandbar strip.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate",
+        "crowded"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-croyde-bay",
+      "name": "Croyde Bay",
+      "lat": 51.129,
+      "lng": -4.236,
+      "countryCode": "GB",
+      "region": "Devon, England",
+      "why": "A punchy, powerful beach-break packed between two headlands, heavier than it looks.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-bantham",
+      "name": "Bantham Beach",
+      "lat": 50.276,
+      "lng": -3.883,
+      "countryCode": "GB",
+      "region": "Devon, England",
+      "why": "A rivermouth beach-break with a sandbar that produces some of Devon's best shape.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-thurso-east",
+      "name": "Thurso East",
+      "lat": 58.595,
+      "lng": -3.515,
+      "countryCode": "GB",
+      "region": "Caithness, Scotland",
+      "why": "A cold, world-class righthand reef point below a castle, one of Europe's best cold-water waves.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "reef",
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-lahinch",
+      "name": "Lahinch",
+      "lat": 52.933,
+      "lng": -9.348,
+      "countryCode": "IE",
+      "region": "County Clare, Ireland",
+      "why": "A forgiving beach-break that anchors Ireland's most established surf town, with reefs nearby for more power.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-bundoran-peak",
+      "name": "The Peak, Bundoran",
+      "lat": 54.478,
+      "lng": -8.286,
+      "countryCode": "IE",
+      "region": "Bundoran, Ireland",
+      "why": "A reliable reef-point that put Ireland's Atlantic coast on the surfing map.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "reef",
+        "point"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-easkey-right",
+      "name": "Easkey Right",
+      "lat": 54.283,
+      "lng": -8.967,
+      "countryCode": "IE",
+      "region": "County Sligo, Ireland",
+      "why": "A classic righthand point over rock ledges, one of Ireland's original surf discoveries.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-mullaghmore-head",
+      "name": "Mullaghmore Head",
+      "lat": 54.4693,
+      "lng": -8.4419,
+      "countryCode": "IE",
+      "region": "County Sligo, Ireland",
+      "why": "A slabbing reef off a rugged headland that became one of the world's great cold-water big-wave venues.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "big-wave",
+        "reef"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-unstad",
+      "name": "Unstad Beach",
+      "lat": 68.286,
+      "lng": 13.013,
+      "countryCode": "NO",
+      "region": "Lofoten Islands, Norway",
+      "why": "An Arctic beach-break inside a dramatic fjord, surfed in drysuits under the midnight sun or northern lights.",
+      "bestMonths": [
+        9,
+        10,
+        2,
+        3
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-anchor-point",
+      "name": "Anchor Point",
+      "lat": 30.546,
+      "lng": -9.718,
+      "countryCode": "MA",
+      "region": "Taghazout, Morocco",
+      "why": "A long, mechanical right point that put Morocco's south coast on the world surf map.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-imsouane",
+      "name": "Imsouane Bay",
+      "lat": 30.839,
+      "lng": -9.821,
+      "countryCode": "MA",
+      "region": "Imsouane, Morocco",
+      "why": "One of the longest right points in Africa, a gentle wrap into a working fishing bay, great for progression.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-safi-garden-reef",
+      "name": "Garden Reef",
+      "lat": 32.283,
+      "lng": -9.287,
+      "countryCode": "MA",
+      "region": "Safi, Morocco",
+      "why": "A fast, hollow righthand reef break next to Safi's harbour, one of Morocco's most powerful waves.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-ngor-right",
+      "name": "Ngor Right",
+      "lat": 14.746,
+      "lng": -17.516,
+      "countryCode": "SN",
+      "region": "Dakar, Senegal",
+      "why": "A reef-point off a small island suburb of Dakar, West Africa's best-known wave.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "right"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-robertsport",
+      "name": "Fisherman's Point",
+      "lat": 6.753,
+      "lng": -11.367,
+      "countryCode": "LR",
+      "region": "Robertsport, Liberia",
+      "why": "A long right point wave that reopened Liberia's surf coast to the world after decades of war.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "point",
+        "right"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-busua-beach",
+      "name": "Busua Beach",
+      "lat": 4.783,
+      "lng": -1.956,
+      "countryCode": "GH",
+      "region": "Western Region, Ghana",
+      "why": "A relaxed beach-break that anchors Ghana's small but growing surf scene.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-cabo-ledo",
+      "name": "Cabo Ledo",
+      "lat": -9.633,
+      "lng": 13.167,
+      "countryCode": "AO",
+      "region": "Bengo, Angola",
+      "why": "A long, uncrowded right point on Angola's sparsely surfed coast.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "point",
+        "right"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-jeffreys-bay",
+      "name": "Supertubes",
+      "lat": -34.0507,
+      "lng": 24.9247,
+      "countryCode": "ZA",
+      "region": "Jeffreys Bay, South Africa",
+      "why": "A world-famous righthand point delivering long, fast, perfectly shaped walls, WSL Championship Tour venue.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-dungeons",
+      "name": "Dungeons",
+      "lat": -34.053,
+      "lng": 18.345,
+      "countryCode": "ZA",
+      "region": "Hout Bay, South Africa",
+      "why": "A cold, shark-rich big-wave reef off the Cape Peninsula, tow and paddle venue for the Cape Town big-wave crew.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "big-wave",
+        "reef"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-muizenberg",
+      "name": "Muizenberg Beach",
+      "lat": -34.108,
+      "lng": 18.47,
+      "countryCode": "ZA",
+      "region": "Cape Town, South Africa",
+      "why": "A gentle, sandy beach-break in a scenic bay, South Africa's default learner spot.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-nahoon-reef",
+      "name": "Nahoon Reef",
+      "lat": -33.008,
+      "lng": 27.952,
+      "countryCode": "ZA",
+      "region": "East London, South Africa",
+      "why": "A powerful righthand reef break known for testing world-tour-level surfers.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-elands-bay",
+      "name": "Elands Bay",
+      "lat": -32.312,
+      "lng": 18.333,
+      "countryCode": "ZA",
+      "region": "Western Cape, South Africa",
+      "why": "A cold, long lefthand point on South Africa's west coast, powerful and often uncrowded.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "point",
+        "left"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-victoria-bay",
+      "name": "Victoria Bay",
+      "lat": -33.996,
+      "lng": 22.525,
+      "countryCode": "ZA",
+      "region": "Garden Route, South Africa",
+      "why": "A small, sheltered bay point that is one of South Africa's most reliable beginner waves.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "point",
+        "beginner"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-cave-rock",
+      "name": "Cave Rock",
+      "lat": -29.913,
+      "lng": 31.042,
+      "countryCode": "ZA",
+      "region": "Durban, South Africa",
+      "why": "A punchy reef break next to Durban's harbour mouth, a local proving ground.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "reef",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-skeleton-bay",
+      "name": "Skeleton Bay",
+      "lat": -22.986,
+      "lng": 14.478,
+      "countryCode": "NA",
+      "region": "near Walvis Bay, Namibia",
+      "why": "A freak sandbar point in the desert that produces some of the longest, most perfect barrels on earth.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "point",
+        "left",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-ponta-do-ouro",
+      "name": "Ponta do Ouro",
+      "lat": -26.85,
+      "lng": 32.898,
+      "countryCode": "MZ",
+      "region": "Maputo Province, Mozambique",
+      "why": "A warm-water point-and-reef setup near the South African border, uncrowded and consistent.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10
+      ],
+      "tags": [
+        "point",
+        "reef"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-st-leu",
+      "name": "St-Leu",
+      "lat": -21.17,
+      "lng": 55.283,
+      "countryCode": "RE",
+      "region": "Réunion",
+      "why": "A long, fast lefthand reef point, one of the Indian Ocean's best waves though shark-restricted.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "point",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-tamarin-bay",
+      "name": "Tamarin Bay",
+      "lat": -20.326,
+      "lng": 57.369,
+      "countryCode": "MU",
+      "region": "Black River, Mauritius",
+      "why": "A hollow lefthand reef known locally as 'Tombant', Mauritius's premier wave.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-uluwatu",
+      "name": "Uluwatu",
+      "lat": -8.8149,
+      "lng": 115.0857,
+      "countryCode": "ID",
+      "region": "Bali, Indonesia",
+      "why": "A long limestone cave-lined reef with multiple sections firing on the dry-season swell, Bali's signature wave.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced",
+        "crowded"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-padang-padang",
+      "name": "Padang Padang",
+      "lat": -8.811,
+      "lng": 115.107,
+      "countryCode": "ID",
+      "region": "Bali, Indonesia",
+      "why": "A short, intense, world-class lefthand barrel over a shallow reef shelf.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced",
+        "crowded"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-bingin",
+      "name": "Bingin",
+      "lat": -8.808,
+      "lng": 115.109,
+      "countryCode": "ID",
+      "region": "Bali, Indonesia",
+      "why": "A fast, hollow lefthand reef beneath a cliffside village, one of the Bukit Peninsula's most photographed waves.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-balangan",
+      "name": "Balangan",
+      "lat": -8.793,
+      "lng": 115.118,
+      "countryCode": "ID",
+      "region": "Bali, Indonesia",
+      "why": "A rippable lefthand reef point that offers a gentler alternative to its Bukit Peninsula neighbours.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-keramas",
+      "name": "Keramas",
+      "lat": -8.592,
+      "lng": 115.335,
+      "countryCode": "ID",
+      "region": "Bali, Indonesia",
+      "why": "A powerful righthand beach-and-reef wave that has hosted WSL Championship Tour events.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "beach-break",
+        "right",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-canggu",
+      "name": "Canggu (Batu Bolong)",
+      "lat": -8.655,
+      "lng": 115.133,
+      "countryCode": "ID",
+      "region": "Bali, Indonesia",
+      "why": "A lively beach-break scene with several peaks, now Bali's most crowded surf-and-cafe hub.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        10,
+        11
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "intermediate",
+        "crowded"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-kuta-beach-bali",
+      "name": "Kuta Beach",
+      "lat": -8.718,
+      "lng": 115.169,
+      "countryCode": "ID",
+      "region": "Bali, Indonesia",
+      "why": "Bali's original beginner beach-break, gentle whitewater and a full strip of surf schools.",
+      "bestMonths": [
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-desert-point",
+      "name": "Desert Point",
+      "lat": -8.86,
+      "lng": 115.913,
+      "countryCode": "ID",
+      "region": "Bangko-Bangko, Lombok, Indonesia",
+      "why": "One of the world's longest, most perfect lefthand barrels, breaking over shallow reef into a lagoon.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-ekas",
+      "name": "Ekas",
+      "lat": -8.933,
+      "lng": 116.367,
+      "countryCode": "ID",
+      "region": "Lombok, Indonesia",
+      "why": "A powerful righthand reef inside a remote bay on Lombok's south coast.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-g-land",
+      "name": "G-Land (Plengkung)",
+      "lat": -8.697,
+      "lng": 114.383,
+      "countryCode": "ID",
+      "region": "Alas Purwo, East Java, Indonesia",
+      "why": "A long, world-class lefthand reef inside a national park jungle, reached only by boat.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-lakey-peak",
+      "name": "Lakey Peak",
+      "lat": -8.842,
+      "lng": 118.648,
+      "countryCode": "ID",
+      "region": "Sumbawa, Indonesia",
+      "why": "A powerful A-frame reef-point offering both a long right and a short, punchy left.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "reef",
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-sorake-beach-nias",
+      "name": "Lagundri Bay",
+      "lat": 0.533,
+      "lng": 97.503,
+      "countryCode": "ID",
+      "region": "Nias Island, Indonesia",
+      "why": "A near-perfect righthand point wave that was one of the original Indonesian surf discoveries of the 1970s.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-macaronis",
+      "name": "Macaronis",
+      "lat": -2.85,
+      "lng": 99.966,
+      "countryCode": "ID",
+      "region": "Mentawai Islands, Indonesia",
+      "why": "A flawless, clinical lefthand reef, the signature wave of the Mentawai boat-charter scene.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-cloud-9-siargao",
+      "name": "Cloud 9",
+      "lat": 9.8,
+      "lng": 126.166,
+      "countryCode": "PH",
+      "region": "Siargao Island, Philippines",
+      "why": "A powerful, hollow righthand reef barrel that made Siargao the Philippines' surf capital.",
+      "bestMonths": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-arugam-bay",
+      "name": "Main Point",
+      "lat": 6.84,
+      "lng": 81.836,
+      "countryCode": "LK",
+      "region": "Arugam Bay, Sri Lanka",
+      "why": "A long, forgiving righthand point wave, the anchor of Sri Lanka's east-coast surf scene.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "point",
+        "right",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-hikkaduwa",
+      "name": "Hikkaduwa",
+      "lat": 6.14,
+      "lng": 80.1,
+      "countryCode": "LK",
+      "region": "Southern Province, Sri Lanka",
+      "why": "A reef-and-beach combo that has hosted travelling surfers since the 1970s hippie trail.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "reef",
+        "beach-break",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-kovalam",
+      "name": "Kovalam Beach",
+      "lat": 8.4004,
+      "lng": 76.9787,
+      "countryCode": "IN",
+      "region": "Kerala, India",
+      "why": "A mellow beach-break that anchors India's small but growing homegrown surf scene.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-sultans-maldives",
+      "name": "Sultans",
+      "lat": 4.283,
+      "lng": 73.533,
+      "countryCode": "MV",
+      "region": "North Malé Atoll, Maldives",
+      "why": "A long righthand reef break over a shallow lagoon, one of the Maldives' original charter-boat waves.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-pasta-point",
+      "name": "Pasta Point",
+      "lat": 4.283,
+      "lng": 73.439,
+      "countryCode": "MV",
+      "region": "Thulusdhoo, North Malé Atoll, Maldives",
+      "why": "A fast lefthand reef reserved for guests of the island resort beside it.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-shonan-kugenuma",
+      "name": "Kugenuma Beach",
+      "lat": 35.306,
+      "lng": 139.478,
+      "countryCode": "JP",
+      "region": "Fujisawa, Kanagawa, Japan",
+      "why": "A consistent beach-break close to Tokyo, Japan's most crowded weekend surf spot.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-isumi-chiba",
+      "name": "Isumi",
+      "lat": 35.24,
+      "lng": 140.4,
+      "countryCode": "JP",
+      "region": "Chiba, Japan",
+      "why": "A stretch of beach-breaks on the Pacific-facing Chiba coast, venue for the Tokyo Olympics surfing.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-mui-ne",
+      "name": "Mui Ne",
+      "lat": 10.933,
+      "lng": 108.283,
+      "countryCode": "VN",
+      "region": "Bình Thuận, Vietnam",
+      "why": "A seasonal beach-break that is Vietnam's best-known, if inconsistent, surf spot.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-riyue-bay",
+      "name": "Riyue Bay",
+      "lat": 18.383,
+      "lng": 110.317,
+      "countryCode": "CN",
+      "region": "Wanning, Hainan, China",
+      "why": "China's most developed surf beach, a sheltered bay with a dedicated surf-school strip.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-bells-beach",
+      "name": "Bells Beach",
+      "lat": -38.3667,
+      "lng": 144.2833,
+      "countryCode": "AU",
+      "region": "Torquay, Victoria, Australia",
+      "why": "Australia's most historic wave, a powerful righthand point-reef and the world's longest-running pro contest site.",
+      "bestMonths": [
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-winki-pop",
+      "name": "Winki Pop",
+      "lat": -38.366,
+      "lng": 144.279,
+      "countryCode": "AU",
+      "region": "Torquay, Victoria, Australia",
+      "why": "A fast, high-performance reef break next door to Bells, favoured when Bells is too fat.",
+      "bestMonths": [
+        3,
+        4
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-snapper-rocks",
+      "name": "Snapper Rocks",
+      "lat": -28.1667,
+      "lng": 153.55,
+      "countryCode": "AU",
+      "region": "Gold Coast, Queensland, Australia",
+      "why": "The start of the Superbank, a sand-filled point that can link three breaks into an epic long right.",
+      "bestMonths": [
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced",
+        "crowded"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-kirra",
+      "name": "Kirra",
+      "lat": -28.167,
+      "lng": 153.539,
+      "countryCode": "AU",
+      "region": "Gold Coast, Queensland, Australia",
+      "why": "A once-legendary sand-bottom point famous for long, deep barrels, still firing on the right swell.",
+      "bestMonths": [
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-burleigh-heads",
+      "name": "Burleigh Heads",
+      "lat": -28.093,
+      "lng": 153.449,
+      "countryCode": "AU",
+      "region": "Gold Coast, Queensland, Australia",
+      "why": "A rocky point wrapping around a headland reserve, producing long, hollow rights.",
+      "bestMonths": [
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced",
+        "crowded"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-noosa-first-point",
+      "name": "Noosa First Point",
+      "lat": -26.398,
+      "lng": 153.101,
+      "countryCode": "AU",
+      "region": "Noosa Heads, Queensland, Australia",
+      "why": "A gentle, scenic point wave inside a national park, one of Australia's best learner-to-intermediate waves.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-byron-bay-the-pass",
+      "name": "The Pass",
+      "lat": -28.635,
+      "lng": 153.628,
+      "countryCode": "AU",
+      "region": "Byron Bay, New South Wales, Australia",
+      "why": "A long, easy righthand point that is one of Australia's most crowded and beloved beginner-to-intermediate waves.",
+      "bestMonths": [
+        2,
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "point",
+        "right",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-lennox-head",
+      "name": "Lennox Head",
+      "lat": -28.794,
+      "lng": 153.594,
+      "countryCode": "AU",
+      "region": "New South Wales, Australia",
+      "why": "A powerful righthand point below a headland, one of NSW's best when the swell is big.",
+      "bestMonths": [
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-angourie",
+      "name": "Angourie Point",
+      "lat": -29.472,
+      "lng": 153.348,
+      "countryCode": "AU",
+      "region": "New South Wales, Australia",
+      "why": "A classic rock-bottom right point and Australia's first officially declared National Surfing Reserve.",
+      "bestMonths": [
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-crescent-head",
+      "name": "Crescent Head",
+      "lat": -30.92,
+      "lng": 153.06,
+      "countryCode": "AU",
+      "region": "New South Wales, Australia",
+      "why": "A long, easy righthand point that has been a byword for longboarding since the 1960s.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "right",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-north-narrabeen",
+      "name": "North Narrabeen",
+      "lat": -33.716,
+      "lng": 151.305,
+      "countryCode": "AU",
+      "region": "Sydney, New South Wales, Australia",
+      "why": "A sand-and-rock point at a lagoon mouth that has produced generations of Australian world-tour surfers.",
+      "bestMonths": [
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "point",
+        "beach-break",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-bondi-beach",
+      "name": "Bondi Beach",
+      "lat": -33.8915,
+      "lng": 151.2767,
+      "countryCode": "AU",
+      "region": "Sydney, New South Wales, Australia",
+      "why": "Australia's most famous city beach-break, patrolled and packed but a solid all-round wave.",
+      "bestMonths": [
+        2,
+        3,
+        10,
+        11
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-manly-beach",
+      "name": "Manly Beach",
+      "lat": -33.797,
+      "lng": 151.288,
+      "countryCode": "AU",
+      "region": "Sydney, New South Wales, Australia",
+      "why": "A wide, forgiving city beach-break, Sydney's other classic learner spot across the harbour.",
+      "bestMonths": [
+        2,
+        3,
+        10,
+        11
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-margaret-river-main-break",
+      "name": "Margaret River Main Break",
+      "lat": -33.975,
+      "lng": 114.999,
+      "countryCode": "AU",
+      "region": "Margaret River, Western Australia",
+      "why": "A powerful reef break off a rivermouth, the centrepiece of Western Australia's world-tour venue.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "reef",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-the-right",
+      "name": "The Right",
+      "lat": -34.018,
+      "lng": 115.027,
+      "countryCode": "AU",
+      "region": "near Gracetown, Western Australia",
+      "why": "A savage slab reef that only breaks a handful of days a year, among the heaviest waves on the planet.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "reef",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-cactus-beach",
+      "name": "Cactus Beach",
+      "lat": -32.202,
+      "lng": 133.636,
+      "countryCode": "AU",
+      "region": "Penong, South Australia",
+      "why": "A remote outpost with several reef and point setups, long a pilgrimage for travelling surfers.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "reef",
+        "point",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-shipstern-bluff",
+      "name": "Shipstern Bluff",
+      "lat": -43.16,
+      "lng": 147.95,
+      "countryCode": "AU",
+      "region": "Tasman Peninsula, Tasmania",
+      "why": "A freakish, ledging slab beneath sea cliffs, reachable only by boat or a long hike, a big-wave test piece.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "big-wave",
+        "reef",
+        "advanced"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-cyclops",
+      "name": "Cyclops",
+      "lat": -33.933,
+      "lng": 121.883,
+      "countryCode": "AU",
+      "region": "near Esperance, Western Australia",
+      "why": "An extremely shallow, thick slab reef considered one of the heaviest waves in Australia.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "reef",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "Red Bull big-wave venues"
+    },
+    {
+      "id": "surf-raglan-manu-bay",
+      "name": "Manu Bay",
+      "lat": -37.813,
+      "lng": 174.87,
+      "countryCode": "NZ",
+      "region": "Raglan, New Zealand",
+      "why": "A long, mechanical left point made famous in the 1966 surf film 'The Endless Summer'.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10
+      ],
+      "tags": [
+        "point",
+        "left",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-piha-beach",
+      "name": "Piha Beach",
+      "lat": -36.956,
+      "lng": 174.471,
+      "countryCode": "NZ",
+      "region": "Auckland, New Zealand",
+      "why": "A black volcanic-sand beach-break with strong rips, Auckland's most iconic surf beach.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-shipwreck-bay",
+      "name": "Shipwreck Bay",
+      "lat": -35.167,
+      "lng": 173.15,
+      "countryCode": "NZ",
+      "region": "Ahipara, New Zealand",
+      "why": "A long lefthand point at the southern end of Ninety Mile Beach, one of the North Island's best.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10
+      ],
+      "tags": [
+        "point",
+        "left"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-mount-maunganui",
+      "name": "Mount Maunganui",
+      "lat": -37.635,
+      "lng": 176.183,
+      "countryCode": "NZ",
+      "region": "Bay of Plenty, New Zealand",
+      "why": "A beach-and-point setup beside an extinct volcano, one of the North Island's most popular surf towns.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "beach-break",
+        "point",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-cloudbreak",
+      "name": "Cloudbreak",
+      "lat": -17.716,
+      "lng": 177.188,
+      "countryCode": "FJ",
+      "region": "Mamanuca Islands, Fiji",
+      "why": "A world-class lefthand reef that breaks in several stages from a rippable wall to a serious big-wave barrel.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-restaurants-fiji",
+      "name": "Restaurants",
+      "lat": -17.728,
+      "lng": 177.201,
+      "countryCode": "FJ",
+      "region": "Mamanuca Islands, Fiji",
+      "why": "A short, hollow righthand reef opposite Cloudbreak, favoured for its shorter, punchier barrels.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-namotu-lefts",
+      "name": "Namotu Lefts",
+      "lat": -17.729,
+      "lng": 177.19,
+      "countryCode": "FJ",
+      "region": "Mamanuca Islands, Fiji",
+      "why": "A playful, high-performance lefthand reef off Namotu Island, popular with visiting pros.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-teahupoo",
+      "name": "Teahupoʻo",
+      "lat": -17.8386,
+      "lng": -149.2683,
+      "countryCode": "PF",
+      "region": "Tahiti, French Polynesia",
+      "why": "An impossibly thick, glassy lefthand reef barrel over a shallow coral shelf, an Olympic and WSL venue.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "big-wave",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-papara-tahiti",
+      "name": "Taapuna",
+      "lat": -17.576,
+      "lng": -149.618,
+      "countryCode": "PF",
+      "region": "Papeete, Tahiti, French Polynesia",
+      "why": "A fast, punchy reef pass close to Tahiti's capital, popular with the local pro scene.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "reef",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-soup-bowl",
+      "name": "Soup Bowl",
+      "lat": 13.217,
+      "lng": -59.519,
+      "countryCode": "BB",
+      "region": "Bathsheba, Barbados",
+      "why": "A powerful righthand reef on Barbados's rugged east coast, the Caribbean's best-known wave.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "reef",
+        "right",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-boston-bay-jamaica",
+      "name": "Boston Bay",
+      "lat": 18.108,
+      "lng": -76.446,
+      "countryCode": "JM",
+      "region": "Portland, Jamaica",
+      "why": "A reef-and-point wave near the birthplace of jerk cooking, Jamaica's best-known surf spot.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "reef",
+        "point"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-playa-encuentro",
+      "name": "Playa Encuentro",
+      "lat": 19.766,
+      "lng": -70.455,
+      "countryCode": "DO",
+      "region": "Cabarete, Dominican Republic",
+      "why": "A consistent reef-and-beach break that anchors the Caribbean's most active surf town.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "reef",
+        "beach-break",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-surfers-beach-eleuthera",
+      "name": "Surfer's Beach",
+      "lat": 25.087,
+      "lng": -76.169,
+      "countryCode": "BS",
+      "region": "Eleuthera, Bahamas",
+      "why": "A reef-and-point wave that draws a small, devoted crew to an otherwise quiet island.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "reef",
+        "point"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-rockaway-beach-nyc",
+      "name": "Rockaway Beach",
+      "lat": 40.58,
+      "lng": -73.815,
+      "countryCode": "US",
+      "region": "Queens, New York",
+      "why": "New York City's own beach-break, a hurricane-season sandbar wave a subway ride from Manhattan.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-montauk-lighthouse",
+      "name": "Montauk (Lighthouse/Ditch Plains)",
+      "lat": 41.048,
+      "lng": -71.857,
+      "countryCode": "US",
+      "region": "Montauk, New York",
+      "why": "A rock-reef point off Long Island's tip, the Northeast's best-known surf town wave.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "reef",
+        "point",
+        "intermediate"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-cocoa-beach",
+      "name": "Cocoa Beach",
+      "lat": 28.322,
+      "lng": -80.608,
+      "countryCode": "US",
+      "region": "Florida",
+      "why": "A gentle, consistent beach-break beside the Kennedy Space Center, Florida's surf capital.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "beach-break",
+        "beginner"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-tofino-long-beach",
+      "name": "Long Beach",
+      "lat": 49.166,
+      "lng": -125.908,
+      "countryCode": "CA",
+      "region": "Tofino, British Columbia, Canada",
+      "why": "A cold-water beach-break inside a national park reserve, Canada's most established surf town.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3
+      ],
+      "tags": [
+        "beach-break",
+        "beginner",
+        "intermediate"
+      ],
+      "source": "Lonely Planet Epic Surf Breaks"
+    },
+    {
+      "id": "surf-lawrencetown-beach",
+      "name": "Lawrencetown Beach",
+      "lat": 44.633,
+      "lng": -63.367,
+      "countryCode": "CA",
+      "region": "Nova Scotia, Canada",
+      "why": "A cold Atlantic beach-break that anchors Nova Scotia's small, hardy surf community.",
+      "bestMonths": [
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "beach-break",
+        "intermediate"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-cardiff-reef",
+      "name": "Cardiff Reef",
+      "lat": 33.014,
+      "lng": -117.282,
+      "countryCode": "US",
+      "region": "Encinitas, California",
+      "why": "A mellow, forgiving reef point that is one of San Diego County's most popular learn-to-surf spots.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "reef",
+        "point",
+        "beginner"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-san-onofre",
+      "name": "San Onofre",
+      "lat": 33.372,
+      "lng": -117.572,
+      "countryCode": "US",
+      "region": "San Clemente, California",
+      "why": "Slow-rolling longboard waves over a cobblestone bottom, a laid-back classic since the 1930s.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "point",
+        "beginner",
+        "crowded"
+      ],
+      "source": "Surfline spot guide"
+    },
+    {
+      "id": "surf-haleiwa",
+      "name": "Haleiwa",
+      "lat": 21.596,
+      "lng": -158.103,
+      "countryCode": "US",
+      "region": "North Shore, Oahu, Hawaii",
+      "why": "A rivermouth point-reef at the west end of the North Shore, hosting the Vans Triple Crown opener.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "point",
+        "reef",
+        "advanced"
+      ],
+      "source": "WSL championship tour venues"
+    },
+    {
+      "id": "surf-ala-moana-bowls",
+      "name": "Ala Moana Bowls",
+      "lat": 21.289,
+      "lng": -157.856,
+      "countryCode": "US",
+      "region": "Honolulu, Oahu, Hawaii",
+      "why": "A hollow lefthand reef break within sight of Waikiki's high-rises, a high-performance local favourite.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "reef",
+        "left",
+        "advanced"
+      ],
+      "source": "Stormrider Guide"
+    },
+    {
+      "id": "surf-ghost-tree",
+      "name": "Ghost Trees",
+      "lat": 36.568,
+      "lng": -121.966,
+      "countryCode": "US",
+      "region": "Pebble Beach, California",
+      "why": "A big-wave reef off the Monterey Peninsula's cypress-lined coast, tow-surfed on huge NW swells.",
+      "bestMonths": [
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "big-wave",
+        "reef"
+      ],
+      "source": "Red Bull big-wave venues"
+    }
+  ]
+}
