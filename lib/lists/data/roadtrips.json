@@ -1,0 +1,4003 @@
+{
+  "id": "roadtrips",
+  "label": "Road trips",
+  "blurb": "Scenic drives and classic routes, marked at their best viewpoint.",
+  "sources": [
+    "Lonely Planet Epic Drives",
+    "National Geographic Drives of a Lifetime",
+    "Dangerous Roads",
+    "Condé Nast Traveler",
+    "Top Gear",
+    "World's 50 Best road trips (various travel press)"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "roadtrips-pacific-coast-highway-bixby-bridge",
+      "name": "Pacific Coast Highway at Bixby Bridge",
+      "lat": 36.3615,
+      "lng": -121.9019,
+      "countryCode": "US",
+      "region": "Big Sur, California",
+      "why": "The single-arch bridge over Bixby Creek is the most photographed frame on the entire Highway 1 run.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-going-to-the-sun-road-logan-pass",
+      "name": "Going-to-the-Sun Road at Logan Pass",
+      "lat": 48.6959,
+      "lng": -113.7183,
+      "countryCode": "US",
+      "region": "Glacier National Park, Montana",
+      "why": "The road's summit, where the Highline Trail sets off and the Garden Wall drops away on both sides.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-icefields-parkway-peyto-lake",
+      "name": "Icefields Parkway at Peyto Lake",
+      "lat": 51.731,
+      "lng": -116.5326,
+      "countryCode": "CA",
+      "region": "Banff National Park, Alberta",
+      "why": "The overlook above Peyto Lake's fox-head outline is the parkway's defining postcard shot.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "week",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-cabot-trail-skyline",
+      "name": "Cabot Trail at the Skyline Trail headland",
+      "lat": 46.742,
+      "lng": -60.838,
+      "countryCode": "CA",
+      "region": "Cape Breton Highlands, Nova Scotia",
+      "why": "The boardwalk loop out to the headland gives the trail's cliff-top sunset view over the Gulf of St. Lawrence.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "loop"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-blue-ridge-parkway-linn-cove",
+      "name": "Blue Ridge Parkway at the Linn Cove Viaduct",
+      "lat": 36.1189,
+      "lng": -81.7896,
+      "countryCode": "US",
+      "region": "Grandfather Mountain, North Carolina",
+      "why": "The curved viaduct snaking around Grandfather Mountain's flank is the parkway's engineering icon.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "week"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-route-66-cadillac-ranch",
+      "name": "Route 66 at Cadillac Ranch",
+      "lat": 35.1872,
+      "lng": -101.9868,
+      "countryCode": "US",
+      "region": "Amarillo, Texas",
+      "why": "Ten spray-painted Cadillacs nose-down in a field are the road's most photographed roadside stop.",
+      "bestMonths": [],
+      "tags": [
+        "desert",
+        "week"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-overseas-highway-seven-mile-bridge",
+      "name": "Overseas Highway at the Seven Mile Bridge",
+      "lat": 24.7132,
+      "lng": -81.1897,
+      "countryCode": "US",
+      "region": "Marathon, Florida Keys",
+      "why": "The old and new bridges running side by side over open water are the drive's signature stretch.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-million-dollar-highway-red-mountain-pass",
+      "name": "Million Dollar Highway at Red Mountain Pass",
+      "lat": 37.8988,
+      "lng": -107.7106,
+      "countryCode": "US",
+      "region": "San Juan Mountains, Colorado",
+      "why": "No guardrails and a sheer drop into the red-stained mine tailings make this hairpin summit the drive's icon.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-beartooth-highway-beartooth-pass",
+      "name": "Beartooth Highway at Beartooth Pass",
+      "lat": 45.0058,
+      "lng": -109.4726,
+      "countryCode": "US",
+      "region": "Absaroka-Beartooth Wilderness, Wyoming/Montana",
+      "why": "Switchbacks climb to nearly 3,340m of alpine plateau dotted with snowfields, the highway's high point.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-trail-ridge-road-forest-canyon",
+      "name": "Trail Ridge Road at Forest Canyon Overlook",
+      "lat": 40.4227,
+      "lng": -105.7415,
+      "countryCode": "US",
+      "region": "Rocky Mountain National Park, Colorado",
+      "why": "The highest paved through-road in the US tops out here above the treeline with tundra in every direction.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-hana-highway-waianapanapa",
+      "name": "Hana Highway at Waiʻanapanapa black-sand beach",
+      "lat": 20.7929,
+      "lng": -156.0022,
+      "countryCode": "US",
+      "region": "Hana, Maui, Hawaii",
+      "why": "After 600-odd curves and 59 bridges, the black volcanic-sand cove at the road's end is the shot everyone stops for.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day",
+        "gravel"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-17-mile-drive-lone-cypress",
+      "name": "17-Mile Drive at the Lone Cypress",
+      "lat": 36.5686,
+      "lng": -121.9645,
+      "countryCode": "US",
+      "region": "Pebble Beach, California",
+      "why": "A single wind-bent cypress on a bare granite outcrop is the toll road's trademark view.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-zion-mount-carmel-checkerboard",
+      "name": "Zion–Mount Carmel Highway at Checkerboard Mesa",
+      "lat": 37.2076,
+      "lng": -112.9847,
+      "countryCode": "US",
+      "region": "Zion National Park, Utah",
+      "why": "Cross-hatched sandstone right beside the switchbacks and tunnel is the highway's most-shot rock face.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "desert",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-death-valley-artists-palette",
+      "name": "Death Valley Artist's Drive at Artist's Palette",
+      "lat": 36.4159,
+      "lng": -116.8474,
+      "countryCode": "US",
+      "region": "Death Valley National Park, California",
+      "why": "Mineral-stained badlands turn pink, green and violet in late light along this one-way loop.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "desert",
+        "loop",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-columbia-river-gorge-vista-house",
+      "name": "Historic Columbia River Highway at Vista House",
+      "lat": 45.5397,
+      "lng": -122.2478,
+      "countryCode": "US",
+      "region": "Crown Point, Oregon",
+      "why": "The 1918 rotunda perched on a basalt cliff frames the gorge better than any other stop on the old highway.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-seward-highway-beluga-point",
+      "name": "Seward Highway at Beluga Point",
+      "lat": 60.9505,
+      "lng": -149.5083,
+      "countryCode": "US",
+      "region": "Turnagain Arm, Alaska",
+      "why": "Cook Inlet tide bores and, some days, actual belugas pass right below this cliffside pull-off.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coastal",
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-denali-highway-maclaren-summit",
+      "name": "Denali Highway at MacLaren Summit",
+      "lat": 63.1971,
+      "lng": -147.3153,
+      "countryCode": "US",
+      "region": "Interior Alaska",
+      "why": "The gravel highway's high point looks out over the MacLaren River valley to the Alaska Range with no other traffic in sight.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-dalton-highway-atigun-pass",
+      "name": "Dalton Highway at Atigun Pass",
+      "lat": 68.1265,
+      "lng": -149.4886,
+      "countryCode": "US",
+      "region": "Brooks Range, Alaska",
+      "why": "The only road crossing of the Brooks Range and the highway's most exposed, avalanche-prone stretch.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-extraterrestrial-highway-black-mailbox",
+      "name": "Extraterrestrial Highway at the Black Mailbox",
+      "lat": 37.4409,
+      "lng": -115.6114,
+      "countryCode": "US",
+      "region": "Rachel, Nevada",
+      "why": "A lone roadside mailbox near Area 51's back gate is the highway's cult photo stop.",
+      "bestMonths": [],
+      "tags": [
+        "desert",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-natchez-trace-double-arch-bridge",
+      "name": "Natchez Trace Parkway at the Double Arch Bridge",
+      "lat": 35.8907,
+      "lng": -86.8636,
+      "countryCode": "US",
+      "region": "Franklin, Tennessee",
+      "why": "Two 155-foot concrete arches carrying the parkway over a valley form its most photographed span.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-skyline-drive-big-meadows",
+      "name": "Skyline Drive at Big Meadows Overlook",
+      "lat": 38.5261,
+      "lng": -78.4325,
+      "countryCode": "US",
+      "region": "Shenandoah National Park, Virginia",
+      "why": "A wide meadow break in the ridge gives the drive's classic layered-Blue-Ridge sunset view.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-angeles-crest-highway-inspiration-point",
+      "name": "Angeles Crest Highway at Inspiration Point",
+      "lat": 34.238,
+      "lng": -117.682,
+      "countryCode": "US",
+      "region": "San Gabriel Mountains, California",
+      "why": "A ridge-top pullout above the Mojave-facing slope, the highway's best-known overlook.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-san-juan-skyway-molas-pass",
+      "name": "San Juan Skyway at Molas Pass",
+      "lat": 37.7433,
+      "lng": -107.6934,
+      "countryCode": "US",
+      "region": "San Juan National Forest, Colorado",
+      "why": "The loop's high pass looks straight down into the Animas River valley toward Silverton.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "loop",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-moki-dugway-valley-of-the-gods",
+      "name": "Moki Dugway above Valley of the Gods",
+      "lat": 37.266,
+      "lng": -109.9601,
+      "countryCode": "US",
+      "region": "San Juan County, Utah",
+      "why": "Three miles of unpaved switchbacks drop 1,100 feet off Cedar Mesa with the valley's buttes spread below.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "mountain"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-apache-trail-fish-creek-hill",
+      "name": "Apache Trail at Fish Creek Hill",
+      "lat": 33.5142,
+      "lng": -111.4327,
+      "countryCode": "US",
+      "region": "Superstition Mountains, Arizona",
+      "why": "A narrow, cliff-hugging grade with a hairpin view down Fish Creek Canyon is the trail's white-knuckle highlight.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-sea-to-sky-highway-shannon-falls",
+      "name": "Sea-to-Sky Highway at Shannon Falls",
+      "lat": 49.6706,
+      "lng": -123.1585,
+      "countryCode": "CA",
+      "region": "Squamish, British Columbia",
+      "why": "Canada's third-highest waterfall drops right beside the highway under the Stawamus Chief's granite face.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-alaska-highway-muncho-lake",
+      "name": "Alaska Highway at Muncho Lake",
+      "lat": 58.9432,
+      "lng": -125.7728,
+      "countryCode": "CA",
+      "region": "Northern Rockies, British Columbia",
+      "why": "A jade-green glacial lake pressed against the road for miles is the highway's most photographed stretch.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-baja-highway-1-bahia-concepcion",
+      "name": "Baja Highway 1 at Bahía Concepción",
+      "lat": 26.7167,
+      "lng": -111.8833,
+      "countryCode": "MX",
+      "region": "Mulegé, Baja California Sur",
+      "why": "Turquoise coves along a 50 km stretch of the Transpeninsular Highway give the drive's best coastline views.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "coastal",
+        "desert",
+        "week"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-copper-canyon-divisadero",
+      "name": "Copper Canyon Highway at Divisadero",
+      "lat": 27.5333,
+      "lng": -107.8333,
+      "countryCode": "MX",
+      "region": "Chihuahua",
+      "why": "A rim-edge lookout where the road meets the railway, staring straight into a canyon deeper than the Grand Canyon.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-enchanted-circle-wheeler-peak",
+      "name": "Enchanted Circle at the Wheeler Peak overlook",
+      "lat": 36.5766,
+      "lng": -105.4172,
+      "countryCode": "US",
+      "region": "Angel Fire, New Mexico",
+      "why": "The loop's high point looks straight across at New Mexico's tallest summit.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "loop"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-talimena-scenic-byway-rich-mountain",
+      "name": "Talimena Scenic Byway at Rich Mountain",
+      "lat": 34.6879,
+      "lng": -94.6188,
+      "countryCode": "US",
+      "region": "Ouachita National Forest, Arkansas/Oklahoma",
+      "why": "The byway's highest overlook surveys ridge after ridge of the Ouachitas fading into haze.",
+      "bestMonths": [
+        4,
+        5,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-cherohala-skyway-huckleberry-knob",
+      "name": "Cherohala Skyway near Huckleberry Knob",
+      "lat": 35.3742,
+      "lng": -84.0244,
+      "countryCode": "US",
+      "region": "Cherokee National Forest, Tennessee/North Carolina",
+      "why": "A short trail off the skyway's crest reaches the highest point in the Unicoi Mountains.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-kancamagus-highway-sugar-hill",
+      "name": "Kancamagus Highway at Sugar Hill Overlook",
+      "lat": 44.0898,
+      "lng": -71.4467,
+      "countryCode": "US",
+      "region": "White Mountain National Forest, New Hampshire",
+      "why": "The highway's best-known pull-off looks down the Swift River valley, unmissable at peak foliage.",
+      "bestMonths": [
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-white-rim-road-green-river-overlook",
+      "name": "White Rim Road at Green River Overlook",
+      "lat": 38.4056,
+      "lng": -109.8952,
+      "countryCode": "US",
+      "region": "Canyonlands National Park, Utah",
+      "why": "A sheer 1,200-foot drop to the Green River is the classic first stop on this 4x4 loop below the mesa.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "campervan"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-highway-12-hogback",
+      "name": "Utah Scenic Byway 12 on the Hogback",
+      "lat": 37.771,
+      "lng": -111.493,
+      "countryCode": "US",
+      "region": "Grand Staircase-Escalante, Utah",
+      "why": "A narrow ridge of road with slickrock falling away on both sides, the byway's most exposed and photographed mile.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "desert",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-cades-cove-newfound-gap",
+      "name": "Newfound Gap Road above Cades Cove",
+      "lat": 35.6117,
+      "lng": -83.4258,
+      "countryCode": "US",
+      "region": "Great Smoky Mountains National Park, Tennessee",
+      "why": "The gap straddling the Tennessee–North Carolina line gives the loop road's signature layered-ridge view.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "loop",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-klondike-highway-bennett-lake",
+      "name": "Klondike Highway above Bennett Lake",
+      "lat": 59.8,
+      "lng": -134.9833,
+      "countryCode": "CA",
+      "region": "Carcross, Yukon",
+      "why": "The road crests a pass with the turquoise length of Bennett Lake and old gold-rush rail line below.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-top-of-the-world-highway",
+      "name": "Top of the World Highway",
+      "lat": 64.0667,
+      "lng": -140.8833,
+      "countryCode": "CA",
+      "region": "Yukon/Alaska border",
+      "why": "A ridge-top gravel road runs for miles above the treeline with no valleys, only summits, in view.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-cassiar-highway-bear-glacier",
+      "name": "Cassiar Highway at Bear Glacier",
+      "lat": 55.9058,
+      "lng": -129.9958,
+      "countryCode": "CA",
+      "region": "Stewart, British Columbia",
+      "why": "A hanging glacier calving into a milky lake right beside the road, the highway's most photographed stop.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "gravel"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-ruta-panoramica-cerro-punta",
+      "name": "Ruta Panorámica at Cerro de Punta",
+      "lat": 18.1667,
+      "lng": -66.5833,
+      "countryCode": "PR",
+      "region": "Jayuya, Puerto Rico",
+      "why": "Puerto Rico's crest-line highway tops out at the island's highest peak, clouds rolling over both coasts.",
+      "bestMonths": [],
+      "tags": [
+        "mountain",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-viking-trail-western-brook-pond",
+      "name": "Viking Trail above Western Brook Pond",
+      "lat": 49.7833,
+      "lng": -57.8833,
+      "countryCode": "CA",
+      "region": "Gros Morne National Park, Newfoundland",
+      "why": "A fjord landlocked by ancient uplift is the highway's showpiece, seen from the trailhead pull-off.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coastal",
+        "mountain",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-dempster-highway-tombstone",
+      "name": "Dempster Highway at Tombstone Territorial Park",
+      "lat": 64.5167,
+      "lng": -138.2833,
+      "countryCode": "CA",
+      "region": "Yukon",
+      "why": "Jagged granite peaks rise straight from the tundra at the highway's most-photographed overlook.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-ruta-40-perito-moreno",
+      "name": "Ruta 40 at the Perito Moreno Glacier balconies",
+      "lat": -50.4967,
+      "lng": -73.0501,
+      "countryCode": "AR",
+      "region": "El Calafate, Santa Cruz",
+      "why": "Boardwalks face the glacier's 60m ice face directly, the single most photographed stop the whole length of Ruta 40.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-carretera-austral-marble-caves",
+      "name": "Carretera Austral at the Marble Caves",
+      "lat": -46.6333,
+      "lng": -72.6667,
+      "countryCode": "CL",
+      "region": "Puerto Río Tranquilo, Aysén",
+      "why": "Water-carved calcite caverns on Lake General Carrera, reached by boat from the highway, are the route's icon.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-yungas-road-coroico",
+      "name": "Yungas Road above Coroico",
+      "lat": -16.2833,
+      "lng": -67.8,
+      "countryCode": "BO",
+      "region": "North Yungas, La Paz Department",
+      "why": "A cliffside gravel shelf 600m above the valley floor, still called the World's Most Dangerous Road.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "one-day"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-salar-de-uyuni-incahuasi",
+      "name": "Salar de Uyuni at Isla Incahuasi",
+      "lat": -20.25,
+      "lng": -67.6167,
+      "countryCode": "BO",
+      "region": "Potosí Department",
+      "why": "A cactus-covered coral island rising from the salt flat is the drive's obligatory photo stop and mirror-shot backdrop.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "desert",
+        "loop",
+        "gravel"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-siete-lagos-lago-espejo",
+      "name": "Ruta de los Siete Lagos at Lago Espejo",
+      "lat": -40.6667,
+      "lng": -71.6167,
+      "countryCode": "AR",
+      "region": "Villa La Angostura, Neuquén",
+      "why": "A mirror-still lake framed by araucaria forest is the route's most reproduced view between Bariloche and San Martín.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-quebrada-humahuaca-siete-colores",
+      "name": "Quebrada de Humahuaca at the Hill of Seven Colours",
+      "lat": -23.75,
+      "lng": -65.4667,
+      "countryCode": "AR",
+      "region": "Purmamarca, Jujuy",
+      "why": "Striated mineral bands stacked above the village are the quebrada's single most photographed backdrop.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "desert",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-paso-jama-salinas-grandes",
+      "name": "Ruta 52 to Paso de Jama at Salinas Grandes",
+      "lat": -23.5667,
+      "lng": -66.6167,
+      "countryCode": "AR",
+      "region": "Jujuy/Salta border",
+      "why": "A blinding white salt pan crossed by a raised causeway road, just below the high Andean pass.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "desert",
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-transpantaneira-rio-pixaim",
+      "name": "Transpantaneira Highway at the Rio Pixaim bridge",
+      "lat": -16.6167,
+      "lng": -56.7833,
+      "countryCode": "BR",
+      "region": "Mato Grosso",
+      "why": "One of the road's roughly 120 wooden bridges over the flooded Pantanal, its signature crossing.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "gravel",
+        "loop"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-circuito-chico-cerro-campanario",
+      "name": "Circuito Chico at Cerro Campanario",
+      "lat": -41.1167,
+      "lng": -71.5333,
+      "countryCode": "AR",
+      "region": "Bariloche, Río Negro",
+      "why": "A short chairlift off the road reaches the viewpoint National Geographic once called one of the world's ten best.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "loop",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-carretera-austral-cerro-castillo",
+      "name": "Carretera Austral at Cerro Castillo",
+      "lat": -46.1167,
+      "lng": -72.15,
+      "countryCode": "CL",
+      "region": "Aysén Region",
+      "why": "A jagged, castle-shaped massif rises straight off the highway's shoulder south of Coyhaique.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "gravel"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-ruta-3-tierra-del-fuego-lago-escondido",
+      "name": "Ruta Nacional 3 at Lago Escondido",
+      "lat": -54.65,
+      "lng": -67.9333,
+      "countryCode": "AR",
+      "region": "Tierra del Fuego",
+      "why": "The southernmost stretch of the Pan-American drops through beech forest to this hidden glacial lake before Garibaldi Pass.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-abra-malaga-machu-picchu-road",
+      "name": "Abra Málaga Pass on the road to Machu Picchu",
+      "lat": -13.2833,
+      "lng": -72.3167,
+      "countryCode": "PE",
+      "region": "Cusco Region",
+      "why": "Cloud forest gives way to glacier views at 4,300m, the high point of the alternate route into the Sacred Valley.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-colca-canyon-cruz-del-condor",
+      "name": "Colca Canyon road at Cruz del Cóndor",
+      "lat": -15.618,
+      "lng": -71.8493,
+      "countryCode": "PE",
+      "region": "Arequipa Region",
+      "why": "Andean condors ride the thermals right past this canyon-rim overlook most mornings.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "desert",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-quilotoa-loop-crater-rim",
+      "name": "Quilotoa Loop at the crater rim",
+      "lat": -0.85,
+      "lng": -78.9,
+      "countryCode": "EC",
+      "region": "Cotopaxi Province",
+      "why": "A turquoise crater lake seen from the rim road is the loop's reason for being.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "loop"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-atacama-valle-de-la-luna",
+      "name": "Ruta 23 at Valle de la Luna",
+      "lat": -22.9167,
+      "lng": -68.3,
+      "countryCode": "CL",
+      "region": "San Pedro de Atacama",
+      "why": "Wind-carved salt-and-sand formations at sunset are the most photographed stop on the road out of San Pedro.",
+      "bestMonths": [],
+      "tags": [
+        "desert",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-trampolin-de-la-muerte",
+      "name": "Trampolín de la Muerte at the Portachuelo summit",
+      "lat": -1.16,
+      "lng": -76.75,
+      "countryCode": "CO",
+      "region": "Putumayo Department",
+      "why": "The unpaved road's highest, narrowest cloud-forest saddle between Mocoa and San Francisco, no guardrail in sight.",
+      "bestMonths": [
+        7,
+        8,
+        12,
+        1
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "one-day"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-transfagarasan-balea-lake",
+      "name": "Transfăgărășan at Bâlea Lake",
+      "lat": 45.605,
+      "lng": 24.6167,
+      "countryCode": "RO",
+      "region": "Făgăraș Mountains",
+      "why": "A glacial lake right at the road's summit tunnel is the single image everyone brings back from the Transfăgărășan.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-transalpina-obarsia-lotrului",
+      "name": "Transalpina near Obârșia Lotrului",
+      "lat": 45.3667,
+      "lng": 23.6667,
+      "countryCode": "RO",
+      "region": "Parâng Mountains",
+      "why": "Romania's highest paved road crosses open alpine plateau here, closed by snow most of the year.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-stelvio-pass-hairpins",
+      "name": "Stelvio Pass hairpins",
+      "lat": 46.5253,
+      "lng": 10.4527,
+      "countryCode": "IT",
+      "region": "Stelvio National Park, South Tyrol",
+      "why": "48 numbered switchbacks stacked up the eastern ramp make this the most photographed mountain pass in the Alps.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-grossglockner-edelweissspitze",
+      "name": "Grossglockner High Alpine Road at Edelweißspitze",
+      "lat": 47.1667,
+      "lng": 12.8333,
+      "countryCode": "AT",
+      "region": "Hohe Tauern National Park",
+      "why": "A spur to the road's highest viewpoint circles 360° over the Grossglockner and dozens of other 3,000m peaks.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-atlantic-road-storseisundet",
+      "name": "Atlantic Road at the Storseisundet Bridge",
+      "lat": 63.0136,
+      "lng": 7.4109,
+      "countryCode": "NO",
+      "region": "Averøy, Møre og Romsdal",
+      "why": "A bridge that seems to launch into open sea is the most photographed structure on any road in Norway.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-trollstigen-viewpoint",
+      "name": "Trollstigen at the summit viewing platform",
+      "lat": 62.454,
+      "lng": 7.1128,
+      "countryCode": "NO",
+      "region": "Rauma, Møre og Romsdal",
+      "why": "Eleven hairpins climb below the platform, with the Stigfossen waterfall crashing beside the road.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-lofoten-reinebringen",
+      "name": "Lofoten road at Reinebringen",
+      "lat": 67.937,
+      "lng": 13.087,
+      "countryCode": "NO",
+      "region": "Reine, Nordland",
+      "why": "The switchback climb above Reine gives Lofoten's most reproduced view: a fishing village pinched between fjord and peaks.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coastal",
+        "mountain",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-nc500-bealach-na-ba",
+      "name": "North Coast 500 at Bealach na Bà",
+      "lat": 57.418,
+      "lng": -5.671,
+      "countryCode": "GB",
+      "region": "Applecross, Scottish Highlands",
+      "why": "Scotland's steepest ascent, a single-track pass to a Skye-facing summit, is the loop's toughest and most-shot stretch.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "loop",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-wild-atlantic-way-cliffs-of-moher",
+      "name": "Wild Atlantic Way at the Cliffs of Moher",
+      "lat": 52.9715,
+      "lng": -9.4309,
+      "countryCode": "IE",
+      "region": "County Clare",
+      "why": "214m sea cliffs facing the open Atlantic are the single most-visited and most-photographed stop on the whole route.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coastal",
+        "week"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-ring-of-kerry-ladies-view",
+      "name": "Ring of Kerry at Ladies' View",
+      "lat": 51.9333,
+      "lng": -9.6167,
+      "countryCode": "IE",
+      "region": "Killarney National Park",
+      "why": "Named for Queen Victoria's ladies-in-waiting, this pull-off over the lakes of Killarney is the ring's classic stop.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coastal",
+        "mountain",
+        "loop",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-amalfi-coast-path-of-the-gods",
+      "name": "Amalfi Coast Road below the Path of the Gods",
+      "lat": 40.618,
+      "lng": 14.455,
+      "countryCode": "IT",
+      "region": "Agerola, Campania",
+      "why": "The cliffside trail above the SS163 frames Positano and the coast road stacked below in the classic Amalfi shot.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "week"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-great-dolomites-road-passo-pordoi",
+      "name": "Great Dolomites Road at Passo Pordoi",
+      "lat": 46.4864,
+      "lng": 11.8129,
+      "countryCode": "IT",
+      "region": "Trentino-South Tyrol",
+      "why": "A cable car and a wall of Sella massif rock make this the Dolomites Road's best-known summit.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-sella-ronda-passo-sella",
+      "name": "Sella Ronda at Passo Sella",
+      "lat": 46.5058,
+      "lng": 11.755,
+      "countryCode": "IT",
+      "region": "Trentino-South Tyrol",
+      "why": "Sheer dolomite towers rise on both sides of the pass, the loop's most-photographed saddle.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-furka-pass-hairpins",
+      "name": "Furka Pass hairpins",
+      "lat": 46.5747,
+      "lng": 8.416,
+      "countryCode": "CH",
+      "region": "Uri/Valais border",
+      "why": "The stacked switchbacks below the summit, familiar from a James Bond car chase, are the pass's signature view.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-grimsel-pass-summit",
+      "name": "Grimsel Pass summit",
+      "lat": 46.5711,
+      "lng": 8.3556,
+      "countryCode": "CH",
+      "region": "Bern/Valais border",
+      "why": "Bare granite and glacial lakes surround the road at its highest point between the Bernese Oberland and Valais.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-route-grandes-alpes-col-bonette",
+      "name": "Route des Grandes Alpes at Col de la Bonette",
+      "lat": 44.3219,
+      "lng": 6.8069,
+      "countryCode": "FR",
+      "region": "Alpes-Maritimes",
+      "why": "A loop road around the summit makes this one of the highest paved points in Europe, moon-like scree on all sides.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-col-du-tourmalet-summit",
+      "name": "Col du Tourmalet summit",
+      "lat": 42.9106,
+      "lng": 0.1447,
+      "countryCode": "FR",
+      "region": "Hautes-Pyrénées",
+      "why": "A cyclist statue marks the Tour de France's most-climbed pass, its hairpins visible for miles below.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-route-des-cretes-point-sublime",
+      "name": "Route des Crêtes at Point Sublime",
+      "lat": 43.7726,
+      "lng": 6.3644,
+      "countryCode": "FR",
+      "region": "Gorges du Verdon, Provence",
+      "why": "The corniche road's best-named overlook drops 180m straight into Europe's grandest canyon.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-golden-circle-gullfoss",
+      "name": "Golden Circle at Gullfoss",
+      "lat": 64.3271,
+      "lng": -20.1199,
+      "countryCode": "IS",
+      "region": "Bláskógabyggð",
+      "why": "A two-tiered waterfall dropping into a hidden canyon is the loop's most-shot stop.",
+      "bestMonths": [],
+      "tags": [
+        "loop",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-ring-road-diamond-beach",
+      "name": "Iceland Ring Road at Diamond Beach",
+      "lat": 64.043,
+      "lng": -16.1798,
+      "countryCode": "IS",
+      "region": "Jökulsárlón, South Iceland",
+      "why": "Glacier ice washes up and glitters on black volcanic sand right beside Route 1 — the Ring Road's single most-photographed stop.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-causeway-coastal-route-giants-causeway",
+      "name": "Causeway Coastal Route at the Giant's Causeway",
+      "lat": 55.2408,
+      "lng": -6.5116,
+      "countryCode": "GB",
+      "region": "County Antrim, Northern Ireland",
+      "why": "40,000 hexagonal basalt columns make this the route's UNESCO-listed centrepiece.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-sa-calobra-mirador-ses-barques",
+      "name": "Sa Calobra Road at Mirador de Ses Barques",
+      "lat": 39.8283,
+      "lng": 2.8064,
+      "countryCode": "ES",
+      "region": "Serra de Tramuntana, Mallorca",
+      "why": "A 270° hairpin loop and a sheer drop to the Mediterranean make this the road's most-shot bend.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "coastal"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-route-napoleon-sisteron",
+      "name": "Route Napoléon at the Sisteron gorge",
+      "lat": 44.1952,
+      "lng": 5.9438,
+      "countryCode": "FR",
+      "region": "Alpes-de-Haute-Provence",
+      "why": "A citadel-topped rock gate squeezing the Durance river is the route's most dramatic pinch point.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-timmelsjoch-pass",
+      "name": "Timmelsjoch High Alpine Road summit",
+      "lat": 46.9167,
+      "lng": 11.1,
+      "countryCode": "AT",
+      "region": "Ötztal Alps, Tyrol/South Tyrol border",
+      "why": "A striking angular museum building marks the Austria–Italy border crossing at the road's highest point.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-sognefjellet-road-summit",
+      "name": "Sognefjellsvegen summit",
+      "lat": 61.5333,
+      "lng": 8.0,
+      "countryCode": "NO",
+      "region": "Jotunheimen, Sogn og Fjordane",
+      "why": "Northern Europe's highest mountain road crosses a glacier-studded plateau at over 1,400m.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-rv7-hardangervidda-mosvatn",
+      "name": "Rv7 across Hardangervidda at Møsvatn",
+      "lat": 60.15,
+      "lng": 8.0,
+      "countryCode": "NO",
+      "region": "Telemark",
+      "why": "Europe's largest mountain plateau stretches flat and treeless in every direction from this stretch of road.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-lysebotn-road-kjeragbolten",
+      "name": "Lysebotn Road below Kjeragbolten",
+      "lat": 59.0333,
+      "lng": 6.8667,
+      "countryCode": "NO",
+      "region": "Forsand, Rogaland",
+      "why": "27 hairpins and a tunnel spiral down to the fjord floor beneath the famous wedged boulder.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-route-cretes-corsica-col-bavella",
+      "name": "Route des Crêtes de Corse at Col de Bavella",
+      "lat": 41.7833,
+      "lng": 9.2167,
+      "countryCode": "FR",
+      "region": "Alta Rocca, Corsica",
+      "why": "Granite needles called the Aiguilles de Bavella rise straight above the pass, Corsica's most-shot mountain road view.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-passo-gavia-summit",
+      "name": "Passo Gavia summit",
+      "lat": 46.3419,
+      "lng": 10.4936,
+      "countryCode": "IT",
+      "region": "Lombardy",
+      "why": "A narrow, largely unguarded single-lane road tops out beside a small alpine lake below Punta di San Matteo.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure",
+        "gravel"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-vrsic-pass-summit",
+      "name": "Vršič Pass summit",
+      "lat": 46.4342,
+      "lng": 13.7492,
+      "countryCode": "SI",
+      "region": "Julian Alps",
+      "why": "50 hairpins, several still cobbled, climb to Slovenia's highest road pass beneath the Julian Alps.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-a82-glencoe-buachaille",
+      "name": "A82 through Glencoe at Buachaille Etive Mòr",
+      "lat": 56.6167,
+      "lng": -4.9,
+      "countryCode": "GB",
+      "region": "Glen Coe, Scottish Highlands",
+      "why": "The pyramidal peak beside the road, framed by the River Coupall, is the most-photographed shot in the Highlands.",
+      "bestMonths": [],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-peak-district-mam-tor",
+      "name": "Peak District Snake Pass road at Mam Tor",
+      "lat": 53.3492,
+      "lng": -1.8115,
+      "countryCode": "GB",
+      "region": "Derbyshire",
+      "why": "A ridge-top car park below Mam Tor gives the classic view down the Hope and Edale valleys.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-douro-valley-n222",
+      "name": "N222 above the Douro Valley",
+      "lat": 41.1667,
+      "lng": -7.7833,
+      "countryCode": "PT",
+      "region": "Peso da Régua",
+      "why": "Terraced vineyards stacked above the river bend are the reason Top Gear once called this the world's best road.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-serrania-de-ronda-puente-nuevo",
+      "name": "Serranía de Ronda road at the Puente Nuevo",
+      "lat": 36.7461,
+      "lng": -5.1668,
+      "countryCode": "ES",
+      "region": "Ronda, Andalusia",
+      "why": "An 18th-century bridge spanning a 120m gorge splits the town in two, the drive's dramatic centrepiece.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-picos-de-europa-fuente-de",
+      "name": "Picos de Europa road at Fuente Dé",
+      "lat": 43.1499,
+      "lng": -4.8167,
+      "countryCode": "ES",
+      "region": "Cantabria",
+      "why": "A cable car climbs 800m from the road's end into a sheer limestone amphitheatre.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-romantic-road-marienbrucke",
+      "name": "Romantische Straße at the Marienbrücke",
+      "lat": 47.5575,
+      "lng": 10.7498,
+      "countryCode": "DE",
+      "region": "Hohenschwangau, Bavaria",
+      "why": "A footbridge over the Pöllat gorge gives the classic postcard view of Neuschwanstein Castle beside the road.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-schwarzwaldhochstrasse-mummelsee",
+      "name": "Schwarzwaldhochstraße at the Mummelsee",
+      "lat": 48.5833,
+      "lng": 8.2,
+      "countryCode": "DE",
+      "region": "Black Forest, Baden-Württemberg",
+      "why": "A dark glacial lake ringed by spruce right beside the high road is the route's best-known stop.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-westfjords-dynjandi",
+      "name": "Westfjords Way at Dynjandi",
+      "lat": 65.7333,
+      "lng": -23.2167,
+      "countryCode": "IS",
+      "region": "Westfjords",
+      "why": "A tiered, fan-shaped waterfall visible from the gravel road is the Westfjords loop's must-stop.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coastal",
+        "gravel",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-adriatic-highway-dubrovnik-view",
+      "name": "Adriatic Highway above Dubrovnik",
+      "lat": 42.63,
+      "lng": 18.12,
+      "countryCode": "HR",
+      "region": "Dubrovnik-Neretva County",
+      "why": "A hillside pull-off on the coastal D8 gives the classic elevated view of the old town's red roofs and walls.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-kotor-serpentine-road",
+      "name": "Kotor Serpentine Road summit",
+      "lat": 42.4931,
+      "lng": 18.766,
+      "countryCode": "ME",
+      "region": "Bay of Kotor",
+      "why": "25 numbered switchbacks climb from the bay, with a fjord-like panorama at the top hairpin.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-meteora-road-viewpoint",
+      "name": "Meteora monastery road viewpoint",
+      "lat": 39.7217,
+      "lng": 21.6306,
+      "countryCode": "GR",
+      "region": "Kalambaka, Thessaly",
+      "why": "Sandstone pillars topped with centuries-old monasteries line the loop road above Kalambaka.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-faroe-islands-mulafossur",
+      "name": "Faroe Islands road to Múlafossur",
+      "lat": 62.1053,
+      "lng": -7.2201,
+      "countryCode": "FO",
+      "region": "Gásadalur, Vágar",
+      "why": "A waterfall dropping straight into the Atlantic beside the village is the islands' single most-shot frame.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coastal",
+        "gravel",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-skye-quiraing",
+      "name": "Isle of Skye road below the Quiraing",
+      "lat": 57.6386,
+      "lng": -6.2811,
+      "countryCode": "GB",
+      "region": "Trotternish, Skye",
+      "why": "A landslipped ridge of pinnacles and hidden plateaus makes the road below it Skye's most-photographed corner.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-snowdonia-llanberis-pass",
+      "name": "Snowdonia road through Llanberis Pass",
+      "lat": 53.093,
+      "lng": -4.1136,
+      "countryCode": "GB",
+      "region": "Gwynedd, Wales",
+      "why": "Boulder-strewn slopes squeeze the road between Snowdon and the Glyderau, Wales's classic mountain drive.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-pyrenees-cirque-de-gavarnie",
+      "name": "Pyrenees road to the Cirque de Gavarnie",
+      "lat": 42.6928,
+      "lng": -0.0064,
+      "countryCode": "FR",
+      "region": "Hautes-Pyrénées",
+      "why": "A natural amphitheatre of cliffs and waterfalls at the road's end, the Pyrenees' most famous view.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-klausen-pass-summit",
+      "name": "Klausenpass summit",
+      "lat": 46.8667,
+      "lng": 8.85,
+      "countryCode": "CH",
+      "region": "Uri/Glarus border",
+      "why": "A quieter alternative to the Alps' famous passes, with the Clariden glacier in view from the top.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-susten-pass-steingletscher",
+      "name": "Sustenpass at the Steingletscher viewpoint",
+      "lat": 46.7333,
+      "lng": 8.45,
+      "countryCode": "CH",
+      "region": "Bern/Uri border",
+      "why": "A roadside glacier lake and hanging ice tongue make this the pass's most-photographed pull-off.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-silvretta-hochalpenstrasse-bielerhohe",
+      "name": "Silvretta Hochalpenstraße at Bielerhöhe",
+      "lat": 46.9167,
+      "lng": 10.0833,
+      "countryCode": "AT",
+      "region": "Vorarlberg",
+      "why": "A dammed alpine reservoir at the road's summit is the Silvretta road's classic reflective shot.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-corniche-esterel-cap-roux",
+      "name": "Corniche de l'Estérel at Cap Roux",
+      "lat": 43.4333,
+      "lng": 6.9333,
+      "countryCode": "FR",
+      "region": "Var, French Riviera",
+      "why": "Red volcanic rock plunging into blue sea is the corniche's most vivid stretch, best just after sunrise.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-route-blanche-col-montets",
+      "name": "Route Blanche at Col des Montets",
+      "lat": 45.9167,
+      "lng": 6.8667,
+      "countryCode": "FR",
+      "region": "Chamonix Valley, Haute-Savoie",
+      "why": "Mont Blanc's glaciers dominate the skyline from this pass linking Chamonix to Switzerland.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-lake-como-ss340-bellagio",
+      "name": "SS340 above Lake Como at Bellagio",
+      "lat": 45.986,
+      "lng": 9.2565,
+      "countryCode": "IT",
+      "region": "Bellagio, Lombardy",
+      "why": "The road's lakeside curves frame the promontory town where Como's two branches meet.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-ss114-taormina-etna-view",
+      "name": "SS114 at Taormina overlooking Etna",
+      "lat": 37.85,
+      "lng": 15.05,
+      "countryCode": "IT",
+      "region": "Taormina, Sicily",
+      "why": "A clifftop Greek theatre and smoking Etna in the same frame make this the coast road's icon.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-costa-smeralda-sp71",
+      "name": "SP71 along the Costa Smeralda",
+      "lat": 41.1333,
+      "lng": 9.5333,
+      "countryCode": "IT",
+      "region": "Sardinia",
+      "why": "Granite headlands and turquoise coves line this coastal stretch north of Olbia.",
+      "bestMonths": [
+        5,
+        6,
+        9
+      ],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-andorra-port-denvalira",
+      "name": "CG2 at the Port d'Envalira",
+      "lat": 42.5333,
+      "lng": 1.7333,
+      "countryCode": "AD",
+      "region": "Andorra",
+      "why": "The Pyrenees' highest paved pass, linking Andorra to France, tops out above the treeline.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-garden-route-storms-river",
+      "name": "Garden Route at the Storms River suspension bridge",
+      "lat": -33.9603,
+      "lng": 23.8814,
+      "countryCode": "ZA",
+      "region": "Tsitsikamma, Eastern Cape",
+      "why": "A swaying footbridge over a gorge mouth into the Indian Ocean is the route's best-known stop.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-chapmans-peak-drive",
+      "name": "Chapman's Peak Drive viewpoint",
+      "lat": -34.0771,
+      "lng": 18.3596,
+      "countryCode": "ZA",
+      "region": "Hout Bay, Western Cape",
+      "why": "114 curves carved into a sheer cliff give unbroken views over Hout Bay from almost every bend.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-sani-pass-summit",
+      "name": "Sani Pass summit",
+      "lat": -29.5833,
+      "lng": 29.2833,
+      "countryCode": "ZA",
+      "region": "Drakensberg, KwaZulu-Natal/Lesotho border",
+      "why": "A gravel switchback climb to Africa's highest border post, snowed in some winters, its trademark hairpins visible below.",
+      "bestMonths": [],
+      "tags": [
+        "mountain",
+        "pass",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-n7-namaqualand-skilpad",
+      "name": "N7 Namaqualand at Skilpad Wildflower Reserve",
+      "lat": -30.15,
+      "lng": 18.05,
+      "countryCode": "ZA",
+      "region": "Namaqua National Park, Northern Cape",
+      "why": "For a few weeks each spring the roadside desert turns solid orange with daisies.",
+      "bestMonths": [
+        8,
+        9
+      ],
+      "tags": [
+        "desert",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-tizi-n-tichka-pass",
+      "name": "Tizi n'Tichka Pass summit",
+      "lat": 31.2833,
+      "lng": -7.3667,
+      "countryCode": "MA",
+      "region": "High Atlas Mountains",
+      "why": "The highest paved pass in North Africa switchbacks over the Atlas between Marrakech and Ouarzazate.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-road-of-a-thousand-kasbahs-dades",
+      "name": "Road of a Thousand Kasbahs at the Dades Gorge",
+      "lat": 31.4667,
+      "lng": -5.6167,
+      "countryCode": "MA",
+      "region": "Boumalne Dadès",
+      "why": "Hairpins stacked against red rock walls above the Dades River are the road's signature switchback view.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-skeleton-coast-road-cape-cross",
+      "name": "Skeleton Coast Road at Cape Cross",
+      "lat": -21.7667,
+      "lng": 13.9667,
+      "countryCode": "NA",
+      "region": "Erongo Region",
+      "why": "Fog rolls off the cold Atlantic over one of the coast's oldest landmarks and a huge Cape fur seal colony.",
+      "bestMonths": [],
+      "tags": [
+        "desert",
+        "coastal",
+        "gravel"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-namibia-c33-spitzkoppe",
+      "name": "Namibia's C33 at Spitzkoppe",
+      "lat": -21.8333,
+      "lng": 15.1833,
+      "countryCode": "NA",
+      "region": "Erongo Region",
+      "why": "A granite inselberg rising sheer from flat desert is Namibia's most-photographed roadside stop.",
+      "bestMonths": [],
+      "tags": [
+        "desert",
+        "gravel",
+        "campervan"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-victoria-falls-bridge",
+      "name": "A8 at the Victoria Falls Bridge",
+      "lat": -17.9243,
+      "lng": 25.8572,
+      "countryCode": "ZW",
+      "region": "Victoria Falls, Zimbabwe/Zambia border",
+      "why": "The historic bridge spanning the gorge, with spray from the falls drifting over it, is the crossing's icon.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-simien-mountains-imet-gogo",
+      "name": "Simien Mountains road near Imet Gogo",
+      "lat": 13.25,
+      "lng": 38.05,
+      "countryCode": "ET",
+      "region": "Amhara Region",
+      "why": "A knife-edge viewpoint over three sides of escarpment is the single most-photographed spot on the Simien circuit.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "gravel"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-white-desert-road-egypt",
+      "name": "White Desert road at the chalk formations",
+      "lat": 27.35,
+      "lng": 28.15,
+      "countryCode": "EG",
+      "region": "New Valley Governorate",
+      "why": "Wind-eroded chalk rock shaped like mushrooms and icebergs surrounds the desert track after Farafra.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "campervan"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-great-rift-valley-viewpoint-kenya",
+      "name": "A104 at the Great Rift Valley viewpoint",
+      "lat": -0.8981,
+      "lng": 36.3161,
+      "countryCode": "KE",
+      "region": "Naivasha, Rift Valley",
+      "why": "A roadside escarpment stop above Lake Naivasha gives the classic first look down into the Rift.",
+      "bestMonths": [],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-erg-chebbi-merzouga-road",
+      "name": "Road to Merzouga at Erg Chebbi",
+      "lat": 31.0989,
+      "lng": -4.01,
+      "countryCode": "MA",
+      "region": "Merzouga, Drâa-Tafilalet",
+      "why": "The Sahara's tallest Moroccan dunes rise straight from the tarmac's end, the road's classic sunset stop.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "campervan"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-wild-coast-hole-in-the-wall",
+      "name": "Wild Coast road at Hole in the Wall",
+      "lat": -32.1167,
+      "lng": 29.0333,
+      "countryCode": "ZA",
+      "region": "Coffee Bay, Eastern Cape",
+      "why": "A cliff pierced clean through by the sea is the Wild Coast's best-known and most remote landmark.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "gravel",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-reunion-route-du-volcan",
+      "name": "Route du Volcan at Pas de Bellecombe",
+      "lat": -21.2222,
+      "lng": 55.6889,
+      "countryCode": "RE",
+      "region": "Sainte-Rose, Réunion",
+      "why": "The road ends at a crater rim overlooking Piton de la Fournaise's black lava plain and smoking cones.",
+      "bestMonths": [],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-madagascar-rn7-isalo",
+      "name": "RN7 at the Isalo sandstone massif",
+      "lat": -22.5583,
+      "lng": 45.4,
+      "countryCode": "MG",
+      "region": "Ranohira, Ihorombe Region",
+      "why": "Wind-eroded sandstone ridges glow red at sunset beside RN7's most scenic stretch.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "desert",
+        "mountain",
+        "gravel",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-fish-river-canyon-main-viewpoint",
+      "name": "D601 at the Fish River Canyon main viewpoint",
+      "lat": -27.5893,
+      "lng": 17.5976,
+      "countryCode": "NA",
+      "region": "ǁKaras Region",
+      "why": "The rim road's main lookout, also called Hell's Bend, gives the classic view down the world's second-largest canyon.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-karakoram-highway-khunjerab-pass",
+      "name": "Karakoram Highway at Khunjerab Pass",
+      "lat": 36.8333,
+      "lng": 75.4203,
+      "countryCode": "PK",
+      "region": "Gilgit-Baltistan",
+      "why": "The highest paved international border crossing in the world, hemmed by snow peaks on the China–Pakistan frontier.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-pamir-highway-ak-baital",
+      "name": "Pamir Highway at Ak-Baital Pass",
+      "lat": 38.0667,
+      "lng": 73.7,
+      "countryCode": "TJ",
+      "region": "Gorno-Badakhshan",
+      "why": "The highway's highest pass crosses a barren, high-altitude desert plateau near the Chinese border.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-leh-manali-highway-baralacha-la",
+      "name": "Leh–Manali Highway at Baralacha La",
+      "lat": 32.7333,
+      "lng": 77.4167,
+      "countryCode": "IN",
+      "region": "Lahaul and Spiti/Ladakh",
+      "why": "Glacial lakes and year-round snow patches surround the highway's key pass, closed roughly half the year.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-khardung-la-road",
+      "name": "Khardung La road",
+      "lat": 34.2792,
+      "lng": 77.6031,
+      "countryCode": "IN",
+      "region": "Ladakh",
+      "why": "One of the world's highest motorable passes, with prayer flags strung across the summit signboard.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-zoji-la-pass",
+      "name": "Srinagar–Leh Highway at Zoji La",
+      "lat": 34.2833,
+      "lng": 75.4667,
+      "countryCode": "IN",
+      "region": "Ladakh/Kashmir border",
+      "why": "A narrow, unfenced shelf road across the pass is Ladakh's main lifeline and its most treacherous stretch.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-rohtang-pass-summit",
+      "name": "Rohtang Pass summit",
+      "lat": 32.3728,
+      "lng": 77.2497,
+      "countryCode": "IN",
+      "region": "Himachal Pradesh",
+      "why": "The gateway pass between Kullu Valley and Lahaul is snowbound roughly seven months of the year.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-pangong-lake-road",
+      "name": "Chang La road to Pangong Tso",
+      "lat": 33.7592,
+      "lng": 78.665,
+      "countryCode": "IN",
+      "region": "Ladakh",
+      "why": "A brilliant blue high-altitude lake stretching to the Tibetan border is Ladakh's most photographed drive destination.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-mount-fuji-skyline",
+      "name": "Mount Fuji Skyline at the Fujinomiya 5th Station",
+      "lat": 35.3675,
+      "lng": 138.7305,
+      "countryCode": "JP",
+      "region": "Fujinomiya, Shizuoka",
+      "why": "The paved road's terminus at 2,400m gives the closest drive-up view of Fuji's summit crater rim.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-tateyama-kurobe-snow-corridor",
+      "name": "Tateyama Kurobe Alpine Route at the Snow Corridor",
+      "lat": 36.5833,
+      "lng": 137.6,
+      "countryCode": "JP",
+      "region": "Toyama/Nagano border",
+      "why": "Spring ploughing leaves walls of snow up to 20m tall lining the road for weeks each year.",
+      "bestMonths": [
+        4,
+        5
+      ],
+      "tags": [
+        "mountain",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-tianmen-mountain-road",
+      "name": "Tianmen Mountain Road (99 Bends)",
+      "lat": 29.0913,
+      "lng": 110.4767,
+      "countryCode": "CN",
+      "region": "Zhangjiajie, Hunan",
+      "why": "99 numbered hairpins climb 1,100m up a sheer cliff face to Heaven's Gate cave.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-guoliang-tunnel-road",
+      "name": "Guoliang Tunnel Road",
+      "lat": 35.7311,
+      "lng": 113.604,
+      "countryCode": "CN",
+      "region": "Taihang Mountains, Henan",
+      "why": "A tunnel hand-carved through the cliff by villagers, with irregular window-openings looking straight down the gorge.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-duku-highway-tianshan-canyon",
+      "name": "Duku Highway at the Tianshan Grand Canyon",
+      "lat": 43.4667,
+      "lng": 84.4667,
+      "countryCode": "CN",
+      "region": "Xinjiang",
+      "why": "Red sandstone cliffs and a river gorge line one of the most remote and seasonally shut highways in China.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-ha-giang-loop-ma-pi-leng",
+      "name": "Ha Giang Loop at Mã Pí Lèng Pass",
+      "lat": 23.2408,
+      "lng": 105.4108,
+      "countryCode": "VN",
+      "region": "Hà Giang Province",
+      "why": "A ledge carved into limestone cliffs above the Nho Quế River is the loop's most-photographed stretch.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "loop",
+        "gravel"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-hai-van-pass-summit",
+      "name": "Hai Van Pass summit",
+      "lat": 16.2119,
+      "lng": 108.1272,
+      "countryCode": "VN",
+      "region": "Da Nang/Thua Thien-Hue border",
+      "why": "Old French bunkers sit at the top of a pass overlooking the South China Sea on both sides of the ridge.",
+      "bestMonths": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-mae-hong-son-loop-pai-canyon",
+      "name": "Mae Hong Son Loop at Pai Canyon",
+      "lat": 19.3333,
+      "lng": 98.4667,
+      "countryCode": "TH",
+      "region": "Pai, Mae Hong Son",
+      "why": "A narrow eroded ridge trail beside the loop road gives sunset views over the surrounding hills.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "mountain",
+        "loop",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-wadi-rum-desert-highway",
+      "name": "Desert Highway spur into Wadi Rum",
+      "lat": 29.5833,
+      "lng": 35.4167,
+      "countryCode": "JO",
+      "region": "Aqaba Governorate",
+      "why": "Red sand and towering sandstone jebels either side of the track are Jordan's most iconic desert scene.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "campervan"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-kings-highway-dana",
+      "name": "King's Highway above Dana Biosphere Reserve",
+      "lat": 30.6667,
+      "lng": 35.6167,
+      "countryCode": "JO",
+      "region": "Tafilah Governorate",
+      "why": "The ancient highway skirts the rim of a canyon dropping 1,000m to the Wadi Araba.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "mountain",
+        "desert",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-jebel-hafeet-road",
+      "name": "Jebel Hafeet Road",
+      "lat": 24.0575,
+      "lng": 55.7719,
+      "countryCode": "AE",
+      "region": "Al Ain, Abu Dhabi",
+      "why": "60 curves climb a nearly treeless mountain to a summit overlooking the Emirates and Oman.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-dead-sea-highway-mount-nebo",
+      "name": "Dead Sea Highway near Mount Nebo",
+      "lat": 31.7683,
+      "lng": 35.7256,
+      "countryCode": "JO",
+      "region": "Madaba Governorate",
+      "why": "On a clear day the overlook here reaches across the Dead Sea and Jordan Valley to Jerusalem.",
+      "bestMonths": [],
+      "tags": [
+        "desert",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-sri-lanka-nine-arch-bridge",
+      "name": "Ella–Nuwara Eliya road at the Nine Arch Bridge",
+      "lat": 6.8794,
+      "lng": 81.0603,
+      "countryCode": "LK",
+      "region": "Ella, Uva Province",
+      "why": "A colonial-era viaduct arcing through tea-plantation jungle is the hill-country road's most-shot stop.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        12
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-georgian-military-highway-gudauri",
+      "name": "Georgian Military Highway at the Cross Pass",
+      "lat": 42.4391,
+      "lng": 44.4938,
+      "countryCode": "GE",
+      "region": "Gudauri, Mtskheta-Mtianeti",
+      "why": "The road's ancient highest point, marked by a Soviet mosaic monument, looks over the Caucasus's Devil's Valley.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-charyn-canyon-road",
+      "name": "Road to Charyn Canyon at the Valley of Castles",
+      "lat": 43.3558,
+      "lng": 79.0569,
+      "countryCode": "KZ",
+      "region": "Almaty Region",
+      "why": "Red sandstone spires eroded into castle shapes line the canyon rim east of Almaty.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-gobi-desert-khongoryn-els",
+      "name": "Gobi Desert route at Khongoryn Els dunes",
+      "lat": 43.7333,
+      "lng": 102.1833,
+      "countryCode": "MN",
+      "region": "Ömnögovi Province",
+      "why": "Mongolia's 'singing sands' rise up to 300m from the steppe, the classic stop on any Gobi loop.",
+      "bestMonths": [
+        5,
+        6,
+        9
+      ],
+      "tags": [
+        "desert",
+        "gravel",
+        "campervan"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-jeju-island-coastal-road-seongsan",
+      "name": "Jeju coastal road at Seongsan Ilchulbong",
+      "lat": 33.4586,
+      "lng": 126.9425,
+      "countryCode": "KR",
+      "region": "Seogwipo, Jeju",
+      "why": "A tuff volcanic cone rising straight from the sea is the island's ring-road icon, best at sunrise.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-taroko-gorge-road-swallow-grotto",
+      "name": "Taroko Gorge Road at Swallow Grotto",
+      "lat": 24.1802,
+      "lng": 121.4972,
+      "countryCode": "TW",
+      "region": "Hualien County",
+      "why": "The marble-walled gorge narrows to a sheer, swallow-nested cliff face right above the road.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-bali-kintamani-batur",
+      "name": "Kintamani road above Mount Batur",
+      "lat": -8.2422,
+      "lng": 115.3747,
+      "countryCode": "ID",
+      "region": "Bangli Regency, Bali",
+      "why": "A roadside ridge looks straight across the caldera lake to Batur's still-active cone.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-banaue-rice-terraces-road",
+      "name": "Banaue road at the rice terrace viewpoint",
+      "lat": 16.9167,
+      "lng": 121.05,
+      "countryCode": "PH",
+      "region": "Ifugao Province",
+      "why": "2,000-year-old stone terraces climb the mountainside above the road in the Philippines' best-known landscape.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-jomsom-road-kali-gandaki",
+      "name": "Jomsom road through the Kali Gandaki gorge",
+      "lat": 28.7808,
+      "lng": 83.7259,
+      "countryCode": "NP",
+      "region": "Mustang District",
+      "why": "The world's deepest gorge opens up beside the road between Annapurna and Dhaulagiri.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-bhutan-dochula-pass",
+      "name": "Thimphu–Punakha Highway at Dochula Pass",
+      "lat": 27.3167,
+      "lng": 89.7333,
+      "countryCode": "BT",
+      "region": "Thimphu District",
+      "why": "108 memorial chortens line the pass, with a wall of eastern Himalayan peaks behind them on clear mornings.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "mountain",
+        "pass"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-cappadocia-uchisar-road",
+      "name": "Cappadocia road at Uçhisar Castle",
+      "lat": 38.6322,
+      "lng": 34.81,
+      "countryCode": "TR",
+      "region": "Nevşehir Province",
+      "why": "A carved rock citadel above the fairy-chimney valleys is the region's highest and most-photographed viewpoint.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "desert",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-oman-jebel-shams-road",
+      "name": "Road to Jebel Shams at the Grand Canyon of Oman",
+      "lat": 23.2417,
+      "lng": 57.2606,
+      "countryCode": "OM",
+      "region": "Al Hamra, Ad Dakhiliyah",
+      "why": "A cliff-edge track reaches a rim overlooking Wadi Nakhr, a 1,000m gorge nicknamed Oman's Grand Canyon.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "gravel",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-munnar-western-ghats-road",
+      "name": "Munnar road through the Western Ghats",
+      "lat": 10.0889,
+      "lng": 77.0595,
+      "countryCode": "IN",
+      "region": "Idukki District, Kerala",
+      "why": "Terraced tea estates roll over every hillside along this ghat road above Munnar town.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-thakhek-loop-kong-lor",
+      "name": "Thakhek Loop at Kong Lor Cave",
+      "lat": 17.9593,
+      "lng": 104.7543,
+      "countryCode": "LA",
+      "region": "Khammouane Province",
+      "why": "A river cave running 7km through a limestone mountain is the loop's dramatic centrepiece stop.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "loop",
+        "gravel",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-sapa-o-quy-ho-pass",
+      "name": "Sapa road at O Quy Ho Pass",
+      "lat": 22.35,
+      "lng": 103.8667,
+      "countryCode": "VN",
+      "region": "Lao Cai Province",
+      "why": "Vietnam's longest mountain pass, often shrouded in cloud, links Sapa to the Lai Chau valley below.",
+      "bestMonths": [
+        9,
+        10,
+        3,
+        4
+      ],
+      "tags": [
+        "mountain",
+        "pass"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-g318-sichuan-tibet-highway",
+      "name": "G318 Sichuan–Tibet Highway at Kamba La Pass",
+      "lat": 29.3167,
+      "lng": 90.5833,
+      "countryCode": "CN",
+      "region": "Tibet Autonomous Region",
+      "why": "The highway's most photographed pass looks down on the turquoise curve of Yamdrok Lake far below.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-great-ocean-road-twelve-apostles",
+      "name": "Great Ocean Road at the Twelve Apostles",
+      "lat": -38.6662,
+      "lng": 143.1044,
+      "countryCode": "AU",
+      "region": "Port Campbell National Park, Victoria",
+      "why": "Limestone stacks rising from the Southern Ocean are Australia's most photographed coastal landmark.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-milford-road-milford-sound",
+      "name": "Milford Road at Milford Sound / Mitre Peak",
+      "lat": -44.671,
+      "lng": 167.8994,
+      "countryCode": "NZ",
+      "region": "Fiordland National Park",
+      "why": "The road's end reveals Mitre Peak rising sheer from the fiord, New Zealand's most reproduced landscape shot.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-great-alpine-road-mount-hotham",
+      "name": "Great Alpine Road at Mount Hotham",
+      "lat": -36.9833,
+      "lng": 147.1333,
+      "countryCode": "AU",
+      "region": "Victorian High Country",
+      "why": "Australia's highest sealed through-road tops out at a ski-resort summit often closed by snow in winter.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-gibb-river-road-cockburn-range",
+      "name": "Gibb River Road at the Cockburn Range",
+      "lat": -15.9667,
+      "lng": 128.3333,
+      "countryCode": "AU",
+      "region": "East Kimberley, Western Australia",
+      "why": "A red sandstone escarpment glowing at sunset is the outback track's best-known landmark.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "gravel",
+        "desert",
+        "campervan"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-stuart-highway-devils-marbles",
+      "name": "Stuart Highway at the Devils Marbles",
+      "lat": -20.5833,
+      "lng": 134.25,
+      "countryCode": "AU",
+      "region": "Karlu Karlu, Northern Territory",
+      "why": "Giant balanced granite boulders scattered across the outback are the highway's classic photo stop.",
+      "bestMonths": [],
+      "tags": [
+        "desert",
+        "week"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-red-centre-way-uluru",
+      "name": "Red Centre Way at Uluru",
+      "lat": -25.3444,
+      "lng": 131.0369,
+      "countryCode": "AU",
+      "region": "Uluṟu-Kata Tjuṯa National Park",
+      "why": "The monolith at sunset, glowing deep red, is the loop's — and the outback's — defining image.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "desert",
+        "loop",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-savannah-way-lawn-hill",
+      "name": "Savannah Way at Boodjamulla (Lawn Hill) Gorge",
+      "lat": -18.6833,
+      "lng": 138.4833,
+      "countryCode": "AU",
+      "region": "North West Queensland",
+      "why": "A hidden emerald gorge cutting through the outback is the Savannah Way's most surprising stop.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "gravel",
+        "desert",
+        "campervan"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-cape-york-old-telegraph-track",
+      "name": "Cape York's Old Telegraph Track at Gunshot Creek",
+      "lat": -11.9333,
+      "lng": 142.3667,
+      "countryCode": "AU",
+      "region": "Cape York Peninsula, Queensland",
+      "why": "A notoriously steep, rutted creek crossing is the 4x4 track's most photographed and most attempted obstacle.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "gravel",
+        "desert",
+        "campervan"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-nullarbor-bunda-cliffs",
+      "name": "Eyre Highway at the Bunda Cliffs",
+      "lat": -31.5,
+      "lng": 130.3167,
+      "countryCode": "AU",
+      "region": "Nullarbor Plain, South Australia",
+      "why": "Sheer 80m cliffs dropping straight into the Southern Ocean line the world's longest dead-straight stretch of road.",
+      "bestMonths": [],
+      "tags": [
+        "desert",
+        "coastal",
+        "week"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-great-eastern-drive-wineglass-bay",
+      "name": "Great Eastern Drive at Wineglass Bay",
+      "lat": -42.1544,
+      "lng": 148.2947,
+      "countryCode": "AU",
+      "region": "Freycinet National Park, Tasmania",
+      "why": "A perfect curve of white sand seen from the saddle lookout is Tasmania's most photographed beach.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-crown-range-road-summit",
+      "name": "Crown Range Road summit",
+      "lat": -44.9167,
+      "lng": 168.8333,
+      "countryCode": "NZ",
+      "region": "Queenstown-Lakes District",
+      "why": "The country's highest main road climbs above the Kawarau Gorge with the Southern Alps on the horizon.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-skippers-canyon-road",
+      "name": "Skippers Canyon Road",
+      "lat": -44.9333,
+      "lng": 168.75,
+      "countryCode": "NZ",
+      "region": "Otago",
+      "why": "A one-lane gravel shelf blasted into a gorge wall above the Shotover River, still rated among the world's most dangerous.",
+      "bestMonths": [],
+      "tags": [
+        "gravel",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Dangerous Roads"
+    },
+    {
+      "id": "roadtrips-sh6-west-coast-pancake-rocks",
+      "name": "State Highway 6 at Pancake Rocks",
+      "lat": -42.1139,
+      "lng": 171.3306,
+      "countryCode": "NZ",
+      "region": "Punakaiki, West Coast",
+      "why": "Stacked limestone layers with blowholes erupting at high tide are the West Coast road's must-stop.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-southern-scenic-route-nugget-point",
+      "name": "Southern Scenic Route at Nugget Point",
+      "lat": -46.45,
+      "lng": 169.8167,
+      "countryCode": "NZ",
+      "region": "Otago",
+      "why": "A slender lighthouse headland looking over rock stacks called The Nuggets is the route's iconic end point.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "week"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-coromandel-loop-cathedral-cove",
+      "name": "Coromandel Loop Road near Cathedral Cove",
+      "lat": -36.8167,
+      "lng": 175.7833,
+      "countryCode": "NZ",
+      "region": "Coromandel Peninsula",
+      "why": "A sea-carved rock archway framing a hidden beach is the peninsula's most photographed stop.",
+      "bestMonths": [
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "coastal",
+        "loop",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-fiji-queens-road-coral-coast",
+      "name": "Queens Road along the Coral Coast",
+      "lat": -18.1833,
+      "lng": 177.7167,
+      "countryCode": "FJ",
+      "region": "Viti Levu",
+      "why": "Fringing reef visible just offshore lines Viti Levu's main coastal highway.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-captain-cook-highway-rex-lookout",
+      "name": "Captain Cook Highway at Rex Lookout",
+      "lat": -16.6167,
+      "lng": 145.5167,
+      "countryCode": "AU",
+      "region": "Wangetti, Queensland",
+      "why": "Rainforest-covered mountains meet the reef-fringed coast at this cliffside lookout north of Cairns.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-arthurs-pass-road-summit",
+      "name": "Arthur's Pass Road summit",
+      "lat": -42.95,
+      "lng": 171.5667,
+      "countryCode": "NZ",
+      "region": "Canterbury/West Coast border",
+      "why": "The road's viaduct and summit lookout cross the Southern Alps' most dramatic gap, occasionally closed by snow or slips.",
+      "bestMonths": [],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-oregon-coast-thors-well",
+      "name": "US 101 Oregon Coast at Thor's Well",
+      "lat": 44.2789,
+      "lng": -124.1147,
+      "countryCode": "US",
+      "region": "Cape Perpetua, Oregon",
+      "why": "A hole in the basalt shelf that seems to drain the ocean is the coast highway's strangest, most-shot stop.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-teton-park-road-snake-river",
+      "name": "Teton Park Road at Snake River Overlook",
+      "lat": 43.6864,
+      "lng": -110.5975,
+      "countryCode": "US",
+      "region": "Grand Teton National Park, Wyoming",
+      "why": "The Ansel Adams view of the Tetons over a bend in the Snake River is the park road's classic frame.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-serra-do-rio-do-rastro",
+      "name": "Serra do Rio do Rastro switchbacks",
+      "lat": -28.4167,
+      "lng": -49.4833,
+      "countryCode": "BR",
+      "region": "Santa Catarina",
+      "why": "Nine stacked hairpins drop 1,000m off the plateau in a few kilometres, Brazil's most-photographed mountain road.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "pass"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-chile-ruta-225-petrohue",
+      "name": "Ruta 225 at the Petrohué viewpoint",
+      "lat": -41.1333,
+      "lng": -72.4833,
+      "countryCode": "CL",
+      "region": "Los Lagos Region",
+      "why": "Turquoise rapids frame the perfect cone of Osorno Volcano from a pull-off on the Lake District road.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-snaefellsnes-kirkjufell",
+      "name": "Snæfellsnes Peninsula road at Kirkjufell",
+      "lat": 64.935,
+      "lng": -23.3086,
+      "countryCode": "IS",
+      "region": "Grundarfjörður",
+      "why": "A cone-shaped mountain beside a small waterfall is Iceland's most photographed non-Ring-Road stop.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-a830-glenfinnan-viaduct",
+      "name": "A830 Road to the Isles at the Glenfinnan Viaduct",
+      "lat": 56.8802,
+      "lng": -5.4351,
+      "countryCode": "GB",
+      "region": "Lochaber, Scottish Highlands",
+      "why": "A curved railway viaduct above the road, made famous on screen, is the route's best-known pull-off view.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-durmitor-ring-road-black-lake",
+      "name": "Durmitor Ring Road at Black Lake",
+      "lat": 43.1333,
+      "lng": 19.05,
+      "countryCode": "ME",
+      "region": "Žabljak",
+      "why": "A glacial lake beneath Durmitor's peaks is the ring road's centrepiece stop in Montenegro's highest range.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "loop"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-llogara-pass-summit",
+      "name": "SH8 at Llogara Pass",
+      "lat": 40.1889,
+      "lng": 19.59,
+      "countryCode": "AL",
+      "region": "Vlorë County",
+      "why": "The coast road's mountain crossing drops abruptly to the Ionian Sea, Albania's most dramatic viewpoint.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "coastal",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-morocco-legzira-beach-road",
+      "name": "Coastal road at Legzira Beach",
+      "lat": 29.7167,
+      "lng": -10.0833,
+      "countryCode": "MA",
+      "region": "Sidi Ifni, Guelmim-Oued Noun",
+      "why": "Twin natural rock arches on an open Atlantic beach are the southern coast road's signature stop.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-ngorongoro-crater-rim-road",
+      "name": "Ngorongoro Crater rim road",
+      "lat": -3.1608,
+      "lng": 35.5886,
+      "countryCode": "TZ",
+      "region": "Arusha Region",
+      "why": "The rim road looks straight down 600m into an intact volcanic caldera crowded with wildlife.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-route-90-masada-viewpoint",
+      "name": "Route 90 at the Masada viewpoint",
+      "lat": 31.3156,
+      "lng": 35.3536,
+      "countryCode": "IL",
+      "region": "Judean Desert",
+      "why": "A clifftop fortress ruin above the Dead Sea's shrinking shoreline is the highway's best-known stop.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "desert",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-shimanami-kaido-bridge",
+      "name": "Shimanami Kaido at the Kurushima-Kaikyo Bridge",
+      "lat": 34.3081,
+      "lng": 133.0339,
+      "countryCode": "JP",
+      "region": "Imabari, Ehime",
+      "why": "A chain of suspension bridges strung between islands makes this crossing Japan's most photographed drive-and-cycle route.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-cameron-highlands-road",
+      "name": "Cameron Highlands road above the tea estates",
+      "lat": 4.4696,
+      "lng": 101.3808,
+      "countryCode": "MY",
+      "region": "Pahang",
+      "why": "Rolling green tea terraces climb every hillside along this cool-climate mountain road.",
+      "bestMonths": [],
+      "tags": [
+        "mountain",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-spiti-valley-kunzum-la",
+      "name": "Spiti Valley road at Kunzum La",
+      "lat": 32.4192,
+      "lng": 77.6469,
+      "countryCode": "IN",
+      "region": "Himachal Pradesh",
+      "why": "A high desert pass strung with prayer flags marks the boundary between Lahaul and Spiti's moonscape.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "gravel",
+        "seasonal-closure"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-lindis-pass-summit",
+      "name": "Lindis Pass summit",
+      "lat": -44.5833,
+      "lng": 169.6167,
+      "countryCode": "NZ",
+      "region": "Otago/Canterbury border",
+      "why": "Tussock-covered golden hills roll away from the road's high point between the Mackenzie Basin and Central Otago.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "mountain",
+        "pass",
+        "seasonal-closure"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "roadtrips-kangaroo-island-remarkable-rocks",
+      "name": "Flinders Chase road at Remarkable Rocks",
+      "lat": -36.0567,
+      "lng": 136.7719,
+      "countryCode": "AU",
+      "region": "Kangaroo Island, South Australia",
+      "why": "Wind- and salt-sculpted granite boulders balanced on a coastal dome are the island's most photographed stop.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    },
+    {
+      "id": "roadtrips-iceland-vestrahorn",
+      "name": "Ring Road spur to Vestrahorn",
+      "lat": 64.254,
+      "lng": -14.975,
+      "countryCode": "IS",
+      "region": "Stokksnes, Southeast Iceland",
+      "why": "Jagged peaks reflected in black-sand tidal flats make this detour off Route 1 one of Iceland's most-shot views.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "mountain",
+        "one-day"
+      ],
+      "source": "Lonely Planet Epic Drives"
+    },
+    {
+      "id": "roadtrips-skogafoss-ring-road",
+      "name": "Ring Road at Skógafoss",
+      "lat": 63.5321,
+      "lng": -19.5116,
+      "countryCode": "IS",
+      "region": "South Iceland",
+      "why": "A 60m waterfall visible from the highway itself is one of the Ring Road's most-stopped-for sights.",
+      "bestMonths": [],
+      "tags": [
+        "coastal",
+        "one-day"
+      ],
+      "source": "National Geographic Drives of a Lifetime"
+    }
+  ]
+}

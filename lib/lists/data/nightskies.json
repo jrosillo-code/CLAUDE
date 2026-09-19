@@ -1,0 +1,4275 @@
+{
+  "id": "nightskies",
+  "label": "Night skies",
+  "blurb": "Dark-sky reserves and aurora stations, marked where you would stand.",
+  "sources": [
+    "DarkSky International",
+    "Aurora tourism boards",
+    "ESO",
+    "NASA",
+    "National park services",
+    "Starlight Foundation"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "nightskies-natural-bridges-national-monument",
+      "name": "Natural Bridges National Monument",
+      "lat": 37.6028,
+      "lng": -110.0158,
+      "countryCode": "US",
+      "region": "Lake Powell area, Utah",
+      "why": "The world's first International Dark Sky Park (2007); stand at the visitor center overlook for a Bortle 1 Milky Way.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-capitol-reef-national-park",
+      "name": "Capitol Reef National Park",
+      "lat": 38.2916,
+      "lng": -111.2431,
+      "countryCode": "US",
+      "region": "Torrey, Utah",
+      "why": "The visitor center parking lot doubles as an unofficial star party spot most clear nights, deep in Utah's red-rock desert.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-canyonlands-national-park-island-in-the-sky",
+      "name": "Canyonlands National Park (Island in the Sky)",
+      "lat": 38.4592,
+      "lng": -109.8203,
+      "countryCode": "US",
+      "region": "Moab, Utah",
+      "why": "The mesa-top visitor center sits far from Moab's glow, with rangers running summer astronomy programs at the overlook.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-arches-national-park",
+      "name": "Arches National Park",
+      "lat": 38.7331,
+      "lng": -109.6931,
+      "countryCode": "US",
+      "region": "Moab, Utah",
+      "why": "The visitor center and Balanced Rock pullout are the easiest places to pull over for a naked-eye Milky Way near Moab.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-bryce-canyon-national-park",
+      "name": "Bryce Canyon National Park",
+      "lat": 37.6283,
+      "lng": -112.1685,
+      "countryCode": "US",
+      "region": "Bryce Canyon City, Utah",
+      "why": "Rangers point telescopes at the amphitheater's Sunset Point most clear nights; the 9,000-foot air is exceptionally steady.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-zion-national-park",
+      "name": "Zion National Park",
+      "lat": 37.2982,
+      "lng": -113.0263,
+      "countryCode": "US",
+      "region": "Springdale, Utah",
+      "why": "The Zion Human History Museum lawn is the designated stargazing spot, shielded from the canyon's growing light dome.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-cedar-breaks-national-monument",
+      "name": "Cedar Breaks National Monument",
+      "lat": 37.6389,
+      "lng": -112.8439,
+      "countryCode": "US",
+      "region": "Cedar City, Utah",
+      "why": "A 10,000-foot amphitheater rim with a summer astronomy program most weekends; some of Utah's darkest, thinnest air.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-dead-horse-point-state-park",
+      "name": "Dead Horse Point State Park",
+      "lat": 38.4778,
+      "lng": -109.7414,
+      "countryCode": "US",
+      "region": "Moab, Utah",
+      "why": "The overlook platform above the Colorado River gooseneck is a Gold-tier sky with almost no light pollution nearby.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-goblin-valley-state-park",
+      "name": "Goblin Valley State Park",
+      "lat": 38.5733,
+      "lng": -110.7069,
+      "countryCode": "US",
+      "region": "Hanksville, Utah",
+      "why": "Stand among the hoodoo 'goblins' in the valley itself; the park runs a small astronomy field with loaner telescopes.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-kodachrome-basin-state-park",
+      "name": "Kodachrome Basin State Park",
+      "lat": 37.5325,
+      "lng": -111.9944,
+      "countryCode": "US",
+      "region": "Cannonville, Utah",
+      "why": "The campground loop, ringed by sandstone chimneys, is the visitor stargazing spot away from the small entrance station lights.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-escalante-petrified-forest-state-park",
+      "name": "Escalante Petrified Forest State Park",
+      "lat": 37.7724,
+      "lng": -111.6183,
+      "countryCode": "US",
+      "region": "Escalante, Utah",
+      "why": "The overlook trail above Wide Hollow Reservoir is the marked night-sky viewing point for this Gold-tier park.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-coral-pink-sand-dunes-state-park",
+      "name": "Coral Pink Sand Dunes State Park",
+      "lat": 37.0392,
+      "lng": -112.7361,
+      "countryCode": "US",
+      "region": "Kanab, Utah",
+      "why": "Climb the dunes near the entrance station after dark; pink sand under a Gold-tier Milky Way, no telescope needed.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-fremont-indian-state-park",
+      "name": "Fremont Indian State Park",
+      "lat": 38.5797,
+      "lng": -112.3467,
+      "countryCode": "US",
+      "region": "Sevier, Utah",
+      "why": "The museum parking area is the designated viewing point, tucked in a canyon that blocks I-70's glow.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-antelope-island-state-park",
+      "name": "Antelope Island State Park",
+      "lat": 41.0219,
+      "lng": -112.2214,
+      "countryCode": "US",
+      "region": "Great Salt Lake, Utah",
+      "why": "The White Rock Bay parking area, a causeway drive from Salt Lake City, still rates Bortle 2 over the open lake.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-steinaker-state-park",
+      "name": "Steinaker State Park",
+      "lat": 40.5219,
+      "lng": -109.5253,
+      "countryCode": "US",
+      "region": "Vernal, Utah",
+      "why": "A small reservoir-side park with a lakeshore viewing area, certified Gold-tier despite nearby oil-field lighting.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-east-canyon-state-park",
+      "name": "East Canyon State Park",
+      "lat": 40.8894,
+      "lng": -111.5972,
+      "countryCode": "US",
+      "region": "Morgan County, Utah",
+      "why": "The reservoir's day-use beach is the marked stargazing spot, an easy drive up-canyon from Salt Lake City's glow.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-torrey",
+      "name": "Torrey",
+      "lat": 38.2989,
+      "lng": -111.4197,
+      "countryCode": "US",
+      "region": "Wayne County, Utah",
+      "why": "This gateway town to Capitol Reef enforces shielded lighting; its own main-street pullouts give a genuine dark-sky community sky.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-helper",
+      "name": "Helper",
+      "lat": 39.6844,
+      "lng": -110.856,
+      "countryCode": "US",
+      "region": "Carbon County, Utah",
+      "why": "A former mining town turned Dark Sky Community; the riverside park downtown is the easiest spot to look up.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-springdale",
+      "name": "Springdale",
+      "lat": 37.1889,
+      "lng": -112.9958,
+      "countryCode": "US",
+      "region": "Zion National Park gateway, Utah",
+      "why": "Zion's gateway town retrofitted its streetlights to earn Dark Sky Community status; the town park is the spot to stand.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-weber-county-north-fork-park",
+      "name": "Weber County North Fork Park",
+      "lat": 41.3181,
+      "lng": -111.8014,
+      "countryCode": "US",
+      "region": "Eden, Utah",
+      "why": "A mountain-canyon park above Ogden with a dedicated observing field and loaner telescopes on scheduled nights.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-hovenweep-national-monument",
+      "name": "Hovenweep National Monument",
+      "lat": 37.383,
+      "lng": -109.0777,
+      "countryCode": "US",
+      "region": "Utah–Colorado border",
+      "why": "The Square Tower Group parking area, among Ancestral Puebloan ruins, is one of the least light-polluted spots in the Southwest.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-great-sand-dunes-national-park",
+      "name": "Great Sand Dunes National Park",
+      "lat": 37.7329,
+      "lng": -105.5088,
+      "countryCode": "US",
+      "region": "Mosca, Colorado",
+      "why": "Climb the dune field's edge near the visitor center; 750-foot dunes silhouette against a Bortle 2 Milky Way.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-black-canyon-of-the-gunnison-national-park",
+      "name": "Black Canyon of the Gunnison National Park",
+      "lat": 38.5754,
+      "lng": -107.7416,
+      "countryCode": "US",
+      "region": "Montrose, Colorado",
+      "why": "South Rim visitor center hosts ranger-led star parties over the sheer 2,000-foot gorge most summer weekends.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-mesa-verde-national-park",
+      "name": "Mesa Verde National Park",
+      "lat": 37.1853,
+      "lng": -108.4618,
+      "countryCode": "US",
+      "region": "Cortez, Colorado",
+      "why": "Morefield Campground amphitheater runs a summer astronomy program under skies dark enough to see cliff-dwelling silhouettes by starlight.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-curecanti-national-recreation-area",
+      "name": "Curecanti National Recreation Area",
+      "lat": 38.4297,
+      "lng": -107.3389,
+      "countryCode": "US",
+      "region": "Gunnison County, Colorado",
+      "why": "The Elk Creek visitor center, on Blue Mesa Reservoir, anchors a Dark Sky Park stretching along the water.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-westcliffe-and-silver-cliff",
+      "name": "Westcliffe and Silver Cliff",
+      "lat": 38.1339,
+      "lng": -105.46,
+      "countryCode": "US",
+      "region": "Wet Mountain Valley, Colorado",
+      "why": "Twin ranching towns certified together as a Dark Sky Community; the rodeo grounds give an open horizon under the Sangre de Cristos.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-norwood",
+      "name": "Norwood",
+      "lat": 38.133,
+      "lng": -108.2905,
+      "countryCode": "US",
+      "region": "San Miguel County, Colorado",
+      "why": "A small mesa-top ranching town near Telluride that shields its streetlights; the town park is the informal viewing spot.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-chaco-culture-national-historical-park",
+      "name": "Chaco Culture National Historical Park",
+      "lat": 36.0608,
+      "lng": -107.9814,
+      "countryCode": "US",
+      "region": "San Juan County, New Mexico",
+      "why": "The visitor center runs a night-sky program tied to the ancient Puebloans' own astronomical alignments in the canyon.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-cosmic-campground",
+      "name": "Cosmic Campground",
+      "lat": 33.4784,
+      "lng": -108.9253,
+      "countryCode": "US",
+      "region": "Gila National Forest, New Mexico",
+      "why": "A bare gravel clearing built for astronomers, with a 360-degree horizon and no artificial light within 40 miles.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-clayton-lake-state-park",
+      "name": "Clayton Lake State Park",
+      "lat": 36.58,
+      "lng": -103.3167,
+      "countryCode": "US",
+      "region": "Clayton, New Mexico",
+      "why": "New Mexico's first Dark Sky Park, with its own small observatory dome open on public nights beside the campground.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-village-of-corrales",
+      "name": "Village of Corrales",
+      "lat": 35.2325,
+      "lng": -106.6086,
+      "countryCode": "US",
+      "region": "Albuquerque area, New Mexico",
+      "why": "A rural Rio Grande valley village that fought off Albuquerque's glow with a lighting ordinance; the bosque trails are the spot.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-big-bend-national-park",
+      "name": "Big Bend National Park",
+      "lat": 29.2691,
+      "lng": -103.3055,
+      "countryCode": "US",
+      "region": "Brewster County, Texas",
+      "why": "The Chisos Basin, ringed by mountains that block the nearest towns, is North America's least light-polluted national park.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-big-bend-ranch-state-park",
+      "name": "Big Bend Ranch State Park",
+      "lat": 29.3814,
+      "lng": -103.94,
+      "countryCode": "US",
+      "region": "Presidio County, Texas",
+      "why": "Sauceda visitor contact station and campground share Big Bend National Park's Gold-tier skies with far fewer visitors.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-enchanted-rock-state-natural-area",
+      "name": "Enchanted Rock State Natural Area",
+      "lat": 30.5054,
+      "lng": -98.8197,
+      "countryCode": "US",
+      "region": "Fredericksburg, Texas",
+      "why": "Climb the pink granite dome from the parking area for a 360-degree Hill Country horizon under a certified dark sky.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-copper-breaks-state-park",
+      "name": "Copper Breaks State Park",
+      "lat": 34.1194,
+      "lng": -99.7519,
+      "countryCode": "US",
+      "region": "Quanah, Texas",
+      "why": "A red-badlands park on the Panhandle plains, with a designated observing pad near the park headquarters.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-devils-river-state-natural-area",
+      "name": "Devils River State Natural Area",
+      "lat": 29.9556,
+      "lng": -100.9928,
+      "countryCode": "US",
+      "region": "Del Rio, Texas",
+      "why": "The remote Del Norte access point, hours from the nearest town, keeps this river canyon at Bortle 1.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-south-llano-river-state-park",
+      "name": "South Llano River State Park",
+      "lat": 30.4342,
+      "lng": -99.7883,
+      "countryCode": "US",
+      "region": "Junction, Texas",
+      "why": "The riverside campground is the marked stargazing area for this Hill Country park's Dark Sky designation.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-dinosaur-valley-state-park",
+      "name": "Dinosaur Valley State Park",
+      "lat": 32.2542,
+      "lng": -97.8117,
+      "countryCode": "US",
+      "region": "Glen Rose, Texas",
+      "why": "Standing among 113-million-year-old dinosaur tracks in the Paluxy riverbed, look up to a surprisingly dark Metroplex-adjacent sky.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-grand-canyon-national-park",
+      "name": "Grand Canyon National Park",
+      "lat": 36.0544,
+      "lng": -112.1401,
+      "countryCode": "US",
+      "region": "South Rim, Arizona",
+      "why": "The South Rim's Desert View watchtower hosts the annual star party; the canyon itself swallows any stray light.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-grand-canyon-parashant-national-monument",
+      "name": "Grand Canyon-Parashant National Monument",
+      "lat": 36.2764,
+      "lng": -113.4636,
+      "countryCode": "US",
+      "region": "Mohave County, Arizona",
+      "why": "One of the most remote monuments in the Lower 48; the Mount Trumbull schoolhouse clearing is the informal viewing spot.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-petrified-forest-national-park",
+      "name": "Petrified Forest National Park",
+      "lat": 34.9099,
+      "lng": -109.7891,
+      "countryCode": "US",
+      "region": "Navajo County, Arizona",
+      "why": "The Painted Desert visitor center overlook, at the park's north end, looks out over badlands with almost no ground light.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-kartchner-caverns-state-park",
+      "name": "Kartchner Caverns State Park",
+      "lat": 31.837,
+      "lng": -110.3467,
+      "countryCode": "US",
+      "region": "Benson, Arizona",
+      "why": "The Discovery Center courtyard hosts astronomy nights, a short drive from Tucson's protected dark skies.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-oracle-state-park",
+      "name": "Oracle State Park",
+      "lat": 32.6169,
+      "lng": -110.7181,
+      "countryCode": "US",
+      "region": "Oracle, Arizona",
+      "why": "A former guest ranch on the edge of the Catalina foothills, with an interpretive trail built for naked-eye stargazing.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-flagstaff",
+      "name": "Flagstaff",
+      "lat": 35.1983,
+      "lng": -111.6513,
+      "countryCode": "US",
+      "region": "Coconino County, Arizona",
+      "why": "The world's first International Dark Sky City (2001); Lowell Observatory's front lawn is the spot most visitors stand.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-sedona",
+      "name": "Sedona",
+      "lat": 34.8697,
+      "lng": -111.761,
+      "countryCode": "US",
+      "region": "Yavapai County, Arizona",
+      "why": "The Airport Mesa vista point, above the town's red rocks, is the go-to spot locals point tourists to after sunset.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-fountain-hills",
+      "name": "Fountain Hills",
+      "lat": 33.6117,
+      "lng": -111.7175,
+      "countryCode": "US",
+      "region": "Maricopa County, Arizona",
+      "why": "A Phoenix-suburb Dark Sky Community; the fountain park's open lawn is the easiest in-town spot to look up.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-death-valley-national-park",
+      "name": "Death Valley National Park",
+      "lat": 36.4636,
+      "lng": -116.8712,
+      "countryCode": "US",
+      "region": "Furnace Creek, California",
+      "why": "Badwater Basin, 282 feet below sea level, is a Gold-tier sky floor with the Milky Way reflected on the salt flat after rain.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-anza-borrego-desert-state-park",
+      "name": "Anza-Borrego Desert State Park",
+      "lat": 33.2553,
+      "lng": -116.4009,
+      "countryCode": "US",
+      "region": "Borrego Springs, California",
+      "why": "Font's Point overlook, a rough dirt-road drive above the badlands, is the classic spot locals bring a blanket to.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-borrego-springs",
+      "name": "Borrego Springs",
+      "lat": 33.2553,
+      "lng": -116.3739,
+      "countryCode": "US",
+      "region": "San Diego County, California",
+      "why": "California's first Dark Sky Community, ringed by mountains that block coastal glow; the town's central park is the spot.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-great-basin-national-park",
+      "name": "Great Basin National Park",
+      "lat": 39.0058,
+      "lng": -114.2211,
+      "countryCode": "US",
+      "region": "Baker, Nevada",
+      "why": "The Lehman Caves visitor center hosts a summer astronomy festival under some of the darkest skies in the Lower 48.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-massacre-rim-wilderness-study-area",
+      "name": "Massacre Rim Wilderness Study Area",
+      "lat": 41.6167,
+      "lng": -119.4667,
+      "countryCode": "US",
+      "region": "Washoe County, Nevada",
+      "why": "A Dark Sky Sanctuary with no facilities at all; you drive a gravel road into the high desert and simply stop the car.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-craters-of-the-moon-national-monument",
+      "name": "Craters of the Moon National Monument",
+      "lat": 43.4165,
+      "lng": -113.5581,
+      "countryCode": "US",
+      "region": "Arco, Idaho",
+      "why": "The visitor center sits amid black lava flows; rangers run summer star parties on the cinder-cone field beyond.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-central-idaho-dark-sky-reserve",
+      "name": "Central Idaho Dark Sky Reserve",
+      "lat": 44.2019,
+      "lng": -114.9333,
+      "countryCode": "US",
+      "region": "Stanley/Sun Valley, Idaho",
+      "why": "The first Dark Sky Reserve in the US; stand in the Sawtooth Valley near Stanley for a Bortle 1 sky under jagged peaks.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-prineville-reservoir-state-park",
+      "name": "Prineville Reservoir State Park",
+      "lat": 44.1319,
+      "lng": -120.7492,
+      "countryCode": "US",
+      "region": "Prineville, Oregon",
+      "why": "The reservoir's day-use area, on Oregon's high desert plateau, keeps its Milky Way despite growing Bend-area glow.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-cottonwood-canyon-state-park",
+      "name": "Cottonwood Canyon State Park",
+      "lat": 45.6742,
+      "lng": -120.4342,
+      "countryCode": "US",
+      "region": "Wasco County, Oregon",
+      "why": "A remote canyon along the John Day River, certified for skies undimmed by any nearby town.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-cherry-springs-state-park",
+      "name": "Cherry Springs State Park",
+      "lat": 41.6628,
+      "lng": -77.8248,
+      "countryCode": "US",
+      "region": "Potter County, Pennsylvania",
+      "why": "The dedicated astronomy field, mowed flat and ringed by forest, is one of the darkest spots east of the Mississippi.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-headlands-international-dark-sky-park",
+      "name": "Headlands International Dark Sky Park",
+      "lat": 45.7961,
+      "lng": -84.7738,
+      "countryCode": "US",
+      "region": "Mackinaw City, Michigan",
+      "why": "A Lake Michigan shoreline park where the beach itself is the viewing platform, aurora occasionally included.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-dr-t-k-lawless-park",
+      "name": "Dr. T.K. Lawless Park",
+      "lat": 41.8386,
+      "lng": -85.9328,
+      "countryCode": "US",
+      "region": "Vandalia, Michigan",
+      "why": "A county park with a purpose-built observing field and loaner telescopes for its regular public star parties.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-newport-state-park",
+      "name": "Newport State Park",
+      "lat": 45.1833,
+      "lng": -86.9797,
+      "countryCode": "US",
+      "region": "Door County, Wisconsin",
+      "why": "Wisconsin's only wilderness state park and its first Dark Sky Park; the Lake Michigan beach faces away from any town.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-geauga-observatory-park",
+      "name": "Geauga Observatory Park",
+      "lat": 41.5497,
+      "lng": -81.1717,
+      "countryCode": "US",
+      "region": "Montville, Ohio",
+      "why": "The park's own observatory building anchors scheduled public viewing nights in Cleveland's rural exurbs.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-beverly-shores",
+      "name": "Beverly Shores",
+      "lat": 41.6931,
+      "lng": -87.0139,
+      "countryCode": "US",
+      "region": "Indiana Dunes, Indiana",
+      "why": "A small Lake Michigan town between the steel mills, certified for shielding its lights; the public beach is the spot.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-kissimmee-prairie-preserve-state-park",
+      "name": "Kissimmee Prairie Preserve State Park",
+      "lat": 27.5806,
+      "lng": -81.1922,
+      "countryCode": "US",
+      "region": "Okeechobee, Florida",
+      "why": "The largest remaining dry prairie in Florida; the campground's open field is billed as the darkest sky in the state.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-big-cypress-national-preserve",
+      "name": "Big Cypress National Preserve",
+      "lat": 25.9,
+      "lng": -81.15,
+      "countryCode": "US",
+      "region": "Ochopee, Florida",
+      "why": "The Oasis Visitor Center on the Tamiami Trail anchors a swamp preserve dark enough to see the Everglades' own bioluminescence.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-buffalo-national-river",
+      "name": "Buffalo National River",
+      "lat": 36.0281,
+      "lng": -92.7519,
+      "countryCode": "US",
+      "region": "Ozark Mountains, Arkansas",
+      "why": "The Steel Creek and Kyles Landing float-camps sit deep in the Ozarks, far from any sizeable town's glow.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-medicine-rocks-state-park",
+      "name": "Medicine Rocks State Park",
+      "lat": 45.8792,
+      "lng": -104.4597,
+      "countryCode": "US",
+      "region": "Ekalaka, Montana",
+      "why": "Sandstone spires on the eastern plains give an open horizon under some of the darkest skies in the contiguous US.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-katahdin-woods-and-waters-national-monument",
+      "name": "Katahdin Woods and Waters National Monument",
+      "lat": 45.9578,
+      "lng": -68.8698,
+      "countryCode": "US",
+      "region": "Millinocket, Maine",
+      "why": "The Katahdin Loop Road overlooks, deep in Maine's North Woods, form a Dark Sky Sanctuary with no light for miles.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-mont-megantic-international-dark-sky-reserve",
+      "name": "Mont-Mégantic International Dark Sky Reserve",
+      "lat": 45.4553,
+      "lng": -71.1522,
+      "countryCode": "CA",
+      "region": "Quebec",
+      "why": "The world's first Dark Sky Reserve; the ASTROLab visitor center runs telescopes on the mountain that hosts a real observatory.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-jasper-national-park",
+      "name": "Jasper National Park",
+      "lat": 52.8734,
+      "lng": -118.0814,
+      "countryCode": "CA",
+      "region": "Alberta",
+      "why": "One of the world's largest Dark Sky Preserves; the townsite's Old Fort Point is the classic Milky Way-over-Rockies shot.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-torrance-barrens-dark-sky-preserve",
+      "name": "Torrance Barrens Dark Sky Preserve",
+      "lat": 44.9583,
+      "lng": -79.4419,
+      "countryCode": "CA",
+      "region": "Muskoka, Ontario",
+      "why": "A protected barrens with a short walk-in from the parking area, Ontario's original cottage-country dark sky escape.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-point-pelee-national-park",
+      "name": "Point Pelee National Park",
+      "lat": 41.9548,
+      "lng": -82.5228,
+      "countryCode": "CA",
+      "region": "Ontario",
+      "why": "Canada's southernmost mainland point, jutting into Lake Erie, keeps a surprisingly dark sky between Detroit and Cleveland.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-grasslands-national-park",
+      "name": "Grasslands National Park",
+      "lat": 49.1136,
+      "lng": -107.4794,
+      "countryCode": "CA",
+      "region": "Saskatchewan",
+      "why": "The Prairie Dog Town day-use area sits under the darkest skies on the Canadian Prairies, with bison for company.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-wood-buffalo-national-park",
+      "name": "Wood Buffalo National Park",
+      "lat": 59.5645,
+      "lng": -112.1721,
+      "countryCode": "CA",
+      "region": "Alberta/Northwest Territories",
+      "why": "The world's largest Dark Sky Preserve; the Salt Plains overlook near Fort Smith doubles as an aurora-watching spot.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "aurora",
+        "milky-way"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-kejimkujik-national-park",
+      "name": "Kejimkujik National Park",
+      "lat": 44.4046,
+      "lng": -65.2064,
+      "countryCode": "CA",
+      "region": "Nova Scotia",
+      "why": "Jeremys Bay Campground's open field is the marked viewing spot for this Atlantic-coast Dark Sky Preserve.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-fundy-national-park",
+      "name": "Fundy National Park",
+      "lat": 45.5989,
+      "lng": -64.9486,
+      "countryCode": "CA",
+      "region": "New Brunswick",
+      "why": "The headquarters day-use area looks out over the Bay of Fundy, dark enough that the world's highest tides glow with bioluminescence.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-cypress-hills-interprovincial-park",
+      "name": "Cypress Hills Interprovincial Park",
+      "lat": 49.65,
+      "lng": -110,
+      "countryCode": "CA",
+      "region": "Saskatchewan/Alberta",
+      "why": "The highest point between the Rockies and Labrador; the Centre Block observatory runs public viewing nights.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-bruce-peninsula-national-park",
+      "name": "Bruce Peninsula National Park",
+      "lat": 45.2167,
+      "lng": -81.5167,
+      "countryCode": "CA",
+      "region": "Ontario",
+      "why": "Cyprus Lake day-use area, on the Niagara Escarpment jutting into Georgian Bay, anchors this Dark Sky Preserve.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-spruce-woods-provincial-park",
+      "name": "Spruce Woods Provincial Park",
+      "lat": 49.6531,
+      "lng": -99.2814,
+      "countryCode": "CA",
+      "region": "Manitoba",
+      "why": "The Spirit Sands dune trail parking lot is the spot to stand for this prairie Dark Sky Reserve's open horizon.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-gulf-islands-national-park-reserve",
+      "name": "Gulf Islands National Park Reserve",
+      "lat": 48.7833,
+      "lng": -123.3167,
+      "countryCode": "CA",
+      "region": "British Columbia",
+      "why": "Beaumont day-use area on South Pender Island is the marked spot in this scattered Salish Sea archipelago preserve.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-terra-nova-national-park",
+      "name": "Terra Nova National Park",
+      "lat": 48.5333,
+      "lng": -53.9667,
+      "countryCode": "CA",
+      "region": "Newfoundland and Labrador",
+      "why": "The Newman Sound day-use area is the viewing spot for Newfoundland's own Dark Sky Preserve on the Atlantic coast.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-galloway-forest-park",
+      "name": "Galloway Forest Park",
+      "lat": 55.1,
+      "lng": -4.45,
+      "countryCode": "GB",
+      "region": "Dumfries and Galloway, Scotland",
+      "why": "The UK's first Dark Sky Park; the Red Deer Range visitor centre car park is the marked place to set up.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-exmoor-national-park",
+      "name": "Exmoor National Park",
+      "lat": 51.1445,
+      "lng": -3.6453,
+      "countryCode": "GB",
+      "region": "Somerset/Devon, England",
+      "why": "Europe's first Dark Sky Reserve; the Webbers Post car park gives an open moorland horizon away from any village.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-northumberland-national-park-and-kielder-water",
+      "name": "Northumberland National Park and Kielder Water",
+      "lat": 55.2301,
+      "lng": -2.6266,
+      "countryCode": "GB",
+      "region": "Northumberland, England",
+      "why": "Kielder Observatory, on the shore of England's largest reservoir, sits in the country's largest protected dark sky.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-snowdonia-eryri-national-park",
+      "name": "Snowdonia (Eryri) National Park",
+      "lat": 52.908,
+      "lng": -3.98,
+      "countryCode": "GB",
+      "region": "Gwynedd, Wales",
+      "why": "The Llyn y Dywarchen car park, away from Snowdon's summit crowds, is a marked dark-sky viewpoint over the lake.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-brecon-beacons-bannau-brycheiniog-national-park",
+      "name": "Brecon Beacons (Bannau Brycheiniog) National Park",
+      "lat": 51.8842,
+      "lng": -3.436,
+      "countryCode": "GB",
+      "region": "Powys, Wales",
+      "why": "The Usk Reservoir car park is the park's designated dark-sky discovery site, open moorland on every side.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-south-downs-national-park",
+      "name": "South Downs National Park",
+      "lat": 50.9333,
+      "lng": -0.6667,
+      "countryCode": "GB",
+      "region": "Hampshire/Sussex, England",
+      "why": "Devil's Dyke car park, within sight of Brighton's glow, is still dark enough to be the park's flagship viewpoint.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-north-york-moors-national-park",
+      "name": "North York Moors National Park",
+      "lat": 54.3833,
+      "lng": -0.8667,
+      "countryCode": "GB",
+      "region": "North Yorkshire, England",
+      "why": "Sutton Bank's visitor centre car park, on the escarpment edge, is the marked stargazing spot over the Vale of York.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-yorkshire-dales-national-park",
+      "name": "Yorkshire Dales National Park",
+      "lat": 54.2667,
+      "lng": -2.1667,
+      "countryCode": "GB",
+      "region": "North Yorkshire, England",
+      "why": "Buckden car park sits deep in the limestone dales, one of the last true dark places in lowland England.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-cranborne-chase",
+      "name": "Cranborne Chase",
+      "lat": 50.97,
+      "lng": -2.15,
+      "countryCode": "GB",
+      "region": "Wiltshire/Dorset, England",
+      "why": "Win Green Hill car park, the chase's highest point, is the informal spot walkers climb to after dark.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-north-wessex-downs",
+      "name": "North Wessex Downs",
+      "lat": 51.4167,
+      "lng": -1.5,
+      "countryCode": "GB",
+      "region": "Berkshire/Wiltshire, England",
+      "why": "The Ridgeway car park near Uffington White Horse gives an open chalk-downland horizon within reach of London.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-isle-of-sark",
+      "name": "Isle of Sark",
+      "lat": 49.4333,
+      "lng": -2.3667,
+      "countryCode": "GB",
+      "region": "Channel Islands",
+      "why": "The world's first Dark Sky Island, with no cars and no streetlights; the Coupée causeway is the classic viewpoint.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-isle-of-coll",
+      "name": "Isle of Coll",
+      "lat": 56.6167,
+      "lng": -6.5667,
+      "countryCode": "GB",
+      "region": "Inner Hebrides, Scotland",
+      "why": "This low, flat Hebridean island has almost no artificial light; the ferry-pier machair is the easiest spot to stand.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-tomintoul-and-glenlivet",
+      "name": "Tomintoul and Glenlivet",
+      "lat": 57.25,
+      "lng": -3.3833,
+      "countryCode": "GB",
+      "region": "Cairngorms National Park, Scotland",
+      "why": "A whisky-country Dark Sky Park within the Cairngorms; the Livet viewpoint car park is the marked spot.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-north-pennines",
+      "name": "North Pennines",
+      "lat": 54.7167,
+      "lng": -2.2333,
+      "countryCode": "GB",
+      "region": "County Durham, England",
+      "why": "Allenheads village green sits in England's second-highest Dark Sky Reserve, ringed by empty moorland.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-elan-valley",
+      "name": "Elan Valley",
+      "lat": 52.2667,
+      "lng": -3.6167,
+      "countryCode": "GB",
+      "region": "Powys, Wales",
+      "why": "The Elan Valley Visitor Centre, below a chain of Victorian dams, anchors this reservoir-country Dark Sky Park.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-kerry-international-dark-sky-reserve",
+      "name": "Kerry International Dark Sky Reserve",
+      "lat": 51.85,
+      "lng": -10.15,
+      "countryCode": "IE",
+      "region": "County Kerry, Ireland",
+      "why": "Ballinskelligs beach on the Iveragh Peninsula looks out over the Atlantic under one of Europe's darkest Gold-tier skies.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-mayo-dark-sky-park",
+      "name": "Mayo Dark Sky Park",
+      "lat": 54.05,
+      "lng": -9.9,
+      "countryCode": "IE",
+      "region": "County Mayo, Ireland",
+      "why": "Wild Nephin's Letterkeen trailhead sits in Ireland's largest expanse of blanket bog and mountain wilderness.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-pic-du-midi-international-dark-sky-reserve",
+      "name": "Pic du Midi International Dark Sky Reserve",
+      "lat": 42.9369,
+      "lng": 0.1411,
+      "countryCode": "FR",
+      "region": "Hautes-Pyrénées, France",
+      "why": "The Pic du Midi Observatory's cable-car summit terrace puts visitors at 2,877m under one of Europe's steadiest skies.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "observatory",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-cevennes-national-park",
+      "name": "Cévennes National Park",
+      "lat": 44.121,
+      "lng": 3.581,
+      "countryCode": "FR",
+      "region": "Occitanie, France",
+      "why": "Mont Aigoual's summit meteorological station is the high point of France's largest Dark Sky Reserve.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-alpes-azur-mercantour",
+      "name": "Alpes Azur Mercantour",
+      "lat": 44.1,
+      "lng": 6.9,
+      "countryCode": "FR",
+      "region": "Alpes-Maritimes, France",
+      "why": "The Col de la Bonette, one of Europe's highest paved passes, anchors this reserve above the Riviera's glow.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-ariege-pyrenees-dark-sky-reserve",
+      "name": "Ariège Pyrenees Dark Sky Reserve",
+      "lat": 42.8,
+      "lng": 1.4,
+      "countryCode": "FR",
+      "region": "Ariège, France",
+      "why": "The Col du Chioula viewpoint, on the road toward Andorra, is the reserve's marked stargazing pullout.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-millevaches-en-limousin-regional-park",
+      "name": "Millevaches en Limousin Regional Park",
+      "lat": 45.65,
+      "lng": 1.85,
+      "countryCode": "FR",
+      "region": "Limousin, France",
+      "why": "A plateau of peat bogs and pines in central France, certified for skies as dark as anywhere south of the Ardennes.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-westhavelland-nature-park",
+      "name": "Westhavelland Nature Park",
+      "lat": 52.75,
+      "lng": 12.4,
+      "countryCode": "DE",
+      "region": "Brandenburg, Germany",
+      "why": "Gülpe village's observing field, an hour from Berlin, is Germany's original Sternenpark viewing point.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-sternenpark-rhon",
+      "name": "Sternenpark Rhön",
+      "lat": 50.45,
+      "lng": 9.98,
+      "countryCode": "DE",
+      "region": "Hesse/Bavaria/Thuringia, Germany",
+      "why": "The Wasserkuppe summit, Germany's cradle of gliding, gives an open 360-degree horizon over the reserve.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-eifel-national-park",
+      "name": "Eifel National Park",
+      "lat": 50.5,
+      "lng": 6.45,
+      "countryCode": "DE",
+      "region": "North Rhine-Westphalia, Germany",
+      "why": "The Erlebnisraum Wilder Kermeter trailhead anchors Germany's first national-park Dark Sky designation.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-sternenpark-winklmoosalm",
+      "name": "Sternenpark Winklmoosalm",
+      "lat": 47.6833,
+      "lng": 12.5167,
+      "countryCode": "DE",
+      "region": "Bavaria, Germany",
+      "why": "A high alpine meadow near Reit im Winkl, certified for skies dark enough to see the Milky Way over the Chiemgau Alps.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-jizerske-hory-dark-sky-park",
+      "name": "Jizerske hory Dark Sky Park",
+      "lat": 50.83,
+      "lng": 15.25,
+      "countryCode": "CZ",
+      "region": "Liberec Region, Czechia",
+      "why": "The Jizera Mountains observatory at Bedřichov anchors a reserve shared with neighbouring Poland.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-beskydy-dark-sky-park",
+      "name": "Beskydy Dark Sky Park",
+      "lat": 49.5167,
+      "lng": 18.4167,
+      "countryCode": "CZ",
+      "region": "Moravian-Silesian Region, Czechia",
+      "why": "The Bílý Kříž meadow, high in the Beskids, is the marked viewing point for this Czech-Slovak border reserve.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-poloniny-dark-sky-park",
+      "name": "Poloniny Dark Sky Park",
+      "lat": 49.05,
+      "lng": 22.57,
+      "countryCode": "SK",
+      "region": "Prešov Region, Slovakia",
+      "why": "One of Central Europe's oldest dark-sky parks, in the wild Carpathian tripoint corner with Poland and Ukraine.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-zselic-starry-sky-park",
+      "name": "Zselic Starry Sky Park",
+      "lat": 46.25,
+      "lng": 17.85,
+      "countryCode": "HU",
+      "region": "Somogy County, Hungary",
+      "why": "The Zselic landscape protection area's observatory at Bőszénfa anchors Hungary's first Dark Sky Park.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-hortobagy-national-park",
+      "name": "Hortobágy National Park",
+      "lat": 47.58,
+      "lng": 21.15,
+      "countryCode": "HU",
+      "region": "Hajdú-Bihar, Hungary",
+      "why": "The Puszta's flat, treeless grassland gives an unbroken horizon, dark enough to see the zodiacal light.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-bukk-dark-sky-park",
+      "name": "Bükk Dark Sky Park",
+      "lat": 48.07,
+      "lng": 20.5,
+      "countryCode": "HU",
+      "region": "Borsod-Abaúj-Zemplén, Hungary",
+      "why": "The Bükk plateau's karst grasslands, above the region's small towns, form Hungary's second Dark Sky Park.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-izera-dark-sky-park",
+      "name": "Izera Dark Sky Park",
+      "lat": 50.87,
+      "lng": 15.35,
+      "countryCode": "PL",
+      "region": "Lower Silesia, Poland",
+      "why": "The Polish side of the Jizera Mountains reserve, centred on the Izerska Lodge meadow near Świeradów-Zdrój.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-lauwersmeer-national-park",
+      "name": "Lauwersmeer National Park",
+      "lat": 53.35,
+      "lng": 6.23,
+      "countryCode": "NL",
+      "region": "Groningen/Friesland, Netherlands",
+      "why": "The Strandeiland car park, on this reclaimed lake, is the Netherlands' only Dark Sky Park.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-m-n-and-nyord-dark-sky",
+      "name": "Møn and Nyord Dark Sky",
+      "lat": 54.97,
+      "lng": 12.35,
+      "countryCode": "DK",
+      "region": "Møn, Denmark",
+      "why": "The chalk cliffs of Møns Klint give a Baltic-facing horizon dark enough to be Scandinavia's first certified reserve.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-notranjska-regional-park",
+      "name": "Notranjska Regional Park",
+      "lat": 45.77,
+      "lng": 14.33,
+      "countryCode": "SI",
+      "region": "Notranjska, Slovenia",
+      "why": "The Cerknica intermittent lake basin, ringed by karst hills, keeps Slovenia's darkest measured sky.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-alqueva-dark-sky-reserve",
+      "name": "Alqueva Dark Sky Reserve",
+      "lat": 38.2,
+      "lng": -7.5,
+      "countryCode": "PT",
+      "region": "Alentejo, Portugal",
+      "why": "The Monsaraz Observatory, above Europe's largest artificial lake, anchors the world's first Starlight Tourism Destination.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-montsec-starlight-reserve",
+      "name": "Montsec Starlight Reserve",
+      "lat": 42.05,
+      "lng": 0.73,
+      "countryCode": "ES",
+      "region": "Lleida, Catalonia, Spain",
+      "why": "The Montsec Astronomical Park's public observatory sits on a limestone ridge above the Ager valley.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "observatory",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-la-palma-starlight-reserve",
+      "name": "La Palma Starlight Reserve",
+      "lat": 28.7,
+      "lng": -17.88,
+      "countryCode": "ES",
+      "region": "Canary Islands, Spain",
+      "why": "The Mirador de los Andenes, on the road up to Roque de los Muchachos, is where most visitors stop for the sky itself.",
+      "bestMonths": [],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-fuerteventura-starlight-reserve",
+      "name": "Fuerteventura Starlight Reserve",
+      "lat": 28.35,
+      "lng": -14.05,
+      "countryCode": "ES",
+      "region": "Canary Islands, Spain",
+      "why": "The Faro de Jandía lighthouse, at the island's southern tip, sits under trade-wind-clear, Sahara-dry skies.",
+      "bestMonths": [],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-extremadura-starlight-reserve",
+      "name": "Extremadura Starlight Reserve",
+      "lat": 39.5,
+      "lng": -6,
+      "countryCode": "ES",
+      "region": "Extremadura, Spain",
+      "why": "Monfragüe National Park's Salto del Gitano viewpoint doubles as the reserve's flagship stargazing cliff.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-namibrand-nature-reserve",
+      "name": "NamibRand Nature Reserve",
+      "lat": -25.0167,
+      "lng": 16.0167,
+      "countryCode": "NA",
+      "region": "Namib Desert, Namibia",
+      "why": "Africa's first Gold-tier Dark Sky Reserve; Wolwedans' viewing deck looks over dunes under some of the planet's darkest skies.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-iriomote-ishigaki-national-park",
+      "name": "Iriomote-Ishigaki National Park",
+      "lat": 24.4,
+      "lng": 123.85,
+      "countryCode": "JP",
+      "region": "Okinawa Prefecture, Japan",
+      "why": "The Ishigaki Island astronomical observatory dome sits under Japan's only certified Dark Sky Park, well south of the mainland's glow.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "island",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-yeongyang-firefly-eco-park",
+      "name": "Yeongyang Firefly Eco Park",
+      "lat": 36.65,
+      "lng": 129.1,
+      "countryCode": "KR",
+      "region": "North Gyeongsang, South Korea",
+      "why": "A firefly reserve turned Dark Sky Park in Korea's mountainous interior, with a small public observatory on site.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-warrumbungle-national-park",
+      "name": "Warrumbungle National Park",
+      "lat": -31.275,
+      "lng": 149,
+      "countryCode": "AU",
+      "region": "New South Wales, Australia",
+      "why": "The visitor centre sits beside Siding Spring Observatory in the Southern Hemisphere's first Dark Sky Park.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "observatory",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-river-murray-dark-sky-reserve",
+      "name": "River Murray Dark Sky Reserve",
+      "lat": -34.3,
+      "lng": 139.8,
+      "countryCode": "AU",
+      "region": "South Australia",
+      "why": "The Swan Reach riverbank, along a bend of the Murray, anchors this reserve across mallee scrub and farmland.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-aoraki-mackenzie-international-dark-sky-reserve",
+      "name": "Aoraki Mackenzie International Dark Sky Reserve",
+      "lat": -44.0064,
+      "lng": 170.4795,
+      "countryCode": "NZ",
+      "region": "Lake Tekapo, New Zealand",
+      "why": "The lakefront by the Church of the Good Shepherd is where most visitors stand for the reserve's famous Milky Way.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "aurora"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-great-barrier-island-aotea-dark-sky-sanctuary",
+      "name": "Great Barrier Island (Aotea) Dark Sky Sanctuary",
+      "lat": -36.2,
+      "lng": 175.4,
+      "countryCode": "NZ",
+      "region": "Auckland region, New Zealand",
+      "why": "Windy Hill Sanctuary's short walking track, a ferry ride from Auckland, is the island's marked viewing point.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-stewart-island-rakiura-dark-sky-sanctuary",
+      "name": "Stewart Island / Rakiura Dark Sky Sanctuary",
+      "lat": -46.9,
+      "lng": 168.13,
+      "countryCode": "NZ",
+      "region": "Southland, New Zealand",
+      "why": "Observation Rock, a short walk from Oban village, looks south toward the aurora as often as the Milky Way overhead.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "aurora",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-wai-iti-dark-sky-park",
+      "name": "Wai-iti Dark Sky Park",
+      "lat": -41.35,
+      "lng": 172.95,
+      "countryCode": "NZ",
+      "region": "Tasman District, New Zealand",
+      "why": "A recreation reserve near Wakefield, certified as New Zealand's first Dark Sky Park, with an open sports-field horizon.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-niue-dark-sky-nation",
+      "name": "Niue Dark Sky Nation",
+      "lat": -19.0595,
+      "lng": -169.9187,
+      "countryCode": "NU",
+      "region": "Alofi, Niue",
+      "why": "The entire coral-atoll nation is certified; the Alofi wharf looks straight out over open Pacific horizon after dark.",
+      "bestMonths": [],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-pitcairn-island-dark-sky-sanctuary",
+      "name": "Pitcairn Island Dark Sky Sanctuary",
+      "lat": -25.0667,
+      "lng": -130.1019,
+      "countryCode": "PN",
+      "region": "Adamstown, Pitcairn Islands",
+      "why": "One of the most isolated inhabited places on Earth; the Adamstown square is the only settlement to stand in for a sky this dark.",
+      "bestMonths": [],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "island"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-gabriela-mistral-dark-sky-sanctuary",
+      "name": "Gabriela Mistral Dark Sky Sanctuary",
+      "lat": -30.03,
+      "lng": -70.68,
+      "countryCode": "CL",
+      "region": "Vicuña, Elqui Valley, Chile",
+      "why": "A ridge above the Elqui Valley's pisco vineyards, certified Gold-tier, with several small public observatories nearby.",
+      "bestMonths": [],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-combarbala-dark-sky-community",
+      "name": "Combarbalá Dark Sky Community",
+      "lat": -31.1667,
+      "lng": -71,
+      "countryCode": "CL",
+      "region": "Coquimbo Region, Chile",
+      "why": "A small mining town that rewrote its lighting code; the Cruz del Sur public observatory sits on a hill above it.",
+      "bestMonths": [],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-kanab",
+      "name": "Kanab",
+      "lat": 37.0475,
+      "lng": -112.5263,
+      "countryCode": "US",
+      "region": "Kane County, Utah",
+      "why": "A gateway town between Zion and Bryce that adopted shielded lighting; the town's ballfields are the informal viewing spot.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-chiricahua-national-monument",
+      "name": "Chiricahua National Monument",
+      "lat": 32.0089,
+      "lng": -109.3411,
+      "countryCode": "US",
+      "region": "Cochise County, Arizona",
+      "why": "The Bonita Canyon visitor center sits among 'wonderland of rocks' pinnacles far from any sizeable town's glow.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-white-sands-national-park",
+      "name": "White Sands National Park",
+      "lat": 32.7791,
+      "lng": -106.1719,
+      "countryCode": "US",
+      "region": "Tularosa Basin, New Mexico",
+      "why": "Full-moon and new-moon walks cross the gypsum dune field itself, glowing white under a Gold-tier desert sky.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "desert"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-elk-island-national-park",
+      "name": "Elk Island National Park",
+      "lat": 53.5861,
+      "lng": -112.8494,
+      "countryCode": "CA",
+      "region": "Alberta",
+      "why": "Canada's first Dark Sky Preserve; the Astotin Lake day-use area, an hour from Edmonton, still rates deep in Bortle 2.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-sternenpark-attersee-traunsee",
+      "name": "Sternenpark Attersee-Traunsee",
+      "lat": 47.8333,
+      "lng": 13.6667,
+      "countryCode": "AT",
+      "region": "Upper Austria",
+      "why": "Austria's first Dark Sky Park, spanning forested hills between two alpine lakes south of Salzburg.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "milky-way",
+        "drive-in"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-hanle-dark-sky-reserve",
+      "name": "Hanle Dark Sky Reserve",
+      "lat": 32.7794,
+      "lng": 78.9642,
+      "countryCode": "IN",
+      "region": "Ladakh, India",
+      "why": "India's first, beside the Indian Astronomical Observatory at 4,500m in the high-altitude Changthang plateau.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "dark-sky-reserve",
+        "observatory",
+        "guided"
+      ],
+      "source": "DarkSky International"
+    },
+    {
+      "id": "nightskies-troms",
+      "name": "Tromsø",
+      "lat": 69.6489,
+      "lng": 18.9551,
+      "countryCode": "NO",
+      "region": "Troms, Norway",
+      "why": "The 'Aurora Capital'; the Fjellheisen cable car lifts you above town glow to Storsteinen in minutes.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-abisko-aurora-sky-station",
+      "name": "Abisko Aurora Sky Station",
+      "lat": 68.3556,
+      "lng": 18.7075,
+      "countryCode": "SE",
+      "region": "Norrbotten, Sweden",
+      "why": "A chairlift up Nuolja mountain, above a famous 'blue hole' of clear sky caused by the surrounding lake and mountains.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-reine-lofoten-islands",
+      "name": "Reine, Lofoten Islands",
+      "lat": 67.9349,
+      "lng": 13.0961,
+      "countryCode": "NO",
+      "region": "Nordland, Norway",
+      "why": "Jagged Lofoten peaks rising straight from the sea make this fishing village one of the most photographed aurora backdrops.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "island"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-senja",
+      "name": "Senja",
+      "lat": 69.3,
+      "lng": 17.5,
+      "countryCode": "NO",
+      "region": "Troms, Norway",
+      "why": "Tungeneset viewpoint's jagged 'Devil's Teeth' peaks give Norway's second-largest island a dramatic aurora foreground.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "island"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-alta",
+      "name": "Alta",
+      "lat": 69.9689,
+      "lng": 23.2717,
+      "countryCode": "NO",
+      "region": "Finnmark, Norway",
+      "why": "Branded the 'City of the Northern Lights'; the Sorrisniva area just outside town is the usual base for camps and tours.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-nordkapp-north-cape",
+      "name": "Nordkapp (North Cape)",
+      "lat": 71.1725,
+      "lng": 25.7842,
+      "countryCode": "NO",
+      "region": "Finnmark, Norway",
+      "why": "Europe's northernmost point, a sheer 307m cliff over the Barents Sea, sees aurora on dark, clear autumn and winter nights.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-kiruna-jukkasjarvi",
+      "name": "Kiruna / Jukkasjärvi",
+      "lat": 67.8558,
+      "lng": 20.593,
+      "countryCode": "SE",
+      "region": "Norrbotten, Sweden",
+      "why": "Home to the original ICEHOTEL; the frozen Torne River just outside the village is the classic foreground.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-rovaniemi",
+      "name": "Rovaniemi",
+      "lat": 66.5434,
+      "lng": 25.8474,
+      "countryCode": "FI",
+      "region": "Lapland, Finland",
+      "why": "Straddling the Arctic Circle, with glass-igloo resorts and Ounasvaara hill both used as viewing points above town.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-saariselka-kakslauttanen",
+      "name": "Saariselkä / Kakslauttanen",
+      "lat": 68.45,
+      "lng": 27.4167,
+      "countryCode": "FI",
+      "region": "Lapland, Finland",
+      "why": "Glass igloos and a wilderness setting deep in Urho Kekkonen National Park, well clear of any town's glow.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-levi",
+      "name": "Levi",
+      "lat": 67.805,
+      "lng": 24.803,
+      "countryCode": "FI",
+      "region": "Lapland, Finland",
+      "why": "A ski resort whose fell-top gondola carries aurora-watchers above the treeline for an unbroken horizon.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-reykjavik-region-ingvellir",
+      "name": "Reykjavík region / Þingvellir",
+      "lat": 64.2559,
+      "lng": -21.1295,
+      "countryCode": "IS",
+      "region": "Southwest Iceland",
+      "why": "Þingvellir National Park's rift-valley plain is the closest true dark sky to the capital, 45 minutes from downtown.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-jokulsarlon-glacier-lagoon",
+      "name": "Jökulsárlón Glacier Lagoon",
+      "lat": 64.0784,
+      "lng": -16.23,
+      "countryCode": "IS",
+      "region": "Southeast Iceland",
+      "why": "Icebergs calved from Breiðamerkurjökull drift past as the aurora reflects on the lagoon's still water.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-akureyri",
+      "name": "Akureyri",
+      "lat": 65.6835,
+      "lng": -18.0878,
+      "countryCode": "IS",
+      "region": "North Iceland",
+      "why": "Iceland's northern capital, close to the Arctic Circle, with dark fjord-side roads a short drive from town.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-ilulissat",
+      "name": "Ilulissat",
+      "lat": 69.2198,
+      "lng": -51.1,
+      "countryCode": "GL",
+      "region": "Avannaata, Greenland",
+      "why": "The Icefjord's floating icebergs, lit by the aurora, made this UNESCO site Greenland's best-known viewing spot.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "island"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-longyearbyen",
+      "name": "Longyearbyen",
+      "lat": 78.2232,
+      "lng": 15.6267,
+      "countryCode": "SJ",
+      "region": "Svalbard, Norway",
+      "why": "The world's northernmost town of any size; polar night from October to February gives near round-the-clock viewing.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-fairbanks-chena-hot-springs",
+      "name": "Fairbanks / Chena Hot Springs",
+      "lat": 65.0556,
+      "lng": -146.0575,
+      "countryCode": "US",
+      "region": "Alaska",
+      "why": "The resort's Aurorium and hot-spring pools sit directly under the auroral oval, the most reliable stretch of Alaska for a sighting.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-denali-national-park-area",
+      "name": "Denali National Park area",
+      "lat": 63.1148,
+      "lng": -151.1926,
+      "countryCode": "US",
+      "region": "Alaska",
+      "why": "Winter visitors camp along the park road for aurora over Denali itself, when the peak is out of cloud.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-yellowknife-aurora-village",
+      "name": "Yellowknife / Aurora Village",
+      "lat": 62.5806,
+      "lng": -114.1919,
+      "countryCode": "CA",
+      "region": "Northwest Territories",
+      "why": "Teepees on a frozen lake at Aurora Village put visitors under one of the most consistently clear stretches of the auroral oval.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-churchill",
+      "name": "Churchill",
+      "lat": 58.7684,
+      "lng": -94.165,
+      "countryCode": "CA",
+      "region": "Manitoba",
+      "why": "Better known for polar bears, this Hudson Bay outpost sits directly beneath the auroral oval most winter nights.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-whitehorse",
+      "name": "Whitehorse",
+      "lat": 60.7212,
+      "lng": -135.0568,
+      "countryCode": "CA",
+      "region": "Yukon",
+      "why": "The territorial capital's outskirts, along the Klondike Highway, are dark enough for reliable viewing most clear nights.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-murmansk-region-teriberka",
+      "name": "Murmansk region / Teriberka",
+      "lat": 69.1706,
+      "lng": 35.1367,
+      "countryCode": "RU",
+      "region": "Murmansk Oblast, Russia",
+      "why": "A once-abandoned fishing village on the Barents Sea coast, now a base for aurora tours above the Arctic Circle.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "aurora",
+        "guided"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-hobart-south-arm-peninsula",
+      "name": "Hobart / South Arm Peninsula",
+      "lat": -43.0272,
+      "lng": 147.5219,
+      "countryCode": "AU",
+      "region": "Tasmania, Australia",
+      "why": "Goat Bluff, a short drive from Hobart, is Australia's most accessible spot for the aurora australis on a clear, active night.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-bruny-island",
+      "name": "Bruny Island",
+      "lat": -43.3667,
+      "lng": 147.2667,
+      "countryCode": "AU",
+      "region": "Tasmania, Australia",
+      "why": "South Bruny's dark, southward-facing coastline is favoured by aurora chasers over the mainland glow of Hobart.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "aurora",
+        "island"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-cradle-mountain",
+      "name": "Cradle Mountain",
+      "lat": -41.685,
+      "lng": 145.9527,
+      "countryCode": "AU",
+      "region": "Tasmania, Australia",
+      "why": "Dove Lake's still water mirrors both the Milky Way and, on strong nights, the aurora australis behind the mountain.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-dunedin-aramoana",
+      "name": "Dunedin / Aramoana",
+      "lat": -45.7756,
+      "lng": 170.715,
+      "countryCode": "NZ",
+      "region": "Otago, New Zealand",
+      "why": "This small beach settlement at the mouth of Otago Harbour is the South Island's classic aurora australis vantage.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-the-catlins",
+      "name": "The Catlins",
+      "lat": -46.55,
+      "lng": 169.5,
+      "countryCode": "NZ",
+      "region": "Southland, New Zealand",
+      "why": "Nugget Point's lighthouse headland, facing due south over the Southern Ocean, is a favourite for aurora photographers.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-wiseman",
+      "name": "Wiseman",
+      "lat": 67.4067,
+      "lng": -150.1075,
+      "countryCode": "US",
+      "region": "Brooks Range, Alaska",
+      "why": "A tiny Dalton Highway village well north of Fairbanks, used as a base for aurora camps deep in the Arctic.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-iqaluit",
+      "name": "Iqaluit",
+      "lat": 63.7467,
+      "lng": -68.517,
+      "countryCode": "CA",
+      "region": "Nunavut",
+      "why": "Canada's High Arctic capital sits under the auroral oval; the waterfront on Frobisher Bay is the town's viewing spot.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "aurora",
+        "drive-in"
+      ],
+      "source": "Aurora tourism boards"
+    },
+    {
+      "id": "nightskies-mauna-kea-visitor-information-station",
+      "name": "Mauna Kea Visitor Information Station",
+      "lat": 19.7642,
+      "lng": -155.455,
+      "countryCode": "US",
+      "region": "Big Island, Hawaii",
+      "why": "At 2,800m, the VIS is as high as most visitors go without acclimatizing; rangers run free stargazing most clear evenings.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-haleakala-observatories",
+      "name": "Haleakalā Observatories",
+      "lat": 20.7204,
+      "lng": -156.257,
+      "countryCode": "US",
+      "region": "Maui, Hawaii",
+      "why": "The summit visitor area, at 3,055m above the clouds, looks out from beside the university's own telescope domes.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "drive-in"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-paranal-observatory",
+      "name": "Paranal Observatory",
+      "lat": -24.6272,
+      "lng": -70.4039,
+      "countryCode": "CL",
+      "region": "Atacama Desert, Chile",
+      "why": "ESO's Very Large Telescope platform, reachable on a free weekend tour, sits above the driest desert on Earth.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-alma-observatory",
+      "name": "ALMA Observatory",
+      "lat": -23.0292,
+      "lng": -67.7532,
+      "countryCode": "CL",
+      "region": "Atacama Desert, Chile",
+      "why": "The Operations Support Facility, at 2,900m below the 5,000m Chajnantor array itself, runs the public visitor tours.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-teide-observatory",
+      "name": "Teide Observatory",
+      "lat": 28.3,
+      "lng": -16.5117,
+      "countryCode": "ES",
+      "region": "Tenerife, Canary Islands, Spain",
+      "why": "Sitting above a permanent cloud inversion, the visitor centre runs daytime sun tours and night astro-tourism programs.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-roque-de-los-muchachos-observatory",
+      "name": "Roque de los Muchachos Observatory",
+      "lat": 28.7606,
+      "lng": -17.8817,
+      "countryCode": "ES",
+      "region": "La Palma, Canary Islands, Spain",
+      "why": "One of the world's premier northern-hemisphere sites, at 2,396m, with a visitor centre open on scheduled days.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-south-african-astronomical-observatory-sutherland",
+      "name": "South African Astronomical Observatory, Sutherland",
+      "lat": -32.38,
+      "lng": 20.81,
+      "countryCode": "ZA",
+      "region": "Northern Cape, South Africa",
+      "why": "The Karoo's clear, dry air and near-total darkness host South Africa's main optical telescopes and public night tours.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-siding-spring-observatory",
+      "name": "Siding Spring Observatory",
+      "lat": -31.2733,
+      "lng": 149.0669,
+      "countryCode": "AU",
+      "region": "New South Wales, Australia",
+      "why": "Australia's largest optical telescopes sit on Mount Woorat; the visitor centre and Warrumbungle sky share the mountain.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-mount-john-university-observatory",
+      "name": "Mount John University Observatory",
+      "lat": -43.9866,
+      "lng": 170.465,
+      "countryCode": "NZ",
+      "region": "Lake Tekapo, New Zealand",
+      "why": "New Zealand's principal research observatory, open for evening tours right inside the Aoraki Mackenzie reserve.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-cerro-tololo-inter-american-observatory",
+      "name": "Cerro Tololo Inter-American Observatory",
+      "lat": -30.1697,
+      "lng": -70.8064,
+      "countryCode": "CL",
+      "region": "Coquimbo Region, Chile",
+      "why": "A ridge-top cluster of domes above the Elqui Valley, offering free weekend tours booked months in advance.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-la-silla-observatory",
+      "name": "La Silla Observatory",
+      "lat": -29.2567,
+      "lng": -70.7378,
+      "countryCode": "CL",
+      "region": "Coquimbo Region, Chile",
+      "why": "ESO's original Chilean site, at 2,400m, still runs public tours of its historic telescope domes.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-las-campanas-observatory",
+      "name": "Las Campanas Observatory",
+      "lat": -29.0146,
+      "lng": -70.6926,
+      "countryCode": "CL",
+      "region": "Atacama Region, Chile",
+      "why": "Home to the twin Magellan Telescopes, with tours by arrangement above one of the clearest skies on the continent.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-kitt-peak-national-observatory",
+      "name": "Kitt Peak National Observatory",
+      "lat": 31.9583,
+      "lng": -111.5967,
+      "countryCode": "US",
+      "region": "Tucson, Arizona",
+      "why": "The world's largest collection of optical telescopes under one sky, with a nightly public program on the mountain.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-palomar-observatory",
+      "name": "Palomar Observatory",
+      "lat": 33.3564,
+      "lng": -116.865,
+      "countryCode": "US",
+      "region": "San Diego County, California",
+      "why": "Home to the historic 200-inch Hale Telescope; the visitor gallery and grounds are open by day, tours by arrangement.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-lowell-observatory",
+      "name": "Lowell Observatory",
+      "lat": 35.202,
+      "lng": -111.6647,
+      "countryCode": "US",
+      "region": "Flagstaff, Arizona",
+      "why": "Where Pluto was discovered in 1930; the Giovale Open Deck Observatory runs public telescope viewing nightly.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-mcdonald-observatory",
+      "name": "McDonald Observatory",
+      "lat": 30.6797,
+      "lng": -104.0247,
+      "countryCode": "US",
+      "region": "Fort Davis, Texas",
+      "why": "The visitor center's 'Star Parties' put the public behind the same telescopes used for professional research.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-very-large-array",
+      "name": "Very Large Array",
+      "lat": 34.0784,
+      "lng": -107.6184,
+      "countryCode": "US",
+      "region": "Socorro County, New Mexico",
+      "why": "Twenty-seven radio dishes on the Plains of San Agustin; the visitor centre and self-guided walk are open daily.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-mount-wilson-observatory",
+      "name": "Mount Wilson Observatory",
+      "lat": 34.2258,
+      "lng": -118.0611,
+      "countryCode": "US",
+      "region": "Los Angeles County, California",
+      "why": "Above the LA smog line, Hubble once used the 100-inch telescope here; public viewing nights run through summer.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-griffith-observatory",
+      "name": "Griffith Observatory",
+      "lat": 34.1184,
+      "lng": -118.3004,
+      "countryCode": "US",
+      "region": "Los Angeles, California",
+      "why": "The city's own free public observatory, with a rooftop telescope queue most clear nights despite the urban glow.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-yerkes-observatory",
+      "name": "Yerkes Observatory",
+      "lat": 42.5728,
+      "lng": -88.5552,
+      "countryCode": "US",
+      "region": "Williams Bay, Wisconsin",
+      "why": "Home to the world's largest refracting telescope, the birthplace of modern astrophysics, reopened for public tours.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-royal-observatory-greenwich",
+      "name": "Royal Observatory Greenwich",
+      "lat": 51.4769,
+      "lng": -0.0005,
+      "countryCode": "GB",
+      "region": "London, England",
+      "why": "Standing astride the Prime Meridian, its planetarium and historic telescopes make it the public face of British astronomy.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-mount-stromlo-observatory",
+      "name": "Mount Stromlo Observatory",
+      "lat": -35.3204,
+      "lng": 149.0083,
+      "countryCode": "AU",
+      "region": "Canberra, Australia",
+      "why": "Rebuilt after 2003 bushfires, its heritage domes and visitor centre sit in the hills just outside the capital.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-mount-graham-international-observatory",
+      "name": "Mount Graham International Observatory",
+      "lat": 32.7016,
+      "lng": -109.8719,
+      "countryCode": "US",
+      "region": "Pinaleño Mountains, Arizona",
+      "why": "Home to the Large Binocular Telescope, at 3,200m; guided public tours run in summer from the Discovery Park visitor center.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-jodrell-bank-observatory",
+      "name": "Jodrell Bank Observatory",
+      "lat": 53.2367,
+      "lng": -2.3075,
+      "countryCode": "GB",
+      "region": "Cheshire, England",
+      "why": "The Lovell Telescope's 76m dish looms over the Discovery Centre, a hands-on public draw for radio astronomy.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-rozhen-national-astronomical-observatory",
+      "name": "Rozhen National Astronomical Observatory",
+      "lat": 41.6931,
+      "lng": 24.7383,
+      "countryCode": "BG",
+      "region": "Rhodope Mountains, Bulgaria",
+      "why": "The Balkans' largest telescope sits on a remote ridge, with public open days run by the Bulgarian Academy of Sciences.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-campo-imperatore-gran-sasso-observatory",
+      "name": "Campo Imperatore / Gran Sasso Observatory",
+      "lat": 42.4413,
+      "lng": 13.5555,
+      "countryCode": "IT",
+      "region": "Abruzzo, Italy",
+      "why": "A high alpine plateau below Italy's tallest Apennine peak, with the national observatory's dome open on public nights.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-el-leoncito-astronomical-complex-casleo",
+      "name": "El Leoncito Astronomical Complex (CASLEO)",
+      "lat": -31.7986,
+      "lng": -69.2956,
+      "countryCode": "AR",
+      "region": "San Juan Province, Argentina",
+      "why": "Argentina's principal optical observatory, in a national park chosen for over 300 clear nights a year.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-boyden-observatory",
+      "name": "Boyden Observatory",
+      "lat": -29.1611,
+      "lng": 26.4008,
+      "countryCode": "ZA",
+      "region": "Free State, South Africa",
+      "why": "A century-old observatory on the Maselspoort road outside Bloemfontein, still running public open evenings.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "observatory",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    },
+    {
+      "id": "nightskies-cerro-pachon-vera-c-rubin-observatory",
+      "name": "Cerro Pachón (Vera C. Rubin Observatory)",
+      "lat": -30.2408,
+      "lng": -70.7367,
+      "countryCode": "CL",
+      "region": "Coquimbo Region, Chile",
+      "why": "Home to the new Rubin Observatory and Gemini South, on a ridge beside Cerro Tololo above the Elqui Valley.",
+      "bestMonths": [],
+      "tags": [
+        "observatory",
+        "desert",
+        "guided"
+      ],
+      "source": "IDA/observatory visitor programs"
+    }
+  ]
+}
