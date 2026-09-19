@@ -1,0 +1,4080 @@
+{
+  "id": "kite",
+  "label": "Kite & wind",
+  "blurb": "Kitesurf and windsurf spots with reliable wind and room to launch.",
+  "sources": [
+    "GKA Kite World Tour",
+    "PWA World Tour",
+    "Kitesurf Atlas",
+    "Kiteworld Magazine",
+    "Windsurf Magazine",
+    "IKSURFMAG travel guides"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "kite-playa-de-los-lances-tarifa",
+      "name": "Playa de los Lances, Tarifa",
+      "lat": 36.03,
+      "lng": -5.633,
+      "countryCode": "ES",
+      "region": "Tarifa",
+      "why": "Europe's kite capital: Levante or Poniente blows most days over a 7 km beach, with dozens of schools on the sand.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "beginner",
+        "school",
+        "waves"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-valdevaqueros-tarifa",
+      "name": "Valdevaqueros, Tarifa",
+      "lat": 36.069,
+      "lng": -5.686,
+      "countryCode": "ES",
+      "region": "Tarifa",
+      "why": "The Levante funnel spot with a dune backdrop; strong, gusty offshore-ish wind, so most riders are experienced.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "advanced",
+        "waves",
+        "school"
+      ],
+      "source": "Kiteworld Magazine"
+    },
+    {
+      "id": "kite-pozo-izquierdo",
+      "name": "Pozo Izquierdo",
+      "lat": 27.8105,
+      "lng": -15.4165,
+      "countryCode": "ES",
+      "region": "Gran Canaria",
+      "why": "PWA wave venue with brutal summer trade winds and a rocky shore; the world's top windsurfers jump here every July.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-playa-de-vargas",
+      "name": "Playa de Vargas",
+      "lat": 27.923,
+      "lng": -15.386,
+      "countryCode": "ES",
+      "region": "Gran Canaria",
+      "why": "Pozo's slightly friendlier neighbour, still side-onshore trades of 25–40 knots over a pebble beach.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-sotavento-fuerteventura",
+      "name": "Sotavento, Fuerteventura",
+      "lat": 28.0685,
+      "lng": -14.245,
+      "countryCode": "ES",
+      "region": "Jandía",
+      "why": "Tidal lagoon behind a sandbar; flat inside, chop outside, and the PWA Fuerteventura slalom and freestyle since 1986.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "school",
+        "trade-wind"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-flag-beach-corralejo",
+      "name": "Flag Beach, Corralejo",
+      "lat": 28.728,
+      "lng": -13.847,
+      "countryCode": "ES",
+      "region": "Fuerteventura",
+      "why": "Long sandy beach in the Corralejo dunes; steady side-shore trades and Lobos island for shelter.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beginner",
+        "school",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-el-medano",
+      "name": "El Médano",
+      "lat": 28.0448,
+      "lng": -16.5337,
+      "countryCode": "ES",
+      "region": "Tenerife",
+      "why": "Windy town beach under Montaña Roja, PWA wave venue with side-shore trades and a mellow bay for learners.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "waves",
+        "school",
+        "trade-wind"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-famara-lanzarote",
+      "name": "Famara, Lanzarote",
+      "lat": 29.117,
+      "lng": -13.56,
+      "countryCode": "ES",
+      "region": "Lanzarote",
+      "why": "5 km wave beach under the Risco cliffs; onshore trades and reliable swell for wave kiting.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-sant-pere-pescador",
+      "name": "Sant Pere Pescador",
+      "lat": 42.195,
+      "lng": 3.113,
+      "countryCode": "ES",
+      "region": "Costa Brava",
+      "why": "The Tramuntana blows offshore-ish and hard across the Gulf of Roses; long beach with schools at the river mouth.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "school",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-oliva",
+      "name": "Oliva",
+      "lat": 38.935,
+      "lng": -0.1,
+      "countryCode": "ES",
+      "region": "Valencia",
+      "why": "Kite-designated beach zone with thermal sea breeze most summer afternoons.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-praia-do-guincho",
+      "name": "Praia do Guincho",
+      "lat": 38.7326,
+      "lng": -9.4733,
+      "countryCode": "PT",
+      "region": "Cascais",
+      "why": "The Nortada blows side-shore over Atlantic swell all summer; PWA wave venue and a serious rip for beginners.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-lagoa-de-obidos",
+      "name": "Lagoa de Óbidos",
+      "lat": 39.419,
+      "lng": -9.218,
+      "countryCode": "PT",
+      "region": "Foz do Arelho",
+      "why": "Big shallow lagoon with Nortada afternoons; standing-depth flat water for lessons and freestyle.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-alvor",
+      "name": "Alvor",
+      "lat": 37.124,
+      "lng": -8.603,
+      "countryCode": "PT",
+      "region": "Algarve",
+      "why": "Estuary lagoon at low tide gives flat shallow water; gentle thermals suit learners.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-baleal",
+      "name": "Baleal",
+      "lat": 39.374,
+      "lng": -9.34,
+      "countryCode": "PT",
+      "region": "Peniche",
+      "why": "Sheltered north bay next to Peniche's surf breaks; Nortada wind and small waves.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-cabedelo-viana-do-castelo",
+      "name": "Cabedelo, Viana do Castelo",
+      "lat": 41.68,
+      "lng": -8.832,
+      "countryCode": "PT",
+      "region": "Minho",
+      "why": "PWA slalom and wave venue at the Lima river mouth; strong summer Nortada.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-la-franqui-leucate",
+      "name": "La Franqui, Leucate",
+      "lat": 42.933,
+      "lng": 3.042,
+      "countryCode": "FR",
+      "region": "Aude",
+      "why": "Home of the Mondial du Vent; the Tramontane delivers 30-knot days over a long beach and shallow shorebreak.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "advanced",
+        "waves",
+        "school"
+      ],
+      "source": "GKA Kite World Tour"
+    },
+    {
+      "id": "kite-gruissan",
+      "name": "Gruissan",
+      "lat": 43.104,
+      "lng": 3.12,
+      "countryCode": "FR",
+      "region": "Aude",
+      "why": "Tramontane-swept lagoon and beach in the Défi Wind area; huge kite and windsurf scene.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "lagoon",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-l-almanarre-hy-res",
+      "name": "L'Almanarre, Hyères",
+      "lat": 43.046,
+      "lng": 6.13,
+      "countryCode": "FR",
+      "region": "Var",
+      "why": "Mistral hits this long spit side-shore; flat on the Giens side, chop on the sea side.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "waves",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-plage-de-beauduc",
+      "name": "Plage de Beauduc",
+      "lat": 43.365,
+      "lng": 4.58,
+      "countryCode": "FR",
+      "region": "Camargue",
+      "why": "Remote Camargue spit reached by dirt track; Mistral flat water and few crowds.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "downwinder"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-wissant",
+      "name": "Wissant",
+      "lat": 50.888,
+      "lng": 1.66,
+      "countryCode": "FR",
+      "region": "Côte d'Opale",
+      "why": "Wide sand bay between the two caps; south-westerlies and Channel swell for wave riding.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-penthi-vre-quiberon",
+      "name": "Penthièvre, Quiberon",
+      "lat": 47.542,
+      "lng": -3.142,
+      "countryCode": "FR",
+      "region": "Morbihan",
+      "why": "Isthmus beach that works on either wind side; shallow and sandy for lessons.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beginner",
+        "school",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-lo-stagnone-marsala",
+      "name": "Lo Stagnone, Marsala",
+      "lat": 37.87,
+      "lng": 12.47,
+      "countryCode": "IT",
+      "region": "Sicily",
+      "why": "Knee-deep lagoon with a thermal breeze most afternoons; one of Europe's busiest learning spots.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-porto-pollo",
+      "name": "Porto Pollo",
+      "lat": 41.1877,
+      "lng": 9.3197,
+      "countryCode": "IT",
+      "region": "Sardinia",
+      "why": "Isthmus between two bays; Mistral and Ponente give flat water on one side and chop on the other.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "school",
+        "thermal"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-punta-trettu",
+      "name": "Punta Trettu",
+      "lat": 39.087,
+      "lng": 8.435,
+      "countryCode": "IT",
+      "region": "Sardinia",
+      "why": "Shallow lagoon in the south-west corner of Sardinia; Mistral and Scirocco both work.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-torbole-lake-garda",
+      "name": "Torbole, Lake Garda",
+      "lat": 45.872,
+      "lng": 10.876,
+      "countryCode": "IT",
+      "region": "Trentino",
+      "why": "The Ora thermal blows every summer afternoon; a windsurf classic with mountain scenery.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "flat-water",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-lake-silvaplana",
+      "name": "Lake Silvaplana",
+      "lat": 46.456,
+      "lng": 9.788,
+      "countryCode": "CH",
+      "region": "Engadin",
+      "why": "The Maloja wind arrives at noon like clockwork over a 1,800 m alpine lake; foil and freestyle heaven.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "foil",
+        "flat-water"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-isleten-lake-uri",
+      "name": "Isleten, Lake Uri",
+      "lat": 46.918,
+      "lng": 8.595,
+      "countryCode": "CH",
+      "region": "Uri",
+      "why": "Foehn funnel on Lake Lucerne's southern arm; strong, warm gusts when the pressure gradient is right.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "thermal",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-podersdorf-neusiedler-see",
+      "name": "Podersdorf, Neusiedler See",
+      "lat": 47.85,
+      "lng": 16.85,
+      "countryCode": "AT",
+      "region": "Burgenland",
+      "why": "Waist-deep steppe lake with reliable wind; surf world cup venue and a big freestyle scene.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-brouwersdam",
+      "name": "Brouwersdam",
+      "lat": 51.754,
+      "lng": 3.845,
+      "countryCode": "NL",
+      "region": "Zeeland",
+      "why": "The Netherlands' flagship spot on the dam between sea and lake; flat inside, waves outside.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-wijk-aan-zee",
+      "name": "Wijk aan Zee",
+      "lat": 52.494,
+      "lng": 4.587,
+      "countryCode": "NL",
+      "region": "North Holland",
+      "why": "Beach north of the IJmuiden pier that takes the wave end of Dutch kiting; SW winds and chop.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-westerland-sylt",
+      "name": "Westerland, Sylt",
+      "lat": 54.907,
+      "lng": 8.298,
+      "countryCode": "DE",
+      "region": "Schleswig-Holstein",
+      "why": "The Windsurf World Cup finale since 1984; autumn North Sea storms and a raw, cold shorebreak.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-st-peter-ording",
+      "name": "St. Peter-Ording",
+      "lat": 54.318,
+      "lng": 8.59,
+      "countryCode": "DE",
+      "region": "Schleswig-Holstein",
+      "why": "Kilometre-wide flat beach and standing-depth water at low tide; Kitesurf World Cup venue.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "GKA Kite World Tour"
+    },
+    {
+      "id": "kite-gold-fehmarn",
+      "name": "Gold, Fehmarn",
+      "lat": 54.447,
+      "lng": 11.004,
+      "countryCode": "DE",
+      "region": "Fehmarn",
+      "why": "Baltic spot that works in westerlies with shallow flat water; Fehmarn hosts the Kitesurf Trophy.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-klitmoller",
+      "name": "Klitmøller",
+      "lat": 57.043,
+      "lng": 8.492,
+      "countryCode": "DK",
+      "region": "Thy",
+      "why": "'Cold Hawaii': a fishing village with PWA wave contests and a reef point for North Sea wave sailing.",
+      "bestMonths": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-lakolk-romo",
+      "name": "Lakolk, Rømø",
+      "lat": 55.128,
+      "lng": 8.485,
+      "countryCode": "DK",
+      "region": "South Jutland",
+      "why": "You can drive onto a beach hundreds of metres wide; shallow water and steady westerlies.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-hvide-sande",
+      "name": "Hvide Sande",
+      "lat": 55.998,
+      "lng": 8.12,
+      "countryCode": "DK",
+      "region": "West Jutland",
+      "why": "Harbour moles and a long beach on Denmark's windiest coast; wave sailing and kiting.",
+      "bestMonths": [
+        5,
+        6,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-chalupy-hel-peninsula",
+      "name": "Chałupy, Hel Peninsula",
+      "lat": 54.76,
+      "lng": 18.508,
+      "countryCode": "PL",
+      "region": "Pomerania",
+      "why": "Puck Bay's shallow lagoon side is Poland's kite nursery, with dozens of schools along the spit.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-apelviken-varberg",
+      "name": "Apelviken, Varberg",
+      "lat": 57.086,
+      "lng": 12.245,
+      "countryCode": "SE",
+      "region": "Halland",
+      "why": "Sweden's best-known surf and kite bay; west winds bring swell into the sandy cove.",
+      "bestMonths": [
+        5,
+        6,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-yyteri",
+      "name": "Yyteri",
+      "lat": 61.567,
+      "lng": 21.5,
+      "countryCode": "FI",
+      "region": "Pori",
+      "why": "Long dune beach on the Bothnian Sea; Finland's main windsurf and kite spot in summer westerlies.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-hayling-island",
+      "name": "Hayling Island",
+      "lat": 50.783,
+      "lng": -0.97,
+      "countryCode": "GB",
+      "region": "Hampshire",
+      "why": "Birthplace of windsurfing's British scene; Chichester Harbour entrance gives flat water at low tide.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-camber-sands",
+      "name": "Camber Sands",
+      "lat": 50.9345,
+      "lng": 0.794,
+      "countryCode": "GB",
+      "region": "East Sussex",
+      "why": "Vast low-tide beach with Channel breezes; the UK's busiest kite beach close to London.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "beginner",
+        "school",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-rhosneigr",
+      "name": "Rhosneigr",
+      "lat": 53.229,
+      "lng": -4.53,
+      "countryCode": "GB",
+      "region": "Anglesey",
+      "why": "Twin bays with a mix of flat water and Irish Sea waves; a dedicated kite and windsurf village.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-gott-bay-tiree",
+      "name": "Gott Bay, Tiree",
+      "lat": 56.513,
+      "lng": -6.86,
+      "countryCode": "GB",
+      "region": "Inner Hebrides",
+      "why": "The Tiree Wave Classic has run here since 1986; Atlantic swell and gales on a treeless island.",
+      "bestMonths": [
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-poole-harbour",
+      "name": "Poole Harbour",
+      "lat": 50.689,
+      "lng": -1.955,
+      "countryCode": "GB",
+      "region": "Dorset",
+      "why": "Shallow, sheltered harbour with flat water and easy tides; the south coast's learner spot.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-hunstanton",
+      "name": "Hunstanton",
+      "lat": 52.941,
+      "lng": 0.485,
+      "countryCode": "GB",
+      "region": "Norfolk",
+      "why": "West-facing Wash beach with cross-shore SW winds and huge tidal flats; wave and flat mix.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "waves"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-marazion",
+      "name": "Marazion",
+      "lat": 50.123,
+      "lng": -5.472,
+      "countryCode": "GB",
+      "region": "Cornwall",
+      "why": "Mount's Bay beach in front of St Michael's Mount; works in the SW wind Cornwall gets most.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-dollymount-strand",
+      "name": "Dollymount Strand",
+      "lat": 53.363,
+      "lng": -6.158,
+      "countryCode": "IE",
+      "region": "Dublin",
+      "why": "Bull Island's long beach inside Dublin Bay; shallow flat water at low tide minutes from the city.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-prasonisi",
+      "name": "Prasonisi",
+      "lat": 35.8862,
+      "lng": 27.7681,
+      "countryCode": "GR",
+      "region": "Rhodes",
+      "why": "Sandbar at Rhodes' southern tip: Meltemi gives flat water on one side and waves on the other.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-ixia",
+      "name": "Ixia",
+      "lat": 36.417,
+      "lng": 28.195,
+      "countryCode": "GR",
+      "region": "Rhodes",
+      "why": "Rhodes' windsurf strip near the city; Meltemi side-shore over a pebble beach.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-vasiliki",
+      "name": "Vasiliki",
+      "lat": 38.6275,
+      "lng": 20.6047,
+      "countryCode": "GR",
+      "region": "Lefkada",
+      "why": "'Eric' the thermal wind arrives every afternoon across the bay; a windsurf mecca since the 1980s.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "flat-water",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-new-golden-beach-paros",
+      "name": "New Golden Beach, Paros",
+      "lat": 37.0308,
+      "lng": 25.2436,
+      "countryCode": "GR",
+      "region": "Paros",
+      "why": "Meltemi funnels across the strait to Naxos; PWA slalom venue in the 1990s.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-pounda-paros",
+      "name": "Pounda, Paros",
+      "lat": 37.033,
+      "lng": 25.098,
+      "countryCode": "GR",
+      "region": "Paros",
+      "why": "Kite beach facing Antiparos; Meltemi side-shore and a shallow strait.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-mikri-vigla-naxos",
+      "name": "Mikri Vigla, Naxos",
+      "lat": 37.015,
+      "lng": 25.377,
+      "countryCode": "GR",
+      "region": "Naxos",
+      "why": "Twin bays under a headland: flat lagoon for kiting and small waves; strongest Meltemi in the Cyclades.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "lagoon",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-marmari-kos",
+      "name": "Marmari, Kos",
+      "lat": 36.859,
+      "lng": 27.173,
+      "countryCode": "GR",
+      "region": "Kos",
+      "why": "Long north-coast beach with a stable Meltemi; a good learning spot with several schools.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-afiartis-devil-s-bay",
+      "name": "Afiartis (Devil's Bay)",
+      "lat": 35.4185,
+      "lng": 27.16,
+      "countryCode": "GR",
+      "region": "Karpathos",
+      "why": "Some of Europe's strongest Meltemi, 30–40 knots side-shore across a shallow bay near the airport.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-keros-beach-lemnos",
+      "name": "Keros Beach, Lemnos",
+      "lat": 39.877,
+      "lng": 25.337,
+      "countryCode": "GR",
+      "region": "Lemnos",
+      "why": "Shallow sandy bay in the north Aegean with steady Meltemi and dune-backed beach.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kouremenos",
+      "name": "Kouremenos",
+      "lat": 35.213,
+      "lng": 26.278,
+      "countryCode": "GR",
+      "region": "Crete",
+      "why": "Crete's east-coast windsurf and kite bay; strong summer Meltemi accelerates between the hills.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-zlatni-rat-bol",
+      "name": "Zlatni Rat, Bol",
+      "lat": 43.258,
+      "lng": 16.64,
+      "countryCode": "HR",
+      "region": "Brač",
+      "why": "The Maestral blows each summer afternoon across the famous golden spit.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-viganj",
+      "name": "Viganj",
+      "lat": 42.981,
+      "lng": 17.106,
+      "countryCode": "HR",
+      "region": "Pelješac",
+      "why": "Channel between Pelješac and Korčula where the Maestral accelerates; Croatia's windsurf village.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "flat-water",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-alacati-windsurf-bay",
+      "name": "Alaçatı Windsurf Bay",
+      "lat": 38.2492,
+      "lng": 26.3841,
+      "countryCode": "TR",
+      "region": "Çeşme",
+      "why": "Shallow bay sheltered from waves with steady Meltemi; PWA slalom venue and a wall of schools.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "school",
+        "beginner"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-aydincik-gokceada",
+      "name": "Aydıncık, Gökçeada",
+      "lat": 40.156,
+      "lng": 25.97,
+      "countryCode": "TR",
+      "region": "Gökçeada",
+      "why": "Island bay with salt lake behind; Meltemi side-shore and hardly any crowds.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-akyaka",
+      "name": "Akyaka",
+      "lat": 37.05,
+      "lng": 28.33,
+      "countryCode": "TR",
+      "region": "Muğla",
+      "why": "Head of the Gulf of Gökova where a thermal funnels through the valley; flat water for kites.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-eilat",
+      "name": "Eilat",
+      "lat": 29.538,
+      "lng": 34.955,
+      "countryCode": "IL",
+      "region": "Red Sea",
+      "why": "Northerly desert wind on the Gulf of Aqaba almost year-round; beach zones for kite and windsurf.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-dakhla-lagoon",
+      "name": "Dakhla Lagoon",
+      "lat": 23.846,
+      "lng": -15.796,
+      "countryCode": "EH",
+      "region": "Dakhla",
+      "why": "28 km lagoon with 300 windy days a year; camps line the shore and the GKA tour stops here.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "trade-wind",
+        "school"
+      ],
+      "source": "GKA Kite World Tour"
+    },
+    {
+      "id": "kite-essaouira",
+      "name": "Essaouira",
+      "lat": 31.506,
+      "lng": -9.772,
+      "countryCode": "MA",
+      "region": "Essaouira",
+      "why": "Crescent bay where the trade wind is strongest in summer; kiting off the medina beach.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "trade-wind",
+        "school",
+        "waves"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-moulay-bouzerktoun",
+      "name": "Moulay Bouzerktoun",
+      "lat": 31.66,
+      "lng": -9.681,
+      "countryCode": "MA",
+      "region": "Essaouira",
+      "why": "Rocky wave spot north of Essaouira; strong side-offshore trades and Atlantic swell.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-sidi-kaouki",
+      "name": "Sidi Kaouki",
+      "lat": 31.364,
+      "lng": -9.801,
+      "countryCode": "MA",
+      "region": "Essaouira",
+      "why": "Wide, empty beach 25 km south of Essaouira; cleaner waves and less wind than the town.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "waves",
+        "downwinder"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-djerba-ras-r-mel",
+      "name": "Djerba Ras R'mel",
+      "lat": 33.85,
+      "lng": 10.93,
+      "countryCode": "TN",
+      "region": "Djerba",
+      "why": "Flat lagoon behind a sand spit at Djerba's north tip; easy learning water in the Mediterranean.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-el-gouna-mangroovy",
+      "name": "El Gouna Mangroovy",
+      "lat": 27.403,
+      "lng": 33.688,
+      "countryCode": "EG",
+      "region": "Red Sea",
+      "why": "Shallow lagoon in front of the kite centres; winter and summer both windy, and the GKA has raced here.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "school",
+        "beginner"
+      ],
+      "source": "GKA Kite World Tour"
+    },
+    {
+      "id": "kite-soma-bay",
+      "name": "Soma Bay",
+      "lat": 26.85,
+      "lng": 33.99,
+      "countryCode": "EG",
+      "region": "Red Sea",
+      "why": "Peninsula resort with a huge shallow flat and reliable northerlies.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-safaga",
+      "name": "Safaga",
+      "lat": 26.73,
+      "lng": 33.95,
+      "countryCode": "EG",
+      "region": "Red Sea",
+      "why": "Kite and windsurf bay with Tobia island's sandbank flats a short boat ride away.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-ras-sudr",
+      "name": "Ras Sudr",
+      "lat": 29.595,
+      "lng": 32.702,
+      "countryCode": "EG",
+      "region": "Sinai",
+      "why": "Gulf of Suez desert coast two hours from Cairo; wind almost every day and thigh-deep flat water.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-dahab-lagoon",
+      "name": "Dahab Lagoon",
+      "lat": 28.48,
+      "lng": 34.503,
+      "countryCode": "EG",
+      "region": "Sinai",
+      "why": "Mountain-backed lagoon with a thermal that fills in daily; sheltered flat water for learners.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-hamata",
+      "name": "Hamata",
+      "lat": 24.285,
+      "lng": 35.385,
+      "countryCode": "EG",
+      "region": "Marsa Alam",
+      "why": "Remote southern Red Sea kite camp; shallow reef lagoon and few other riders.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kite-beach-sal",
+      "name": "Kite Beach, Sal",
+      "lat": 16.638,
+      "lng": -22.888,
+      "countryCode": "CV",
+      "region": "Santa Maria",
+      "why": "Trade winds from November to May across a wide east-coast bay; Cape Verde's kite hub.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "trade-wind",
+        "waves",
+        "school"
+      ],
+      "source": "Kiteworld Magazine"
+    },
+    {
+      "id": "kite-ponta-preta-sal",
+      "name": "Ponta Preta, Sal",
+      "lat": 16.592,
+      "lng": -22.934,
+      "countryCode": "CV",
+      "region": "Santa Maria",
+      "why": "Long right-hand point wave off Sal's south-west tip; a PWA and GKA wave-contest venue.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-praia-de-chaves-boa-vista",
+      "name": "Praia de Chaves, Boa Vista",
+      "lat": 16.15,
+      "lng": -22.95,
+      "countryCode": "CV",
+      "region": "Boa Vista",
+      "why": "Miles of dune-backed beach on Boa Vista's west coast with trade wind and small waves.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "trade-wind",
+        "waves"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-almadies-dakar",
+      "name": "Almadies, Dakar",
+      "lat": 14.748,
+      "lng": -17.51,
+      "countryCode": "SN",
+      "region": "Dakar",
+      "why": "Africa's westernmost point picks up Harmattan trade winds and Atlantic swell in winter.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "waves",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-diani-beach",
+      "name": "Diani Beach",
+      "lat": -4.29,
+      "lng": 39.59,
+      "countryCode": "KE",
+      "region": "Kwale",
+      "why": "Reef-protected lagoon at low tide with Kaskazi and Kusi monsoon winds; Kenya's kite centre.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-watamu",
+      "name": "Watamu",
+      "lat": -3.36,
+      "lng": 40.022,
+      "countryCode": "KE",
+      "region": "Kilifi",
+      "why": "Marine park lagoon with monsoon winds; flat inside the reef, small waves at the passes.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        7,
+        8
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-paje",
+      "name": "Paje",
+      "lat": -6.265,
+      "lng": 39.535,
+      "countryCode": "TZ",
+      "region": "Zanzibar",
+      "why": "Turquoise lagoon so shallow you can stand for a kilometre; the Kusi and Kaskazi seasons both blow.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "school",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-jambiani",
+      "name": "Jambiani",
+      "lat": -6.321,
+      "lng": 39.548,
+      "countryCode": "TZ",
+      "region": "Zanzibar",
+      "why": "Quieter village south of Paje on the same reef lagoon; same winds, fewer kites.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-vilanculos",
+      "name": "Vilanculos",
+      "lat": -21.995,
+      "lng": 35.323,
+      "countryCode": "MZ",
+      "region": "Inhambane",
+      "why": "Bazaruto archipelago waters with a shallow flat and side-onshore southerlies.",
+      "bestMonths": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "flat-water",
+        "lagoon"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-praia-do-tofo",
+      "name": "Praia do Tofo",
+      "lat": -23.86,
+      "lng": 35.546,
+      "countryCode": "MZ",
+      "region": "Inhambane",
+      "why": "Open-ocean bay with south-easterlies and swell; kite next to whale-shark diving.",
+      "bestMonths": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "waves"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-sakalava-bay",
+      "name": "Sakalava Bay",
+      "lat": -12.275,
+      "lng": 49.382,
+      "countryCode": "MG",
+      "region": "Antsiranana",
+      "why": "Reef-sheltered bay near Madagascar's north tip; the Varatraza trade blows 25 knots for eight months.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-le-morne",
+      "name": "Le Morne",
+      "lat": -20.453,
+      "lng": 57.316,
+      "countryCode": "MU",
+      "region": "Mauritius",
+      "why": "Kite lagoon under the UNESCO mountain, with One Eye's wave outside; the GKA has run waves here.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "lagoon",
+        "waves",
+        "trade-wind"
+      ],
+      "source": "GKA Kite World Tour"
+    },
+    {
+      "id": "kite-anse-la-raie",
+      "name": "Anse La Raie",
+      "lat": -19.983,
+      "lng": 57.645,
+      "countryCode": "MU",
+      "region": "Mauritius",
+      "why": "North-coast lagoon with easterly trades; flat, shallow and quieter than Le Morne.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-saint-pierre",
+      "name": "Saint-Pierre",
+      "lat": -21.345,
+      "lng": 55.47,
+      "countryCode": "RE",
+      "region": "Réunion",
+      "why": "Réunion's kite beach on the south-west coast with steady trades and reef swell.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "waves",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-langebaan-lagoon",
+      "name": "Langebaan Lagoon",
+      "lat": -33.11,
+      "lng": 18.05,
+      "countryCode": "ZA",
+      "region": "West Coast",
+      "why": "Shark Bay's shallow flat water in the West Coast National Park; summer southerly blows daily.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kite-beach-blouberg",
+      "name": "Kite Beach, Blouberg",
+      "lat": -33.815,
+      "lng": 18.468,
+      "countryCode": "ZA",
+      "region": "Cape Town",
+      "why": "Table Mountain in the frame and the Cape Doctor blowing 25–35 knots; the Red Bull King of the Air venue.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "Kiteworld Magazine"
+    },
+    {
+      "id": "kite-big-bay",
+      "name": "Big Bay",
+      "lat": -33.793,
+      "lng": 18.456,
+      "countryCode": "ZA",
+      "region": "Cape Town",
+      "why": "Bloubergstrand's northern bay: same summer south-easter, slightly more sheltered than Kite Beach.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-witsand",
+      "name": "Witsand",
+      "lat": -34.395,
+      "lng": 20.843,
+      "countryCode": "ZA",
+      "region": "Overberg",
+      "why": "Breede river mouth with a long flat sandbar; strong summer south-easters and few crowds.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "flat-water",
+        "downwinder"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-walvis-bay-lagoon",
+      "name": "Walvis Bay Lagoon",
+      "lat": -22.96,
+      "lng": 14.485,
+      "countryCode": "NA",
+      "region": "Erongo",
+      "why": "Desert lagoon with flamingos and a stiff south-westerly; Namibia's kite and speed sailing base.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "downwinder"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-luderitz-speed-channel",
+      "name": "Lüderitz Speed Channel",
+      "lat": -26.63,
+      "lng": 15.16,
+      "countryCode": "NA",
+      "region": "Lüderitz",
+      "why": "Purpose-dug 500 m trench where outright windsurf and kite speed records were set.",
+      "bestMonths": [
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "flat-water",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-masirah-island",
+      "name": "Masirah Island",
+      "lat": 20.4297,
+      "lng": 58.7172,
+      "countryCode": "OM",
+      "region": "Al Sharqiyah",
+      "why": "Khareef monsoon lagoon on Masirah's west coast; 20–30 knots daily in the northern summer.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kite-beach-jumeirah",
+      "name": "Kite Beach, Jumeirah",
+      "lat": 25.162,
+      "lng": 55.201,
+      "countryCode": "AE",
+      "region": "Dubai",
+      "why": "City beach with a kite-only zone and the Burj Al Arab skyline; winter and spring sea breezes.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "beginner",
+        "school",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kalpitiya-lagoon",
+      "name": "Kalpitiya Lagoon",
+      "lat": 8.229,
+      "lng": 79.759,
+      "countryCode": "LK",
+      "region": "Puttalam",
+      "why": "Butter-flat lagoon between peninsula and sea; two monsoon seasons make it Asia's freestyle school.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kappalady-lagoon",
+      "name": "Kappalady Lagoon",
+      "lat": 8.165,
+      "lng": 79.729,
+      "countryCode": "LK",
+      "region": "Puttalam",
+      "why": "Smaller lagoon south of Kalpitiya, shallower and less crowded, same monsoon winds.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-rameswaram",
+      "name": "Rameswaram",
+      "lat": 9.283,
+      "lng": 79.31,
+      "countryCode": "IN",
+      "region": "Tamil Nadu",
+      "why": "Shallow bay on India's south-east tip with south-west monsoon wind; the only major Indian kite spot.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "lagoon"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-mui-ne",
+      "name": "Mui Ne",
+      "lat": 10.953,
+      "lng": 108.245,
+      "countryCode": "VN",
+      "region": "Bình Thuận",
+      "why": "Vietnam's kite strip: north-east monsoon wind from November to April and chop for jumping.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "waves",
+        "school",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-hua-hin",
+      "name": "Hua Hin",
+      "lat": 12.565,
+      "lng": 99.962,
+      "countryCode": "TH",
+      "region": "Prachuap Khiri Khan",
+      "why": "Kiteboard World Cup venue with two seasons of onshore thermals; shallow and beginner-friendly.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "beginner",
+        "school",
+        "thermal"
+      ],
+      "source": "GKA Kite World Tour"
+    },
+    {
+      "id": "kite-pak-nam-pran",
+      "name": "Pak Nam Pran",
+      "lat": 12.403,
+      "lng": 99.98,
+      "countryCode": "TH",
+      "region": "Pranburi",
+      "why": "Quieter beach south of Hua Hin with the same seasonal winds and less traffic.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-sanur",
+      "name": "Sanur",
+      "lat": -8.695,
+      "lng": 115.265,
+      "countryCode": "ID",
+      "region": "Bali",
+      "why": "Reef lagoon on Bali's east coast with dry-season trades; flat inside, waves at the reef.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "lagoon",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-bulabog-beach",
+      "name": "Bulabog Beach",
+      "lat": 11.9693,
+      "lng": 121.9273,
+      "countryCode": "PH",
+      "region": "Boracay",
+      "why": "Reef-protected flat water with the Amihan trade wind from November to April; dozens of schools.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "school",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-bagasbas-beach-daet",
+      "name": "Bagasbas Beach, Daet",
+      "lat": 14.128,
+      "lng": 122.97,
+      "countryCode": "PH",
+      "region": "Camarines Norte",
+      "why": "Long grey-sand beach on the Pacific coast that hosts national kite contests in the Amihan season.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-penghu",
+      "name": "Penghu",
+      "lat": 23.565,
+      "lng": 119.565,
+      "countryCode": "TW",
+      "region": "Penghu Islands",
+      "why": "Taiwan Strait monsoon blows 25 knots for months; Penghu is Taiwan's windsurf training base.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "flat-water",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-pingtan",
+      "name": "Pingtan",
+      "lat": 25.505,
+      "lng": 119.815,
+      "countryCode": "CN",
+      "region": "Fujian",
+      "why": "Taiwan Strait wind funnel that hosts the PWA slalom and RS:X events.",
+      "bestMonths": [
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "flat-water",
+        "advanced"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-shinyang-beach-jeju",
+      "name": "Shinyang Beach, Jeju",
+      "lat": 33.433,
+      "lng": 126.924,
+      "countryCode": "KR",
+      "region": "Jeju",
+      "why": "Jeju's windsurf beach on the east coast; PWA slalom venue and Korea's main scene.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-omaezaki",
+      "name": "Omaezaki",
+      "lat": 34.598,
+      "lng": 138.23,
+      "countryCode": "JP",
+      "region": "Shizuoka",
+      "why": "Japan's windsurf capital on a wind-swept cape; PWA slalom venue with spring westerlies.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-kanaha-beach-kite-beach",
+      "name": "Kanaha Beach (Kite Beach)",
+      "lat": 20.901,
+      "lng": -156.45,
+      "countryCode": "US",
+      "region": "Maui",
+      "why": "Trade winds across the North Shore reef; the sport's spiritual home for both kiting and windsurfing.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "trade-wind",
+        "waves",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-ho-okipa",
+      "name": "Ho'okipa",
+      "lat": 20.933,
+      "lng": -156.358,
+      "countryCode": "US",
+      "region": "Maui",
+      "why": "The world's most photographed windsurf wave; Aloha Classic contests every autumn.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-kailua-beach",
+      "name": "Kailua Beach",
+      "lat": 21.396,
+      "lng": -157.725,
+      "countryCode": "US",
+      "region": "Oahu",
+      "why": "Trade-wind bay on windward Oahu where kiteboarding was pioneered; turquoise water and reef.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "trade-wind",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-safety-bay-the-pond",
+      "name": "Safety Bay (The Pond)",
+      "lat": -32.305,
+      "lng": 115.718,
+      "countryCode": "AU",
+      "region": "Perth",
+      "why": "Flat-water lagoon behind a sandbar in Perth's southern suburbs; the Fremantle Doctor daily in summer.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "school",
+        "thermal"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-leighton-beach",
+      "name": "Leighton Beach",
+      "lat": -32.029,
+      "lng": 115.751,
+      "countryCode": "AU",
+      "region": "Fremantle",
+      "why": "Fremantle's windsurf and kite beach where the summer sea breeze hits first and hardest.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "thermal",
+        "waves"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-lancelin",
+      "name": "Lancelin",
+      "lat": -31.02,
+      "lng": 115.33,
+      "countryCode": "AU",
+      "region": "Western Australia",
+      "why": "Reef-protected bay and Ocean Classic downwinder from Ledge Point; summer sea breezes and dunes.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "downwinder",
+        "waves",
+        "thermal"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-coronation-beach",
+      "name": "Coronation Beach",
+      "lat": -28.547,
+      "lng": 114.562,
+      "countryCode": "AU",
+      "region": "Geraldton",
+      "why": "Consistent 25-knot summer south-westerlies and a side-shore wave; a windsurf pilgrimage.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "thermal"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-gnaraloo",
+      "name": "Gnaraloo",
+      "lat": -23.775,
+      "lng": 113.525,
+      "countryCode": "AU",
+      "region": "Western Australia",
+      "why": "Remote station coast with long reef waves and strong southerlies; 4WD and camping only.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-brighton-beach-melbourne",
+      "name": "Brighton Beach, Melbourne",
+      "lat": -37.915,
+      "lng": 144.99,
+      "countryCode": "AU",
+      "region": "Victoria",
+      "why": "Port Phillip Bay kite beach by the bathing boxes; south-westerly sea breezes and chop.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kyeemagh-botany-bay",
+      "name": "Kyeemagh, Botany Bay",
+      "lat": -33.947,
+      "lng": 151.16,
+      "countryCode": "AU",
+      "region": "Sydney",
+      "why": "Sydney's flat-water kite bay next to the airport runway; the nor'easter sea breeze in summer.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "flat-water",
+        "school",
+        "thermal"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-lyall-bay",
+      "name": "Lyall Bay",
+      "lat": -41.33,
+      "lng": 174.794,
+      "countryCode": "NZ",
+      "region": "Wellington",
+      "why": "Wellington's south-coast beach with the city's famous northerlies and southerlies and Cook Strait swell.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-anse-vata",
+      "name": "Anse Vata",
+      "lat": -22.304,
+      "lng": 166.443,
+      "countryCode": "NC",
+      "region": "Nouméa",
+      "why": "Lagoon-front beach in the capital with south-east trades; PWA slalom raced here.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "PWA World Tour"
+    },
+    {
+      "id": "kite-muri-lagoon",
+      "name": "Muri Lagoon",
+      "lat": -21.253,
+      "lng": -159.738,
+      "countryCode": "CK",
+      "region": "Rarotonga",
+      "why": "Shallow lagoon with four motu and steady trades; Rarotonga's kite school beach.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-hood-river-event-site",
+      "name": "Hood River Event Site",
+      "lat": 45.713,
+      "lng": -121.514,
+      "countryCode": "US",
+      "region": "Oregon",
+      "why": "Columbia Gorge thermals blow against the river current; the birthplace of American windsurfing.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "school",
+        "flat-water"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-the-hatchery",
+      "name": "The Hatchery",
+      "lat": 45.7238,
+      "lng": -121.5581,
+      "countryCode": "US",
+      "region": "Washington",
+      "why": "Spring Creek Hatchery, the Gorge's classic swell spot; nuking westerlies and river waves.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "waves",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-crissy-field",
+      "name": "Crissy Field",
+      "lat": 37.805,
+      "lng": -122.463,
+      "countryCode": "US",
+      "region": "San Francisco",
+      "why": "Sail under the Golden Gate in strong summer westerlies and big ebb tides; experts only.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-sherman-island",
+      "name": "Sherman Island",
+      "lat": 38.04,
+      "lng": -121.77,
+      "countryCode": "US",
+      "region": "Sacramento Delta",
+      "why": "Delta levee spot where the sea breeze funnels inland; warm flat water and reliable afternoon wind.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "thermal",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-waddell-creek",
+      "name": "Waddell Creek",
+      "lat": 37.098,
+      "lng": -122.277,
+      "countryCode": "US",
+      "region": "Santa Cruz",
+      "why": "Highway 1 wave spot with north-westerlies and Pacific swell; a California windsurf classic.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "thermal"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-pistol-river",
+      "name": "Pistol River",
+      "lat": 42.265,
+      "lng": -124.4,
+      "countryCode": "US",
+      "region": "Oregon",
+      "why": "Site of the Pistol River Wave Bash; summer north wind and cold Pacific waves.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "waves",
+        "advanced"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-floras-lake",
+      "name": "Floras Lake",
+      "lat": 42.893,
+      "lng": -124.502,
+      "countryCode": "US",
+      "region": "Oregon",
+      "why": "Lake separated from the ocean by a dune; warm flat water with the same coast wind.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-canadian-hole",
+      "name": "Canadian Hole",
+      "lat": 35.283,
+      "lng": -75.549,
+      "countryCode": "US",
+      "region": "Cape Hatteras",
+      "why": "Pamlico Sound flat water at Kite Point and Atlantic waves across the road; the East Coast hub.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "flat-water",
+        "waves",
+        "school"
+      ],
+      "source": "Kiteworld Magazine"
+    },
+    {
+      "id": "kite-bird-island-basin",
+      "name": "Bird Island Basin",
+      "lat": 27.462,
+      "lng": -97.335,
+      "countryCode": "US",
+      "region": "Corpus Christi",
+      "why": "Laguna Madre's shallow flats inside Padre Island National Seashore; wind most days of the year.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "flat-water",
+        "lagoon",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-south-padre-island",
+      "name": "South Padre Island",
+      "lat": 26.105,
+      "lng": -97.17,
+      "countryCode": "US",
+      "region": "Texas",
+      "why": "Bay side flats and Gulf surf on one barrier island; steady south-easterlies.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "flat-water",
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-crandon-park-key-biscayne",
+      "name": "Crandon Park, Key Biscayne",
+      "lat": 25.723,
+      "lng": -80.153,
+      "countryCode": "US",
+      "region": "Miami",
+      "why": "Miami's kite beach with winter cold fronts and easterly trades over shallow flats.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "flat-water",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kalmus-beach",
+      "name": "Kalmus Beach",
+      "lat": 41.635,
+      "lng": -70.283,
+      "countryCode": "US",
+      "region": "Cape Cod",
+      "why": "Nantucket Sound's south-westerly sea breeze arrives most summer afternoons; sandy and sheltered.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "school",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-squamish-spit",
+      "name": "Squamish Spit",
+      "lat": 49.697,
+      "lng": -123.159,
+      "countryCode": "CA",
+      "region": "British Columbia",
+      "why": "Thermal inflow up Howe Sound between granite walls; windy nearly every summer afternoon.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "flat-water",
+        "advanced"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-nitinat-lake",
+      "name": "Nitinat Lake",
+      "lat": 48.81,
+      "lng": -124.67,
+      "countryCode": "CA",
+      "region": "Vancouver Island",
+      "why": "Long fjord lake where the thermal blows daily; camp-and-sail with no cell coverage.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "thermal",
+        "flat-water"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-les-de-la-madeleine",
+      "name": "Îles-de-la-Madeleine",
+      "lat": 47.385,
+      "lng": -61.87,
+      "countryCode": "CA",
+      "region": "Quebec",
+      "why": "Gulf of St Lawrence archipelago of dunes and lagoons; Canada's most consistent wind.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "waves"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-la-ventana",
+      "name": "La Ventana",
+      "lat": 24.045,
+      "lng": -109.99,
+      "countryCode": "MX",
+      "region": "Baja California Sur",
+      "why": "El Norte blows down the Sea of Cortez all winter; campground launch and warm chop.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "trade-wind",
+        "school",
+        "foil"
+      ],
+      "source": "Kiteworld Magazine"
+    },
+    {
+      "id": "kite-los-barriles",
+      "name": "Los Barriles",
+      "lat": 23.685,
+      "lng": -109.695,
+      "countryCode": "MX",
+      "region": "Baja California Sur",
+      "why": "Baja's original windsurf town with the same winter northerlies and a sandy launch.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "trade-wind",
+        "waves"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-progreso",
+      "name": "Progreso",
+      "lat": 21.285,
+      "lng": -89.66,
+      "countryCode": "MX",
+      "region": "Yucatán",
+      "why": "Gulf of Mexico flats with winter Nortes and spring sea breezes; Mérida's beach.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-el-cuyo",
+      "name": "El Cuyo",
+      "lat": 21.515,
+      "lng": -87.675,
+      "countryCode": "MX",
+      "region": "Yucatán",
+      "why": "Sleepy fishing village with a long shallow beach and reliable winter-spring wind.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-isla-blanca",
+      "name": "Isla Blanca",
+      "lat": 21.32,
+      "lng": -86.81,
+      "countryCode": "MX",
+      "region": "Cancún",
+      "why": "Sand spit north of Cancún with a knee-deep lagoon; trade winds most of the year.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-placencia",
+      "name": "Placencia",
+      "lat": 16.517,
+      "lng": -88.366,
+      "countryCode": "BZ",
+      "region": "Belize",
+      "why": "Peninsula tip with easterly trades and reef-sheltered water.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-bahia-salinas",
+      "name": "Bahía Salinas",
+      "lat": 11.048,
+      "lng": -85.735,
+      "countryCode": "CR",
+      "region": "Guanacaste",
+      "why": "Papagayo winds funnel across Costa Rica's northwest bay; 30-knot days from December.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "flat-water",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-punta-chame",
+      "name": "Punta Chame",
+      "lat": 8.64,
+      "lng": -79.704,
+      "countryCode": "PA",
+      "region": "Panamá Oeste",
+      "why": "Tip of a long sand peninsula on the Pacific side; dry-season trades and huge low-tide flats.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-cayo-guillermo",
+      "name": "Cayo Guillermo",
+      "lat": 22.595,
+      "lng": -78.66,
+      "countryCode": "CU",
+      "region": "Ciego de Ávila",
+      "why": "Shallow flats on Cuba's northern cays with winter trades.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "flat-water",
+        "lagoon"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-barkers-beach",
+      "name": "Barkers Beach",
+      "lat": 19.395,
+      "lng": -81.407,
+      "countryCode": "KY",
+      "region": "Grand Cayman",
+      "why": "North Sound flats where the easterly trades are cleanest; the island's kite beach.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-kite-beach-cabarete",
+      "name": "Kite Beach, Cabarete",
+      "lat": 19.757,
+      "lng": -70.422,
+      "countryCode": "DO",
+      "region": "Puerto Plata",
+      "why": "Trade wind builds each afternoon; flat inside the reef, waves outside, and a whole town built on kiting.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "trade-wind",
+        "waves",
+        "school",
+        "thermal"
+      ],
+      "source": "Kiteworld Magazine"
+    },
+    {
+      "id": "kite-buen-hombre",
+      "name": "Buen Hombre",
+      "lat": 19.84,
+      "lng": -71.38,
+      "countryCode": "DO",
+      "region": "Monte Cristi",
+      "why": "Fishing village on the north-west coast with a reef lagoon; stronger, drier trades than Cabarete.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-isla-verde-kite-beach",
+      "name": "Isla Verde Kite Beach",
+      "lat": 18.452,
+      "lng": -66.018,
+      "countryCode": "PR",
+      "region": "San Juan",
+      "why": "Trade-wind city beach beside the airport; easy launch and chop.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "trade-wind",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-long-bay-beach",
+      "name": "Long Bay Beach",
+      "lat": 21.772,
+      "lng": -72.175,
+      "countryCode": "TC",
+      "region": "Providenciales",
+      "why": "Waist-deep turquoise flats for miles; trade winds and beginner-perfect water.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "flat-water",
+        "beginner",
+        "school",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-jabberwock-beach",
+      "name": "Jabberwock Beach",
+      "lat": 17.154,
+      "lng": -61.785,
+      "countryCode": "AG",
+      "region": "Antigua",
+      "why": "Antigua's kite beach on the north-east coast; side-onshore trades and a shallow bay.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "trade-wind",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-silver-sands",
+      "name": "Silver Sands",
+      "lat": 13.064,
+      "lng": -59.532,
+      "countryCode": "BB",
+      "region": "Barbados",
+      "why": "South-coast trade-wind spot with a reef wave; a windsurf classic since the 1980s.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "waves",
+        "trade-wind"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-cas-en-bas",
+      "name": "Cas en Bas",
+      "lat": 14.092,
+      "lng": -60.94,
+      "countryCode": "LC",
+      "region": "Saint Lucia",
+      "why": "Reef-sheltered bay on the north-east tip with trades and a kite centre.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "trade-wind",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-union-island",
+      "name": "Union Island",
+      "lat": 12.598,
+      "lng": -61.413,
+      "countryCode": "VC",
+      "region": "Grenadines",
+      "why": "Reef flats off Clifton with steady trades; small island, big kite reputation.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-fisherman-s-huts-hadicurari",
+      "name": "Fisherman's Huts (Hadicurari)",
+      "lat": 12.583,
+      "lng": -70.045,
+      "countryCode": "AW",
+      "region": "Aruba",
+      "why": "Aruba's kite and windsurf beach with trade winds 300 days a year and warm flat water.",
+      "bestMonths": [],
+      "tags": [
+        "trade-wind",
+        "flat-water",
+        "school",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-atlantis-beach",
+      "name": "Atlantis Beach",
+      "lat": 12.05,
+      "lng": -68.288,
+      "countryCode": "BQ",
+      "region": "Bonaire",
+      "why": "Bonaire's kite beach on the south-west tip; constant trades and clear reef water.",
+      "bestMonths": [],
+      "tags": [
+        "trade-wind",
+        "flat-water",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-el-yaque",
+      "name": "El Yaque",
+      "lat": 10.864,
+      "lng": -63.98,
+      "countryCode": "VE",
+      "region": "Isla Margarita",
+      "why": "Trade winds and standing-depth water made El Yaque a windsurf and kite destination.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "flat-water",
+        "trade-wind",
+        "school"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-los-roques",
+      "name": "Los Roques",
+      "lat": 11.95,
+      "lng": -66.67,
+      "countryCode": "VE",
+      "region": "Los Roques",
+      "why": "Coral archipelago with mirror-flat lagoons and trade winds; boat-accessed kiting.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-adicora",
+      "name": "Adícora",
+      "lat": 11.941,
+      "lng": -69.801,
+      "countryCode": "VE",
+      "region": "Falcón",
+      "why": "Paraguaná peninsula town where the trade wind blows nearly every day; Venezuela's kite school.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "trade-wind",
+        "flat-water",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-cabo-de-la-vela",
+      "name": "Cabo de la Vela",
+      "lat": 12.2,
+      "lng": -72.16,
+      "countryCode": "CO",
+      "region": "La Guajira",
+      "why": "Desert peninsula with Wayuu villages and 25-knot trades across a flat bay.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-salinas-del-rey",
+      "name": "Salinas del Rey",
+      "lat": 10.935,
+      "lng": -75.12,
+      "countryCode": "CO",
+      "region": "Atlántico",
+      "why": "GKA Kite World Tour venue between Cartagena and Barranquilla; strong trades and a beach wave.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "trade-wind"
+      ],
+      "source": "GKA Kite World Tour"
+    },
+    {
+      "id": "kite-santa-marianita",
+      "name": "Santa Marianita",
+      "lat": -0.999,
+      "lng": -80.846,
+      "countryCode": "EC",
+      "region": "Manta",
+      "why": "Ecuador's kite beach with a long side-onshore season and Pacific chop.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "waves",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-paracas",
+      "name": "Paracas",
+      "lat": -13.833,
+      "lng": -76.257,
+      "countryCode": "PE",
+      "region": "Ica",
+      "why": "The Paracas wind blows over a desert bay; flat water beside the national reserve.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-m-ncora",
+      "name": "Máncora",
+      "lat": -4.104,
+      "lng": -81.05,
+      "countryCode": "PE",
+      "region": "Piura",
+      "why": "Northern Peru's surf town where afternoon southerlies suit wave kiting.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "waves",
+        "thermal"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-matanzas",
+      "name": "Matanzas",
+      "lat": -33.962,
+      "lng": -71.874,
+      "countryCode": "CL",
+      "region": "O'Higgins",
+      "why": "Chile's windsurf and kite village with strong summer southerlies and long lefts.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "waves",
+        "advanced",
+        "thermal"
+      ],
+      "source": "Windsurf Magazine"
+    },
+    {
+      "id": "kite-cuesta-del-viento",
+      "name": "Cuesta del Viento",
+      "lat": -30.19,
+      "lng": -69.175,
+      "countryCode": "AR",
+      "region": "San Juan",
+      "why": "Reservoir in the Andean foothills with a thermal that blows 25 knots every afternoon.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "thermal",
+        "flat-water"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-laguna-garzon",
+      "name": "Laguna Garzón",
+      "lat": -34.795,
+      "lng": -54.565,
+      "countryCode": "UY",
+      "region": "Rocha",
+      "why": "Coastal lagoon east of Punta del Este; flat water and summer sea breezes.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-lagoa-da-conceicao",
+      "name": "Lagoa da Conceição",
+      "lat": -27.6,
+      "lng": -48.456,
+      "countryCode": "BR",
+      "region": "Florianópolis",
+      "why": "Big lagoon in the middle of the island with steady north-easterlies; Brazil's southern kite hub.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-ibiraquera",
+      "name": "Ibiraquera",
+      "lat": -28.162,
+      "lng": -48.675,
+      "countryCode": "BR",
+      "region": "Santa Catarina",
+      "why": "Shallow lagoon next to Praia do Rosa; light-wind foiling and beginner water.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "foil",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-cumbuco",
+      "name": "Cumbuco",
+      "lat": -3.627,
+      "lng": -38.731,
+      "countryCode": "BR",
+      "region": "Ceará",
+      "why": "Brazil's kite gateway: trade winds from July to January, dune lagoons behind and chop in front.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "trade-wind",
+        "school",
+        "downwinder"
+      ],
+      "source": "Kiteworld Magazine"
+    },
+    {
+      "id": "kite-lagoa-do-cauipe",
+      "name": "Lagoa do Cauípe",
+      "lat": -3.58,
+      "lng": -38.79,
+      "countryCode": "BR",
+      "region": "Ceará",
+      "why": "Freshwater lagoon behind the dunes near Cumbuco; the flat-water freestyle training ground.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "beginner"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-taiba",
+      "name": "Taíba",
+      "lat": -3.51,
+      "lng": -38.907,
+      "countryCode": "BR",
+      "region": "Ceará",
+      "why": "Small village with a sea spot and a lagoon; trade winds and a beach wave.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "waves",
+        "lagoon",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-ilha-do-guajiru",
+      "name": "Ilha do Guajiru",
+      "lat": -2.9,
+      "lng": -39.897,
+      "countryCode": "BR",
+      "region": "Ceará",
+      "why": "Huge tidal flat that fills into a mirror lagoon; a flat-water freestyle destination.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "lagoon",
+        "flat-water",
+        "advanced"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-pre",
+      "name": "Preá",
+      "lat": -2.808,
+      "lng": -40.42,
+      "countryCode": "BR",
+      "region": "Ceará",
+      "why": "Long beach 12 km east of Jeri with side-shore trades; base for Jericoacoara riders.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "trade-wind",
+        "school",
+        "downwinder"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-jericoacoara",
+      "name": "Jericoacoara",
+      "lat": -2.796,
+      "lng": -40.513,
+      "countryCode": "BR",
+      "region": "Ceará",
+      "why": "Dune village on a headland with side-shore trades and wave spots; GKA freestyle has run here.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "trade-wind",
+        "waves",
+        "downwinder"
+      ],
+      "source": "GKA Kite World Tour"
+    },
+    {
+      "id": "kite-barra-grande",
+      "name": "Barra Grande",
+      "lat": -2.907,
+      "lng": -41.41,
+      "countryCode": "BR",
+      "region": "Piauí",
+      "why": "Flat, shallow bay in Piauí's short coastline; a rising trade-wind kite town.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "flat-water",
+        "trade-wind",
+        "school"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-atins",
+      "name": "Atins",
+      "lat": -2.571,
+      "lng": -42.742,
+      "countryCode": "BR",
+      "region": "Maranhão",
+      "why": "Rio Preguiças mouth beside the Lençóis dunes; flat river water and a long downwinder finish.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "flat-water",
+        "downwinder",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-sao-miguel-do-gostoso",
+      "name": "São Miguel do Gostoso",
+      "lat": -5.118,
+      "lng": -35.635,
+      "countryCode": "BR",
+      "region": "Rio Grande do Norte",
+      "why": "Corner of Brazil's north-east where the trade blows side-shore; several schools, few crowds.",
+      "bestMonths": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "trade-wind",
+        "school",
+        "waves"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-galinhos",
+      "name": "Galinhos",
+      "lat": -5.09,
+      "lng": -36.275,
+      "countryCode": "BR",
+      "region": "Rio Grande do Norte",
+      "why": "Peninsula village reached by boat with a flat estuary channel and strong trades.",
+      "bestMonths": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "flat-water",
+        "trade-wind",
+        "downwinder"
+      ],
+      "source": "Kitesurf Atlas"
+    },
+    {
+      "id": "kite-praia-do-farol-icarai-de-amontada",
+      "name": "Praia do Farol, Icaraí de Amontada",
+      "lat": -3.02,
+      "lng": -39.69,
+      "countryCode": "BR",
+      "region": "Ceará",
+      "why": "Icaraizinho's downwinder beach with side-shore trade and a river flat; quieter than Cumbuco.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "downwinder",
+        "flat-water",
+        "trade-wind"
+      ],
+      "source": "Kitesurf Atlas"
+    }
+  ]
+}
