@@ -13,6 +13,7 @@ import {
 } from "@/lib/interview";
 import { track, trackOnce } from "@/lib/analytics";
 import type { PinWithOwner } from "@/lib/types";
+import { BriefIcon } from "./BriefIcon";
 
 // The trust graph, at the moment of intent: right after you search a place,
 // show which people you actually know have been there — with their pin as the
@@ -141,7 +142,7 @@ export default function SearchPlaceCard() {
       className="flex w-full items-center justify-center gap-1.5 rounded-full border border-line py-2 text-xs font-semibold text-ink-2 transition-colors hover:bg-paper-2"
       data-testid="button-field-brief"
     >
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="text-accent"><circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="2.2" fill="currentColor" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+      <BriefIcon size={13} className="text-accent" />
       Field brief — drone rules, light, wind
     </button>
   );

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
+import { BriefIcon } from "./BriefIcon";
 
 // "Brief here": a field brief for wherever the map is looking, no search and
 // no pin needed. Uses the map's centre (the last reported view bounds); the
@@ -47,11 +48,7 @@ export function BriefHereButton({ bubbleLeft = false }: { bubbleLeft?: boolean }
       className={`group relative grid h-11 w-11 place-items-center rounded-full bg-paper/90 text-accent shadow-float backdrop-blur transition-colors hover:bg-paper ${busy ? "opacity-70" : ""}`}
       data-testid="button-brief-here"
     >
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" className={busy ? "animate-pulse" : ""}>
-        <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2" />
-        <circle cx="12" cy="12" r="2.2" fill="currentColor" />
-        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      </svg>
+      <BriefIcon size={20} className={busy ? "animate-pulse" : ""} />
       <span
         className={`pointer-events-none absolute top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-full bg-ink/90 px-2.5 py-1 text-[11px] text-paper opacity-0 transition-opacity group-hover:opacity-100 sm:block ${
           bubbleLeft ? "right-full mr-2" : "left-full ml-2"

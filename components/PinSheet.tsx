@@ -16,6 +16,7 @@ import { downscaleImage } from "@/lib/image";
 import { useViewer } from "@/lib/hooks";
 import { SAMPLE_VIDEOS, photo } from "@/lib/seed";
 import { ScoutDetailsFields, scoutFromNote, scoutToNote, type ScoutDraft } from "./ScoutDetails";
+import { BriefIcon } from "./BriefIcon";
 import { REPORT_OUTCOME_LABELS, TIME_OF_DAY_LABELS, type ReportOutcome } from "@/lib/types";
 
 // Immersive pin view: a large modal with a photo collage (click any photo to
@@ -375,7 +376,7 @@ export default function PinSheet() {
                   className="flex items-center gap-1.5 rounded-full bg-paper-2 px-3.5 py-2 text-sm font-medium text-ink-2 transition-colors hover:bg-line"
                   data-testid="button-field-brief"
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-accent"><circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="2.2" fill="currentColor" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                  <BriefIcon size={14} className="text-accent" />
                   Field brief
                 </button>
               </div>
