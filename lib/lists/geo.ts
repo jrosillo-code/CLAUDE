@@ -38,8 +38,8 @@ const NAME_ALIAS: Record<string, string[]> = {
 // Island groups the 110m atlas leaves out, as [west, south, east, north].
 const ISLAND_BOXES: Record<string, [number, number, number, number][]> = {
   ES: [[-18.5, 27.4, -13.2, 29.6]], // Canary Islands
-  PT: [[-31.5, 36.7, -24.8, 39.9], [-17.4, 32.3, -16.1, 33.2]], // Azores, Madeira
-  EC: [[-92.2, -1.6, -89.0, 0.9]], // Galápagos
+  PT: [[-31.5, 36.7, -24.5, 39.9], [-17.4, 32.3, -16.1, 33.2]], // Azores (incl. Formigas), Madeira
+  EC: [[-92.2, -1.6, -89.0, 1.9]], // Galápagos, incl. Darwin and Wolf in the north
   CL: [[-109.6, -27.3, -109.1, -27.0], [-80.9, -33.9, -78.6, -33.5]], // Easter Island, Juan Fernández
   AU: [[96.7, -12.3, 97.0, -11.7], [105.5, -10.7, 105.8, -10.3], [158.9, -31.9, 159.2, -31.4], [167.8, -29.2, 168.1, -28.9]], // Cocos, Christmas, Lord Howe, Norfolk
   IN: [[92.0, 6.5, 94.3, 14.0], [71.5, 8.0, 74.0, 12.5]], // Andaman & Nicobar, Lakshadweep

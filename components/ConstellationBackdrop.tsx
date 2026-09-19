@@ -194,10 +194,12 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
       pScale = mobile ? (w / 360) * 1.06 : Math.max(w / 360, h / 150) * 1.08;
       const sz = mobile ? 1 : Math.min(1.5, Math.max(1, pScale / 4.5));
       if (mobile) {
-        const r = Math.min(w * 0.33, 150);
+        // The globe rises behind the top of the profile card (which starts
+        // at ~13 rem on phones), like a moon behind a window — no gap.
+        const r = Math.min(w * 0.4, 170);
         globe = { r, lam0: reduced ? 10 : 10 + (t * 3) % 360, tilt: 18 };
         pCx = w / 2;
-        pCy = 34 + r;
+        pCy = 28 + r;
       } else {
         globe = null;
         pCx = w / 2 + drift;

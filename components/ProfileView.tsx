@@ -142,9 +142,9 @@ export default function ProfileView({ handle }: { handle: string }) {
         Map
       </Link>
 
-      {/* Phones: the hero starts lower so the whole constellation band — and
-          your pins on it — sits in clear sky above the card. */}
-      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-[21.5rem] sm:px-6 sm:pt-24">
+      {/* Phones: the hero card starts a little over halfway down the globe,
+          so the constellation rises behind it instead of floating above. */}
+      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-[13rem] sm:px-6 sm:pt-24">
         {/* Identity card — frosted glass floating over the constellation. */}
         <div className="relative rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:px-8">
         <div className="flex flex-col items-center text-center">

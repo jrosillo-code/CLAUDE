@@ -1,0 +1,3221 @@
+{
+  "id": "dive",
+  "label": "Dive",
+  "blurb": "Wrecks, walls, reefs and pelagics the dive press keeps ranking.",
+  "sources": [
+    "Scuba Diving Readers Choice",
+    "PADI Best Dive Sites",
+    "Dive Magazine",
+    "Lonely Planet Epic Dives"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "dive-ss-thistlegorm",
+      "name": "SS Thistlegorm",
+      "lat": 27.8114,
+      "lng": 33.9201,
+      "countryCode": "EG",
+      "region": "Sha'ab Ali, Straits of Gubal",
+      "why": "WWII supply ship wreck loaded with motorbikes, trucks and rail cars, one of the world's most-dived wrecks.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "wreck",
+        "liveaboard"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-blue-hole-dahab",
+      "name": "Blue Hole, Dahab",
+      "lat": 28.5723,
+      "lng": 34.5361,
+      "countryCode": "EG",
+      "region": "Dahab, South Sinai",
+      "why": "A sheer 130m sinkhole opening straight onto the reef wall, entered from the beach through a shallow saddle called the Bells.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-shark-yolanda-reef",
+      "name": "Shark and Yolanda Reef",
+      "lat": 27.7167,
+      "lng": 34.25,
+      "countryCode": "EG",
+      "region": "Ras Mohammed National Park",
+      "why": "Two pinnacles at the tip of Sinai with a sheer wall, huge schools of barracuda and jack, and Yolanda's scattered wreck cargo.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "wall",
+        "reef",
+        "drift"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-abu-nuhas",
+      "name": "Abu Nuhas Ships' Graveyard",
+      "lat": 27.5658,
+      "lng": 34.0672,
+      "countryCode": "EG",
+      "region": "Straits of Gubal",
+      "why": "Four wrecks piled on one shallow reef, sunk over a century of ships missing the same turn into the Suez Canal approach.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-elphinstone-reef",
+      "name": "Elphinstone Reef",
+      "lat": 25.3167,
+      "lng": 34.7833,
+      "countryCode": "EG",
+      "region": "Marsa Alam",
+      "why": "A submerged reef wall dropping past 100m on either side of a narrow plateau, known for oceanic whitetip sharks in autumn.",
+      "bestMonths": [
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "wall",
+        "sharks",
+        "drift"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-daedalus-reef",
+      "name": "Daedalus Reef",
+      "lat": 24.65,
+      "lng": 35.8833,
+      "countryCode": "EG",
+      "region": "Central Red Sea, offshore",
+      "why": "An isolated lighthouse reef in open water, walls on every side and a hammerhead shark season that draws liveaboards.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "wall",
+        "sharks",
+        "liveaboard"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-brothers-islands",
+      "name": "The Brothers (El Akhawein)",
+      "lat": 26.3167,
+      "lng": 34.0833,
+      "countryCode": "EG",
+      "region": "Central Red Sea, offshore",
+      "why": "Two tiny islands rising from deep water with sheer walls, strong currents and two historic wrecks, reached only by liveaboard.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "wall",
+        "wreck",
+        "liveaboard",
+        "sharks"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-st-johns-reef",
+      "name": "St. John's Reef",
+      "lat": 22.9833,
+      "lng": 36.35,
+      "countryCode": "EG",
+      "region": "Deep south, near Sudan border",
+      "why": "A maze of coral pinnacles and caves near the Sudanese border, among the least-crowded reef systems in the Red Sea.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "liveaboard"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-sanganeb-atoll",
+      "name": "Sanganeb Atoll",
+      "lat": 19.7333,
+      "lng": 37.4333,
+      "countryCode": "SD",
+      "region": "Port Sudan",
+      "why": "A ring-shaped atoll rising from deep water with a lighthouse on its rim, hammerheads on the plateau and dramatic outer walls.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "wall",
+        "sharks",
+        "liveaboard"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-umbria-wreck",
+      "name": "Umbria Wreck",
+      "lat": 19.6167,
+      "lng": 37.2167,
+      "countryCode": "SD",
+      "region": "Wingate Reef, Port Sudan",
+      "why": "An Italian cargo ship scuttled in 1940 still carrying its wartime load, resting almost intact in clear, shallow water.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-zabargad-island",
+      "name": "Zabargad Island",
+      "lat": 23.6,
+      "lng": 36.2,
+      "countryCode": "EG",
+      "region": "Deep south Red Sea",
+      "why": "A remote peridot-mining island with pristine reef walls and coral gardens rarely reached outside the liveaboard season.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef",
+        "liveaboard"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-musandam-peninsula",
+      "name": "Musandam Peninsula",
+      "lat": 26.15,
+      "lng": 56.25,
+      "countryCode": "OM",
+      "region": "Khasab",
+      "why": "Fjord-like inlets on the Strait of Hormuz with soft-coral walls, seasonal whale sharks and strong currents from the strait.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "wall",
+        "drift",
+        "whale-shark"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-daymaniyat-islands",
+      "name": "Daymaniyat Islands",
+      "lat": 23.85,
+      "lng": 58.1,
+      "countryCode": "OM",
+      "region": "Muscat",
+      "why": "A protected nine-island chain with coral gardens, turtles and a summer whale shark season a short boat ride from Muscat.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "reef",
+        "whale-shark"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-eilat-coral-reserve",
+      "name": "Coral Beach Nature Reserve, Eilat",
+      "lat": 29.5,
+      "lng": 34.9333,
+      "countryCode": "IL",
+      "region": "Eilat",
+      "why": "The world's northernmost coral reef, shore-accessible with a marked underwater trail through table and brain corals.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-great-blue-hole",
+      "name": "Great Blue Hole",
+      "lat": 17.3161,
+      "lng": -87.5351,
+      "countryCode": "BZ",
+      "region": "Lighthouse Reef",
+      "why": "A near-perfect 300m-wide sinkhole with a ring of shallow reef and a plunge past ancient stalactites at 40m.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "wall",
+        "cenote"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-hol-chan-marine-reserve",
+      "name": "Hol Chan Marine Reserve",
+      "lat": 17.8667,
+      "lng": -87.9333,
+      "countryCode": "BZ",
+      "region": "Ambergris Caye",
+      "why": "A cut through the barrier reef packed with grouper, snapper and nurse sharks in the adjoining Shark Ray Alley.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "sharks"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-turneffe-atoll",
+      "name": "Turneffe Atoll",
+      "lat": 17.35,
+      "lng": -87.85,
+      "countryCode": "BZ",
+      "region": "Belize Barrier Reef",
+      "why": "Belize's largest atoll, with drop-offs, mangrove flats and calmer diving than the outer reef.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-palancar-reef",
+      "name": "Palancar Reef",
+      "lat": 20.3167,
+      "lng": -87.0167,
+      "countryCode": "MX",
+      "region": "Cozumel",
+      "why": "A drift along Cozumel's signature wall of towering coral pinnacles, swim-throughs and clear Caribbean current.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "drift",
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-cenote-dos-ojos",
+      "name": "Cenote Dos Ojos",
+      "lat": 20.3178,
+      "lng": -87.3931,
+      "countryCode": "MX",
+      "region": "Tulum, Yucatán",
+      "why": "Two linked cenote pools opening into a cavern system of limestone columns and glassy fresh water.",
+      "bestMonths": [],
+      "tags": [
+        "cenote"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-cenote-angelita",
+      "name": "Cenote Angelita",
+      "lat": 20.1897,
+      "lng": -87.4636,
+      "countryCode": "MX",
+      "region": "Tulum, Yucatán",
+      "why": "A deep sinkhole with a hydrogen-sulphide cloud layer at 30m that looks like a ghostly underwater river.",
+      "bestMonths": [],
+      "tags": [
+        "cenote"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-musa-underwater-museum",
+      "name": "MUSA Underwater Museum",
+      "lat": 21.1719,
+      "lng": -86.7392,
+      "countryCode": "MX",
+      "region": "Cancún/Isla Mujeres",
+      "why": "Hundreds of life-cast concrete sculptures sunk to seed new reef and pull divers off the natural reef nearby.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-cabo-pulmo-reef",
+      "name": "Cabo Pulmo Reef",
+      "lat": 23.4333,
+      "lng": -109.4167,
+      "countryCode": "MX",
+      "region": "Baja California Sur",
+      "why": "The Sea of Cortez's only hard-coral reef, rebuilt by a no-take zone into schools of jack so dense they blacken the water.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "reef",
+        "sharks"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-los-islotes",
+      "name": "Los Islotes",
+      "lat": 24.5833,
+      "lng": -110.3833,
+      "countryCode": "MX",
+      "region": "La Paz, Baja California Sur",
+      "why": "A sea lion colony on a rocky islet where pups play with divers in clear, current-swept water.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-socorro-island",
+      "name": "Socorro Island",
+      "lat": 18.7844,
+      "lng": -110.975,
+      "countryCode": "MX",
+      "region": "Revillagigedo Archipelago",
+      "why": "A volcanic island three days offshore where giant oceanic mantas approach divers on their own, plus schooling hammerheads.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "manta",
+        "sharks",
+        "liveaboard"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-bloody-bay-wall",
+      "name": "Bloody Bay Wall",
+      "lat": 19.6987,
+      "lng": -80.0578,
+      "countryCode": "KY",
+      "region": "Little Cayman",
+      "why": "A vertical wall starting in 6m of water and plunging past 300m, thick with sponges and famous for its visibility.",
+      "bestMonths": [],
+      "tags": [
+        "wall"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-kittiwake-wreck",
+      "name": "USS Kittiwake",
+      "lat": 19.3672,
+      "lng": -81.4092,
+      "countryCode": "KY",
+      "region": "Seven Mile Beach, Grand Cayman",
+      "why": "A submarine-rescue vessel sunk as an artificial reef in 2011, its open decks easy for divers of any level.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-stingray-city",
+      "name": "Stingray City",
+      "lat": 19.3667,
+      "lng": -81.3667,
+      "countryCode": "KY",
+      "region": "North Sound, Grand Cayman",
+      "why": "A shallow sandbar where dozens of southern stingrays gather to be hand-fed, one of the Caribbean's most photographed dives.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-captain-keith-tibbetts-wreck",
+      "name": "MV Captain Keith Tibbetts",
+      "lat": 19.7203,
+      "lng": -79.7825,
+      "countryCode": "KY",
+      "region": "Cayman Brac",
+      "why": "A Russian Koni-class frigate broken over a reef edge, its bow and superstructure still recognisable at diveable depth.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-salt-pier",
+      "name": "Salt Pier",
+      "lat": 12.1114,
+      "lng": -68.28,
+      "countryCode": "BQ",
+      "region": "Bonaire",
+      "why": "Pylons of a working salt-loading pier thick with orange tube sponge, dived only when no ship is berthed.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-thousand-steps",
+      "name": "1000 Steps",
+      "lat": 12.1897,
+      "lng": -68.3006,
+      "countryCode": "BQ",
+      "region": "Bonaire",
+      "why": "A shore dive down a cliffside stairway onto a healthy fringing reef, classic Bonaire drive-up diving.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-saba-marine-park",
+      "name": "Saba Marine Park",
+      "lat": 17.6297,
+      "lng": -63.2306,
+      "countryCode": "BQ",
+      "region": "Saba",
+      "why": "Seamount pinnacles rising from deep water around a volcanic island, with pelagics on the outer walls.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "drift"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-charles-brown-wreck",
+      "name": "Charles L. Brown Wreck",
+      "lat": 17.4783,
+      "lng": -62.9822,
+      "countryCode": "BQ",
+      "region": "St. Eustatius (Statia)",
+      "why": "A telecom cable-layer sunk as an artificial reef, sitting upright and colonised by soft coral.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-bianca-c-wreck",
+      "name": "Bianca C Wreck",
+      "lat": 12.0028,
+      "lng": -61.7314,
+      "countryCode": "GD",
+      "region": "St. George's, Grenada",
+      "why": "A 180m cruise liner that burned and sank in 1961, the largest diveable wreck in the Caribbean, nicknamed the Titanic of the Caribbean.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-speyside-tobago",
+      "name": "Speyside Reefs",
+      "lat": 11.3,
+      "lng": -60.5167,
+      "countryCode": "TT",
+      "region": "Tobago",
+      "why": "Nutrient-rich Guyana Current diving with the world's largest recorded brain coral and regular manta ray passes.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "manta",
+        "drift"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-champagne-reef",
+      "name": "Champagne Reef",
+      "lat": 15.2667,
+      "lng": -61.3667,
+      "countryCode": "DM",
+      "region": "Roseau, Dominica",
+      "why": "Volcanic vents bubble warm gas through the sand like a glass of champagne, alongside a healthy coral slope.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-silver-bank",
+      "name": "Silver Bank",
+      "lat": 20.75,
+      "lng": -70.0833,
+      "countryCode": "DO",
+      "region": "Samaná, offshore",
+      "why": "A shallow offshore bank where humpback whales calve each winter, snorkelled rather than scuba dived under strict permit.",
+      "bestMonths": [
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "drift"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-jardines-de-la-reina",
+      "name": "Jardines de la Reina",
+      "lat": 20.7,
+      "lng": -78.9667,
+      "countryCode": "CU",
+      "region": "Ciego de Ávila, offshore",
+      "why": "A protected archipelago of mangrove cays with some of the Caribbean's healthiest shark populations.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "sharks",
+        "reef",
+        "liveaboard"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-cayos-cochinos",
+      "name": "Cayos Cochinos",
+      "lat": 15.95,
+      "lng": -86.48,
+      "countryCode": "HN",
+      "region": "Bay Islands, offshore",
+      "why": "A small marine reserve of cays off Roatán with steep coral walls and some of the region's clearest water.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-marys-place-roatan",
+      "name": "Mary's Place",
+      "lat": 16.3167,
+      "lng": -86.5333,
+      "countryCode": "HN",
+      "region": "Roatán",
+      "why": "A dramatic split in the reef wall with narrow canyons of black coral and sponge, one of Roatán's signature dives.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-utila-whale-sharks",
+      "name": "Utila",
+      "lat": 16.1,
+      "lng": -86.9,
+      "countryCode": "HN",
+      "region": "Bay Islands",
+      "why": "A budget dive hub known for near year-round whale shark sightings feeding on plankton blooms offshore.",
+      "bestMonths": [],
+      "tags": [
+        "whale-shark"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-coiba-national-park",
+      "name": "Coiba National Park",
+      "lat": 7.4667,
+      "lng": -81.7667,
+      "countryCode": "PA",
+      "region": "Gulf of Chiriquí, offshore",
+      "why": "An isolated former penal-colony island with big-animal diving, seasonal whale sharks and schooling hammerheads.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "sharks",
+        "whale-shark",
+        "liveaboard"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-providencia-cathedral",
+      "name": "Cathedral, Providencia",
+      "lat": 13.35,
+      "lng": -81.3667,
+      "countryCode": "CO",
+      "region": "Providencia, offshore",
+      "why": "A cavern of light shafts and swim-throughs off a remote Colombian island closer to Nicaragua than the mainland.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-san-andres-reef",
+      "name": "San Andrés Barrier Reef",
+      "lat": 12.5833,
+      "lng": -81.7,
+      "countryCode": "CO",
+      "region": "San Andrés, offshore",
+      "why": "A UNESCO biosphere reef ringing a small Caribbean island, with walls, wrecks and easy drift diving.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wreck",
+        "drift"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-tiger-beach",
+      "name": "Tiger Beach",
+      "lat": 26.6,
+      "lng": -78.9,
+      "countryCode": "BS",
+      "region": "Grand Bahama, offshore",
+      "why": "A shallow sandbank in open water where tiger sharks and lemon sharks are reliably encountered without a cage.",
+      "bestMonths": [],
+      "tags": [
+        "sharks"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-andros-barrier-reef",
+      "name": "Andros Barrier Reef & Blue Holes",
+      "lat": 24.4333,
+      "lng": -77.9,
+      "countryCode": "BS",
+      "region": "Andros",
+      "why": "The world's third-largest barrier reef, riddled with inland and ocean blue holes cut into ancient limestone.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "cenote",
+        "reef"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-thunderball-grotto",
+      "name": "Thunderball Grotto",
+      "lat": 24.1547,
+      "lng": -76.7936,
+      "countryCode": "BS",
+      "region": "Staniel Cay, Exumas",
+      "why": "A collapsed limestone cave open to the sky, its underwater tunnels made famous by two James Bond films.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-bimini-sharks",
+      "name": "Bimini",
+      "lat": 25.7167,
+      "lng": -79.3,
+      "countryCode": "BS",
+      "region": "Bimini",
+      "why": "Shallow banks close to Florida with great hammerhead encounters in winter and resident reef sharks year-round.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "sharks"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-uss-oriskany",
+      "name": "USS Oriskany",
+      "lat": 30.0667,
+      "lng": -87.0167,
+      "countryCode": "US",
+      "region": "Pensacola, Florida",
+      "why": "A decommissioned aircraft carrier sunk in 2006, the world's largest artificial reef, its flight deck at 42m.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-spiegel-grove-wreck",
+      "name": "USS Spiegel Grove",
+      "lat": 25.0672,
+      "lng": -80.3011,
+      "countryCode": "US",
+      "region": "Key Largo, Florida",
+      "why": "A 155m Navy landing ship deliberately sunk off the Keys, big enough to need several dives to see it all.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-molasses-reef",
+      "name": "Molasses Reef",
+      "lat": 25.0083,
+      "lng": -80.3758,
+      "countryCode": "US",
+      "region": "Key Largo, Florida",
+      "why": "The most-dived reef in the continental US, a shallow spur-and-groove system inside the Keys sanctuary.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-mona-island",
+      "name": "Mona Island",
+      "lat": 18.0889,
+      "lng": -67.9333,
+      "countryCode": "PR",
+      "region": "Mona Passage, offshore",
+      "why": "A remote uninhabited island between Puerto Rico and the Dominican Republic with pristine walls and few visitors.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-cane-bay-wall",
+      "name": "Cane Bay Wall",
+      "lat": 17.7833,
+      "lng": -64.8,
+      "countryCode": "VI",
+      "region": "St. Croix, US Virgin Islands",
+      "why": "A shore-accessible wall dropping from 12m to well past sport-diving limits, dived straight off the beach.",
+      "bestMonths": [],
+      "tags": [
+        "wall"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-cocos-island-bajo-alcyone",
+      "name": "Bajo Alcyone, Cocos Island",
+      "lat": 5.5406,
+      "lng": -87.0653,
+      "countryCode": "CR",
+      "region": "Cocos Island, offshore",
+      "why": "A seamount 36 hours by boat from the mainland where schooling scalloped hammerheads circle divers on the current.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "sharks",
+        "liveaboard",
+        "drift"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-cano-island",
+      "name": "Caño Island Biological Reserve",
+      "lat": 8.7167,
+      "lng": -83.8917,
+      "countryCode": "CR",
+      "region": "Osa Peninsula, offshore",
+      "why": "A jungle-fringed island reserve with rocky reefs, bull sharks and easier access than the Cocos liveaboard run.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "sharks"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-malpelo-island",
+      "name": "Malpelo Island",
+      "lat": 4.0033,
+      "lng": -81.6076,
+      "countryCode": "CO",
+      "region": "Eastern Pacific, offshore",
+      "why": "A sheer volcanic rock 500km offshore, walls thick with hammerheads, silky sharks and the odd whale shark.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "wall",
+        "sharks",
+        "liveaboard"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-darwins-arch",
+      "name": "Darwin's Arch, Galápagos",
+      "lat": 1.678,
+      "lng": -92.0,
+      "countryCode": "EC",
+      "region": "Darwin Island, offshore",
+      "why": "The Galápagos' northernmost dive, a current-swept pinnacle where whale sharks pass overhead from June to November.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "whale-shark",
+        "sharks",
+        "liveaboard",
+        "drift"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-wolf-island-galapagos",
+      "name": "Wolf Island",
+      "lat": 1.383,
+      "lng": -91.817,
+      "countryCode": "EC",
+      "region": "Galápagos, offshore",
+      "why": "A remote pinnacle paired with Darwin's Arch, known for hammerhead schools and strong, cold upwelling currents.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "sharks",
+        "liveaboard",
+        "cold-water"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-devils-crown-galapagos",
+      "name": "Devil's Crown",
+      "lat": -1.283,
+      "lng": -90.417,
+      "countryCode": "EC",
+      "region": "Floreana Island, Galápagos",
+      "why": "A submerged volcanic crater teeming with reef fish, sea lions and hammerhead passes in cooler Galápagos water.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "sharks"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-gordon-rocks-galapagos",
+      "name": "Gordon Rocks",
+      "lat": -0.567,
+      "lng": -90.217,
+      "countryCode": "EC",
+      "region": "Santa Cruz, Galápagos",
+      "why": "A flooded volcanic caldera famous for a strong current known as the washing machine and schooling hammerheads.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "sharks",
+        "drift"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-fernando-de-noronha",
+      "name": "Fernando de Noronha",
+      "lat": -3.85,
+      "lng": -32.45,
+      "countryCode": "BR",
+      "region": "Pernambuco, offshore",
+      "why": "A volcanic archipelago with the clearest water on Brazil's coast, resident spinner dolphins and green turtles.",
+      "bestMonths": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "reef",
+        "wall"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-anacapa-island",
+      "name": "Anacapa Island",
+      "lat": 34.0139,
+      "lng": -119.4325,
+      "countryCode": "US",
+      "region": "Channel Islands, California",
+      "why": "Cold-water kelp forest diving with sea lions and the arches of a small volcanic island off Ventura.",
+      "bestMonths": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "cold-water",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-browning-pass",
+      "name": "Browning Pass",
+      "lat": 50.85,
+      "lng": -127.55,
+      "countryCode": "CA",
+      "region": "Port Hardy, British Columbia",
+      "why": "Cold, current-fed water off northern Vancouver Island with some of the world's densest soft-coral walls.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "cold-water"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-silfra-fissure",
+      "name": "Silfra Fissure",
+      "lat": 64.2558,
+      "lng": -21.1186,
+      "countryCode": "IS",
+      "region": "Þingvellir National Park",
+      "why": "A rift between two tectonic plates filled with glacial meltwater so clear visibility runs past 100m.",
+      "bestMonths": [],
+      "tags": [
+        "cold-water"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-strytan-vent",
+      "name": "Strýtan",
+      "lat": 65.75,
+      "lng": -18.1167,
+      "countryCode": "IS",
+      "region": "Eyjafjörður, near Akureyri",
+      "why": "An underwater hot-spring cone rising from the fjord floor, one of the few shallow hydrothermal vents divers can reach.",
+      "bestMonths": [],
+      "tags": [
+        "cold-water"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-hmhs-britannic",
+      "name": "HMHS Britannic",
+      "lat": 37.6167,
+      "lng": 24.3167,
+      "countryCode": "GR",
+      "region": "Kea, Aegean Sea",
+      "why": "The Titanic's sister ship, sunk in 1916 and lying almost intact at technical-diving depth off a Greek island.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-zenobia-wreck",
+      "name": "Zenobia Wreck",
+      "lat": 34.95,
+      "lng": 33.65,
+      "countryCode": "CY",
+      "region": "Larnaca",
+      "why": "A Swedish ferry that capsized on her maiden voyage in 1980, now one of the world's top wreck-penetration dives.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-medes-islands",
+      "name": "Medes Islands",
+      "lat": 42.0453,
+      "lng": 3.2231,
+      "countryCode": "ES",
+      "region": "L'Estartit, Costa Brava",
+      "why": "A no-take marine reserve of seven islets with grouper, moray and a wrecked cargo ship in clear Mediterranean water.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-gozo-blue-hole",
+      "name": "Blue Hole, Gozo",
+      "lat": 36.0578,
+      "lng": 14.1875,
+      "countryCode": "MT",
+      "region": "Dwejra, Gozo",
+      "why": "A collapsed sea arch dropping through a short tunnel onto open Mediterranean wall, dived straight from the rocks.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "cenote"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-hms-maori-wreck",
+      "name": "HMS Maori",
+      "lat": 35.9008,
+      "lng": 14.5147,
+      "countryCode": "MT",
+      "region": "Valletta, Malta",
+      "why": "A WWII destroyer sunk by bombing, its broken hull lying in shallow water beneath the capital's bastions.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-plemmirio-marine-reserve",
+      "name": "Plemmirio Marine Reserve",
+      "lat": 37.0333,
+      "lng": 15.3,
+      "countryCode": "IT",
+      "region": "Syracuse, Sicily",
+      "why": "A rocky Sicilian headland reserve with caves, Roman-era wreck remains and healthy gorgonian gardens.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wreck"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-b17-wreck-vis",
+      "name": "B-17 Wreck, Vis Island",
+      "lat": 43.05,
+      "lng": 16.18,
+      "countryCode": "HR",
+      "region": "Vis, Adriatic Sea",
+      "why": "A WWII bomber that ditched in the Adriatic, resting upright and intact on a sandy seabed off a former naval island.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-port-cros-national-park",
+      "name": "Port-Cros National Park",
+      "lat": 43.0,
+      "lng": 6.3958,
+      "countryCode": "FR",
+      "region": "Hyères, French Riviera",
+      "why": "France's oldest marine park, with seagrass meadows, grouper and a wreck trail off a pine-covered island.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wreck"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-scapa-flow",
+      "name": "Scapa Flow",
+      "lat": 58.9,
+      "lng": -3.15,
+      "countryCode": "GB",
+      "region": "Orkney, Scotland",
+      "why": "The scuttled remains of the German High Seas Fleet from 1919, giant battleship wrecks in cold, clear water.",
+      "bestMonths": [],
+      "tags": [
+        "wreck",
+        "cold-water"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-farne-islands",
+      "name": "Farne Islands",
+      "lat": 55.62,
+      "lng": -1.65,
+      "countryCode": "GB",
+      "region": "Northumberland",
+      "why": "A grey seal colony that swims right up to divers among kelp-covered skerries off the English coast.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "cold-water",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-lundy-island",
+      "name": "Lundy Island",
+      "lat": 51.1667,
+      "lng": -4.6667,
+      "countryCode": "GB",
+      "region": "Bristol Channel",
+      "why": "England's first marine reserve, with kelp forest, wrecks and the country's northernmost sunfish sightings.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wreck",
+        "cold-water"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-formigas-islet",
+      "name": "Formigas Islet & Dollabarat Bank",
+      "lat": 37.27,
+      "lng": -24.775,
+      "countryCode": "PT",
+      "region": "Azores, offshore",
+      "why": "A seamount between Santa Maria and São Miguel where oceanic manta rays gather over summer.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "manta",
+        "cold-water"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-cedar-pride-wreck",
+      "name": "Cedar Pride Wreck",
+      "lat": 29.4903,
+      "lng": 34.9711,
+      "countryCode": "JO",
+      "region": "Aqaba",
+      "why": "A Lebanese freighter deliberately sunk in the Gulf of Aqaba, now covered in soft coral in warm, calm water.",
+      "bestMonths": [],
+      "tags": [
+        "wreck",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-kas-turkey",
+      "name": "Kaş",
+      "lat": 36.2,
+      "lng": 29.6417,
+      "countryCode": "TR",
+      "region": "Antalya coast",
+      "why": "Clear Mediterranean water off a laid-back coastal town, with canyons, caves and a WWII fighter-plane wreck.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "wreck"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-skjervoy-orcas",
+      "name": "Skjervøy",
+      "lat": 70.0333,
+      "lng": 20.9667,
+      "countryCode": "NO",
+      "region": "Troms, Arctic Norway",
+      "why": "Fjord waters where orcas and humpback whales corral herring each winter, dived and snorkelled in dry suits.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "cold-water"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-calanques-riou",
+      "name": "Riou Archipelago, Calanques",
+      "lat": 43.1917,
+      "lng": 5.3667,
+      "countryCode": "FR",
+      "region": "Marseille",
+      "why": "Limestone cliffs plunging into the sea south of Marseille, with grouper, octopus and clear inshore water.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-lofoten-islands",
+      "name": "Lofoten Islands",
+      "lat": 68.15,
+      "lng": 13.6167,
+      "countryCode": "NO",
+      "region": "Nordland, Arctic Norway",
+      "why": "Cold, gin-clear fjords beneath dramatic peaks, with orca encounters and rich kelp-forest walls.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1
+      ],
+      "tags": [
+        "cold-water",
+        "wall"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-comino-caves",
+      "name": "Comino Caves & Crystal Lagoon",
+      "lat": 36.0128,
+      "lng": 14.3283,
+      "countryCode": "MT",
+      "region": "Comino, Malta",
+      "why": "Sea caves and a clear turquoise lagoon between Malta and Gozo, an easy, scenic Mediterranean shore dive.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-aliwal-shoal",
+      "name": "Aliwal Shoal",
+      "lat": -30.2667,
+      "lng": 30.8167,
+      "countryCode": "ZA",
+      "region": "Umkomaas, KwaZulu-Natal",
+      "why": "A fossilised sand dune reef known for ragged-tooth sharks in winter and a wreck close by on the same reef.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "sharks",
+        "wreck",
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-protea-banks",
+      "name": "Protea Banks",
+      "lat": -30.8333,
+      "lng": 30.45,
+      "countryCode": "ZA",
+      "region": "Shelly Beach, KwaZulu-Natal",
+      "why": "An offshore reef famous for dense bait balls and one of the most reliable spots to see multiple shark species together.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "sharks",
+        "drift"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-sardine-run-wild-coast",
+      "name": "Sardine Run, Wild Coast",
+      "lat": -32.0,
+      "lng": 29.4,
+      "countryCode": "ZA",
+      "region": "Port St Johns",
+      "why": "An annual migration of billions of sardines that draws dolphins, sharks and gannets into a feeding frenzy divers can join.",
+      "bestMonths": [
+        6,
+        7
+      ],
+      "tags": [
+        "drift",
+        "sharks"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-ponta-do-ouro",
+      "name": "Ponta do Ouro",
+      "lat": -26.85,
+      "lng": 32.8983,
+      "countryCode": "MZ",
+      "region": "Maputo Province",
+      "why": "A reef-lined coast just north of the South African border with resident whale sharks and manta cleaning stations.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "whale-shark",
+        "manta",
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-tofo-beach",
+      "name": "Tofo Beach",
+      "lat": -23.85,
+      "lng": 35.5453,
+      "countryCode": "MZ",
+      "region": "Inhambane",
+      "why": "One of the world's most reliable places to swim with manta rays and whale sharks off an open beach.",
+      "bestMonths": [],
+      "tags": [
+        "manta",
+        "whale-shark"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-mnemba-atoll",
+      "name": "Mnemba Atoll",
+      "lat": -5.8167,
+      "lng": 39.3833,
+      "countryCode": "TZ",
+      "region": "Zanzibar",
+      "why": "A private-island atoll with a steep coral wall and resident green turtles in warm Indian Ocean water.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-pemba-channel",
+      "name": "Pemba Channel",
+      "lat": -5.0,
+      "lng": 39.75,
+      "countryCode": "TZ",
+      "region": "Pemba Island",
+      "why": "A deep channel wall off Zanzibar's quieter sister island, with strong drift currents and pelagic passes.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "drift"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-nosy-be",
+      "name": "Nosy Be",
+      "lat": -13.3167,
+      "lng": 48.25,
+      "countryCode": "MG",
+      "region": "Northwest Madagascar",
+      "why": "Volcanic islets with muck-diving critters and a seasonal migration of whale sharks passing the channel.",
+      "bestMonths": [
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "whale-shark",
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-alphonse-atoll",
+      "name": "Alphonse Atoll",
+      "lat": -7.0,
+      "lng": 52.7333,
+      "countryCode": "SC",
+      "region": "Outer Islands, Seychelles",
+      "why": "A remote coral atoll with pristine walls, grey reef sharks and giant trevally in barely-dived water.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "sharks",
+        "liveaboard"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-aldabra-atoll",
+      "name": "Aldabra Atoll",
+      "lat": -9.4167,
+      "lng": 46.3667,
+      "countryCode": "SC",
+      "region": "Outer Islands, Seychelles",
+      "why": "The world's second-largest coral atoll, a UNESCO site with tiger sharks and giant tortoises on the surrounding cays.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "reef",
+        "liveaboard"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-quirimbas-archipelago",
+      "name": "Quirimbas Archipelago",
+      "lat": -12.35,
+      "lng": 40.6167,
+      "countryCode": "MZ",
+      "region": "Cabo Delgado",
+      "why": "A little-dived chain of coral islands in far northern Mozambique with pristine reef and manta cleaning stations.",
+      "bestMonths": [],
+      "tags": [
+        "manta",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-leven-bank",
+      "name": "Leven Bank",
+      "lat": -5.5667,
+      "lng": 39.5333,
+      "countryCode": "TZ",
+      "region": "Zanzibar Channel",
+      "why": "A submerged bank in the Zanzibar Channel where schooling hammerheads and eagle rays cross strong currents.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "drift"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-bazaruto-archipelago",
+      "name": "Bazaruto Archipelago",
+      "lat": -21.65,
+      "lng": 35.4667,
+      "countryCode": "MZ",
+      "region": "Vilankulo",
+      "why": "Dune-backed islands with dugong, manta cleaning stations and clear channel diving between sandbanks.",
+      "bestMonths": [],
+      "tags": [
+        "manta",
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-watamu-marine-park",
+      "name": "Watamu Marine National Park",
+      "lat": -3.35,
+      "lng": 40.0167,
+      "countryCode": "KE",
+      "region": "Watamu coast",
+      "why": "A shallow fringing reef and seagrass reserve on Kenya's coast, calmer and warmer than the reefs further south.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-hanifaru-bay",
+      "name": "Hanifaru Bay",
+      "lat": 5.1667,
+      "lng": 73.0667,
+      "countryCode": "MV",
+      "region": "Baa Atoll, Maldives",
+      "why": "A shallow bay where monsoon currents concentrate plankton, drawing feeding aggregations of dozens of manta rays.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "manta"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-maaya-thila",
+      "name": "Maaya Thila",
+      "lat": 3.85,
+      "lng": 72.9167,
+      "countryCode": "MV",
+      "region": "Ari Atoll, Maldives",
+      "why": "A coral thila circled by whitetip reef sharks by day and hunted over by them at night, a classic Maldives night dive.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-vaadhoo-channel",
+      "name": "Vaadhoo Channel",
+      "lat": 4.2,
+      "lng": 73.4667,
+      "countryCode": "MV",
+      "region": "Rasdhoo Atoll, Maldives",
+      "why": "A current-swept channel between atolls where grey reef sharks and eagle rays stack up on the plateau.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "drift"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-hikkaduwa-reef",
+      "name": "Hikkaduwa Marine Sanctuary",
+      "lat": 6.1394,
+      "lng": 80.1017,
+      "countryCode": "LK",
+      "region": "Southern coast, Sri Lanka",
+      "why": "A shallow coral garden reserve visible from the beach, with turtles and easy shore access.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-havelock-island",
+      "name": "Havelock Island",
+      "lat": 11.9667,
+      "lng": 92.9833,
+      "countryCode": "IN",
+      "region": "Andaman Islands",
+      "why": "The Andamans' main dive hub, with granite pinnacles, macro life and the region's best-known reef, Barracuda City.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-netrani-island",
+      "name": "Netrani Island",
+      "lat": 14.0167,
+      "lng": 74.3167,
+      "countryCode": "IN",
+      "region": "Karnataka coast",
+      "why": "A horseshoe-shaped island off Karnataka with the Arabian Sea's best visibility and occasional whale shark passes.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-sipadan-barracuda-point",
+      "name": "Barracuda Point, Sipadan",
+      "lat": 4.1139,
+      "lng": 118.6289,
+      "countryCode": "MY",
+      "region": "Sipadan Island, Sabah",
+      "why": "An oceanic island wall famous for tornado-like barracuda schools and green turtles sleeping in reef crevices.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "drift"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-layang-layang-atoll",
+      "name": "Layang-Layang Atoll",
+      "lat": 7.3667,
+      "lng": 113.8333,
+      "countryCode": "MY",
+      "region": "Spratly Islands, offshore",
+      "why": "A remote military-run atoll in the South China Sea where scalloped hammerheads school along the outer wall.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "wall",
+        "sharks",
+        "liveaboard"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-tubbataha-reef",
+      "name": "Tubbataha Reefs Natural Park",
+      "lat": 8.85,
+      "lng": 119.85,
+      "countryCode": "PH",
+      "region": "Sulu Sea, offshore",
+      "why": "Two coral atolls in open sea reached only by liveaboard in a short season, with reef sharks and manta on nearly every dive.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "wall",
+        "sharks",
+        "manta",
+        "liveaboard"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-apo-reef",
+      "name": "Apo Reef Natural Park",
+      "lat": 12.65,
+      "lng": 120.45,
+      "countryCode": "PH",
+      "region": "Occidental Mindoro",
+      "why": "The Philippines' largest contiguous reef system, a wall dive with grey reef sharks and dense coral cover.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "sharks"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-monad-shoal",
+      "name": "Monad Shoal",
+      "lat": 11.3167,
+      "lng": 124.1167,
+      "countryCode": "PH",
+      "region": "Malapascua Island",
+      "why": "A seamount where thresher sharks rise from the deep at dawn to be cleaned, one of the only reliable places to see them.",
+      "bestMonths": [],
+      "tags": [
+        "sharks"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-anilao-batangas",
+      "name": "Anilao",
+      "lat": 13.75,
+      "lng": 120.9,
+      "countryCode": "PH",
+      "region": "Batangas",
+      "why": "The Philippines' macro-diving capital, a maze of muck sites packed with nudibranchs and frogfish.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-coron-bay-wrecks",
+      "name": "Coron Bay Wrecks",
+      "lat": 12.0333,
+      "lng": 120.2,
+      "countryCode": "PH",
+      "region": "Coron, Palawan",
+      "why": "A dozen Japanese WWII supply ships sunk in a single 1944 raid, sitting close together in warm, clear bay water.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-tulamben-liberty-wreck",
+      "name": "USAT Liberty Wreck",
+      "lat": -8.2739,
+      "lng": 115.5928,
+      "countryCode": "ID",
+      "region": "Tulamben, Bali",
+      "why": "A WWII cargo ship washed ashore by a volcanic eruption, now a shallow, shore-accessible wreck thick with coral and fish.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-nusa-penida-manta-point",
+      "name": "Manta Point, Nusa Penida",
+      "lat": -8.7935,
+      "lng": 115.5271,
+      "countryCode": "ID",
+      "region": "Nusa Penida, Bali",
+      "why": "A cleaning-station bay where reef manta rays glide close to the surface in surge-heavy, current-fed water.",
+      "bestMonths": [],
+      "tags": [
+        "manta"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-crystal-bay-nusa-penida",
+      "name": "Crystal Bay",
+      "lat": -8.7,
+      "lng": 115.45,
+      "countryCode": "ID",
+      "region": "Nusa Penida, Bali",
+      "why": "A cool-water channel where oceanic sunfish rise from the deep to be cleaned each summer upwelling season.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "reef",
+        "drift"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-cape-kri",
+      "name": "Cape Kri",
+      "lat": -0.5667,
+      "lng": 130.6833,
+      "countryCode": "ID",
+      "region": "Kri Island, Raja Ampat",
+      "why": "The site that holds the record for the most fish species logged on a single dive, on a current-fed reef slope.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "drift",
+        "liveaboard"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-misool",
+      "name": "Misool",
+      "lat": -2.0,
+      "lng": 130.15,
+      "countryCode": "ID",
+      "region": "Misool, Raja Ampat",
+      "why": "A no-take marine reserve of limestone islets with soft-coral walls rebuilt from a former shark-finning camp.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "sharks",
+        "liveaboard"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-bunaken-marine-park",
+      "name": "Bunaken Marine Park",
+      "lat": 1.6167,
+      "lng": 124.75,
+      "countryCode": "ID",
+      "region": "Sulawesi",
+      "why": "Steep walls dropping into deep water just off a small island, with dense reef fish and clear visibility.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-lembeh-strait",
+      "name": "Lembeh Strait",
+      "lat": 1.4667,
+      "lng": 125.2333,
+      "countryCode": "ID",
+      "region": "North Sulawesi",
+      "why": "The world's best-known muck-diving destination, a black-sand strait crawling with mimic octopus and rare critters.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-komodo-batu-bolong",
+      "name": "Batu Bolong, Komodo",
+      "lat": -8.6167,
+      "lng": 119.4667,
+      "countryCode": "ID",
+      "region": "Komodo National Park",
+      "why": "A small current-battered pinnacle covered edge to edge in soft coral, one of Komodo's most photographed dives.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "drift"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-wakatobi-reef",
+      "name": "Wakatobi",
+      "lat": -5.4667,
+      "lng": 123.75,
+      "countryCode": "ID",
+      "region": "Southeast Sulawesi",
+      "why": "A remote reef system with some of Indonesia's healthiest coral cover, built around a private no-fishing zone.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wall"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-alor-kalabahi",
+      "name": "Alor",
+      "lat": -8.3,
+      "lng": 124.5,
+      "countryCode": "ID",
+      "region": "East Nusa Tenggara",
+      "why": "A cold, nutrient-rich strait with critter-filled muck sites and dramatic drop-offs in the same small area.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wall"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-similan-islands",
+      "name": "Similan Islands",
+      "lat": 8.65,
+      "lng": 97.6333,
+      "countryCode": "TH",
+      "region": "Andaman Sea, offshore",
+      "why": "Granite boulder formations underwater mirroring the islands above, with whale sharks passing on migration.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "reef",
+        "whale-shark",
+        "liveaboard"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-richelieu-rock",
+      "name": "Richelieu Rock",
+      "lat": 9.35,
+      "lng": 98.15,
+      "countryCode": "TH",
+      "region": "Surin Islands, offshore",
+      "why": "A submerged horseshoe pinnacle thick with soft coral, regularly visited by whale sharks in season.",
+      "bestMonths": [
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "reef",
+        "whale-shark"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-hin-daeng-hin-muang",
+      "name": "Hin Daeng & Hin Muang",
+      "lat": 7.2333,
+      "lng": 99.05,
+      "countryCode": "TH",
+      "region": "Koh Lanta, offshore",
+      "why": "A pair of pinnacles, one pink coral and one purple soft coral, with manta and whale shark visits in deep blue water.",
+      "bestMonths": [],
+      "tags": [
+        "manta",
+        "whale-shark",
+        "wall"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-chumphon-pinnacle",
+      "name": "Chumphon Pinnacle",
+      "lat": 10.1,
+      "lng": 99.7833,
+      "countryCode": "TH",
+      "region": "Koh Tao",
+      "why": "A submerged granite pinnacle off Koh Tao known for whale shark encounters and schooling barracuda.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "whale-shark"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-sail-rock",
+      "name": "Sail Rock",
+      "lat": 9.9667,
+      "lng": 100.0333,
+      "countryCode": "TH",
+      "region": "Koh Phangan",
+      "why": "A pinnacle with a vertical swim-through chimney and some of the Gulf of Thailand's most reliable whale shark sightings.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "whale-shark"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-cham-islands",
+      "name": "Cham Islands",
+      "lat": 15.95,
+      "lng": 108.6333,
+      "countryCode": "VN",
+      "region": "Hoi An, offshore",
+      "why": "A small marine protected area off central Vietnam with coral gardens far healthier than the mainland coast.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-hin-bida",
+      "name": "Hin Bida",
+      "lat": 7.6667,
+      "lng": 98.7667,
+      "countryCode": "TH",
+      "region": "Koh Phi Phi",
+      "why": "A dome-shaped reef off the Phi Phi islands with leopard sharks resting on the sand and dense reef fish.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "sharks"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-king-cruiser-wreck",
+      "name": "King Cruiser Wreck",
+      "lat": 7.8,
+      "lng": 98.6167,
+      "countryCode": "TH",
+      "region": "Phuket, offshore",
+      "why": "A car ferry that sank in 1997 between two reefs, now an easy wreck dive for recreational divers.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-blue-corner-palau",
+      "name": "Blue Corner",
+      "lat": 7.1167,
+      "lng": 134.2167,
+      "countryCode": "PW",
+      "region": "Palau",
+      "why": "A current-swept wall corner where divers reef-hook in to watch grey reef sharks and schooling barracuda hang in the current.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "sharks",
+        "drift"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-german-channel-palau",
+      "name": "German Channel",
+      "lat": 7.15,
+      "lng": 134.2167,
+      "countryCode": "PW",
+      "region": "Palau",
+      "why": "A hand-dug channel through the reef that funnels manta rays past a cleaning station most of the year.",
+      "bestMonths": [],
+      "tags": [
+        "manta"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-jellyfish-lake-palau",
+      "name": "Jellyfish Lake",
+      "lat": 7.1667,
+      "lng": 134.35,
+      "countryCode": "PW",
+      "region": "Eil Malk, Palau",
+      "why": "A marine lake where millions of stingless golden jellyfish migrate daily, snorkelled rather than scuba dived.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-yap-manta-rays",
+      "name": "Yap",
+      "lat": 9.5,
+      "lng": 138.1167,
+      "countryCode": "FM",
+      "region": "Federated States of Micronesia",
+      "why": "Channel cleaning stations where reef manta rays can be seen year-round without a boat ride into open ocean.",
+      "bestMonths": [],
+      "tags": [
+        "manta"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-chuuk-lagoon",
+      "name": "Chuuk Lagoon",
+      "lat": 7.4167,
+      "lng": 151.7833,
+      "countryCode": "FM",
+      "region": "Federated States of Micronesia",
+      "why": "A WWII naval base sunk in a single 1944 air raid, now the world's largest collection of diveable wrecks in one lagoon.",
+      "bestMonths": [],
+      "tags": [
+        "wreck",
+        "liveaboard"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-bikini-atoll",
+      "name": "Bikini Atoll",
+      "lat": 11.5833,
+      "lng": 165.3833,
+      "countryCode": "MH",
+      "region": "Marshall Islands",
+      "why": "Nuclear test wrecks including a sunken aircraft carrier, dived by a handful of technical liveaboards each year.",
+      "bestMonths": [],
+      "tags": [
+        "wreck",
+        "liveaboard"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-apra-harbor-guam",
+      "name": "Apra Harbor Wrecks",
+      "lat": 13.45,
+      "lng": 144.65,
+      "countryCode": "GU",
+      "region": "Guam",
+      "why": "A rare harbour where a Japanese and an American WWII wreck lie close enough to touch on the same dive.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-ss-yongala",
+      "name": "SS Yongala",
+      "lat": -19.3045,
+      "lng": 147.6218,
+      "countryCode": "AU",
+      "region": "Cape Bowling Green, offshore Queensland",
+      "why": "A 1911 passenger steamer sunk by a cyclone, now an intact 90m wreck acting as an artificial reef in open water.",
+      "bestMonths": [],
+      "tags": [
+        "wreck",
+        "drift"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-cod-hole",
+      "name": "Cod Hole",
+      "lat": -14.6833,
+      "lng": 145.6667,
+      "countryCode": "AU",
+      "region": "Ribbon Reefs, Great Barrier Reef",
+      "why": "A famous hand-feeding site for giant, tame potato cod on the outer Great Barrier Reef.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-osprey-reef",
+      "name": "Osprey Reef",
+      "lat": -13.8833,
+      "lng": 146.55,
+      "countryCode": "AU",
+      "region": "Coral Sea, offshore",
+      "why": "An isolated ribbon reef rising from 1000m of water, with sheer walls and reliable shark action at North Horn.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "sharks",
+        "liveaboard"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-ningaloo-reef",
+      "name": "Ningaloo Reef",
+      "lat": -22.0,
+      "lng": 113.9667,
+      "countryCode": "AU",
+      "region": "Exmouth, Western Australia",
+      "why": "A fringing reef reachable straight off the beach, with a reliable whale shark season each austral autumn.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "whale-shark",
+        "reef"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-rowley-shoals",
+      "name": "Rowley Shoals",
+      "lat": -17.4,
+      "lng": 119.35,
+      "countryCode": "AU",
+      "region": "Offshore Western Australia",
+      "why": "Three isolated coral atolls on the edge of the continental shelf, pristine and rarely dived outside a short season.",
+      "bestMonths": [
+        9,
+        10
+      ],
+      "tags": [
+        "wall",
+        "reef",
+        "liveaboard"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-julian-rocks",
+      "name": "Julian Rocks",
+      "lat": -28.6167,
+      "lng": 153.6167,
+      "countryCode": "AU",
+      "region": "Byron Bay, New South Wales",
+      "why": "A rocky outcrop where warm and cold currents meet, mixing tropical and temperate species including grey nurse sharks.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-lord-howe-island",
+      "name": "Lord Howe Island",
+      "lat": -31.55,
+      "lng": 159.0833,
+      "countryCode": "AU",
+      "region": "Tasman Sea, offshore",
+      "why": "The world's southernmost coral reef, a volcanic remnant with clear water and an easy-going, low-key dive scene.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "cold-water"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-christmas-island-whale-sharks",
+      "name": "Christmas Island",
+      "lat": -10.4833,
+      "lng": 105.6333,
+      "countryCode": "AU",
+      "region": "Indian Ocean, offshore",
+      "why": "A steep volcanic island with a short but reliable whale shark season and walls dropping straight into deep water.",
+      "bestMonths": [
+        11,
+        12
+      ],
+      "tags": [
+        "whale-shark",
+        "wall"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-poor-knights-islands",
+      "name": "Poor Knights Islands",
+      "lat": -35.4778,
+      "lng": 174.7362,
+      "countryCode": "NZ",
+      "region": "Northland, offshore",
+      "why": "Subtropical volcanic pinnacles and archways carrying warm-current fish life far south of the tropics, in a strict no-take reserve.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef",
+        "cold-water"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-milford-sound",
+      "name": "Milford Sound",
+      "lat": -44.6167,
+      "lng": 167.9167,
+      "countryCode": "NZ",
+      "region": "Fiordland",
+      "why": "A dark, tannin-stained fjord where black coral grows in unusually shallow water, normally found only much deeper.",
+      "bestMonths": [],
+      "tags": [
+        "cold-water",
+        "wall"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-goat-island-marine-reserve",
+      "name": "Goat Island Marine Reserve",
+      "lat": -36.2667,
+      "lng": 174.8,
+      "countryCode": "NZ",
+      "region": "Leigh, North Island",
+      "why": "New Zealand's first marine reserve, with snapper and crayfish that show little fear of divers after decades of protection.",
+      "bestMonths": [],
+      "tags": [
+        "cold-water",
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-flinders-reef",
+      "name": "Flinders Reef",
+      "lat": -27.05,
+      "lng": 153.4,
+      "countryCode": "AU",
+      "region": "Moreton Island, Queensland",
+      "why": "A subtropical bommie reef with leopard sharks and manta cleaning stations closer to Brisbane than the Barrier Reef.",
+      "bestMonths": [],
+      "tags": [
+        "manta",
+        "sharks",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-neptune-islands",
+      "name": "Neptune Islands",
+      "lat": -35.2333,
+      "lng": 136.0667,
+      "countryCode": "AU",
+      "region": "South Australia, offshore",
+      "why": "The world's most reliable cage-diving site for great white sharks, in cold Southern Ocean water.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "cold-water"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-doubtful-sound",
+      "name": "Doubtful Sound",
+      "lat": -45.35,
+      "lng": 167.15,
+      "countryCode": "NZ",
+      "region": "Fiordland",
+      "why": "A remote fjord with the same shallow black-coral phenomenon as Milford Sound but far fewer visitors.",
+      "bestMonths": [],
+      "tags": [
+        "cold-water",
+        "wall"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-great-astrolabe-reef",
+      "name": "Great Astrolabe Reef",
+      "lat": -18.75,
+      "lng": 178.5,
+      "countryCode": "FJ",
+      "region": "Kadavu, offshore",
+      "why": "One of the world's largest barrier reefs, a soft-coral wall system with manta cleaning stations and few crowds.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "manta"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-beqa-lagoon-shark-dive",
+      "name": "Beqa Lagoon",
+      "lat": -18.3833,
+      "lng": 178.15,
+      "countryCode": "FJ",
+      "region": "Pacific Harbour, offshore",
+      "why": "A shallow sand arena where up to eight shark species, including bull sharks, are fed under strict conservation management.",
+      "bestMonths": [],
+      "tags": [
+        "sharks"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-rainbow-reef-somosomo",
+      "name": "Rainbow Reef",
+      "lat": -16.75,
+      "lng": 179.9167,
+      "countryCode": "FJ",
+      "region": "Somosomo Strait, Taveuni",
+      "why": "Fiji's Soft Coral Capital, a current-fed strait where the reef is carpeted in every colour of soft coral.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "drift"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-president-coolidge-wreck",
+      "name": "SS President Coolidge",
+      "lat": -15.5167,
+      "lng": 167.1667,
+      "countryCode": "VU",
+      "region": "Espiritu Santo",
+      "why": "A converted WWII troopship that struck mines and sank almost intact, one of the world's largest accessible wreck dives.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-million-dollar-point",
+      "name": "Million Dollar Point",
+      "lat": -15.5167,
+      "lng": 167.15,
+      "countryCode": "VU",
+      "region": "Espiritu Santo",
+      "why": "A shore dump of WWII military vehicles and equipment bulldozed into the sea at the end of the Pacific campaign.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-bonegi-beach-wrecks",
+      "name": "Bonegi Beach Wrecks",
+      "lat": -9.4167,
+      "lng": 159.85,
+      "countryCode": "SB",
+      "region": "Guadalcanal, Iron Bottom Sound",
+      "why": "Japanese transport ships beached and sunk during the WWII Guadalcanal campaign, dived straight from shore.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-kimbe-bay",
+      "name": "Kimbe Bay",
+      "lat": -5.45,
+      "lng": 150.1,
+      "countryCode": "PG",
+      "region": "West New Britain",
+      "why": "A volcanic bay with an exceptional density of reef types packed into a small area, from Walindi's original dive resort.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wall"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-milne-bay",
+      "name": "Milne Bay",
+      "lat": -10.3,
+      "lng": 150.45,
+      "countryCode": "PG",
+      "region": "Papua New Guinea",
+      "why": "The birthplace of muck diving, with black-sand slopes crowded with rare critters near WWII wreck sites.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-molokini-crater",
+      "name": "Molokini Crater",
+      "lat": 20.6306,
+      "lng": -156.4972,
+      "countryCode": "US",
+      "region": "Maui, Hawaii",
+      "why": "A crescent-shaped volcanic caldera protecting exceptionally clear water and a back wall dropping to open ocean.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-cathedrals-lanai",
+      "name": "Cathedrals, Lanai",
+      "lat": 20.75,
+      "lng": -156.9167,
+      "countryCode": "US",
+      "region": "Lanai, Hawaii",
+      "why": "Lava-tube caverns with shafts of light streaming through the ceiling, one of Hawaii's most scenic dives.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-kona-manta-night-dive",
+      "name": "Manta Night Dive, Kona",
+      "lat": 19.6333,
+      "lng": -156.0,
+      "countryCode": "US",
+      "region": "Big Island, Hawaii",
+      "why": "Lights on the seabed draw plankton, and plankton draws giant manta rays that feed just above the divers.",
+      "bestMonths": [],
+      "tags": [
+        "manta"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-north-shore-shark-dive",
+      "name": "North Shore Shark Dive",
+      "lat": 21.6667,
+      "lng": -158.0667,
+      "countryCode": "US",
+      "region": "Haleiwa, Oahu",
+      "why": "An open-ocean cage-free encounter with Galapagos and sandbar sharks a few miles off Oahu's North Shore.",
+      "bestMonths": [],
+      "tags": [
+        "sharks"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-yonaguni-monument",
+      "name": "Yonaguni Monument",
+      "lat": 24.4333,
+      "lng": 122.9333,
+      "countryCode": "JP",
+      "region": "Yonaguni, Okinawa",
+      "why": "Controversial stepped rock formations that draw both divers and archaeologists, plus seasonal hammerhead schools.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "wall",
+        "sharks"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-manta-scramble-ishigaki",
+      "name": "Manta Scramble",
+      "lat": 24.3333,
+      "lng": 124.1667,
+      "countryCode": "JP",
+      "region": "Ishigaki, Okinawa",
+      "why": "A cleaning station reef where reef manta rays gather reliably enough to headline the island's whole dive industry.",
+      "bestMonths": [],
+      "tags": [
+        "manta"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-osezaki",
+      "name": "Osezaki",
+      "lat": 35.0,
+      "lng": 138.8,
+      "countryCode": "JP",
+      "region": "Izu Peninsula",
+      "why": "A muck-diving point on a narrow spit, Japan's best-known shore dive for critters and seasonal migratory fish.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-munseom-jeju",
+      "name": "Munseom Island",
+      "lat": 33.2167,
+      "lng": 126.5667,
+      "countryCode": "KR",
+      "region": "Jeju Island",
+      "why": "A protected volcanic islet off Korea's southern coast with soft coral gardens at the edge of their range.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "cold-water"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-exuma-cays-shark-dive",
+      "name": "Compass Cay",
+      "lat": 24.2667,
+      "lng": -76.4667,
+      "countryCode": "BS",
+      "region": "Exuma Cays",
+      "why": "A shallow marina cut where docile nurse sharks gather, alongside the Exumas' clear cays and blue holes.",
+      "bestMonths": [],
+      "tags": [
+        "sharks"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-grand-turk-wall",
+      "name": "Grand Turk Wall",
+      "lat": 21.4667,
+      "lng": -71.1333,
+      "countryCode": "TC",
+      "region": "Grand Turk, Turks and Caicos",
+      "why": "A wall beginning just 90m offshore, plunging to 2,100m and passing migrating humpback whales in winter.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "wall"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-french-cay-turks",
+      "name": "French Cay",
+      "lat": 21.4667,
+      "lng": -72.2333,
+      "countryCode": "TC",
+      "region": "Caicos Bank, offshore",
+      "why": "An uninhabited cay ringed by a coral wall known for reef sharks and consistently good visibility.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "sharks"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-deception-island",
+      "name": "Deception Island",
+      "lat": -62.9667,
+      "lng": -60.65,
+      "countryCode": "AQ",
+      "region": "South Shetland Islands",
+      "why": "A flooded volcanic caldera where drysuit divers descend past steaming black-sand vents in near-freezing water.",
+      "bestMonths": [
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "cold-water"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-farasan-islands",
+      "name": "Farasan Islands",
+      "lat": 16.7,
+      "lng": 42.1167,
+      "countryCode": "SA",
+      "region": "Jazan, Red Sea",
+      "why": "A remote Saudi archipelago with pristine reef largely untouched by mass tourism, opened to diving in recent years.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-fujairah-wrecks",
+      "name": "Fujairah Wrecks",
+      "lat": 25.1167,
+      "lng": 56.35,
+      "countryCode": "AE",
+      "region": "Fujairah, Gulf of Oman",
+      "why": "A cluster of scuttled ships on the UAE's east coast, accessible on day boats from Dubai and Fujairah.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-sodwana-bay",
+      "name": "Sodwana Bay",
+      "lat": -27.5333,
+      "lng": 32.6833,
+      "countryCode": "ZA",
+      "region": "KwaZulu-Natal",
+      "why": "South Africa's most popular reef dive base, with the world's southernmost coral reefs and regular ragged-tooth sharks.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "sharks"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-blue-bay-mauritius",
+      "name": "Blue Bay Marine Park",
+      "lat": -20.4333,
+      "lng": 57.7167,
+      "countryCode": "MU",
+      "region": "Mahébourg, Mauritius",
+      "why": "A shallow lagoon reserve with glass-bottom-boat coral gardens and an easy introduction to Mauritius diving.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-rodrigues-island",
+      "name": "Rodrigues Island",
+      "lat": -19.7,
+      "lng": 63.4167,
+      "countryCode": "MU",
+      "region": "Rodrigues, offshore",
+      "why": "An isolated volcanic island with its own barrier reef, less developed and less dived than the Mauritius mainland.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "wall"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-barren-island",
+      "name": "Barren Island",
+      "lat": 12.2833,
+      "lng": 93.85,
+      "countryCode": "IN",
+      "region": "Andaman Islands",
+      "why": "India's only active volcano, its underwater slopes covered in black volcanic sand and pioneer coral growth.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-pigeon-island-sri-lanka",
+      "name": "Pigeon Island National Park",
+      "lat": 8.7167,
+      "lng": 81.2,
+      "countryCode": "LK",
+      "region": "Trincomalee, Sri Lanka",
+      "why": "A shallow reef park on the northeast coast with blacktip reef sharks patrolling close to shore.",
+      "bestMonths": [],
+      "tags": [
+        "reef",
+        "sharks"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-bali-amed-wreck",
+      "name": "Japanese Wreck, Amed",
+      "lat": -8.35,
+      "lng": 115.6667,
+      "countryCode": "ID",
+      "region": "Amed, Bali",
+      "why": "A small WWII patrol boat sitting just off a black-sand beach, an easy, shallow shore dive.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-gili-trawangan-shark-point",
+      "name": "Shark Point, Gili Trawangan",
+      "lat": -8.3333,
+      "lng": 116.05,
+      "countryCode": "ID",
+      "region": "Gili Islands, Lombok",
+      "why": "A drift dive over a sloping reef where reef sharks and turtles rest among the rubble and coral bommies.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "drift",
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-sangalaki-island",
+      "name": "Sangalaki Island",
+      "lat": 2.15,
+      "lng": 118.4167,
+      "countryCode": "ID",
+      "region": "Derawan Archipelago, East Kalimantan",
+      "why": "A manta ray cleaning station and green turtle nesting beach off Borneo, reached via the Derawan liveaboard route.",
+      "bestMonths": [],
+      "tags": [
+        "manta",
+        "liveaboard"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-burma-banks",
+      "name": "Burma Banks",
+      "lat": 11.6667,
+      "lng": 97.6667,
+      "countryCode": "MM",
+      "region": "Mergui Archipelago, offshore",
+      "why": "A submerged reef system in a remote archipelago only opened to diving in the 1990s, with big pelagic passes.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "drift",
+        "liveaboard"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-black-rock-mergui",
+      "name": "Black Rock, Mergui",
+      "lat": 11.15,
+      "lng": 97.75,
+      "countryCode": "MM",
+      "region": "Mergui Archipelago, offshore",
+      "why": "An isolated pinnacle in Myanmar's remote archipelago, known for manta rays and near-total lack of crowds.",
+      "bestMonths": [],
+      "tags": [
+        "manta",
+        "liveaboard"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-gato-island",
+      "name": "Gato Island",
+      "lat": 11.2833,
+      "lng": 124.0833,
+      "countryCode": "PH",
+      "region": "Malapascua, Cebu",
+      "why": "A small island with a swim-through tunnel and resting whitetip reef sharks, paired with nearby Monad Shoal.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-moalboal-sardine-run",
+      "name": "Sardine Run, Moalboal",
+      "lat": 9.9167,
+      "lng": 123.3833,
+      "countryCode": "PH",
+      "region": "Cebu",
+      "why": "A resident bait ball of millions of sardines that sits over the same shallow reef year-round, visible from shore.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-mabul-island",
+      "name": "Mabul Island",
+      "lat": 4.25,
+      "lng": 118.6333,
+      "countryCode": "MY",
+      "region": "Sabah, off Sipadan",
+      "why": "A muck-diving island near Sipadan known for frogfish, mandarinfish and a resident population of seahorses.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-tioman-island",
+      "name": "Tioman Island",
+      "lat": 2.7833,
+      "lng": 104.15,
+      "countryCode": "MY",
+      "region": "Pahang, offshore",
+      "why": "A volcanic island in the South China Sea with granite boulder reefs, popular for beginner and intermediate divers.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-blue-holes-palau",
+      "name": "Blue Holes",
+      "lat": 7.1136,
+      "lng": 134.2172,
+      "countryCode": "PW",
+      "region": "Ngemelis Island, Palau",
+      "why": "A set of vertical shafts opening onto the outer reef wall next to Blue Corner, one of Palau's classic swim-throughs.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "cenote"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-peleliu-wall",
+      "name": "Peleliu Wall",
+      "lat": 7.0,
+      "lng": 134.2333,
+      "countryCode": "PW",
+      "region": "Peleliu, Palau",
+      "why": "A World War II battlefield island with a sheer wall dive on strong currents at the edge of the reef shelf.",
+      "bestMonths": [],
+      "tags": [
+        "wall",
+        "drift"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-rainbow-warrior-wreck",
+      "name": "Rainbow Warrior Wreck",
+      "lat": -35.2,
+      "lng": 174.3167,
+      "countryCode": "NZ",
+      "region": "Cavalli Islands, Northland",
+      "why": "Greenpeace's flagship, bombed in 1985 and later scuttled as a memorial reef dive in the Cavalli Islands.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-flowerpot-island",
+      "name": "Flowerpot Island, Fathom Five",
+      "lat": 45.35,
+      "lng": -81.6167,
+      "countryCode": "CA",
+      "region": "Tobermory, Ontario",
+      "why": "Freshwater wreck diving in Georgian Bay, with 19th-century schooners preserved by the Great Lakes' cold water.",
+      "bestMonths": [],
+      "tags": [
+        "wreck",
+        "cold-water"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-uss-monitor-wreck",
+      "name": "USS Monitor",
+      "lat": 35.0,
+      "lng": -75.4167,
+      "countryCode": "US",
+      "region": "Cape Hatteras, North Carolina",
+      "why": "The Civil War ironclad that sank in a storm in 1862, now a protected wreck in the Graveyard of the Atlantic.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-banco-chinchorro",
+      "name": "Banco Chinchorro",
+      "lat": 18.5833,
+      "lng": -87.35,
+      "countryCode": "MX",
+      "region": "Quintana Roo, offshore",
+      "why": "Mexico's largest atoll, a shipwreck graveyard on a barrier reef far enough offshore to stay wonderfully undived.",
+      "bestMonths": [],
+      "tags": [
+        "wreck",
+        "reef",
+        "wall"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-moheli-marine-park",
+      "name": "Mohéli Marine Park",
+      "lat": -12.35,
+      "lng": 43.7333,
+      "countryCode": "KM",
+      "region": "Mohéli, Comoros",
+      "why": "A little-known marine park between Madagascar and Africa with turtles, dugong and untouched reef.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-saint-gilles-reunion",
+      "name": "Saint-Gilles-les-Bains Reef",
+      "lat": -21.0333,
+      "lng": 55.2167,
+      "countryCode": "RE",
+      "region": "Réunion, offshore",
+      "why": "A fringing lagoon reef off a French volcanic island, one of the few reef dives in this part of the southwest Indian Ocean.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "PADI Best Dive Sites"
+    },
+    {
+      "id": "dive-tiputa-pass",
+      "name": "Tiputa Pass",
+      "lat": -14.9333,
+      "lng": -147.6417,
+      "countryCode": "PF",
+      "region": "Rangiroa, Tuamotus",
+      "why": "A rip-current pass between lagoon and ocean where hundreds of grey sharks stack up to ride the incoming tide.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "drift"
+      ],
+      "source": "Scuba Diving Readers Choice"
+    },
+    {
+      "id": "dive-fakarava-south-pass",
+      "name": "Fakarava South Pass",
+      "lat": -16.3167,
+      "lng": -145.4667,
+      "countryCode": "PF",
+      "region": "Fakarava, Tuamotus",
+      "why": "A UNESCO biosphere pass holding the world's largest documented aggregation of grey reef sharks.",
+      "bestMonths": [
+        6,
+        7
+      ],
+      "tags": [
+        "sharks",
+        "wall",
+        "drift"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-bora-bora-lagoon",
+      "name": "Bora Bora Lagoon",
+      "lat": -16.5,
+      "lng": -151.7417,
+      "countryCode": "PF",
+      "region": "Bora Bora, Society Islands",
+      "why": "A shallow, current-free lagoon where blacktip reef sharks and stingrays can be seen on an easy introductory dive.",
+      "bestMonths": [],
+      "tags": [
+        "sharks",
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-prony-bay",
+      "name": "Prony Bay",
+      "lat": -22.35,
+      "lng": 166.85,
+      "countryCode": "NC",
+      "region": "Grande Terre, New Caledonia",
+      "why": "A sheltered bay in the world's largest lagoon, known for seasonal humpback whales and easy, calm diving.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "reef",
+        "cold-water"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-niue-sea-snakes",
+      "name": "Niue",
+      "lat": -19.0544,
+      "lng": -169.8672,
+      "countryCode": "NU",
+      "region": "South Pacific",
+      "why": "A raised coral atoll nation with some of the clearest water on Earth and a resident population of banded sea snakes.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Lonely Planet Epic Dives"
+    },
+    {
+      "id": "dive-flower-garden-banks",
+      "name": "Flower Garden Banks",
+      "lat": 27.9,
+      "lng": -93.6,
+      "countryCode": "US",
+      "region": "Gulf of Mexico, offshore Texas",
+      "why": "The northernmost coral reef in the continental US, a pair of salt-dome banks 185km off the Texas coast.",
+      "bestMonths": [],
+      "tags": [
+        "reef"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-kwajalein-lagoon-wrecks",
+      "name": "Kwajalein Atoll",
+      "lat": 8.7204,
+      "lng": 167.7327,
+      "countryCode": "MH",
+      "region": "Marshall Islands",
+      "why": "A WWII lagoon littered with Japanese wrecks from a 1944 air raid, dived far less than nearby Chuuk or Bikini.",
+      "bestMonths": [],
+      "tags": [
+        "wreck"
+      ],
+      "source": "Dive Magazine"
+    },
+    {
+      "id": "dive-klein-curacao",
+      "name": "Klein Curaçao",
+      "lat": 11.9667,
+      "lng": -68.6667,
+      "countryCode": "CW",
+      "region": "Curaçao, offshore",
+      "why": "An uninhabited islet off Curaçao with a shallow wreck and a wall dropping straight from the beach.",
+      "bestMonths": [],
+      "tags": [
+        "wreck",
+        "wall"
+      ],
+      "source": "Dive Magazine"
+    }
+  ]
+}
