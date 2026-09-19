@@ -131,9 +131,9 @@ export default function ProfileView({ handle }: { handle: string }) {
 
   return (
     <div className="min-h-screen bg-paper pb-20">
-      {/* The world as a constellation — coastline stars, threaded continents,
-          slowly breathing behind everything. */}
-      <ConstellationBackdrop />
+      {/* The world as a constellation — coastline stars pulsing behind
+          everything, with this profile's own pins flicking on in orange. */}
+      <ConstellationBackdrop pins={myPins} />
       <Link
         href="/"
         className="fixed left-4 top-4 z-40 flex items-center gap-1.5 rounded-full bg-paper/85 px-3 py-1.5 text-sm shadow-float backdrop-blur"
@@ -142,7 +142,9 @@ export default function ProfileView({ handle }: { handle: string }) {
         Map
       </Link>
 
-      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-20 sm:px-6 sm:pt-24">
+      {/* Phones: the hero starts lower so the whole constellation band — and
+          your pins on it — sits in clear sky above the card. */}
+      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-64 sm:px-6 sm:pt-24">
         {/* Identity card — frosted glass floating over the constellation. */}
         <div className="relative rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:px-8">
         <div className="flex flex-col items-center text-center">

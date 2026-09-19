@@ -19,6 +19,7 @@ import { ICON_MINZOOM, OVERLAYS, type OverlayId } from "@/lib/overlays";
 import { visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
 import { createFlightRecorder } from "@/lib/recordFlight";
+import { createMeteorField } from "@/lib/meteors";
 import { cancelFlightRender, renderFlightFilm } from "@/lib/renderFlight";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
@@ -326,6 +327,35 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const sunElRef = useRef<HTMLDivElement | null>(null);
   const sunRafRef = useRef<number | null>(null);
   const lastSilRef = useRef<{ cx: number; cy: number; r: number } | null>(null);
+  // Night mode only: shooting stars streak across the space backdrop on their
+  // own canvas, animated by one rAF loop that sleeps while the planet fills
+  // the frame (host opacity 0) or the tab is hidden.
+  const meteorRafRef = useRef<number | null>(null);
+  function stopMeteorLoop() {
+    if (meteorRafRef.current != null) cancelAnimationFrame(meteorRafRef.current);
+    meteorRafRef.current = null;
+  }
+  function startMeteorLoop(cv: HTMLCanvasElement, w: number, h: number, dpr: number) {
+    stopMeteorLoop();
+    const ctx = cv.getContext("2d");
+    if (!ctx) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const field = createMeteorField();
+    let drewLast = false;
+    const tick = (ms: number) => {
+      meteorRafRef.current = requestAnimationFrame(tick);
+      if (!cv.isConnected) { stopMeteorLoop(); return; }
+      const host = spaceRef.current;
+      if (document.hidden || !host || host.style.opacity === "0") {
+        if (drewLast) { ctx.clearRect(0, 0, w, h); drewLast = false; }
+        return;
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      drewLast = field.draw(ctx, w, h, ms);
+    };
+    meteorRafRef.current = requestAnimationFrame(tick);
+  }
 
   // The blue you-are-here dot, like Apple/Google Maps. If location permission
   // is already granted we follow the device silently; otherwise the dot
@@ -458,17 +488,25 @@ export default function MapCanvas({ placing, onPick }: Props) {
             } else if (/building/.test(ref)) {
               if (dark) map.setPaintProperty(id, "fill-color", "#242e40");
             } else if (/park|protected|reserve|national_forest/.test(ref)) {
-              // Parks/protected areas: near-land tone at low strength, so big
-              // reserves (Tibet, Alaska…) stop reading as black holes.
+              // Parks/protected areas: at country scale these are coarse,
+              // jagged polygons (the W and Pendjari reserves over Benin read
+              // as grey smudges), so they stay invisible until the map is
+              // close enough for the outline to be real, then fade in near
+              // the land tone. Light themes keep the style's own greens.
               if (dark) {
-                map.setPaintProperty(id, "fill-color", "#222f3f");
-                map.setPaintProperty(id, "fill-opacity", 0.35);
+                map.setPaintProperty(id, "fill-color", "#202b3a");
+                map.setPaintProperty(id, "fill-opacity", ["interpolate", ["linear"], ["zoom"], 8, 0, 10.5, 0.3]);
               }
             } else if (/glacier|snow|ice/.test(ref)) {
               // Ice should stay lighter than the land around it, even at night.
               if (dark) map.setPaintProperty(id, "fill-color", "#2e3a50");
             } else if (/landcover|landuse|grass|wood|forest|sand|residential/.test(ref)) {
-              if (dark) map.setPaintProperty(id, "fill-color", "#1f2939");
+              // Same rule for land cover: woods and fields are generalised
+              // blobs below street scale.
+              if (dark) {
+                map.setPaintProperty(id, "fill-color", "#1e2836");
+                map.setPaintProperty(id, "fill-opacity", ["interpolate", ["linear"], ["zoom"], 9, 0, 11.5, 0.45]);
+              }
             } else if (dark) {
               map.setPaintProperty(id, "fill-color", theme.land);
             }
@@ -476,9 +514,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
             if (/water|river|stream|canal/.test(ref)) {
               map.setPaintProperty(id, "line-color", theme.ocean);
             } else if (dark && /park|protected|reserve/.test(ref)) {
-              // The bright dotted park outlines that glow in dark mode.
+              // The bright dotted park outlines that glow in dark mode —
+              // and, like the fills, hidden until street scale.
               map.setPaintProperty(id, "line-color", "#33415a");
-              map.setPaintProperty(id, "line-opacity", 0.6);
+              map.setPaintProperty(id, "line-opacity", ["interpolate", ["linear"], ["zoom"], 8, 0, 10.5, 0.6]);
             } else if (dark && /road|highway|street|path|rail|bridge|tunnel|transit/.test(ref)) {
               map.setPaintProperty(id, "line-color", /casing/.test(ref) ? "#161e2c" : "#4a5870");
             } else if (dark && /boundary|border|admin|disputed/.test(ref)) {
@@ -1047,6 +1086,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
     return () => {
       window.removeEventListener("resize", onResize);
       stopSunLoop();
+      stopMeteorLoop();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basemap, themeId]);
@@ -1320,6 +1360,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       return;
     }
     stopSunLoop();
+    stopMeteorLoop();
     sunElRef.current = null;
     host.style.background = "transparent";
     if (mode === "none") {
@@ -1376,6 +1417,16 @@ export default function MapCanvas({ placing, onPick }: Props) {
       ctx.fill();
     }
     host.replaceChildren(...canvases);
+    // Night mode (the dark themes): shooting stars over the starfield.
+    if (themeRef.current.darkUI) {
+      const mv = document.createElement("canvas");
+      mv.width = Math.round(w * dpr);
+      mv.height = Math.round(h * dpr);
+      mv.className = "wp-meteor-layer";
+      mv.style.cssText = "position:absolute;inset:0;width:100%;height:100%";
+      host.appendChild(mv);
+      startMeteorLoop(mv, w, h, dpr);
+    }
   }
 
   // The sun rides an arc anchored to the globe (not the viewport), so it behaves

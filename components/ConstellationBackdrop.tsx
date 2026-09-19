@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { createMeteorField } from "@/lib/meteors";
 
 // The Me page backdrop: the world's continents as a living constellation.
 // Real coastline vertices (from the bundled world atlas) become stars that
 // twinkle softly; faint segments trace the coasts like constellation lines;
-// and one golden thread arcs from continent to continent with a slow pulse
-// traveling along it. Everything drifts gently, like the map is breathing.
+// a slow ripple of light breathes outward across the whole map; and the
+// profile's own pins sit on it as tiny accent pins at the exact places
+// they were dropped, flicking on and off. Nothing else is in colour: no
+// accent stars, no threaded path between continents — the continents alone.
 //
 // Two compositions share the data:
 //  · Desktop — the map cover-fills the viewport (the original look).
@@ -29,16 +32,6 @@ interface AmbientStar {
   phase: number;
   r: number;
 }
-
-// The thread's waypoints: continent hearts, in travel order.
-const THREAD: [number, number][] = [
-  [-100, 42], // North America
-  [-60, -12], // South America
-  [18, 8], // Africa
-  [12, 49], // Europe
-  [80, 35], // Asia
-  [134, -24], // Oceania
-];
 
 let starCache: Star[] | null = null;
 
@@ -73,7 +66,7 @@ async function loadStars(): Promise<Star[]> {
           lng,
           lat,
           phase: ((lng * 7919 + lat * 104729) % 6.28318 + 6.28318) % 6.28318,
-          bright: stars.length % 23 === 0,
+          bright: stars.length % 23 === 0, // slightly larger, still ink
           ring,
           idx: idx++,
         });
@@ -101,8 +94,17 @@ function makeAmbient(count: number): AmbientStar[] {
   return out;
 }
 
-export default function ConstellationBackdrop() {
+export interface BackdropPin {
+  lng: number;
+  lat: number;
+}
+
+export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPin[] }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // The pin list changes rarely; the draw loop reads it through a ref so the
+  // canvas is never torn down and restarted for a new pin.
+  const pinsRef = useRef<BackdropPin[]>(pins);
+  pinsRef.current = pins;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -161,6 +163,8 @@ export default function ConstellationBackdrop() {
     ];
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Night mode: shooting stars cross the constellation now and then.
+    const meteors = createMeteorField({ minGapS: 3, maxGapS: 8 });
 
     // The twinkle is slow — 30fps is indistinguishable and halves the canvas
     // cost, which keeps profile scrolling smooth on phones.
@@ -180,7 +184,10 @@ export default function ConstellationBackdrop() {
       pScale = mobile ? (w / 360) * 1.06 : Math.max(w / 360, h / 150) * 1.08;
       const sz = mobile ? 1 : Math.min(1.5, Math.max(1, pScale / 4.5));
       pCx = w / 2 + (mobile ? drift * 0.4 : drift);
-      pCy = mobile ? h * 0.4 : h / 2;
+      // Phones: the band sits ABOVE the avatar, under the back link, where it
+      // is actually visible — centred behind the hero it was hidden by the
+      // glass wash and the pins never showed.
+      pCy = mobile ? Math.min(h * 0.4, 165) : h / 2;
 
       ctx.clearRect(0, 0, w, h);
 
@@ -227,91 +234,96 @@ export default function ConstellationBackdrop() {
       }
       ctx.stroke();
 
-      // Stars — twinkling coastline points. The fitted phone band is dense, so
-      // it keeps every accent star but only every third of the dust.
+      // The pulse: a ring of light that breathes outward from the heart of
+      // the map every few seconds, lifting each star as it passes, over a
+      // slow whole-map breath. Distances are in projection units so the
+      // ripple crosses the world at the same pace on every screen.
+      const breath = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.45);
+      const ripplePeriod = 6.5; // seconds from centre to the far coast
+      const rippleR = reduced ? -1 : ((t % ripplePeriod) / ripplePeriod) * 1.15; // 0..1.15 of the half-diagonal
+      const half = Math.hypot(w, h) / 2;
+      const pulseAt = (x: number, y: number): number => {
+        if (rippleR < 0) return 0;
+        const d = Math.hypot(x - pCx, y - pCy) / half;
+        const dd = d - rippleR;
+        // a soft band ~9 % of the half-diagonal wide, fading as it travels
+        return Math.exp(-(dd * dd) / 0.004) * (1 - rippleR / 1.3);
+      };
+
+      // Stars — twinkling coastline points, all ink. The fitted phone band is
+      // dense, so it keeps only every third point of the dust.
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
         if (mobile && !s.bright && i % 3 !== 0) continue;
         const [x, y] = project(s.lng, s.lat);
         if (x < -10 || x > w + 10 || y < -10 || y > h + 10) continue;
         const tw = reduced ? 0.5 : 0.5 + 0.5 * Math.sin(t * 0.9 + s.phase);
-        if (s.bright) {
-          // Phones go monochrome — dozens of blue points across a small band
-          // read as noise. Blue belongs to the thread alone there; desktop
-          // keeps its accent stars and halos.
-          if (!dark && !mobile) {
-            const halo = ctx.createRadialGradient(x, y, 0, x, y, 7 * sz);
-            halo.addColorStop(0, accent);
-            halo.addColorStop(1, "transparent");
-            ctx.globalAlpha = 0.14 + 0.14 * tw;
-            ctx.fillStyle = halo;
-            ctx.beginPath();
-            ctx.arc(x, y, 7 * sz, 0, Math.PI * 2);
-            ctx.fill();
-          }
-          ctx.globalAlpha = mobile
-            ? 0.35 + 0.3 * tw
-            : dark
-              ? 0.35 + 0.4 * tw
-              : 0.55 + 0.4 * tw;
-          ctx.fillStyle = mobile ? inkColor : accent;
+        const pulse = pulseAt(x, y);
+        const base = dark ? 0.16 + 0.22 * tw : mobile ? 0.26 + 0.24 * tw : 0.3 + 0.3 * tw;
+        ctx.globalAlpha = Math.min(1, base * (0.85 + 0.3 * breath) + pulse * (dark ? 0.6 : 0.5));
+        ctx.fillStyle = inkColor;
+        const r = (mobile ? 0.95 : dark ? 1.15 : 1.35) * (s.bright ? 1.5 : 1) * sz * (1 + pulse * 1.2);
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // The ring itself: a faint glowing band so the pulse reads even
+      // between stars.
+      if (rippleR > 0 && rippleR < 1.1) {
+        const rr = rippleR * half;
+        const band = ctx.createRadialGradient(pCx, pCy, Math.max(0, rr - half * 0.06), pCx, pCy, rr + half * 0.06);
+        band.addColorStop(0, "transparent");
+        band.addColorStop(0.5, accent);
+        band.addColorStop(1, "transparent");
+        ctx.globalAlpha = (dark ? 0.07 : 0.06) * (1 - rippleR / 1.2);
+        ctx.fillStyle = band;
+        ctx.beginPath();
+        ctx.arc(pCx, pCy, rr + half * 0.06, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Your pins: a tiny accent pin at each exact place you have been,
+      // flicking on in orange — each on its own rhythm, brighter when the
+      // ripple passes through it.
+      const pinList = pinsRef.current;
+      const pinSz = (mobile ? 0.85 : 1) * sz;
+      for (let i = 0; i < pinList.length; i++) {
+        const p = pinList[i];
+        const [x, y] = project(p.lng, p.lat);
+        if (x < -12 || x > w + 12 || y < -16 || y > h + 12) continue;
+        const phase = ((p.lng * 1301 + p.lat * 7919) % 6.28318 + 6.28318) % 6.28318;
+        // a sharp flick: mostly dim, then a quick bright flash
+        const wave = reduced ? 1 : 0.5 + 0.5 * Math.sin(t * 1.7 + phase);
+        const flick = reduced ? 1 : Math.pow(wave, 7);
+        const lit = Math.min(1, 0.28 + 0.72 * flick + pulseAt(x, y) * 0.6);
+        if (flick > 0.35) {
+          const halo = ctx.createRadialGradient(x, y - 4 * pinSz, 0, x, y - 4 * pinSz, 11 * pinSz);
+          halo.addColorStop(0, accent);
+          halo.addColorStop(1, "transparent");
+          ctx.globalAlpha = 0.35 * flick;
+          ctx.fillStyle = halo;
           ctx.beginPath();
-          ctx.arc(x, y, (mobile ? 1.5 : dark ? 1.9 : 2.2) * sz, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          ctx.globalAlpha = dark ? 0.16 + 0.22 * tw : mobile ? 0.26 + 0.24 * tw : 0.3 + 0.3 * tw;
-          ctx.fillStyle = inkColor;
-          ctx.beginPath();
-          ctx.arc(x, y, (mobile ? 0.95 : dark ? 1.15 : 1.35) * sz, 0, Math.PI * 2);
+          ctx.arc(x, y - 4 * pinSz, 11 * pinSz, 0, Math.PI * 2);
           ctx.fill();
         }
-      }
-
-      // The thread — a soft curve stitched continent to continent…
-      const pts = THREAD.map(([lng, lat]) => project(lng, lat));
-      ctx.globalAlpha = dark ? 0.28 : 0.5;
-      ctx.strokeStyle = accent;
-      ctx.lineWidth = (dark ? 1.4 : 1.6) * sz;
-      ctx.setLineDash([1 * sz, 7 * sz]);
-      ctx.lineCap = "round";
-      ctx.beginPath();
-      ctx.moveTo(pts[0][0], pts[0][1]);
-      const lift = mobile ? Math.max(24, pScale * 14) : pScale * 14;
-      for (let i = 1; i < pts.length; i++) {
-        const [px, py] = pts[i - 1];
-        const [x, y] = pts[i];
-        ctx.quadraticCurveTo(px, py - lift, (px + x) / 2, (py + y) / 2 - lift / 2);
-        ctx.quadraticCurveTo(x, y - lift / 2, x, y);
-      }
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // …with a pulse traveling along it.
-      if (!reduced) {
-        const seg = (t * 0.18) % (THREAD.length - 1);
-        const i = Math.floor(seg);
-        const f = seg - i;
-        const [x1, y1] = pts[i];
-        const [x2, y2] = pts[i + 1];
-        const arcLift = mobile ? Math.max(18, pScale * 10) : pScale * 10;
-        const px = x1 + (x2 - x1) * f;
-        const py = y1 + (y2 - y1) * f - Math.sin(f * Math.PI) * arcLift;
-        const glow = ctx.createRadialGradient(px, py, 0, px, py, 14 * sz);
-        glow.addColorStop(0, accent);
-        glow.addColorStop(1, "transparent");
-        ctx.globalAlpha = 0.5;
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(px, py, 14 * sz, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 0.9;
+        ctx.globalAlpha = lit;
         ctx.fillStyle = accent;
+        // teardrop: a round head with a short point down to the exact spot
         ctx.beginPath();
-        ctx.arc(px, py, 2.4 * sz, 0, Math.PI * 2);
+        ctx.arc(x, y - 4.2 * pinSz, 2.6 * pinSz, Math.PI * 0.85, Math.PI * 2.15);
+        ctx.lineTo(x, y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = lit * 0.9;
+        ctx.fillStyle = dark ? "#0b1220" : "#ffffff";
+        ctx.beginPath();
+        ctx.arc(x, y - 4.2 * pinSz, 0.9 * pinSz, 0, Math.PI * 2);
         ctx.fill();
       }
 
       ctx.globalAlpha = 1;
+      if (dark && !reduced) meteors.draw(ctx, w, h, ms);
       if (!disposed && !reduced) raf = requestAnimationFrame(draw);
     };
 

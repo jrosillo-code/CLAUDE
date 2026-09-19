@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { THEMES, THEME_ORDER } from "@/lib/themes";
+import { BriefIcon } from "./BriefIcon";
 
 // Bottom-left map controls: ONE Layers button on every screen size, opening a
 // single glass card — Map/Satellite, 3D, Landmarks, Saved, themes, and the
@@ -101,21 +102,18 @@ export default function BasemapToggle() {
                 active={showWishlist}
                 onClick={() => setShowWishlist(!showWishlist)}
               />
-              {/* Scout: only pins that carry scouting details (bearing, lens,
-                  time of day) — the photographer's layer over the map. */}
+              {/* Drone view: one switch for everything a pilot wants on the map —
+                  the map narrows to pins with scout details and field reports
+                  appear on their pins, coloured by outcome. One row, not two. */}
               <RowToggle
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.8" /><circle cx="12" cy="12" r="2.2" fill="currentColor" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>}
-                label="Scout pins"
-                active={showScout}
-                onClick={() => setShowScout(!showScout)}
-              />
-              {/* Flights: field reports on the map, coloured by what happened
-                  (flew / refused / fined / didn't try). Not an airspace map. */}
-              <RowToggle
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 16.5 20 5M4 16.5l3.5 1.2M4 16.5 6.2 13m1.3 4.7 1.7 3.3 2.3-6.2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><circle cx="18.5" cy="6.5" r="2" fill="currentColor" /></svg>}
-                label="Flights"
-                active={showFlights}
-                onClick={() => setShowFlights(!showFlights)}
+                icon={<BriefIcon size={14} />}
+                label="Drone view"
+                active={showFlights || showScout}
+                onClick={() => {
+                  const on = !(showFlights || showScout);
+                  setShowFlights(on);
+                  setShowScout(on);
+                }}
               />
 
               {/* Extras — the reference overlays, folded away so the card stays
@@ -147,17 +145,21 @@ export default function BasemapToggle() {
               )}
             </div>
 
-            {/* Follow the sun: Daylight by day, Midnight after dusk. Picking a
-                swatch below switches it off. */}
-            <div className="mt-1.5">
-              <RowToggle
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 0 18V3z" fill="currentColor" /><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" /></svg>}
-                label="Auto day / night"
-                active={autoTheme}
+            {/* Themes. The first swatch is Auto — Daylight by day, Midnight
+                after dusk; picking any other swatch switches it off. */}
+            <div className="mt-2.5 flex items-center gap-1.5 px-1">
+              <button
                 onClick={() => setAutoTheme(!autoTheme)}
-              />
-            </div>
-            <div className="mt-1 flex items-center gap-1.5 px-1">
+                title="Auto day / night"
+                aria-label="Auto day / night theme"
+                aria-pressed={autoTheme}
+                className={`grid h-7 w-7 place-items-center rounded-full transition-transform ${
+                  autoTheme ? "scale-110 ring-2 ring-ink" : "hover:scale-105"
+                }`}
+                style={{ background: "linear-gradient(135deg, #8ec2ee 0%, #8ec2ee 49%, #0e1626 51%, #0e1626 100%)", boxShadow: "inset 0 0 0 1px rgba(0,0,0,.12)" }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden><circle cx="12" cy="12" r="4.5" fill="#fff" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" /></svg>
+              </button>
               {THEME_ORDER.map((id) => {
                 const t = THEMES[id];
                 const active = id === theme;
