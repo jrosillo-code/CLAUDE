@@ -151,7 +151,14 @@ interface WaypointState {
 
   // Theme (UI chrome + globe palette). Persisted to localStorage.
   theme: ThemeId;
+  /** A manual pick: applies the theme and switches auto day/night off. */
   setTheme: (t: ThemeId) => void;
+  /** Follow the sun: Daylight by day, Midnight after dusk, from the device's
+   *  clock and, once known, its location. On by default. */
+  autoTheme: boolean;
+  setAutoTheme: (v: boolean) => void;
+  /** Applied by the day/night clock — never turns auto off. */
+  applyAutoTheme: (t: ThemeId) => void;
   /** UI accent: Waymark terracotta (default) or glass blue. */
   accent: "blue" | "warm";
   setAccent: (a: "blue" | "warm") => void;
@@ -601,7 +608,8 @@ export const useStore = create<WaypointState>((set, get) => ({
       addDraft: null,
     })),
 
-  basemap: "map",
+  // Waypoint opens on imagery; the street map is one tap away in Layers.
+  basemap: "satellite",
   setBasemap: (b) => set({ basemap: b }),
   terrain3d: false, // flat by default — 3D is an opt-in flourish
   setTerrain3d: (v) => set({ terrain3d: v }),
@@ -629,12 +637,26 @@ export const useStore = create<WaypointState>((set, get) => ({
   theme: "daylight",
   setTheme: (t) => {
     if (!THEMES[t]) return;
-    set({ theme: t });
+    set({ theme: t, autoTheme: false });
     try {
       window.localStorage.setItem("wp-theme", t);
+      window.localStorage.setItem("wp-auto-theme", "0");
     } catch {
       /* SSR / private mode */
     }
+  },
+  autoTheme: true,
+  setAutoTheme: (v) => {
+    set({ autoTheme: v });
+    try {
+      window.localStorage.setItem("wp-auto-theme", v ? "1" : "0");
+    } catch {
+      /* SSR / private mode */
+    }
+  },
+  applyAutoTheme: (t) => {
+    if (!THEMES[t] || get().theme === t) return;
+    set({ theme: t });
   },
 
   accent: "warm",

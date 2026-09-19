@@ -15,6 +15,8 @@ export default function BasemapToggle() {
   const setTerrain3d = useStore((s) => s.setTerrain3d);
   const theme = useStore((s) => s.theme);
   const setTheme = useStore((s) => s.setTheme);
+  const autoTheme = useStore((s) => s.autoTheme);
+  const setAutoTheme = useStore((s) => s.setAutoTheme);
   const accent = useStore((s) => s.accent);
   const setAccent = useStore((s) => s.setAccent);
   const showLandmarks = useStore((s) => s.showLandmarks);
@@ -145,7 +147,17 @@ export default function BasemapToggle() {
               )}
             </div>
 
-            <div className="mt-2.5 flex items-center gap-1.5 px-1">
+            {/* Follow the sun: Daylight by day, Midnight after dusk. Picking a
+                swatch below switches it off. */}
+            <div className="mt-1.5">
+              <RowToggle
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 1 0 0 18V3z" fill="currentColor" /><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" /></svg>}
+                label="Auto day / night"
+                active={autoTheme}
+                onClick={() => setAutoTheme(!autoTheme)}
+              />
+            </div>
+            <div className="mt-1 flex items-center gap-1.5 px-1">
               {THEME_ORDER.map((id) => {
                 const t = THEMES[id];
                 const active = id === theme;

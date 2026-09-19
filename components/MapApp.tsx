@@ -323,18 +323,41 @@ export default function MapApp() {
       {/* First-use checklist — completes itself from real actions, dismissible */}
       {!tripDraft && !selectedPinId && <GuidedStart />}
 
-      {/* Phones, trips mode: the AI route guide waits behind one small button
-          instead of popping over the freshly framed route. */}
-      {mapMode === "trips" && activeTripId && !guideTripId && !tripsOpen && (
-        <button
-          onClick={() => setGuideTripId(activeTripId)}
-          className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-ink/90 px-4 py-2.5 text-sm font-semibold text-paper shadow-float backdrop-blur sm:hidden"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-accent-2">
-            <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
-          </svg>
-          Route guide
-        </button>
+      {/* Phones, trips mode: a bottom row — back to the trips list, the AI
+          route guide behind one small button, and a way OUT of trips mode
+          (the desktop banner is hidden on phones, so without this the map
+          was stuck showing routes only). */}
+      {mapMode === "trips" && !tripDraft && !guideTripId && !tripsOpen && (
+        <div className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 sm:hidden" data-testid="trips-mobile-bar">
+          <button
+            onClick={() => setTripsOpen(true)}
+            aria-label="Back to trips"
+            className="flex items-center gap-1.5 rounded-full bg-paper/90 px-3.5 py-2.5 text-sm font-semibold text-ink shadow-float backdrop-blur"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m14 6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            Trips
+          </button>
+          {activeTripId && (
+            <button
+              onClick={() => setGuideTripId(activeTripId)}
+              className="flex items-center gap-1.5 rounded-full bg-ink/90 px-4 py-2.5 text-sm font-semibold text-paper shadow-float backdrop-blur"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-accent-2">
+                <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
+              </svg>
+              Route guide
+            </button>
+          )}
+          <button
+            onClick={() => setMapMode("pins")}
+            aria-label="Exit trips"
+            title="Back to the pins map"
+            data-testid="trips-exit"
+            className="grid h-10 w-10 place-items-center rounded-full bg-paper/90 text-ink shadow-float backdrop-blur"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+          </button>
+        </div>
       )}
       {guideTrip && (
         <TripGuidePanel

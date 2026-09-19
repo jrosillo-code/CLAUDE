@@ -188,7 +188,10 @@ export default function FieldBriefPanel() {
             <div className="space-y-2 text-[13px] leading-relaxed">
               {legality.reviewTier !== "verified" && (
                 <p className={`rounded-xl px-3 py-2 text-xs text-ink-2 ${legality.reviewTier === "unverified" ? "bg-accent/15" : "bg-paper-2"}`} data-testid="brief-tier">
-                  <strong className="text-ink">{legality.reviewTier === "unverified" ? "Unverified" : "Desk review"}</strong> — {legality.tierLabel}
+                  <strong className="text-ink">{legality.reviewTier === "unverified" ? "Unverified" : "Desk review"}</strong> — {legality.tierLabel}{" "}
+                  <a href={legality.authority.url} target="_blank" rel="noreferrer" className="font-semibold text-accent underline-offset-4 hover:underline" data-testid="brief-authority-link">
+                    Open {legality.authority.name} ↗
+                  </a>
                 </p>
               )}
               {legality.stale && (

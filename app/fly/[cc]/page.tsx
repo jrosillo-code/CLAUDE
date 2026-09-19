@@ -95,12 +95,16 @@ export default async function FlyCountryPage({ params }: { params: Promise<{ cc:
       {tier !== "verified" && (
         <div className={`mt-5 rounded-2xl border p-4 text-sm leading-relaxed text-ink-2 ${tier === "unverified" ? "border-accent/50 bg-accent/10" : "border-line bg-paper-2/60"}`} data-testid="tier-banner">
           <strong className="text-ink">{tier === "unverified" ? "Unverified." : "Desk review."}</strong> {TIER_LABEL[tier]}
-          {tier === "unverified" ? (
-            <>
-              {" "}This summary was written from general knowledge without reading the sources; treat every line as a question to put to{" "}
-              <a href={rules.authorityUrl} target="_blank" rel="noreferrer" className="font-medium text-accent underline-offset-4 hover:underline">{rules.authorityName} ↗</a>.
-            </>
-          ) : null}
+          {tier === "unverified" ? " This summary was written from general knowledge without reading the sources; treat every line as a question to put to the authority." : ""}
+          <a href={rules.authorityUrl} target="_blank" rel="noreferrer" className="mt-3 flex w-fit items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-paper" data-testid="authority-cta">
+            Open {rules.authorityName}&apos;s drone page ↗
+          </a>
+          <ul className="mt-3 grid gap-1 text-xs text-ink-2 sm:grid-cols-2">
+            <li>· the registration threshold and where to register</li>
+            <li>· which certificate a visitor needs, if any</li>
+            <li>· the altitude ceiling and distance rule</li>
+            <li>· the official airspace map or app{rules.nationalApp ? "" : " (none listed here yet)"}</li>
+          </ul>
         </div>
       )}
 

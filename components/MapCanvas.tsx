@@ -10,6 +10,8 @@ import {
   TERRAIN_TILES,
   bundledWorldStyle,
   satelliteStyle,
+  satelliteLabelLayers,
+  VECTOR_TILES_URL,
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
@@ -742,6 +744,34 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
   }
 
+  // Satellite labels: once the vector-tile host is known reachable, swap the
+  // blurry raster reference overlay for vector text and lines IN PLACE — no
+  // setStyle, so the imagery already on screen is not refetched.
+  function upgradeSatelliteLabels(map: maplibregl.Map, seq: number) {
+    const known = styleProbeCache.get(VECTOR_TILES_URL);
+    if (known !== undefined) return;
+    fetch(VECTOR_TILES_URL, { mode: "cors" })
+      .then((res) => {
+        styleProbeCache.set(VECTOR_TILES_URL, res.ok);
+        if (!res.ok || styleSeqRef.current !== seq) return;
+        const apply = () => {
+          try {
+            if (!map.getSource("esri-imagery")) return; // no longer satellite
+            if (map.getSource("openmaptiles")) return;
+            map.addSource("openmaptiles", { type: "vector", url: VECTOR_TILES_URL, attribution: "© OpenMapTiles © OpenStreetMap contributors" });
+            if (map.getLayer("sat-reference")) map.removeLayer("sat-reference");
+            if (map.getSource("esri-reference")) map.removeSource("esri-reference");
+            for (const layer of satelliteLabelLayers()) if (!map.getLayer(layer.id)) map.addLayer(layer);
+          } catch {
+            /* style mid-swap — the next satellite style carries the labels */
+          }
+        };
+        if (map.isStyleLoaded()) apply();
+        else map.once("style.load", apply);
+      })
+      .catch(() => styleProbeCache.set(VECTOR_TILES_URL, false));
+  }
+
   // Swap the basemap for the current mode+theme: satellite directly; "map" mode
   // goes STRAIGHT to the theme's online street style when we already know its
   // host is reachable (single swap — no bundled-globe flash in between). The
@@ -752,7 +782,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
     const theme = themeRef.current;
     if (mode === "satellite") {
       terrainBrokenRef.current = false; // DEM may load; error handler resets
-      safeSetStyle(map, satelliteStyle());
+      safeSetStyle(map, satelliteStyle({ vectorLabels: styleProbeCache.get(VECTOR_TILES_URL) === true }));
+      upgradeSatelliteLabels(map, seq);
       return;
     }
     const remote = theme.remoteStyle;
@@ -789,7 +820,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
     if (initialSatellite) terrainBrokenRef.current = false;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: initialSatellite ? satelliteStyle() : bundledWorldStyle(themeRef.current),
+      style: initialSatellite ? satelliteStyle({ vectorLabels: styleProbeCache.get(VECTOR_TILES_URL) === true }) : bundledWorldStyle(themeRef.current),
       center: [10, 25],
       zoom: 1.6,
       minZoom: 1.05, // never shrink the planet to a dot
@@ -831,6 +862,24 @@ export default function MapCanvas({ placing, onPick }: Props) {
     setTimeout(collapseAttrib, 1500);
     // Runs once, on the first style that loads. (applyGlobeChrome and the
     // trip-thread layer re-apply on EVERY style.load — setStyle wipes them.)
+    // A small white dot for city labels on satellite; images are wiped by
+    // setStyle, so it is re-added whenever a style loads.
+    const addSatDot = () => {
+      try {
+        if (map.hasImage("sat-dot")) return;
+        const c = document.createElement("canvas");
+        c.width = c.height = 12;
+        const ctx = c.getContext("2d");
+        if (!ctx) return;
+        ctx.beginPath(); ctx.arc(6, 6, 4.2, 0, Math.PI * 2); ctx.fillStyle = "rgba(8,18,32,.8)"; ctx.fill();
+        ctx.beginPath(); ctx.arc(6, 6, 2.8, 0, Math.PI * 2); ctx.fillStyle = "#fff"; ctx.fill();
+        map.addImage("sat-dot", ctx.getImageData(0, 0, 12, 12), { pixelRatio: 2 });
+      } catch {
+        /* image already present or style mid-swap */
+      }
+    };
+    map.on("style.load", addSatDot);
+    map.on("styleimagemissing", (e: { id: string }) => { if (e.id === "sat-dot") addSatDot(); });
     const initOnce = () => {
       applyGlobeChrome(map);
       applyThemeTint(map);
@@ -856,7 +905,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // the reachable street style and swap it in on top of the imagery, silently
     // flipping Satellite back to Map when returning from the profile page (the
     // sandbox never saw it because the remote host is blocked there).
-    if (!initialSatellite) {
+    if (initialSatellite) {
+      upgradeSatelliteLabels(map, ++styleSeqRef.current);
+    } else {
       const seq = ++styleSeqRef.current;
       const remote = themeRef.current.remoteStyle;
       if (remote) {
