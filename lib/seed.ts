@@ -590,6 +590,7 @@ export const seedFieldReports: FieldReport[] = [
     droneClass: "C0 / sub-250 g",
     quote: "Flew at 7am from the lay-by outside the park boundary. Registered in the EU system beforehand; nobody asked, but I had the operator ID on the drone.",
     visibility: "public",
+    status: "complete",
     createdAt: new Date(2025, 5, 15).toISOString(),
   },
   {
@@ -602,6 +603,7 @@ export const seedFieldReports: FieldReport[] = [
     droneClass: "sub-250 g",
     quote: "Couldn't find a clear answer on the old-town rules and the church is a heritage site, so I shot from the boat instead.",
     visibility: "friends",
+    status: "complete",
     createdAt: new Date(2025, 7, 21).toISOString(),
   },
   {
@@ -614,6 +616,7 @@ export const seedFieldReports: FieldReport[] = [
     droneClass: "sub-250 g",
     quote: "Central Tokyo is a densely inhabited district — the ward office was polite and clear that a permit was needed. I didn't have one. Left it in the bag.",
     visibility: "public",
+    status: "complete",
     createdAt: new Date(2025, 2, 9).toISOString(),
   },
   {
@@ -626,6 +629,7 @@ export const seedFieldReports: FieldReport[] = [
     droneClass: "sub-250 g",
     quote: "Early, empty beach, flew from the cliff top at Ribeira d'Ilhas. Checked the national map the night before.",
     visibility: "friends",
+    status: "complete",
     createdAt: new Date(2025, 1, 13).toISOString(),
   },
 ];

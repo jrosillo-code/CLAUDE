@@ -11,6 +11,8 @@ import FlyPageTracker from "@/components/FlyPageTracker";
 // honest "not yet covered" page that is not indexed — never a guessed rule.
 
 export const dynamicParams = true;
+// Public field reports and the stale warning refresh without a deploy.
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return coveredCountries().map((c) => ({ cc: c.countryCode.toLowerCase() }));
@@ -29,10 +31,11 @@ export async function generateMetadata({ params }: { params: Promise<{ cc: strin
   };
 }
 
-function YesNo({ flag }: { flag: { value: boolean; note: string } }) {
+function YesNo({ flag }: { flag: { value: boolean | null; note: string } }) {
+  const word = flag.value === null ? "Depends" : flag.value ? "Yes" : "No";
   return (
     <span>
-      <span className={`font-semibold ${flag.value ? "text-ink" : "text-ink-2"}`}>{flag.value ? "Yes" : "No"}</span>
+      <span className={`font-semibold ${flag.value ? "text-ink" : "text-ink-2"}`}>{word}</span>
       {flag.note ? <span className="text-ink-2"> — {flag.note}</span> : null}
     </span>
   );
@@ -77,7 +80,9 @@ export default async function FlyCountryPage({ params }: { params: Promise<{ cc:
       <h1 className="mt-2 font-display text-4xl leading-tight sm:text-5xl">Drone rules in {rules.countryName}</h1>
       <p className="mt-3 text-sm text-ink-3">
         {asOf} · verified by @{rules.verifiedBy} · {rules.regime === "easa" ? "EASA harmonised rules" : "national rules"}
+        {rules.coverage === "baseline" ? " · shared baseline only" : ""}
       </p>
+      {rules.scope && <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-2">{rules.scope}</p>}
 
       {stale && (
         <div className="mt-5 rounded-2xl border border-accent/40 bg-accent/10 p-4 text-sm leading-relaxed text-ink-2">
@@ -92,7 +97,7 @@ export default async function FlyCountryPage({ params }: { params: Promise<{ cc:
           <div><dt className="font-medium">Registration required?</dt><dd><YesNo flag={rules.registrationRequired} /></dd></div>
           <div><dt className="font-medium">Pilot certificate required?</dt><dd><YesNo flag={rules.pilotCertRequired} /></dd></div>
           <div><dt className="font-medium">Insurance required?</dt><dd><YesNo flag={rules.insuranceRequired} /></dd></div>
-          <div><dt className="font-medium">Maximum altitude</dt><dd className="text-ink-2">{rules.maxAltitudeM} m above ground</dd></div>
+          <div><dt className="font-medium">Maximum altitude</dt><dd className="text-ink-2">{rules.maxAltitudeM != null ? `${rules.maxAltitudeM} m above ground` : "Not verified"}{rules.altitudeNote ? ` — ${rules.altitudeNote}` : ""}</dd></div>
           <div><dt className="font-medium">Distance</dt><dd className="text-ink-2">{rules.maxDistanceRule}</dd></div>
           <div>
             <dt className="font-medium">Bringing a drone in</dt>

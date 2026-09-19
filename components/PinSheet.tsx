@@ -45,7 +45,8 @@ export default function PinSheet() {
   const [scoutEditing, setScoutEditing] = useState(false);
   const [scoutDraft, setScoutDraft] = useState<ScoutDraft | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
-  const [report, setReport] = useState({ flownOn: new Date().toISOString().slice(0, 10), outcome: "flew" as ReportOutcome, droneClass: "", quote: "", visibility: "friends" as "public" | "friends" | "private" });
+  const publishFieldReport = useStore((s) => s.publishFieldReport);
+  const [report, setReport] = useState({ flownOn: new Date().toISOString().slice(0, 10), outcome: "flew" as ReportOutcome, droneClass: "", quote: "", visibility: "private" as "public" | "friends" | "private" });
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editNote, setEditNote] = useState("");
@@ -278,9 +279,15 @@ export default function PinSheet() {
                         <li key={r.id} className="rounded-xl bg-paper-2/60 p-2.5 text-sm" data-testid={`report-${r.id}`}>
                           <p className="italic leading-relaxed text-ink-2">“{r.quote}”</p>
                           <p className="mt-0.5 flex items-center gap-2 text-[11px] text-ink-3">
-                            <span>{REPORT_OUTCOME_LABELS[r.outcome]} · {r.flownOn}{r.droneClass ? ` · ${r.droneClass}` : ""} · {visibilityLabel[r.visibility]}</span>
+                            <span>
+                              {REPORT_OUTCOME_LABELS[r.outcome]} · {r.flownOn}{r.droneClass ? ` · ${r.droneClass}` : ""} · {visibilityLabel[r.visibility]}
+                              {r.status === "draft" ? " · draft, only you" : ""}
+                            </span>
+                            {r.userId === viewerId && r.status === "draft" && (
+                              <button onClick={() => publishFieldReport(r.id)} className="ml-auto font-semibold text-accent" data-testid={`report-publish-${r.id}`}>Publish</button>
+                            )}
                             {r.userId === viewerId && (
-                              <button onClick={() => deleteFieldReport(r.id)} className="ml-auto text-accent">Delete</button>
+                              <button onClick={() => deleteFieldReport(r.id)} className={r.status === "draft" ? "text-accent" : "ml-auto text-accent"}>Delete</button>
                             )}
                           </p>
                         </li>
@@ -318,17 +325,20 @@ export default function PinSheet() {
                         <textarea value={report.quote} onChange={(e) => setReport({ ...report, quote: e.target.value })} rows={3} maxLength={1000} placeholder="Quoted verbatim, attributed to you — never paraphrased." className="mt-1 w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm" data-testid="report-quote" />
                       </label>
                       <div className="flex gap-2">
-                        <button
-                          disabled={!report.quote.trim() || !pin.countryCode}
-                          onClick={() => {
-                            const saved = addFieldReport({ pinId: pin.id, countryCode: pin.countryCode.toUpperCase(), flownOn: report.flownOn, outcome: report.outcome, droneClass: report.droneClass.trim(), quote: report.quote, visibility: report.visibility });
-                            if (saved) { setReportOpen(false); setReport({ ...report, quote: "", droneClass: "" }); }
-                          }}
-                          className="flex-1 rounded-full bg-ink py-2 text-xs font-semibold text-paper disabled:opacity-40"
-                          data-testid="button-report-save"
-                        >
-                          Save report
-                        </button>
+                        {(["draft", "complete"] as const).map((status) => (
+                          <button
+                            key={status}
+                            disabled={!report.quote.trim() || !pin.countryCode}
+                            onClick={() => {
+                              const saved = addFieldReport({ pinId: pin.id, countryCode: pin.countryCode.toUpperCase(), flownOn: report.flownOn, outcome: report.outcome, droneClass: report.droneClass.trim(), quote: report.quote, visibility: report.visibility, status });
+                              if (saved) { setReportOpen(false); setReport({ ...report, quote: "", droneClass: "" }); }
+                            }}
+                            className={`flex-1 rounded-full py-2 text-xs font-semibold disabled:opacity-40 ${status === "complete" ? "bg-ink text-paper" : "bg-paper text-ink-2"}`}
+                            data-testid={status === "complete" ? "button-report-save" : "button-report-draft"}
+                          >
+                            {status === "complete" ? "Publish" : "Save draft"}
+                          </button>
+                        ))}
                         <button onClick={() => setReportOpen(false)} className="flex-1 rounded-full bg-paper py-2 text-xs font-semibold text-ink-2">Cancel</button>
                       </div>
                       {!pin.countryCode && <p className="text-[11px] text-ink-3">This pin has no country code, so a report can&apos;t be filed against a country page.</p>}

@@ -25,7 +25,7 @@ export interface RulesSummary {
   pilotCertRequired: CountryRules["pilotCertRequired"];
   insuranceRequired: CountryRules["insuranceRequired"];
   weightClasses: CountryRules["weightClasses"];
-  maxAltitudeM: number;
+  maxAltitudeM: number | null;
   maxDistanceRule: string;
   importRestriction: CountryRules["importRestriction"];
   noFlyHighlights: string[];

@@ -124,9 +124,10 @@ set role authenticated;
 select set_config('request.jwt.claim.sub', :'alice', false);
 
 -- R1: owner files a friends-visible report anchored to her pin.
-insert into field_reports (id, user_id, pin_id, country_code, flown_on, outcome, drone_class, quote, visibility)
+-- (status 'complete': after 0020 a fresh report is a draft, owner-only)
+insert into field_reports (id, user_id, pin_id, country_code, flown_on, outcome, drone_class, quote, visibility, status)
 values ('77777777-7777-7777-7777-777777777771', :'alice', '66666666-6666-6666-6666-666666666666',
-        'ES', '2026-05-02', 'flew', 'sub-250 g', 'Rangers waved, nobody minded before 9am.', 'friends');
+        'ES', '2026-05-02', 'flew', 'sub-250 g', 'Rangers waved, nobody minded before 9am.', 'friends', 'complete');
 select ok((select count(*) from field_reports where id = '77777777-7777-7777-7777-777777777771') = 1,
   'R1 owner files a report');
 
@@ -140,8 +141,8 @@ select ok((select count(*) from field_reports where id = '77777777-7777-7777-777
 
 -- R4: a public report is readable by a stranger — and by nobody at all (anon).
 select set_config('request.jwt.claim.sub', :'alice', false);
-insert into field_reports (id, user_id, country_code, flown_on, outcome, quote, visibility)
-values ('77777777-7777-7777-7777-777777777772', :'alice', 'ES', '2026-05-03', 'refused', 'Park office said no without a permit.', 'public');
+insert into field_reports (id, user_id, country_code, flown_on, outcome, quote, visibility, status)
+values ('77777777-7777-7777-7777-777777777772', :'alice', 'ES', '2026-05-03', 'refused', 'Park office said no without a permit.', 'public', 'complete');
 select set_config('request.jwt.claim.sub', :'carol', false);
 select ok((select count(*) from field_reports where id = '77777777-7777-7777-7777-777777777772') = 1,
   'R4a stranger reads a public report');
@@ -193,6 +194,33 @@ delete from pins where id = '66666666-6666-6666-6666-666666666666';
 select ok(
   (select count(*) from field_reports where id = '77777777-7777-7777-7777-777777777771' and pin_id is null) = 1,
   'R9 deleting a pin detaches its report (kept, anchor nulled)');
+
+-- R11: drafts are owner-only whatever their visibility; publishing opens them.
+set role authenticated;
+select set_config('request.jwt.claim.sub', :'alice', false);
+insert into field_reports (id, user_id, country_code, flown_on, outcome, quote, visibility, status)
+values ('77777777-7777-7777-7777-777777777774', :'alice', 'ES', '2026-05-06', 'flew', 'Draft words, not yet public.', 'public', 'draft');
+select set_config('request.jwt.claim.sub', :'bob', false);
+select ok((select count(*) from field_reports where id = '77777777-7777-7777-7777-777777777774') = 0,
+  'R11a a public-visibility draft is invisible to a friend');
+select set_config('request.jwt.claim.sub', '', false);
+select ok((select count(*) from field_reports where id = '77777777-7777-7777-7777-777777777774') = 0,
+  'R11b a public-visibility draft is invisible to anonymous readers');
+select set_config('request.jwt.claim.sub', :'alice', false);
+select ok((select count(*) from field_reports where id = '77777777-7777-7777-7777-777777777774') = 1,
+  'R11c the owner sees her own draft');
+update field_reports set status = 'complete' where id = '77777777-7777-7777-7777-777777777774';
+select set_config('request.jwt.claim.sub', '', false);
+select ok((select count(*) from field_reports where id = '77777777-7777-7777-7777-777777777774') = 1,
+  'R11d publishing makes it readable');
+
+-- R12: the default visibility is private, the default status is draft.
+select set_config('request.jwt.claim.sub', :'alice', false);
+insert into field_reports (id, user_id, country_code, flown_on, outcome, quote)
+values ('77777777-7777-7777-7777-777777777775', :'alice', 'ES', '2026-05-07', 'flew', 'Defaults only.');
+select ok(
+  (select visibility::text || '/' || status from field_reports where id = '77777777-7777-7777-7777-777777777775') = 'private/draft',
+  'R12 a report defaults to private and draft');
 
 -- R10: only the owner can delete a report.
 set role authenticated;

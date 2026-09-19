@@ -60,6 +60,14 @@ begin
   end loop;
 end $$;
 
+-- field_reports: 0020 adds the draft/complete status and the private default.
+select ok(
+  exists (select 1 from information_schema.columns where table_name = 'field_reports' and column_name = 'status'),
+  'field_reports.status exists (0020)');
+select ok(
+  (select column_default from information_schema.columns where table_name = 'field_reports' and column_name = 'visibility') like '%private%',
+  'field_reports.visibility defaults to private (0020)');
+
 -- reflection_citations is write-only by design: viewers insert, nobody selects.
 -- If a select policy ever appears, authors could see WHO read their debrief.
 select ok(

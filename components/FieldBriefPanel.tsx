@@ -74,6 +74,7 @@ export default function FieldBriefPanel() {
     const reports = fieldReports
       .filter((r) => {
         if (!trusted.has(r.userId)) return false;
+        if (r.userId !== viewerId && r.status !== "complete") return false;
         if (r.userId !== viewerId && r.visibility === "private") return false;
         if (r.userId !== viewerId && r.visibility === "friends" && !friendIds.has(r.userId)) return false;
         const pin = r.pinId ? pinsById.get(r.pinId) : undefined;
@@ -174,7 +175,7 @@ export default function FieldBriefPanel() {
               <Row k="Registration" v={legality.registrationRequired} />
               <Row k="Pilot certificate" v={legality.pilotCertRequired} />
               <Row k="Insurance" v={legality.insuranceRequired} />
-              <p><span className="font-medium">Ceiling</span> <span className="text-ink-2">{legality.maxAltitudeM} m · {legality.maxDistanceRule}</span></p>
+              <p><span className="font-medium">Ceiling</span> <span className="text-ink-2">{legality.maxAltitudeM != null ? `${legality.maxAltitudeM} m` : "not verified"} · {legality.maxDistanceRule}</span></p>
               {legality.noFlyHighlights.length > 0 && (
                 <p className="text-ink-2"><span className="font-medium text-ink">Often off limits:</span> {legality.noFlyHighlights.join(" · ")}</p>
               )}
@@ -295,7 +296,7 @@ export default function FieldBriefPanel() {
 
         <p className="text-[11px] leading-relaxed text-ink-3">
           Rules show as of their verification date, per their source, and Waypoint never checks airspace for you. Light is computed; wind is a forecast.
-          {brief?.source === "ai" ? " The summary above was written from this evidence only." : ""}
+          {brief?.source === "ai" ? " The summary at the top is a selection of sentences composed from these cards; the model chose which to show and wrote none of them." : ""}
         </p>
       </div>
     </Sheet>
@@ -314,11 +315,11 @@ function Card({ title, hint, loading, children }: { title: string; hint?: string
   );
 }
 
-function Row({ k, v }: { k: string; v: { value: boolean; note: string } }) {
+function Row({ k, v }: { k: string; v: { value: boolean | null; note: string } }) {
   return (
     <p>
       <span className="font-medium">{k}</span>{" "}
-      <span className={v.value ? "text-ink" : "text-ink-2"}>{v.value ? "required" : "not required"}</span>
+      <span className={v.value ? "text-ink" : "text-ink-2"}>{v.value === null ? "depends" : v.value ? "required" : "not required"}</span>
       {v.note ? <span className="text-ink-3"> — {v.note}</span> : null}
     </p>
   );

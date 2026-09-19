@@ -61,6 +61,7 @@ run_as "$PSQL -d $DB -f tests/rls/assertions.sql"
 echo "→ applying VERBATIM field-brief migrations (0018 scout notes, 0019 field reports)"
 run_as "$PSQL -d $DB -f supabase/migrations/0018_scout_notes.sql"
 run_as "$PSQL -d $DB -f supabase/migrations/0019_field_reports.sql"
+run_as "$PSQL -d $DB -f supabase/migrations/0020_field_reports_status.sql"
 echo "→ running field-brief assertions (tests/rls/fieldbrief-assertions.sql)"
 run_as "$PSQL -d $DB -f tests/rls/fieldbrief-assertions.sql"
 

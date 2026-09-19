@@ -164,6 +164,7 @@ interface FieldReportRow {
   drone_class: string | null;
   quote: string;
   visibility: Visibility;
+  status?: "draft" | "complete" | null;
   created_at: string;
 }
 
@@ -362,6 +363,7 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
         droneClass: r.drone_class ?? "",
         quote: r.quote,
         visibility: r.visibility,
+        status: r.status ?? "complete",
         createdAt: r.created_at,
       })),
       likeCounts,
@@ -928,6 +930,7 @@ export function syncSaveFieldReport(r: FieldReport): void {
       drone_class: r.droneClass,
       quote: r.quote,
       visibility: r.visibility,
+      status: r.status,
       created_at: r.createdAt,
     })
     .then(({ error }) => error && log("saveFieldReport")(error));

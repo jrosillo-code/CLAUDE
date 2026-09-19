@@ -2,7 +2,7 @@ import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import { POST } from "../app/api/field-brief/route";
 import { _clearWindCache } from "../lib/fieldbrief/wind";
-import { vetNarrative } from "../lib/fieldbrief/narrative";
+import { selectNarrative } from "../lib/fieldbrief/narrative";
 
 // HTTP contract of POST /api/field-brief: validation, the privacy boundary
 // (never cacheable — the payload carries the viewer's own scouting), the
@@ -110,12 +110,17 @@ test("the client's nearby summary is echoed back clipped; a stranger's data can'
   assert.equal(b.wind.unavailable, true, "an empty forecast is unavailable, not calm");
 });
 
-test("vetting: generated advice and malformed output are rejected; faithful prose passes", () => {
-  const evidence = { legality: { asOf: "as of 2026-06-01, per caa.test", maxAltitudeM: 120 }, light: { sunrise: "2026-09-21T06:12:00Z" } };
-  assert.equal(vetNarrative("You are allowed to fly here up to 120 m.", evidence), undefined, "advice word");
-  assert.equal(vetNarrative("Fly up to 150 m, as of 2026-06-01, per caa.test.", evidence), undefined, "number not in evidence");
-  assert.equal(vetNarrative('{"narrative":"ok"}', evidence), undefined, "structured output");
-  assert.equal(vetNarrative("", evidence), undefined);
-  assert.equal(vetNarrative(42, evidence), undefined);
-  assert.equal(vetNarrative("The ceiling is 120 m as of 2026-06-01, per caa.test; sunrise lands at 06:12.", evidence), "The ceiling is 120 m as of 2026-06-01, per caa.test; sunrise lands at 06:12.");
+test("selection: only a valid index array is accepted; generated advice and malformed output are rejected", () => {
+  const s = ["Rules are shown as of 2026-06-01, per caa.test.", "Sunrise is at 06:12 UTC.", "Wind is unavailable."];
+  assert.equal(selectNarrative("[1,0]", s), `${s[1]} ${s[0]}`);
+  assert.equal(selectNarrative("```json\n[2]\n```", s), s[2], "fenced answers are tolerated");
+  assert.equal(selectNarrative("[0,0,0]", s), s[0], "duplicates collapse");
+  assert.equal(selectNarrative("You are allowed to fly here up to 120 m.", s), undefined, "prose is not a pick");
+  assert.equal(selectNarrative("[3]", s), undefined, "out of range");
+  assert.equal(selectNarrative("[-1]", s), undefined);
+  assert.equal(selectNarrative("[0.5]", s), undefined);
+  assert.equal(selectNarrative("[]", s), undefined);
+  assert.equal(selectNarrative("[0,1,2,0,1]", s), undefined, "more picks than allowed");
+  assert.equal(selectNarrative('{"pick":[0]}', s), undefined, "wrong shape");
+  assert.equal(selectNarrative(42, s), undefined);
 });

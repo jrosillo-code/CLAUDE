@@ -1,0 +1,41 @@
+{
+  "regime": "national",
+  "coverage": "national",
+  "scope": "CAAT published registration guidance. Current temporary flight restrictions are not assessed here.",
+  "registrationRequired": {
+    "required": true,
+    "note": "Complete drone registration through CAAT's UAS Portal; check separate NBTC radio requirements."
+  },
+  "pilotCertRequired": {
+    "required": true,
+    "note": "The CAAT guide requires the basic drone pilot certificate and online exam for drones below 25 kg."
+  },
+  "weightClasses": [],
+  "maxAltitudeM": 90,
+  "altitudeNote": "CAAT guidance states 90 m above ground; temporary restrictions and permissions may be stricter.",
+  "maxDistanceRule": "Check the authority's operating conditions.",
+  "insuranceRequired": {
+    "required": true,
+    "note": "The CAAT guide specifies third-party coverage of at least THB 1,000,000."
+  },
+  "importRestriction": {
+    "status": "unknown",
+    "note": "Import and radio-equipment requirements have not been verified."
+  },
+  "noFlyHighlights": [],
+  "permitProcess": null,
+  "nationalApp": {
+    "name": "CAAT UAS Portal",
+    "url": "https://uasportal.caat.or.th/"
+  },
+  "lastVerifiedOn": "2026-09-19",
+  "verifiedBy": "codex-source-review",
+  "notes": "Desk research from official sources, not firsthand flight verification. Check current notices and site permissions before a flight.",
+  "countryCode": "TH",
+  "authorityName": "CAAT",
+  "authorityUrl": "https://uasportal.caat.or.th/",
+  "sourceUrls": [
+    "https://www.caat.or.th/wp-content/uploads/2025/01/Flying-a-drone-in-Thailand-ENG.pdf",
+    "https://uasportal.caat.or.th/"
+  ]
+}

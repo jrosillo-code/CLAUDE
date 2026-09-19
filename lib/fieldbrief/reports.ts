@@ -26,6 +26,7 @@ export async function publicReportsFor(countryCode: string): Promise<PublicRepor
         .select("id, quote, flown_on, outcome, drone_class, users(handle)")
         .eq("country_code", countryCode)
         .eq("visibility", "public")
+        .eq("status", "complete")
         .order("flown_on", { ascending: false })
         .limit(50);
       if (error) throw error;
@@ -44,7 +45,7 @@ export async function publicReportsFor(countryCode: string): Promise<PublicRepor
   }
   const handles = new Map(seedUsers.map((u) => [u.id, u.handle]));
   return seedFieldReports
-    .filter((r) => r.countryCode === countryCode && r.visibility === "public")
+    .filter((r) => r.countryCode === countryCode && r.visibility === "public" && r.status === "complete")
     .sort((a, b) => b.flownOn.localeCompare(a.flownOn))
     .map((r) => ({ id: r.id, quote: r.quote, ownerHandle: handles.get(r.userId) ?? "pilot", flownOn: r.flownOn, outcome: r.outcome, droneClass: r.droneClass }));
 }

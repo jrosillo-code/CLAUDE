@@ -142,19 +142,29 @@ usable on its own, all working keyless like the rest of Waypoint:
   `lib/fieldbrief/light.ts`), Wind (Open-Meteo's keyless hourly forecast, cached an hour,
   four-second timeout, gust sparkline with calm windows under 30 km/h), and Nearby (scout
   pins and field reports from your circle). `POST /api/field-brief` assembles the evidence
-  in code; with `ANTHROPIC_API_KEY` set, Claude rewrites that JSON in a warmer voice and is
-  forbidden from adding any rule, number or place — `tests/fieldbrief-brief.test.ts` proves
-  the narrative path is skipped without a key and only ever sees the assembled brief.
+  in code. With `ANTHROPIC_API_KEY` set, a short summary appears — but the model never
+  writes displayed text: code composes every candidate sentence from the evidence and the
+  model only chooses which ones to show, by index (`lib/fieldbrief/narrative.ts`). A
+  prompt plus a banned-word filter cannot guarantee that generated prose is grounded; a
+  selection over code-composed sentences can. Anything but a valid index array drops the
+  summary and the cards stand. `tests/fieldbrief-brief.test.ts` and
+  `tests/fieldbrief-api.test.ts` prove the path is skipped without a key, that prose from
+  the model is never displayed, and that malformed picks are rejected. The 36 country
+  summaries from the September 2026 desk review live in `lib/fieldbrief/rules/drafts/` as
+  unloaded research drafts until a person promotes each one (that folder's README).
 - **Scout pins and field reports** — an optional *Scout details* section on a pin
   (bearing, focal length, camera, drone, time of day, note) with its own marker glyph and
   a *Scout pins* toggle in the Layers card; visibility is the pin's, enforced by RLS in
   `0018_scout_notes.sql`. *Field reports* (`0019_field_reports.sql`) are first-hand
   accounts — flew / refused / fined / didn't try — stored **verbatim**, attributed, shown
   in the brief's Nearby card and on `/fly/{cc}` split into "flew" and "problems",
-  disagreement side by side, never averaged. `npm run test:rls` now also applies both
-  migrations verbatim and runs 21 more assertions (the private/friends/public matrix, no
-  impersonation, no anchoring to a stranger's pin, unfriending revokes, cascade on pin
-  delete, anonymous readers see only public reports). Local events `fly_page_view`,
+  disagreement side by side, never averaged. Reports are **private and draft by
+  default** (`0020_field_reports_status.sql`): a draft is owner-only whatever its
+  visibility, and only a published report reaches friends or the public. `npm run
+  test:rls` applies all three migrations verbatim and runs 26 more assertions (the
+  private/friends/public matrix, owner-only drafts, defaults, no impersonation, no
+  anchoring to a stranger's pin, unfriending revokes, cascade on pin delete, anonymous
+  readers see only published public reports). Local events `fly_page_view`,
   `brief_open` and `scout_pin_create` carry ids only.
 
 ## Architecture

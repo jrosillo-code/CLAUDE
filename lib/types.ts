@@ -228,5 +228,7 @@ export interface FieldReport {
   droneClass: string;
   quote: string;
   visibility: Visibility;
+  /** Drafts are owner-only whatever their visibility; complete reports follow it. */
+  status: "draft" | "complete";
   createdAt: string;
 }

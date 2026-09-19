@@ -40,3 +40,22 @@ test("validation rejects a record without sources or with a bad date", () => {
   assert.ok(validateRules({ ...tpl, lastVerifiedOn: "yesterday" }).some((p) => p.startsWith("lastVerifiedOn")));
   assert.ok(validateRules({ ...tpl, countryCode: "prt" }).some((p) => p.startsWith("countryCode")));
 });
+
+test("research drafts are never registered or loaded", () => {
+  const draftDir = join(DIR, "drafts");
+  const drafts = readdirSync(draftDir).filter((f) => /^[a-z]{2}\.json$/.test(f));
+  assert.ok(drafts.length > 0, "drafts folder holds the desk-review files");
+  for (const f of drafts) {
+    const cc = f.slice(0, 2).toUpperCase();
+    assert.ok(!(cc in RULE_FILES) || files.includes(f), `${cc} is registered but only exists as a draft`);
+  }
+  const registry = readFileSync(join(DIR, "index.ts"), "utf8");
+  assert.ok(!/drafts\//.test(registry), "rules/index.ts must not import from drafts/");
+});
+
+test("unknown is distinct from false: a null flag needs its condition in the note", () => {
+  const tpl = JSON.parse(readFileSync(join(DIR, "_template.json"), "utf8"));
+  assert.deepEqual(validateRules({ ...tpl, registrationRequired: { value: null, note: "Depends on class and camera." }, maxAltitudeM: null, altitudeNote: "No ceiling verified." }), []);
+  assert.ok(validateRules({ ...tpl, registrationRequired: { value: null, note: "" } }).some((p) => p.startsWith("registrationRequired")));
+  assert.ok(validateRules({ ...tpl, maxAltitudeM: null }).some((p) => p.startsWith("altitudeNote")));
+});

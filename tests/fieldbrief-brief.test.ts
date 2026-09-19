@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { assembleBrief, sanitizeNearby } from "../lib/fieldbrief/assemble";
-import { narrativeFor } from "../lib/fieldbrief/narrative";
+import { narrativeFor, candidateSentences } from "../lib/fieldbrief/narrative";
 import { calmWindows, fetchWind, _clearWindCache } from "../lib/fieldbrief/wind";
 import type { CountryRules } from "../lib/fieldbrief/rules";
 
@@ -88,17 +88,19 @@ test("the narrative path is skipped without a key and never called", async () =>
   assert.equal(called, false);
 });
 
-test("with a key the narrative only ever sees the assembled JSON", async () => {
+test("with a key the model only picks from sentences composed by code", async () => {
   const brief = await assembleBrief(
     { lat: 1, lng: 1, date: "2026-07-01", countryCode: "XX" },
     { rulesFor: () => rules, fetchWind: async () => ({ unavailable: true, reason: "mocked" }) }
   );
-  let userPayload = "";
-  const text = await narrativeFor(brief, { apiKey: "k", complete: async (_s, u) => { userPayload = u; return "  A short brief.  "; } });
-  assert.equal(text, "A short brief.");
-  const parsed = JSON.parse(userPayload);
-  assert.equal(parsed.legality.asOf, "as of 2026-06-01, per caa.test");
-  assert.equal(parsed.wind.unavailable, true);
+  const sentences = candidateSentences(brief);
+  assert.ok(sentences[0].includes("as of 2026-06-01, per caa.test"));
+  let prompt = "";
+  const text = await narrativeFor(brief, { apiKey: "k", complete: async (_s, u) => { prompt = u; return " [1, 0, 1] "; } });
+  assert.equal(text, `${sentences[1]} ${sentences[0]}`, "picked, de-duplicated, in the model's order");
+  assert.ok(prompt.startsWith("0. "), "the model sees the numbered candidates, not free text to rewrite");
+  // Prose from the model, however plausible, is never displayed.
+  assert.equal(await narrativeFor(brief, { apiKey: "k", complete: async () => "You are allowed to fly at 150 m here." }), undefined);
 });
 
 test("wind: timeouts and errors degrade to unavailable, successes are cached", async () => {

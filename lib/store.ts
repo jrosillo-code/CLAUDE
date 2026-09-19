@@ -207,8 +207,11 @@ interface WaypointState {
   closeBrief: () => void;
   /** Set (or clear with null) the scout details on your own pin. */
   setScoutNote: (pinId: string, note: Omit<ScoutNote, "pinId"> | null) => void;
-  /** File a first-hand report; the quote is stored verbatim. */
-  addFieldReport: (input: Omit<FieldReport, "id" | "userId" | "createdAt">) => FieldReport | null;
+  /** File a first-hand report; the quote is stored verbatim. Saved as a
+   *  draft (owner-only) unless `status: "complete"` is passed. */
+  addFieldReport: (input: Omit<FieldReport, "id" | "userId" | "createdAt" | "status"> & { status?: FieldReport["status"] }) => FieldReport | null;
+  /** Mark your own draft complete — the moment it can reach anyone else. */
+  publishFieldReport: (id: string) => void;
   deleteFieldReport: (id: string) => void;
 
   // ── Post-trip debriefs (reflections) ──
@@ -861,6 +864,7 @@ export const useStore = create<WaypointState>((set, get) => ({
     if (!input.quote.trim()) return null;
     const report: FieldReport = {
       ...input,
+      status: input.status ?? "draft",
       quote: input.quote.trim(),
       id: backendEnabled ? crypto.randomUUID() : `fr-${Date.now()}-${Math.round(Math.random() * 1e6)}`,
       userId: s.viewerId,
@@ -870,6 +874,14 @@ export const useStore = create<WaypointState>((set, get) => ({
     set({ fieldReports: [...s.fieldReports, report] });
     return report;
   },
+  publishFieldReport: (id) =>
+    set((s) => {
+      const r = s.fieldReports.find((x) => x.id === id && x.userId === s.viewerId);
+      if (!r || r.status === "complete") return {};
+      const next = { ...r, status: "complete" as const };
+      if (backendEnabled) backend.syncSaveFieldReport(next);
+      return { fieldReports: s.fieldReports.map((x) => (x.id === id ? next : x)) };
+    }),
   deleteFieldReport: (id) =>
     set((s) => {
       if (!s.fieldReports.some((r) => r.id === id && r.userId === s.viewerId)) return {};

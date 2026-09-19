@@ -1,6 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
 import { coveredCountries, isStale, sourceLabel } from "@/lib/fieldbrief/rules";
+
+// Drafts are counted, never published: the folder is read at build time only
+// to say honestly how much is waiting on a person's review.
+function draftCount(): number {
+  try {
+    return readdirSync(join(process.cwd(), "lib", "fieldbrief", "rules", "drafts")).filter((f) => /^[a-z]{2}\.json$/.test(f)).length;
+  } catch {
+    return 0;
+  }
+}
 
 export const metadata: Metadata = {
   title: "Can I fly my drone here? — Waypoint field briefs",
@@ -14,6 +26,7 @@ export const metadata: Metadata = {
 // production (preview deployments keep the global noindex from app/layout).
 export default function FlyIndexPage() {
   const countries = coveredCountries();
+  const drafts = draftCount();
   return (
     <main className="mx-auto min-h-screen max-w-3xl px-5 py-10 sm:py-16">
       <p className="text-[11px] font-semibold uppercase tracking-wider text-accent">Waypoint field briefs</p>
@@ -31,6 +44,7 @@ export default function FlyIndexPage() {
           <p className="mt-2 text-sm leading-relaxed text-ink-2">
             The first briefs are being verified from the founders&apos; own flights. Until a
             country is checked against its authority&apos;s sources, it does not appear here.
+            {drafts > 0 ? ` Research drafts exist for ${drafts} countries; none is published until a person has read it against the sources.` : ""}
           </p>
         </div>
       ) : (
