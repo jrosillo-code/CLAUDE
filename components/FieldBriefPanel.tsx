@@ -24,9 +24,20 @@ function todayIso(): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-function hhmm(iso: string | null | undefined): string {
-  if (!iso) return "—";
-  return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+/** Wall-clock time at the PLACE, not on the viewer's device: a Tokyo brief
+ *  read from Michigan shows Tokyo hours. */
+function makeHhmm(offsetMinutes: number) {
+  return (iso: string | null | undefined): string => {
+    if (!iso) return "—";
+    const t = new Date(new Date(iso).getTime() + offsetMinutes * 60_000);
+    return `${String(t.getUTCHours()).padStart(2, "0")}:${String(t.getUTCMinutes()).padStart(2, "0")}`;
+  };
+}
+
+function offsetLabel(min: number): string {
+  const sign = min < 0 ? "−" : "+";
+  const a = Math.abs(min);
+  return `UTC${sign}${Math.floor(a / 60)}${a % 60 ? ":" + String(a % 60).padStart(2, "0") : ""}`;
 }
 
 function bearingWord(deg: number): string {
@@ -50,6 +61,10 @@ export default function FieldBriefPanel() {
   const [date, setDate] = useState(todayIso());
   const [brief, setBrief] = useState<FieldBrief | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "error">("loading");
+  const [hoursOpen, setHoursOpen] = useState(false);
+  const clock = brief?.clock ?? { timezone: null, utcOffsetMinutes: Math.round(target.lng / 15) * 60, exact: false };
+  const hhmm = makeHhmm(clock.utcOffsetMinutes);
+  const clockLabel = clock.exact && clock.timezone ? `${clock.timezone.replace(/_/g, " ")} (${offsetLabel(clock.utcOffsetMinutes)})` : `≈ local time (${offsetLabel(clock.utcOffsetMinutes)})`;
 
   // Nearby: your own scout pins and those of friends and followed creators,
   // and their field reports, within day-trip range. Visibility rules apply
@@ -197,7 +212,7 @@ export default function FieldBriefPanel() {
         </Card>
 
         {/* 2. Light */}
-        <Card title="Light" hint={brief?.light.polar === "day" ? "polar day" : brief?.light.polar === "night" ? "polar night" : undefined} loading={state === "loading"}>
+        <Card title="Light" hint={brief?.light.polar === "day" ? "polar day" : brief?.light.polar === "night" ? "polar night" : clockLabel} loading={state === "loading"}>
           {brief && (
             <dl className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[13px]">
               <Dt k="Blue hour am" v={brief.light.blueAm ? `${hhmm(brief.light.blueAm[0])} – ${hhmm(brief.light.blueAm[1])}` : "—"} />
@@ -214,7 +229,7 @@ export default function FieldBriefPanel() {
         </Card>
 
         {/* 3. Wind: gust sparkline, calm windows highlighted */}
-        <Card title="Wind" hint={wind && !("unavailable" in wind) ? "Open-Meteo · gusts, km/h" : undefined} loading={state === "loading"}>
+        <Card title="Wind" hint={wind && !("unavailable" in wind) ? `Open-Meteo · gusts, km/h · ${clockLabel}` : undefined} loading={state === "loading"}>
           {wind && "unavailable" in wind ? (
             <p className="text-[13px] text-ink-2">Wind unavailable — {wind.reason}</p>
           ) : wind ? (
@@ -243,6 +258,32 @@ export default function FieldBriefPanel() {
                   "No hour under the calm threshold — gusty all day."
                 )}
               </p>
+              <button
+                type="button"
+                onClick={() => setHoursOpen((o) => !o)}
+                aria-expanded={hoursOpen}
+                className="mt-2 text-[11px] font-semibold text-accent"
+                data-testid="wind-hours-toggle"
+              >
+                {hoursOpen ? "Hide hourly table" : "Hourly table"}
+              </button>
+              {hoursOpen && (
+                <table className="tnum mt-2 w-full text-[11px]" data-testid="wind-hours">
+                  <thead className="text-left text-[10px] uppercase tracking-wide text-ink-3">
+                    <tr><th className="py-1 font-medium">Hour</th><th className="py-1 font-medium">10 m</th><th className="py-1 font-medium">120 m</th><th className="py-1 font-medium">Gust</th></tr>
+                  </thead>
+                  <tbody>
+                    {wind.hours.map((h) => (
+                      <tr key={h.time} className={h.gust10m < CALM_GUST_KMH ? "text-ink" : "text-ink-3"}>
+                        <td className="py-0.5">{hhmm(h.time)}</td>
+                        <td className="py-0.5">{Math.round(h.wind10m)}</td>
+                        <td className="py-0.5">{Math.round(h.wind120m)}</td>
+                        <td className="py-0.5 font-medium">{Math.round(h.gust10m)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           ) : null}
         </Card>
@@ -295,7 +336,7 @@ export default function FieldBriefPanel() {
         </Card>
 
         <p className="text-[11px] leading-relaxed text-ink-3">
-          Rules show as of their verification date, per their source, and Waypoint never checks airspace for you. Light is computed; wind is a forecast.
+          Rules show as of their verification date, per their source, and Waypoint never checks airspace for you. Light is computed; wind is a forecast. Times are the place&apos;s own{clock.exact ? "" : ", estimated from longitude until a forecast confirms the zone"}.
           {brief?.source === "ai" ? " The summary at the top is a selection of sentences composed from these cards; the model chose which to show and wrote none of them." : ""}
         </p>
       </div>

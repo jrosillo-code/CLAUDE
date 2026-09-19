@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { assembleBrief, sanitizeNearby } from "../lib/fieldbrief/assemble";
+import { assembleBrief, sanitizeNearby, placeClock } from "../lib/fieldbrief/assemble";
 import { narrativeFor, candidateSentences } from "../lib/fieldbrief/narrative";
 import { calmWindows, fetchWind, _clearWindCache } from "../lib/fieldbrief/wind";
 import type { CountryRules } from "../lib/fieldbrief/rules";
@@ -112,7 +112,7 @@ test("wind: timeouts and errors degrade to unavailable, successes are cached", a
   };
   const a = await fetchWind(38.72, -9.14, "2026-07-01", { fetchImpl: ok });
   const b = await fetchWind(38.72, -9.14, "2026-07-01", { fetchImpl: ok });
-  assert.ok(!("unavailable" in a) && a.hours[0].time === "2026-07-01T00:00:00Z");
+  assert.ok(!("unavailable" in a) && a.hours[0].time === "2026-07-01T00:00:00.000Z");
   assert.deepEqual(a, b);
   assert.equal(calls, 1, "second call served from cache");
   const bad = await fetchWind(0, 0, "2026-07-01", { fetchImpl: async () => { const e = new Error("t"); e.name = "TimeoutError"; throw e; } });
@@ -168,4 +168,31 @@ test("a negative or non-numeric reading is never a calm hour", () => {
     { time: "2026-07-01T03:00:00Z", wind10m: 5, wind120m: 8, gust10m: 12 },
   ];
   assert.deepEqual(calmWindows(hours).map((c) => c.hours), [1, 1]);
+});
+
+test("timezone=auto: local wall-clock hours convert to UTC and the place clock is exact", async () => {
+  _clearWindCache();
+  const tokyo = async () => ({
+    ok: true,
+    status: 200,
+    json: async () => ({
+      timezone: "Asia/Tokyo",
+      utc_offset_seconds: 32400,
+      hourly: { time: ["2026-07-01T06:00", "2026-07-01T07:00"], wind_speed_10m: [5, 6], wind_speed_120m: [9, 10], wind_gusts_10m: [11, 12] },
+    }),
+  });
+  const w = await fetchWind(35.69, 139.69, "2026-07-01", { fetchImpl: tokyo });
+  assert.ok(!("unavailable" in w));
+  if (!("unavailable" in w)) {
+    assert.equal(w.hours[0].time, "2026-06-30T21:00:00.000Z", "06:00 JST is 21:00 UTC the day before");
+    assert.equal(w.timezone, "Asia/Tokyo");
+    const clock = placeClock(139.69, w);
+    assert.deepEqual(clock, { timezone: "Asia/Tokyo", utcOffsetMinutes: 540, exact: true });
+  }
+});
+
+test("without a forecast the place clock is a labelled longitude estimate", () => {
+  const clock = placeClock(-9.14, { unavailable: true, reason: "offline" });
+  assert.deepEqual(clock, { timezone: null, utcOffsetMinutes: -60, exact: false });
+  assert.deepEqual(placeClock(139.69, { unavailable: true, reason: "offline" }).utcOffsetMinutes, 540);
 });

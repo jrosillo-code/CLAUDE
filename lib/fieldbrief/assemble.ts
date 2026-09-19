@@ -65,9 +65,25 @@ export interface NearbySummary {
   }[];
 }
 
+/** How to show times for this place: an exact zone, or a longitude estimate. */
+export interface PlaceClock {
+  timezone: string | null;
+  utcOffsetMinutes: number;
+  /** false when the offset is only lng/15 rounded — shown with "≈". */
+  exact: boolean;
+}
+
+export function placeClock(lng: number, wind: WindResult): PlaceClock {
+  if (!("unavailable" in wind) && wind.timezone && typeof wind.utcOffsetSeconds === "number") {
+    return { timezone: wind.timezone, utcOffsetMinutes: Math.round(wind.utcOffsetSeconds / 60), exact: true };
+  }
+  return { timezone: null, utcOffsetMinutes: Math.round(lng / 15) * 60, exact: false };
+}
+
 export interface FieldBrief {
   source: "ai" | "live";
   place: { lat: number; lng: number; date: string; countryCode: string | null };
+  clock: PlaceClock;
   legality: RulesSummary | Uncovered;
   light: LightWindows;
   wind: WindResult;
@@ -142,6 +158,7 @@ export async function assembleBrief(input: AssembleInput, deps: AssembleDeps = {
   return {
     source: "live",
     place: { lat: input.lat, lng: input.lng, date: input.date, countryCode: cc },
+    clock: placeClock(input.lng, wind),
     legality,
     light,
     wind,

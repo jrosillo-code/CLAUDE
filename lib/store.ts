@@ -201,7 +201,7 @@ interface WaypointState {
     placeName: string;
     countryCode?: string;
     pinId?: string;
-    origin: "search" | "pin" | "fly";
+    origin: "search" | "pin" | "fly" | "map";
   } | null;
   openBrief: (t: NonNullable<WaypointState["briefTarget"]>) => void;
   closeBrief: () => void;

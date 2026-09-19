@@ -97,7 +97,7 @@ test("malformed forecast hours and negative speeds are dropped, never shown as c
   );
   const res = await post({ lat: 38.7, lng: -9.1, date: "2026-09-21", countryCode: "PT" });
   const b = await res.json();
-  assert.deepEqual(b.wind.hours.map((h: { time: string }) => h.time), ["2026-09-21T06:00:00Z"]);
+  assert.deepEqual(b.wind.hours.map((h: { time: string }) => h.time), ["2026-09-21T06:00:00.000Z"]);
   assert.ok(!calls.some((u) => /nominatim/.test(u)), "a client-supplied country code skips the reverse lookup");
 });
 

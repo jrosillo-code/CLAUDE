@@ -8,6 +8,7 @@ import { computeCrossings } from "@/lib/crossings";
 import { searchPlaces, type GeoResult } from "@/lib/geocode";
 import WaypointLogo from "./Logo";
 import { FocusButton } from "./LayerRail";
+import { BriefHereButton } from "./BriefHereButton";
 
 export default function TopBar({
   onOpenActivity,
@@ -249,6 +250,7 @@ export default function TopBar({
     {/* Focus floats above the add-pin FAB on every breakpoint — Trips lives
         with Travelers in the left column now. */}
     <div className="fixed z-30 flex flex-col items-center gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:right-[18px] sm:bottom-24 sm:right-4 sm:w-14">
+      <BriefHereButton bubbleLeft />
       <FocusButton bubbleLeft />
     </div>
     </>

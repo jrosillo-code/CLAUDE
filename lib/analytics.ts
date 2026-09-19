@@ -46,7 +46,7 @@ export interface ProductEventMeta {
   /** ISO alpha-2 country code (fly_page_view, brief_open). */
   countryCode?: string;
   /** Where the brief was opened from. */
-  origin?: "search" | "pin" | "fly";
+  origin?: "search" | "pin" | "fly" | "map";
 }
 
 export interface ProductEvent {

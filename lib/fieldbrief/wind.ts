@@ -11,7 +11,14 @@ export interface WindHour {
 }
 
 export type WindResult =
-  | { source: "open-meteo"; unit: "km/h"; hours: WindHour[] }
+  | {
+      source: "open-meteo";
+      unit: "km/h";
+      hours: WindHour[];
+      /** The place's IANA zone and offset, as Open-Meteo resolves them. */
+      timezone?: string;
+      utcOffsetSeconds?: number;
+    }
   | { unavailable: true; reason: string };
 
 export const WIND_TIMEOUT_MS = 4000;
@@ -38,7 +45,7 @@ export async function fetchWind(
 
   const url =
     `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(4)}&longitude=${lng.toFixed(4)}` +
-    `&hourly=wind_speed_10m,wind_speed_120m,wind_gusts_10m&wind_speed_unit=kmh&timezone=UTC` +
+    `&hourly=wind_speed_10m,wind_speed_120m,wind_gusts_10m&wind_speed_unit=kmh&timezone=auto` +
     `&start_date=${date}&end_date=${date}`;
   let result: WindResult;
   try {
@@ -47,9 +54,15 @@ export async function fetchWind(
       result = { unavailable: true, reason: res.status === 400 ? "Open-Meteo has no forecast for that date (about 16 days ahead, 3 months back)." : `Open-Meteo answered ${res.status}.` };
     } else {
       const data = (await res.json()) as {
+        timezone?: string;
+        utc_offset_seconds?: number;
         hourly?: { time?: string[]; wind_speed_10m?: (number | null)[]; wind_speed_120m?: (number | null)[]; wind_gusts_10m?: (number | null)[] };
       };
       const h = data?.hourly;
+      // timezone=auto returns wall-clock times in the place's zone; convert
+      // back to UTC instants so every consumer works in one clock.
+      const offsetS = typeof data?.utc_offset_seconds === "number" && Number.isFinite(data.utc_offset_seconds) ? data.utc_offset_seconds : 0;
+      const tz = typeof data?.timezone === "string" && data.timezone ? data.timezone : undefined;
       const times = Array.isArray(h?.time) ? h!.time! : [];
       // A malformed hour — unparseable time, missing, negative or non-finite
       // speed — is dropped rather than rendered as a 0 km/h calm hour.
@@ -57,7 +70,12 @@ export async function fetchWind(
       const hours: WindHour[] = [];
       times.forEach((t, i) => {
         if (typeof t !== "string") return;
-        const time = /Z$/.test(t) ? t : /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(t) ? `${t}:00Z` : null;
+        let time: string | null = null;
+        if (/Z$/.test(t)) time = t;
+        else if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(t)) {
+          const local = Date.parse(`${t}:00Z`);
+          if (!Number.isNaN(local)) time = new Date(local - offsetS * 1000).toISOString();
+        }
         if (!time || Number.isNaN(Date.parse(time))) return;
         const w10 = speed(h?.wind_speed_10m?.[i]);
         const w120 = speed(h?.wind_speed_120m?.[i]);
@@ -65,7 +83,9 @@ export async function fetchWind(
         if (w10 == null || g10 == null) return;
         hours.push({ time, wind10m: w10, wind120m: w120 ?? w10, gust10m: g10 });
       });
-      result = hours.length ? { source: "open-meteo", unit: "km/h", hours } : { unavailable: true, reason: "Open-Meteo returned no usable hours for that date." };
+      result = hours.length
+        ? { source: "open-meteo", unit: "km/h", hours, timezone: tz, utcOffsetSeconds: tz ? offsetS : undefined }
+        : { unavailable: true, reason: "Open-Meteo returned no usable hours for that date." };
     }
   } catch (e) {
     const timeout = e instanceof Error && (e.name === "TimeoutError" || e.name === "AbortError");
