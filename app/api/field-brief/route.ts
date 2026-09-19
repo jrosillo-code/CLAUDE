@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { assembleBrief, type NearbySummary } from "@/lib/fieldbrief/assemble";
 import { narrativeFor } from "@/lib/fieldbrief/narrative";
+import { fetchWind } from "@/lib/fieldbrief/wind";
 
 // POST { lat, lng, date, countryCode?, nearby? } → the field brief.
 // Legality comes from curated country files, light from math, wind from
@@ -11,6 +12,10 @@ import { narrativeFor } from "@/lib/fieldbrief/narrative";
 
 export const maxDuration = 30;
 
+// The response carries the viewer's own nearby scouting, so it is private
+// to that request: no CDN or browser cache may reuse it for anyone else.
+const PRIVATE = { "Cache-Control": "private, no-store" };
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 export async function POST(req: Request) {
@@ -18,19 +23,24 @@ export async function POST(req: Request) {
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Bad JSON" }, { status: 400 });
+    return NextResponse.json({ error: "Bad JSON" }, { status: 400, headers: PRIVATE });
   }
+  if (!body || typeof body !== "object") return NextResponse.json({ error: "Bad JSON" }, { status: 400, headers: PRIVATE });
   const lat = Number(body.lat), lng = Number(body.lng);
   if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
-    return NextResponse.json({ error: "lat/lng required" }, { status: 400 });
+    return NextResponse.json({ error: "lat/lng required" }, { status: 400, headers: PRIVATE });
   }
   const date = typeof body.date === "string" && ISO_DATE.test(body.date) && !Number.isNaN(Date.parse(body.date)) ? body.date : new Date().toISOString().slice(0, 10);
-  let countryCode = typeof body.countryCode === "string" && /^[A-Za-z]{2}$/.test(body.countryCode) ? body.countryCode.toUpperCase() : null;
-  if (!countryCode) countryCode = await reverseCountry(lat, lng);
+  const given = typeof body.countryCode === "string" && /^[A-Za-z]{2}$/.test(body.countryCode) ? body.countryCode.toUpperCase() : null;
 
-  const brief = await assembleBrief({ lat, lng, date, countryCode, nearby: body.nearby });
+  // Country lookup and the wind forecast are independent network calls:
+  // start both, await both — their latencies overlap instead of adding.
+  const windP = fetchWind(lat, lng, date);
+  const countryCode = given ?? (await reverseCountry(lat, lng));
+
+  const brief = await assembleBrief({ lat, lng, date, countryCode, nearby: body.nearby }, { fetchWind: () => windP });
   const narrative = await narrativeFor(brief);
-  return NextResponse.json(narrative ? { ...brief, source: "ai", narrative } : brief);
+  return NextResponse.json(narrative ? { ...brief, source: "ai", narrative } : brief, { headers: PRIVATE });
 }
 
 // Reverse geocode to a country code (Nominatim, keyless), cached an hour.

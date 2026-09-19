@@ -129,3 +129,41 @@ test("nearby summaries are clipped to shape and size", () => {
   assert.equal(n.scoutPins[0].distanceKm, 1.2);
   assert.equal(n.reports[0].quote.length, 1000);
 });
+
+test("wind cache: expires after an hour, isolates dates, and retries after a failure", async () => {
+  _clearWindCache();
+  let now = 1_000_000;
+  let calls = 0;
+  const ok = async () => {
+    calls++;
+    return { ok: true, status: 200, json: async () => ({ hourly: { time: ["2026-07-01T00:00"], wind_speed_10m: [5], wind_speed_120m: [9], wind_gusts_10m: [11] } }) };
+  };
+  await fetchWind(10, 10, "2026-07-01", { fetchImpl: ok, now: () => now });
+  await fetchWind(10, 10, "2026-07-01", { fetchImpl: ok, now: () => now });
+  assert.equal(calls, 1, "same place, same date: cached");
+  await fetchWind(10, 10, "2026-07-02", { fetchImpl: ok, now: () => now });
+  assert.equal(calls, 2, "another date is another entry");
+  now += 61 * 60 * 1000;
+  await fetchWind(10, 10, "2026-07-01", { fetchImpl: ok, now: () => now });
+  assert.equal(calls, 3, "an hour later the entry has expired");
+  let failing = true;
+  const flaky = async () => {
+    if (failing) throw new Error("boom");
+    return ok();
+  };
+  const first = await fetchWind(20, 20, "2026-07-01", { fetchImpl: flaky, now: () => now });
+  assert.ok("unavailable" in first);
+  failing = false;
+  const second = await fetchWind(20, 20, "2026-07-01", { fetchImpl: flaky, now: () => now });
+  assert.ok(!("unavailable" in second), "a failure is not cached: the next call retries");
+});
+
+test("a negative or non-numeric reading is never a calm hour", () => {
+  const hours = [
+    { time: "2026-07-01T00:00:00Z", wind10m: 5, wind120m: 8, gust10m: 10 },
+    { time: "2026-07-01T01:00:00Z", wind10m: 5, wind120m: 8, gust10m: -1 },
+    { time: "2026-07-01T02:00:00Z", wind10m: 5, wind120m: 8, gust10m: Number.NaN },
+    { time: "2026-07-01T03:00:00Z", wind10m: 5, wind120m: 8, gust10m: 12 },
+  ];
+  assert.deepEqual(calmWindows(hours).map((c) => c.hours), [1, 1]);
+});

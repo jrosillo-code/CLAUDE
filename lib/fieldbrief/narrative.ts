@@ -24,13 +24,37 @@ export async function narrativeFor(brief: FieldBrief, deps: NarrativeDeps = {}):
   if (!apiKey) return undefined;
   const complete = deps.complete ?? defaultComplete;
   try {
-    const text = await complete(NARRATIVE_SYSTEM, JSON.stringify(stripForPrompt(brief)));
-    const trimmed = text.trim();
-    return trimmed ? trimmed.slice(0, 1200) : undefined;
+    const payload = stripForPrompt(brief);
+    const text = await complete(NARRATIVE_SYSTEM, JSON.stringify(payload));
+    return vetNarrative(text, payload);
   } catch (e) {
     console.error("field-brief: narrative failed, serving the live brief", e);
     return undefined;
   }
+}
+
+// Words that turn a rewrite into advice. The brief phrases legality as
+// "as of {date}, per {source}"; the voice may not upgrade that to a verdict.
+const ADVICE = /\b(legal|illegal|allowed|permitted|forbidden|safe to fly|you can fly|you may fly|go ahead|cleared|clearance)\b/i;
+
+/**
+ * Accept the model's text only if it is plain prose that adds nothing: no
+ * advice words, no number that isn't already in the evidence it was given,
+ * no structured output. Anything else is dropped and the live cards stand.
+ */
+export function vetNarrative(text: unknown, evidence: unknown): string | undefined {
+  if (typeof text !== "string") return undefined;
+  const t = text.trim();
+  if (!t || t.length > 1200) return undefined;
+  if (/[{}<>\[\]]|```/.test(t)) return undefined; // JSON, markup, fences
+  if (ADVICE.test(t)) return undefined;
+  const allowed = new Set((JSON.stringify(evidence).match(/\d+(?:[.,]\d+)?/g) ?? []).map((n) => n.replace(",", ".")));
+  for (const n of t.match(/\d+(?:[.,]\d+)?/g) ?? []) {
+    const norm = n.replace(",", ".");
+    // "24.1426° N" may surface as 24.14 or 24 — accept prefixes of known numbers
+    if (![...allowed].some((a) => a === norm || a.startsWith(norm))) return undefined;
+  }
+  return t;
 }
 
 /** Only what the voice needs: no full hourly wind table, no URLs to echo. */

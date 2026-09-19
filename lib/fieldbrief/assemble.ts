@@ -86,6 +86,8 @@ export interface AssembleInput {
 
 export interface AssembleDeps {
   rulesFor?: (cc: string | null | undefined) => CountryRules | null;
+  /** May return a promise that was started earlier — the route begins the
+   *  wind lookup before the country is known so the two don't add up. */
   fetchWind?: (lat: number, lng: number, date: string) => Promise<WindResult>;
   now?: () => Date;
 }
@@ -130,9 +132,12 @@ export async function assembleBrief(input: AssembleInput, deps: AssembleDeps = {
   const legality: RulesSummary | Uncovered = rules ? summarizeRules(rules, now) : { covered: false, countryCode: cc };
 
   // Light is pure math; wind is the only network call and it never blocks the
-  // brief past its own timeout.
+  // brief past its own timeout — and never fails it: a thrown lookup becomes
+  // an "unavailable" card, the other cards stay.
   const light = lightWindows(input.lat, input.lng, input.date);
-  const wind = await fetchWind(input.lat, input.lng, input.date);
+  const wind = await fetchWind(input.lat, input.lng, input.date).catch(
+    (): WindResult => ({ unavailable: true, reason: "Wind lookup failed." })
+  );
 
   return {
     source: "live",

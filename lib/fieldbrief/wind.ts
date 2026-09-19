@@ -49,14 +49,23 @@ export async function fetchWind(
       const data = (await res.json()) as {
         hourly?: { time?: string[]; wind_speed_10m?: (number | null)[]; wind_speed_120m?: (number | null)[]; wind_gusts_10m?: (number | null)[] };
       };
-      const h = data.hourly;
-      const hours: WindHour[] = (h?.time ?? []).map((t, i) => ({
-        time: t.endsWith("Z") ? t : `${t}:00Z`,
-        wind10m: h?.wind_speed_10m?.[i] ?? 0,
-        wind120m: h?.wind_speed_120m?.[i] ?? 0,
-        gust10m: h?.wind_gusts_10m?.[i] ?? 0,
-      }));
-      result = hours.length ? { source: "open-meteo", unit: "km/h", hours } : { unavailable: true, reason: "Open-Meteo returned no hours for that date." };
+      const h = data?.hourly;
+      const times = Array.isArray(h?.time) ? h!.time! : [];
+      // A malformed hour — unparseable time, missing, negative or non-finite
+      // speed — is dropped rather than rendered as a 0 km/h calm hour.
+      const speed = (v: unknown): number | null => (typeof v === "number" && Number.isFinite(v) && v >= 0 ? v : null);
+      const hours: WindHour[] = [];
+      times.forEach((t, i) => {
+        if (typeof t !== "string") return;
+        const time = /Z$/.test(t) ? t : /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(t) ? `${t}:00Z` : null;
+        if (!time || Number.isNaN(Date.parse(time))) return;
+        const w10 = speed(h?.wind_speed_10m?.[i]);
+        const w120 = speed(h?.wind_speed_120m?.[i]);
+        const g10 = speed(h?.wind_gusts_10m?.[i]);
+        if (w10 == null || g10 == null) return;
+        hours.push({ time, wind10m: w10, wind120m: w120 ?? w10, gust10m: g10 });
+      });
+      result = hours.length ? { source: "open-meteo", unit: "km/h", hours } : { unavailable: true, reason: "Open-Meteo returned no usable hours for that date." };
     }
   } catch (e) {
     const timeout = e instanceof Error && (e.name === "TimeoutError" || e.name === "AbortError");
@@ -79,7 +88,8 @@ export function calmWindows(hours: WindHour[], maxGust = CALM_GUST_KMH): { start
     run = [];
   };
   for (const h of hours) {
-    if (h.gust10m < maxGust) run.push(h);
+    // Only a finite, non-negative gust reading can count as calm.
+    if (Number.isFinite(h.gust10m) && h.gust10m >= 0 && h.gust10m < maxGust) run.push(h);
     else flush();
   }
   flush();
