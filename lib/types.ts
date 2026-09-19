@@ -176,3 +176,57 @@ export interface AppNotification {
 export interface PinWithOwner extends Pin {
   owner: User;
 }
+
+// ── Field brief: scout notes and field reports ──────────────────────────────
+
+export type TimeOfDay = "dawn" | "golden_am" | "day" | "golden_pm" | "blue" | "night";
+
+export const TIME_OF_DAY_LABELS: Record<TimeOfDay, string> = {
+  dawn: "Dawn",
+  golden_am: "Golden hour (am)",
+  day: "Day",
+  golden_pm: "Golden hour (pm)",
+  blue: "Blue hour",
+  night: "Night",
+};
+
+/**
+ * Photographic scouting details on a pin, one to one. Visibility is the
+ * pin's: whoever may see the pin may see its scout note, nobody else.
+ */
+export interface ScoutNote {
+  pinId: string;
+  bearingDeg?: number;
+  focalMm?: number;
+  camera?: string;
+  drone?: string;
+  timeOfDay?: TimeOfDay;
+  note: string;
+}
+
+export type ReportOutcome = "flew" | "refused" | "fined" | "did_not_try";
+
+export const REPORT_OUTCOME_LABELS: Record<ReportOutcome, string> = {
+  flew: "Flew",
+  refused: "Refused",
+  fined: "Fined",
+  did_not_try: "Didn't try",
+};
+
+/**
+ * A first-hand account of trying to fly in a country. The quote is stored
+ * VERBATIM and shown attributed — the same contract as debrief answers.
+ */
+export interface FieldReport {
+  id: string;
+  userId: string;
+  pinId?: string;
+  countryCode: string;
+  /** ISO date of the flight (or the attempt). */
+  flownOn: string;
+  outcome: ReportOutcome;
+  droneClass: string;
+  quote: string;
+  visibility: Visibility;
+  createdAt: string;
+}

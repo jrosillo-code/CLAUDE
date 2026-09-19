@@ -37,6 +37,7 @@ export default function SearchPlaceCard() {
   const shownTripIds = useStore((s) => s.shownTripIds);
   const toggleTripShown = useStore((s) => s.toggleTripShown);
   const requestFitBounds = useStore((s) => s.requestFitBounds);
+  const openBrief = useStore((s) => s.openBrief);
 
   const topPlaces = useStore((s) => s.topPlaces);
   const reflections = useStore((s) => s.reflections);
@@ -130,8 +131,37 @@ export default function SearchPlaceCard() {
     return [...best.values()].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   }, [place, pins, users, friendships, follows, viewerId]);
 
-  if (!place || (tips.length === 0 && dontMiss.picks.length === 0 && voicesShown === 0))
-    return null;
+  if (!place) return null;
+  const hasEvidence = tips.length > 0 || dontMiss.picks.length > 0 || voicesShown > 0;
+  const briefButton = (
+    <button
+      onClick={() =>
+        openBrief({ lat: place.lat, lng: place.lng, placeName: place.name, countryCode: place.countryCode, origin: "search" })
+      }
+      className="flex w-full items-center justify-center gap-1.5 rounded-full border border-line py-2 text-xs font-semibold text-ink-2 transition-colors hover:bg-paper-2"
+      data-testid="button-field-brief"
+    >
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="text-accent"><circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="2.2" fill="currentColor" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+      Field brief — drone rules, light, wind
+    </button>
+  );
+  // Nothing from the trust graph here: the card still offers the brief,
+  // which works for any place on the map.
+  if (!hasEvidence) {
+    return (
+      <div className="fixed bottom-24 left-1/2 z-30 w-[min(92vw,420px)] -translate-x-1/2 sm:bottom-8">
+        <div className="animate-sheet rounded-3xl bg-paper/95 p-4 shadow-float backdrop-blur">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="min-w-0 truncate font-display text-lg leading-tight">{place.name}</h3>
+            <button onClick={() => setSearchedPlace(null)} aria-label="Close" className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-ink-3 hover:bg-paper-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+            </button>
+          </div>
+          <div className="mt-2.5">{briefButton}</div>
+        </div>
+      </div>
+    );
+  }
 
   function openQuote(q: QuoteWithContext) {
     if (q.pin) {
@@ -279,6 +309,8 @@ export default function SearchPlaceCard() {
             regret skipping.
           </p>
         )}
+
+        <div className="mt-2.5">{briefButton}</div>
 
         {tripDraft && (
           <button

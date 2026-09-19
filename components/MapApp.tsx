@@ -21,6 +21,8 @@ import LandmarkCard from "./LandmarkCard";
 import OverlayCard from "./OverlayCard";
 import CrossingsPanel from "./CrossingsPanel";
 import SearchPlaceCard from "./SearchPlaceCard";
+import FieldBriefPanel from "./FieldBriefPanel";
+import { searchPlaces } from "@/lib/geocode";
 import AskPanel from "./AskPanel";
 import ReflectionSheet from "./ReflectionSheet";
 import GuidedStart from "./GuidedStart";
@@ -58,6 +60,10 @@ export default function MapApp() {
   const setMapMode = useStore((s) => s.setMapMode);
   const addTripStop = useStore((s) => s.addTripStop);
   const addDraft = useStore((s) => s.addDraft);
+  const briefTarget = useStore((s) => s.briefTarget);
+  const openBrief = useStore((s) => s.openBrief);
+  const setSearchedPlace = useStore((s) => s.setSearchedPlace);
+  const requestFlyTo = useStore((s) => s.requestFlyTo);
   const selectedPinId = useStore((s) => s.selectedPinId);
   const flightRecording = useStore((s) => s.flightRecording);
   const flightProgress = useStore((s) => s.flightProgress);
@@ -78,6 +84,38 @@ export default function MapApp() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tripDraft, trips.length]);
+
+  // Arriving from a /fly/{cc} page ("add a field report on the map"): frame
+  // the country, land its search card, and open the brief. The param is
+  // consumed once and dropped from the URL.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const cc = params.get("fly");
+    if (!cc || !/^[A-Za-z]{2}$/.test(cc)) return;
+    const code = cc.toUpperCase();
+    window.history.replaceState(window.history.state, "", window.location.pathname);
+    let name = code;
+    try {
+      name = new Intl.DisplayNames(["en"], { type: "region" }).of(code) ?? code;
+    } catch {
+      /* older engines: search by code */
+    }
+    let cancelled = false;
+    searchPlaces(name)
+      .then((results) => {
+        if (cancelled) return;
+        const hit = results.find((r) => r.kind === "place" && r.countryCode === code) ?? results[0];
+        if (!hit) return;
+        requestFlyTo(hit.lng, hit.lat, Math.min(hit.zoom, 5), { flat: true });
+        setSearchedPlace({ name: hit.placeName, lat: hit.lat, lng: hit.lng, countryCode: code });
+        openBrief({ lat: hit.lat, lng: hit.lng, placeName: hit.placeName, countryCode: code, origin: "fly" });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Warm the Me-page backdrop (geo fetch + star sampling) while the map idles,
   // so tapping the avatar opens the profile with its constellation ready.
@@ -238,6 +276,7 @@ export default function MapApp() {
       {mapMode === "pins" && !selectedPinId && <SearchPlaceCard />}
       {selectedPinId && <PinSheet />}
       {addDraft && <AddPinSheet />}
+      {briefTarget && <FieldBriefPanel />}
       {creatorsOpen && <CreatorsPanel onClose={() => setCreatorsOpen(false)} />}
       {friendsOpen && <FriendsPanel onClose={() => setFriendsOpen(false)} />}
       {travelersOpen && (

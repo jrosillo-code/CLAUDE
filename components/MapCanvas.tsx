@@ -35,6 +35,8 @@ type ClusterProps = {
   color?: string;
   photo?: string;
   year?: string;
+  /** The pin carries scout details — worn as a reticle glyph. */
+  scout?: boolean;
 };
 
 const DEM_SOURCE = "waypoint-dem";
@@ -193,7 +195,15 @@ export default function MapCanvas({ placing, onPick }: Props) {
   const readyRef = useRef(false);
   const styleSeqRef = useRef(0);
 
-  const visiblePins = useVisiblePins();
+  const allVisiblePins = useVisiblePins();
+  // Scout layer on: only pins carrying scout details stay on the map.
+  const showScout = useStore((s) => s.showScout);
+  const scoutNotes = useStore((s) => s.scoutNotes);
+  const scoutPinIds = useMemo(() => new Set(scoutNotes.map((n) => n.pinId)), [scoutNotes]);
+  const visiblePins = useMemo(
+    () => (showScout ? allVisiblePins.filter((p) => scoutPinIds.has(p.id)) : allVisiblePins),
+    [allVisiblePins, showScout, scoutPinIds]
+  );
   const selectedPinId = useStore((s) => s.selectedPinId);
   const selectPin = useStore((s) => s.selectPin);
   const flyTo = useStore((s) => s.flyTo);
@@ -991,6 +1001,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
         properties: {
           pinId: p.id,
           ownerId: p.userId,
+          scout: scoutPinIds.has(p.id),
           color: p.owner.color,
           // The needle head wears the owner's face, not the pin's photo — the
           // map reads as WHO at a glance; photos live in the pin sheet.
@@ -1514,7 +1525,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           twinPhoto = duo.twin;
           headYear = duo.headYear;
         }
-        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${headYear ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}`;
+        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${headYear ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}|${props.scout ? "sc" : ""}`;
         upsert(
           key,
           lng,
@@ -1529,6 +1540,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
               ghost: false,
               twinPhoto,
               year: headYear,
+              scout: !!props.scout,
             }),
           selected ? "5" : "1",
           (ev) => {
@@ -1665,8 +1677,10 @@ function needleEl(opts: {
   twinPhoto?: string;
   /** Travel year — worn as a tiny badge at the base of the head. */
   year?: string;
+  /** Scout details on the pin: a small reticle at the head's shoulder. */
+  scout?: boolean;
 }): HTMLDivElement {
-  const { photo, ring, scale, stacked, ghost, twinPhoto, year } = opts;
+  const { photo, ring, scale, stacked, ghost, twinPhoto, year, scout } = opts;
   const headSize = Math.round(26 * scale);
   const stickHeight = Math.round(20 * scale);
   const width = headSize + 14; // room for the stacked twin
@@ -1704,6 +1718,13 @@ function needleEl(opts: {
     tag.textContent = `’${year.slice(2)}`;
     tag.style.cssText = `position:absolute;left:50%;top:${headSize - 4}px;transform:translateX(-50%);font-size:7px;font-weight:700;line-height:10px;padding:0 3.5px;border-radius:5px;background:rgba(255,255,255,.94);color:#2a3446;box-shadow:0 1px 2px rgba(0,0,0,.25);pointer-events:none;letter-spacing:.02em;`;
     wrap.appendChild(tag);
+  }
+  if (scout) {
+    const glyph = document.createElement("div");
+    glyph.title = "Scout details";
+    glyph.style.cssText = `position:absolute;left:calc(50% + ${Math.round(headSize * 0.32)}px);top:-3px;width:13px;height:13px;border-radius:9999px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);display:grid;place-items:center;pointer-events:none;`;
+    glyph.innerHTML = `<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke="#2a3446" stroke-width="2.4"/><circle cx="12" cy="12" r="2.4" fill="#2a3446"/><path d="M12 1v4M12 19v4M1 12h4M19 12h4" stroke="#2a3446" stroke-width="2.4" stroke-linecap="round"/></svg>`;
+    wrap.appendChild(glyph);
   }
   return wrap;
 }

@@ -15,6 +15,8 @@ import { uploadPinMedia } from "@/lib/backend";
 import { downscaleImage } from "@/lib/image";
 import { useViewer } from "@/lib/hooks";
 import { SAMPLE_VIDEOS, photo } from "@/lib/seed";
+import { ScoutDetailsFields, scoutFromNote, scoutToNote, type ScoutDraft } from "./ScoutDetails";
+import { REPORT_OUTCOME_LABELS, TIME_OF_DAY_LABELS, type ReportOutcome } from "@/lib/types";
 
 // Immersive pin view: a large modal with a photo collage (click any photo to
 // open it full-screen), the story of the place, likes/saves, and who else has
@@ -33,7 +35,17 @@ export default function PinSheet() {
   const ratePin = useStore((s) => s.ratePin);
   const updatePin = useStore((s) => s.updatePin);
   const deletePin = useStore((s) => s.deletePin);
+  const openBrief = useStore((s) => s.openBrief);
+  const scoutNotes = useStore((s) => s.scoutNotes);
+  const setScoutNote = useStore((s) => s.setScoutNote);
+  const fieldReports = useStore((s) => s.fieldReports);
+  const addFieldReport = useStore((s) => s.addFieldReport);
+  const deleteFieldReport = useStore((s) => s.deleteFieldReport);
   const viewer = useViewer();
+  const [scoutEditing, setScoutEditing] = useState(false);
+  const [scoutDraft, setScoutDraft] = useState<ScoutDraft | null>(null);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [report, setReport] = useState({ flownOn: new Date().toISOString().slice(0, 10), outcome: "flew" as ReportOutcome, droneClass: "", quote: "", visibility: "friends" as "public" | "friends" | "private" });
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editNote, setEditNote] = useState("");
@@ -105,6 +117,9 @@ export default function PinSheet() {
   // Send the maps apps a real place name — raw coordinates snap to whatever
   // address is nearest, which reads as a random location.
   const pinPlace = pin.countryCode ? `${pin.placeName}, ${pin.countryCode}` : pin.placeName;
+  const scout = scoutNotes.find((n) => n.pinId === pin.id);
+  const pinReports = fieldReports.filter((r) => r.pinId === pin.id);
+  const bearingWord = (deg: number) => ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(deg / 45) % 8];
 
   return (
     <>
@@ -201,6 +216,127 @@ export default function PinSheet() {
                 </div>
               )}
 
+              {/* Scout details: where to stand, which way, what glass, what time.
+                  Visible to whoever can see the pin; only the owner edits. */}
+              {(scout || isOwner) && (
+                <div className="mt-5 rounded-2xl border border-line bg-paper-2/60 p-4" data-testid="scout-section">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium uppercase tracking-wide text-ink-3">Scout details</span>
+                    {isOwner && !scoutEditing && (
+                      <button
+                        onClick={() => { setScoutDraft(scoutFromNote(scout)); setScoutEditing(true); }}
+                        className="text-xs font-semibold text-accent"
+                        data-testid="button-scout-edit"
+                      >
+                        {scout ? "Edit" : "Add"}
+                      </button>
+                    )}
+                  </div>
+                  {scoutEditing && scoutDraft ? (
+                    <div className="mt-2">
+                      <ScoutDetailsFields value={scoutDraft} onChange={setScoutDraft} />
+                      <div className="mt-2 flex gap-2">
+                        <button
+                          onClick={() => { setScoutNote(pin.id, scoutToNote(scoutDraft)); setScoutEditing(false); }}
+                          className="flex-1 rounded-full bg-ink py-2 text-xs font-semibold text-paper"
+                          data-testid="button-scout-save"
+                        >
+                          Save
+                        </button>
+                        <button onClick={() => setScoutEditing(false)} className="flex-1 rounded-full bg-paper py-2 text-xs font-semibold text-ink-2">Cancel</button>
+                      </div>
+                    </div>
+                  ) : scout ? (
+                    <div className="mt-2 text-sm" data-testid="scout-view">
+                      <div className="flex flex-wrap gap-1.5 text-[11px]">
+                        {scout.timeOfDay && <span className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink-2">{TIME_OF_DAY_LABELS[scout.timeOfDay]}</span>}
+                        {scout.bearingDeg != null && <span className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink-2">facing {bearingWord(scout.bearingDeg)} · {scout.bearingDeg}°</span>}
+                        {scout.focalMm != null && <span className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink-2">{scout.focalMm} mm</span>}
+                        {scout.camera && <span className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink-2">{scout.camera}</span>}
+                        {scout.drone && <span className="rounded-full bg-paper px-2.5 py-1 font-medium text-ink-2">{scout.drone}</span>}
+                      </div>
+                      {scout.note && <p className="mt-2 leading-relaxed text-ink-2">{scout.note}</p>}
+                    </div>
+                  ) : (
+                    <p className="mt-1.5 text-xs text-ink-3">Add where you stood, which way you faced and the time of day — it shows up in friends&apos; field briefs.</p>
+                  )}
+                </div>
+              )}
+
+              {/* Field reports on this pin: first-hand, verbatim, attributed. */}
+              {(pinReports.length > 0 || isOwner) && (
+                <div className="mt-4" data-testid="report-section">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium uppercase tracking-wide text-ink-3">Field reports</span>
+                    {isOwner && !reportOpen && (
+                      <button onClick={() => setReportOpen(true)} className="text-xs font-semibold text-accent" data-testid="button-report-add">Add</button>
+                    )}
+                  </div>
+                  {pinReports.length > 0 && (
+                    <ul className="mt-2 space-y-1.5">
+                      {pinReports.map((r) => (
+                        <li key={r.id} className="rounded-xl bg-paper-2/60 p-2.5 text-sm" data-testid={`report-${r.id}`}>
+                          <p className="italic leading-relaxed text-ink-2">“{r.quote}”</p>
+                          <p className="mt-0.5 flex items-center gap-2 text-[11px] text-ink-3">
+                            <span>{REPORT_OUTCOME_LABELS[r.outcome]} · {r.flownOn}{r.droneClass ? ` · ${r.droneClass}` : ""} · {visibilityLabel[r.visibility]}</span>
+                            {r.userId === viewerId && (
+                              <button onClick={() => deleteFieldReport(r.id)} className="ml-auto text-accent">Delete</button>
+                            )}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {isOwner && reportOpen && (
+                    <div className="mt-2 space-y-2 rounded-2xl border border-line bg-paper-2/60 p-3" data-testid="report-form">
+                      <div className="grid grid-cols-2 gap-2">
+                        <label className="text-xs text-ink-3">
+                          Flown on
+                          <input type="date" value={report.flownOn} onChange={(e) => setReport({ ...report, flownOn: e.target.value })} className="mt-1 w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm" data-testid="report-date" />
+                        </label>
+                        <label className="text-xs text-ink-3">
+                          Outcome
+                          <select value={report.outcome} onChange={(e) => setReport({ ...report, outcome: e.target.value as ReportOutcome })} className="mt-1 w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm" data-testid="report-outcome">
+                            {(Object.keys(REPORT_OUTCOME_LABELS) as ReportOutcome[]).map((o) => <option key={o} value={o}>{REPORT_OUTCOME_LABELS[o]}</option>)}
+                          </select>
+                        </label>
+                        <label className="text-xs text-ink-3">
+                          Drone class
+                          <input value={report.droneClass} onChange={(e) => setReport({ ...report, droneClass: e.target.value })} placeholder="sub-250 g, C1…" className="mt-1 w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm" />
+                        </label>
+                        <label className="text-xs text-ink-3">
+                          Who can see it
+                          <select value={report.visibility} onChange={(e) => setReport({ ...report, visibility: e.target.value as typeof report.visibility })} className="mt-1 w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm">
+                            <option value="private">Only me</option>
+                            <option value="friends">Friends</option>
+                            <option value="public">Public (also on /fly)</option>
+                          </select>
+                        </label>
+                      </div>
+                      <label className="block text-xs text-ink-3">
+                        What happened, in your words
+                        <textarea value={report.quote} onChange={(e) => setReport({ ...report, quote: e.target.value })} rows={3} maxLength={1000} placeholder="Quoted verbatim, attributed to you — never paraphrased." className="mt-1 w-full rounded-xl border border-line bg-paper px-3 py-2 text-sm" data-testid="report-quote" />
+                      </label>
+                      <div className="flex gap-2">
+                        <button
+                          disabled={!report.quote.trim() || !pin.countryCode}
+                          onClick={() => {
+                            const saved = addFieldReport({ pinId: pin.id, countryCode: pin.countryCode.toUpperCase(), flownOn: report.flownOn, outcome: report.outcome, droneClass: report.droneClass.trim(), quote: report.quote, visibility: report.visibility });
+                            if (saved) { setReportOpen(false); setReport({ ...report, quote: "", droneClass: "" }); }
+                          }}
+                          className="flex-1 rounded-full bg-ink py-2 text-xs font-semibold text-paper disabled:opacity-40"
+                          data-testid="button-report-save"
+                        >
+                          Save report
+                        </button>
+                        <button onClick={() => setReportOpen(false)} className="flex-1 rounded-full bg-paper py-2 text-xs font-semibold text-ink-2">Cancel</button>
+                      </div>
+                      {!pin.countryCode && <p className="text-[11px] text-ink-3">This pin has no country code, so a report can&apos;t be filed against a country page.</p>}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Directions hand-off */}
               <div className="mt-5 flex flex-wrap items-center gap-2">
                 <span className="text-xs font-medium uppercase tracking-wide text-ink-3">
@@ -224,6 +360,14 @@ export default function PinSheet() {
                   <DirectionsIcon />
                   Apple Maps
                 </a>
+                <button
+                  onClick={() => openBrief({ lat: pin.lat, lng: pin.lng, placeName: pin.placeName, countryCode: pin.countryCode || undefined, pinId: pin.id, origin: "pin" })}
+                  className="flex items-center gap-1.5 rounded-full bg-paper-2 px-3.5 py-2 text-sm font-medium text-ink-2 transition-colors hover:bg-line"
+                  data-testid="button-field-brief"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-accent"><circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="2.2" fill="currentColor" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                  Field brief
+                </button>
               </div>
 
               {/* Owner */}

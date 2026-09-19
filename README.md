@@ -117,6 +117,46 @@ research behind them):
   validation refuses to run with a service-role key in the public env. The five-person
   test plan is [`docs/reflections-user-test.md`](docs/reflections-user-test.md).
 
+## The field brief (new)
+
+For any place on the map and any date, one screen answers the traveling photographer's
+four questions: **can I legally fly a drone and film here, when is the light good, what
+will the wind do, and where have I or my friends shot before.** Three increments, each
+usable on its own, all working keyless like the rest of Waypoint:
+
+- **Country rules and public pages** — `lib/fieldbrief/rules/{cc}.json`, one curated file
+  per country, bundled offline like the landmarks. A rule without a source and a date is
+  not a rule: every file carries `sourceUrls[]`, `lastVerifiedOn` and `verifiedBy`, the UI
+  never says "legal" — it says *as of {date}, per {source}* — anything older than 180 days
+  renders with a stale warning, and `tests/fieldbrief-rules.test.ts` refuses files older
+  than a year, unsourced, misnamed or unregistered. Waypoint never claims airspace
+  authority (no LAANC, UTM or geofence checks); every page links to the national tool.
+  `/fly` lists covered countries and `/fly/{cc}` is a server-rendered, **indexable** page
+  per country — the market test for the feature. A country with no file says *not yet
+  covered* and never fills the gap with model output. The rules folder ships **empty**:
+  the founder supplies the first countries from waters he has flown in himself, with the
+  sources (see `lib/fieldbrief/rules/README.md`).
+- **The brief panel** — a *Field brief* button on the search card and on every pin opens
+  `components/FieldBriefPanel.tsx` with a date picker: Rules (with source and date), Light
+  (sunrise, sunset, golden and blue hours and the evening sun's bearing, computed offline in
+  `lib/fieldbrief/light.ts`), Wind (Open-Meteo's keyless hourly forecast, cached an hour,
+  four-second timeout, gust sparkline with calm windows under 30 km/h), and Nearby (scout
+  pins and field reports from your circle). `POST /api/field-brief` assembles the evidence
+  in code; with `ANTHROPIC_API_KEY` set, Claude rewrites that JSON in a warmer voice and is
+  forbidden from adding any rule, number or place — `tests/fieldbrief-brief.test.ts` proves
+  the narrative path is skipped without a key and only ever sees the assembled brief.
+- **Scout pins and field reports** — an optional *Scout details* section on a pin
+  (bearing, focal length, camera, drone, time of day, note) with its own marker glyph and
+  a *Scout pins* toggle in the Layers card; visibility is the pin's, enforced by RLS in
+  `0018_scout_notes.sql`. *Field reports* (`0019_field_reports.sql`) are first-hand
+  accounts — flew / refused / fined / didn't try — stored **verbatim**, attributed, shown
+  in the brief's Nearby card and on `/fly/{cc}` split into "flew" and "problems",
+  disagreement side by side, never averaged. `npm run test:rls` now also applies both
+  migrations verbatim and runs 21 more assertions (the private/friends/public matrix, no
+  impersonation, no anchoring to a stranger's pin, unfriending revokes, cascade on pin
+  delete, anonymous readers see only public reports). Local events `fly_page_view`,
+  `brief_open` and `scout_pin_create` carry ids only.
+
 ## Architecture
 
 ```

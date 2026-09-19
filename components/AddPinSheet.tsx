@@ -12,6 +12,8 @@ import { RatingScale } from "./RatingScale";
 import { backendEnabled } from "@/lib/supabase";
 import { uploadPinMedia } from "@/lib/backend";
 import { downscaleImage } from "@/lib/image";
+import { EMPTY_SCOUT, ScoutDetailsFields, scoutToNote, type ScoutDraft } from "./ScoutDetails";
+import { track } from "@/lib/analytics";
 
 // Add-pin flow (plan §6): crosshair drop → bottom-sheet form → optimistic render.
 // Photo upload is mocked here (Supabase Storage in production); tapping "Add
@@ -21,8 +23,11 @@ export default function AddPinSheet() {
   const draft = useStore((s) => s.addDraft)!;
   const cancelAddPin = useStore((s) => s.cancelAddPin);
   const addPin = useStore((s) => s.addPin);
+  const setScoutNote = useStore((s) => s.setScoutNote);
   const requestFlyTo = useStore((s) => s.requestFlyTo);
   const viewer = useViewer();
+  const [scoutOpen, setScoutOpen] = useState(false);
+  const [scout, setScout] = useState<ScoutDraft>(EMPTY_SCOUT);
 
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
@@ -88,6 +93,11 @@ export default function AddPinSheet() {
       media: mediaItems,
       rating: rating ?? undefined,
     });
+    const scoutNote = scoutToNote(scout);
+    if (scoutNote) {
+      setScoutNote(pin.id, scoutNote);
+      track("scout_pin_create", { pinId: pin.id, visibility });
+    }
     requestFlyTo(pin.lng, pin.lat, 7, { flat: true });
   }
 
@@ -205,6 +215,26 @@ export default function AddPinSheet() {
           <div className="mt-1.5">
             <RatingScale value={rating} onChange={setRating} />
           </div>
+        </div>
+
+        {/* Scout details — optional, for the photographers. Same visibility
+            as the pin; nothing here is shown to anyone who can't see the pin. */}
+        <div className="mt-3">
+          <button
+            type="button"
+            onClick={() => setScoutOpen((o) => !o)}
+            className="flex w-full items-center justify-between rounded-xl bg-paper-2/60 px-3 py-2 text-left text-sm"
+            aria-expanded={scoutOpen}
+            data-testid="button-scout-toggle"
+          >
+            <span className="font-medium">Scout details <span className="font-normal text-ink-3">(optional)</span></span>
+            <span className="text-ink-3">{scoutOpen ? "−" : "+"}</span>
+          </button>
+          {scoutOpen && (
+            <div className="mt-2">
+              <ScoutDetailsFields value={scout} onChange={setScout} />
+            </div>
+          )}
         </div>
 
         {/* Visibility */}

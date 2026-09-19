@@ -12,7 +12,7 @@ site is a PWA; phones install it from the browser).
 2. Run the migrations, either way:
    - **CLI**: `supabase link --project-ref <your-ref> && supabase db push`
    - **Dashboard**: SQL Editor → paste each file in `supabase/migrations/`
-     **in order, 0001 through 0017** → Run.
+     **in order, 0001 through 0019** → Run.
    This creates the schema, PostGIS, row-level security (privacy is enforced
    server-side), the auto-profile-on-signup trigger, and the `avatars` /
    `pin-media` storage buckets.
@@ -53,6 +53,14 @@ Supabase Dashboard → **Authentication → URL Configuration**:
 
 Without this, sign-in emails link back to localhost — or bounce to the
 Supabase API root, which renders as a bare `{}` in the browser.
+
+## 3b · The field-brief pages are indexable in production
+
+`/fly` and `/fly/{cc}` are server-rendered country pages meant to be found by search
+("can I fly my drone in …"). They are indexable on the production deployment; preview
+deployments keep the global `NEXT_PUBLIC_PREVIEW=1` noindex. Countries appear only once a
+verified `lib/fieldbrief/rules/{cc}.json` exists — see that folder's README. The brief's
+wind card calls Open-Meteo (keyless) from the server; no extra env var is needed.
 
 ## 4 · The "app" on phones (1 min per phone)
 

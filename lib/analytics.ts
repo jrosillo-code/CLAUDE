@@ -23,7 +23,11 @@ export type ProductEventName =
   | "trip_cloned" // any clone
   | "trip_cloned_with_debrief" // the cloned trip carried the owner's debrief
   | "visibility_selected" // which privacy level a debrief was saved with
-  | "reward_viewed"; // the saved-answer reward screen rendered
+  | "reward_viewed" // the saved-answer reward screen rendered
+  // Field brief (drone legality / light / wind / nearby scouting)
+  | "fly_page_view" // a /fly/{cc} country page rendered
+  | "brief_open" // the field brief panel opened (from a search or a pin)
+  | "scout_pin_create"; // a pin was saved with scout details
 
 /** IDs, enums and counts only — no free text, by type. */
 export interface ProductEventMeta {
@@ -39,6 +43,10 @@ export interface ProductEventMeta {
   visibility?: "private" | "friends" | "public";
   /** Result sizes (e.g. evidence returned for an ask) — never content. */
   count?: number;
+  /** ISO alpha-2 country code (fly_page_view, brief_open). */
+  countryCode?: string;
+  /** Where the brief was opened from. */
+  origin?: "search" | "pin" | "fly";
 }
 
 export interface ProductEvent {

@@ -20,6 +20,8 @@ import type {
   User,
   UserSocials,
   Visibility,
+  ScoutNote,
+  FieldReport,
 } from "./types";
 
 const log = (op: string) => (e: unknown) =>
@@ -141,6 +143,30 @@ interface ReflectionRow {
   }[];
 }
 
+interface ScoutNoteRow {
+  pin_id: string;
+  user_id: string;
+  bearing_deg: number | null;
+  focal_mm: number | null;
+  camera: string | null;
+  drone: string | null;
+  time_of_day: ScoutNote["timeOfDay"] | null;
+  note: string | null;
+}
+
+interface FieldReportRow {
+  id: string;
+  user_id: string;
+  pin_id: string | null;
+  country_code: string;
+  flown_on: string;
+  outcome: FieldReport["outcome"];
+  drone_class: string | null;
+  quote: string;
+  visibility: Visibility;
+  created_at: string;
+}
+
 function toReflection(r: ReflectionRow): TripReflection {
   return {
     id: r.id,
@@ -224,6 +250,8 @@ export interface World {
   friendships: Friendship[];
   trips: Trip[];
   reflections: TripReflection[];
+  scoutNotes: ScoutNote[];
+  fieldReports: FieldReport[];
   likeCounts: Record<string, number>;
   likedPinIds: Set<string>;
   savedPinIds: Set<string>;
@@ -248,7 +276,7 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
       r.status === "fulfilled"
         ? r.value
         : (log(`loadWorld:${fallbackName}`)(r.reason), { data: null, error: r.reason } as T);
-    const [usersR, pinsR, friendsR, tripsR, reflR, likesR, savesR, followsR, notifR, topR] = await Promise.allSettled([
+    const [usersR, pinsR, friendsR, tripsR, reflR, likesR, savesR, followsR, notifR, topR, scoutR, reportR] = await Promise.allSettled([
       sb.from("users").select("*"),
       sb
         .from("pins")
@@ -267,6 +295,8 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
         .order("created_at", { ascending: false })
         .limit(50),
       sb.from("top_places").select("*"),
+      sb.from("scout_notes").select("*"),
+      sb.from("field_reports").select("*").order("flown_on", { ascending: false }).limit(500),
     ]);
     const usersQ = settle(usersR, "users");
     const pinsQ = settle(pinsR, "pins");
@@ -278,6 +308,8 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
     const followsQ = settle(followsR, "follows");
     const notifQ = settle(notifR, "notifications");
     const topQ = settle(topR, "top_places");
+    const scoutQ = settle(scoutR, "scout_notes");
+    const reportQ = settle(reportR, "field_reports");
 
     // Only the identity of the world is non-negotiable. If `users` and `pins`
     // both failed there is nothing worth rendering and the caller should fall
@@ -311,6 +343,27 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
           .map((s): TripStop => ({ id: s.id, lng: s.lng ?? 0, lat: s.lat ?? 0, placeName: s.place_name ?? "" })),
       })),
       reflections: ((reflQ.data ?? []) as unknown as ReflectionRow[]).map(toReflection),
+      scoutNotes: ((scoutQ.data ?? []) as unknown as ScoutNoteRow[]).map((n) => ({
+        pinId: n.pin_id,
+        bearingDeg: n.bearing_deg ?? undefined,
+        focalMm: n.focal_mm ?? undefined,
+        camera: n.camera || undefined,
+        drone: n.drone || undefined,
+        timeOfDay: n.time_of_day ?? undefined,
+        note: n.note ?? "",
+      })),
+      fieldReports: ((reportQ.data ?? []) as unknown as FieldReportRow[]).map((r) => ({
+        id: r.id,
+        userId: r.user_id,
+        pinId: r.pin_id ?? undefined,
+        countryCode: r.country_code,
+        flownOn: r.flown_on,
+        outcome: r.outcome,
+        droneClass: r.drone_class ?? "",
+        quote: r.quote,
+        visibility: r.visibility,
+        createdAt: r.created_at,
+      })),
       likeCounts,
       likedPinIds: new Set((likesQ.data ?? []).map((r) => r.pin_id as string)),
       savedPinIds: new Set((savesQ.data ?? []).map((r) => r.pin_id as string)),
@@ -837,4 +890,49 @@ export async function uploadPinMedia(userId: string, file: File | Blob, ext: str
     log("uploadPinMedia")(e);
     return null;
   }
+}
+
+// ── Field brief: scout notes + field reports ────────────────────────────────
+
+export function syncSaveScoutNote(n: ScoutNote, userId: string): void {
+  void supabase!
+    .from("scout_notes")
+    .upsert({
+      pin_id: n.pinId,
+      user_id: userId,
+      bearing_deg: n.bearingDeg ?? null,
+      focal_mm: n.focalMm ?? null,
+      camera: n.camera ?? "",
+      drone: n.drone ?? "",
+      time_of_day: n.timeOfDay ?? null,
+      note: n.note,
+      updated_at: new Date().toISOString(),
+    })
+    .then(({ error }) => error && log("saveScoutNote")(error));
+}
+
+export function syncDeleteScoutNote(pinId: string): void {
+  void supabase!.from("scout_notes").delete().eq("pin_id", pinId).then(({ error }) => error && log("deleteScoutNote")(error));
+}
+
+export function syncSaveFieldReport(r: FieldReport): void {
+  void supabase!
+    .from("field_reports")
+    .upsert({
+      id: r.id,
+      user_id: r.userId,
+      pin_id: r.pinId ?? null,
+      country_code: r.countryCode,
+      flown_on: r.flownOn,
+      outcome: r.outcome,
+      drone_class: r.droneClass,
+      quote: r.quote,
+      visibility: r.visibility,
+      created_at: r.createdAt,
+    })
+    .then(({ error }) => error && log("saveFieldReport")(error));
+}
+
+export function syncDeleteFieldReport(id: string): void {
+  void supabase!.from("field_reports").delete().eq("id", id).then(({ error }) => error && log("deleteFieldReport")(error));
 }

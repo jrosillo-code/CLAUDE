@@ -1,13 +1,4 @@
-import type {
-  ActivitySlug,
-  Friendship,
-  Pin,
-  PinMedia,
-  TopPlace,
-  Trip,
-  TripReflection,
-  User,
-} from "./types";
+import type { ActivitySlug, FieldReport, Friendship, Pin, PinMedia, ScoutNote, TopPlace, Trip, TripReflection, User } from "./types";
 
 // Deterministic demo photography. picsum serves real photographs from a stable
 // seed, so the demo never shows a broken image. In production these become
@@ -553,4 +544,88 @@ export const topPlaces: TopPlace[] = [
   { userId: "u-leo", rank: 3, pinId: pinIdFor("u-leo", "Punta Arenas"), blurb: "Icebergs on the horizon while you surf." },
   { userId: "u-leo", rank: 4, pinId: pinIdFor("u-leo", "El Hierro"), blurb: "The quiet edge of Europe." },
   { userId: "u-leo", rank: 5, pinId: pinIdFor("u-leo", "Piha"), blurb: "Flew across the world for one wave. Worth it." },
+];
+
+// ── Field brief demo data ───────────────────────────────────────────────────
+// Scout notes and field reports on the demo travelers, so the keyless demo
+// shows the feature. Synthetic, like every other seed row here — real ones
+// come from real pilots and are quoted verbatim.
+
+export const seedScoutNotes: ScoutNote[] = [
+  {
+    pinId: pinIdFor("u-maria", "Tenerife"),
+    bearingDeg: 245,
+    focalMm: 24,
+    camera: "Sony A7 IV",
+    drone: "DJI Mini 4 Pro",
+    timeOfDay: "golden_pm",
+    note: "From the Roques de García car park, walk 10 min east; the cone lights up last. Wind drops after 6pm most days.",
+  },
+  {
+    pinId: pinIdFor("u-maria", "Ohrid"),
+    bearingDeg: 170,
+    focalMm: 35,
+    camera: "Fujifilm X-T5",
+    timeOfDay: "golden_am",
+    note: "Kaneo church from the water side. Take the small boat from the harbour at 6:30; the lake is glass until 8.",
+  },
+  {
+    pinId: pinIdFor("u-you", "La Palma"),
+    bearingDeg: 300,
+    focalMm: 16,
+    camera: "iPhone 15 Pro",
+    timeOfDay: "night",
+    note: "Observatory road, last lay-by before the gate. Milky Way core rises over the caldera around 2am in May.",
+  },
+];
+
+export const seedFieldReports: FieldReport[] = [
+  {
+    id: "fr-1",
+    userId: "u-maria",
+    pinId: pinIdFor("u-maria", "Tenerife"),
+    countryCode: "ES",
+    flownOn: "2025-06-14",
+    outcome: "flew",
+    droneClass: "C0 / sub-250 g",
+    quote: "Flew at 7am from the lay-by outside the park boundary. Registered in the EU system beforehand; nobody asked, but I had the operator ID on the drone.",
+    visibility: "public",
+    createdAt: new Date(2025, 5, 15).toISOString(),
+  },
+  {
+    id: "fr-2",
+    userId: "u-maria",
+    pinId: pinIdFor("u-maria", "Ohrid"),
+    countryCode: "MK",
+    flownOn: "2025-08-20",
+    outcome: "did_not_try",
+    droneClass: "sub-250 g",
+    quote: "Couldn't find a clear answer on the old-town rules and the church is a heritage site, so I shot from the boat instead.",
+    visibility: "friends",
+    createdAt: new Date(2025, 7, 21).toISOString(),
+  },
+  {
+    id: "fr-3",
+    userId: "u-kenji",
+    pinId: pinIdFor("u-kenji", "Tokyo"),
+    countryCode: "JP",
+    flownOn: "2025-03-08",
+    outcome: "refused",
+    droneClass: "sub-250 g",
+    quote: "Central Tokyo is a densely inhabited district — the ward office was polite and clear that a permit was needed. I didn't have one. Left it in the bag.",
+    visibility: "public",
+    createdAt: new Date(2025, 2, 9).toISOString(),
+  },
+  {
+    id: "fr-4",
+    userId: "u-you",
+    pinId: pinIdFor("u-you", "Ericeira"),
+    countryCode: "PT",
+    flownOn: "2025-02-12",
+    outcome: "flew",
+    droneClass: "sub-250 g",
+    quote: "Early, empty beach, flew from the cliff top at Ribeira d'Ilhas. Checked the national map the night before.",
+    visibility: "friends",
+    createdAt: new Date(2025, 1, 13).toISOString(),
+  },
 ];

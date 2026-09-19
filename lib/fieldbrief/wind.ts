@@ -1,0 +1,92 @@
+// Hourly wind for one place and date from Open-Meteo's keyless forecast API.
+// Cached per rounded coordinate + date for an hour, four-second timeout, and
+// never a hard failure: the brief renders without wind rather than waiting.
+
+export interface WindHour {
+  /** ISO instant (UTC). */
+  time: string;
+  wind10m: number;
+  wind120m: number;
+  gust10m: number;
+}
+
+export type WindResult =
+  | { source: "open-meteo"; unit: "km/h"; hours: WindHour[] }
+  | { unavailable: true; reason: string };
+
+export const WIND_TIMEOUT_MS = 4000;
+const CACHE_TTL_MS = 60 * 60 * 1000;
+const CACHE_MAX = 300;
+const cache = new Map<string, { at: number; result: WindResult }>();
+
+/** Hours whose gusts stay under this read as calm windows for flying. */
+export const CALM_GUST_KMH = 30;
+
+type FetchLike = (url: string, init?: { signal?: AbortSignal }) => Promise<{ ok: boolean; status: number; json: () => Promise<unknown> }>;
+
+export async function fetchWind(
+  lat: number,
+  lng: number,
+  date: string,
+  deps: { fetchImpl?: FetchLike; now?: () => number } = {}
+): Promise<WindResult> {
+  const fetchImpl = deps.fetchImpl ?? (fetch as unknown as FetchLike);
+  const now = deps.now ?? Date.now;
+  const key = `${lat.toFixed(2)},${lng.toFixed(2)},${date}`;
+  const hit = cache.get(key);
+  if (hit && now() - hit.at < CACHE_TTL_MS) return hit.result;
+
+  const url =
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(4)}&longitude=${lng.toFixed(4)}` +
+    `&hourly=wind_speed_10m,wind_speed_120m,wind_gusts_10m&wind_speed_unit=kmh&timezone=UTC` +
+    `&start_date=${date}&end_date=${date}`;
+  let result: WindResult;
+  try {
+    const res = await fetchImpl(url, { signal: AbortSignal.timeout(WIND_TIMEOUT_MS) });
+    if (!res.ok) {
+      result = { unavailable: true, reason: res.status === 400 ? "Open-Meteo has no forecast for that date (about 16 days ahead, 3 months back)." : `Open-Meteo answered ${res.status}.` };
+    } else {
+      const data = (await res.json()) as {
+        hourly?: { time?: string[]; wind_speed_10m?: (number | null)[]; wind_speed_120m?: (number | null)[]; wind_gusts_10m?: (number | null)[] };
+      };
+      const h = data.hourly;
+      const hours: WindHour[] = (h?.time ?? []).map((t, i) => ({
+        time: t.endsWith("Z") ? t : `${t}:00Z`,
+        wind10m: h?.wind_speed_10m?.[i] ?? 0,
+        wind120m: h?.wind_speed_120m?.[i] ?? 0,
+        gust10m: h?.wind_gusts_10m?.[i] ?? 0,
+      }));
+      result = hours.length ? { source: "open-meteo", unit: "km/h", hours } : { unavailable: true, reason: "Open-Meteo returned no hours for that date." };
+    }
+  } catch (e) {
+    const timeout = e instanceof Error && (e.name === "TimeoutError" || e.name === "AbortError");
+    result = { unavailable: true, reason: timeout ? "Wind lookup timed out after 4 s." : "Wind lookup failed." };
+  }
+  // Only cache successes: a transient failure should not stick for an hour.
+  if (!("unavailable" in result)) {
+    cache.set(key, { at: now(), result });
+    while (cache.size > CACHE_MAX) cache.delete(cache.keys().next().value!);
+  }
+  return result;
+}
+
+/** Contiguous runs of hours with gusts under the calm threshold. */
+export function calmWindows(hours: WindHour[], maxGust = CALM_GUST_KMH): { start: string; end: string; hours: number }[] {
+  const out: { start: string; end: string; hours: number }[] = [];
+  let run: WindHour[] = [];
+  const flush = () => {
+    if (run.length) out.push({ start: run[0].time, end: run[run.length - 1].time, hours: run.length });
+    run = [];
+  };
+  for (const h of hours) {
+    if (h.gust10m < maxGust) run.push(h);
+    else flush();
+  }
+  flush();
+  return out;
+}
+
+/** Test hook. */
+export function _clearWindCache(): void {
+  cache.clear();
+}

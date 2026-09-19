@@ -1,0 +1,131 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { assembleBrief, sanitizeNearby } from "../lib/fieldbrief/assemble";
+import { narrativeFor } from "../lib/fieldbrief/narrative";
+import { calmWindows, fetchWind, _clearWindCache } from "../lib/fieldbrief/wind";
+import type { CountryRules } from "../lib/fieldbrief/rules";
+
+// The assembler with a stubbed rules lookup and a mocked wind fetch — no
+// network, no key. The narrative path must be skipped without a key.
+
+const rules: CountryRules = {
+  countryCode: "XX",
+  countryName: "Testland",
+  regime: "national",
+  authorityName: "Testland CAA",
+  authorityUrl: "https://caa.test/drones",
+  registrationRequired: { value: true, note: "over 250 g" },
+  pilotCertRequired: { value: false, note: "" },
+  weightClasses: [{ maxGrams: 250, summary: "no cert" }],
+  maxAltitudeM: 120,
+  maxDistanceRule: "VLOS",
+  insuranceRequired: { value: false, note: "" },
+  importRestriction: { value: "none", note: "" },
+  noFlyHighlights: ["the capital"],
+  permitProcess: null,
+  nationalApp: { name: "Testland map", url: "https://map.test" },
+  sourceUrls: ["https://caa.test/drones"],
+  lastVerifiedOn: "2026-06-01",
+  verifiedBy: "tester",
+  notes: "",
+};
+
+const windHours = Array.from({ length: 24 }, (_, i) => ({
+  time: `2026-07-01T${String(i).padStart(2, "0")}:00:00Z`,
+  wind10m: 10,
+  wind120m: 18,
+  gust10m: i >= 6 && i <= 9 ? 12 : 40,
+}));
+
+test("assembles legality, light, wind and nearby from data alone", async () => {
+  const brief = await assembleBrief(
+    { lat: 38.72, lng: -9.14, date: "2026-07-01", countryCode: "xx", nearby: { scoutPins: [], reports: [] } },
+    {
+      rulesFor: (cc) => (cc === "XX" ? rules : null),
+      fetchWind: async () => ({ source: "open-meteo", unit: "km/h", hours: windHours }),
+      now: () => new Date("2026-07-01T00:00:00Z"),
+    }
+  );
+  assert.equal(brief.source, "live");
+  assert.equal(brief.narrative, undefined);
+  assert.ok(brief.legality.covered);
+  if (brief.legality.covered) {
+    assert.equal(brief.legality.asOf, "as of 2026-06-01, per caa.test");
+    assert.equal(brief.legality.stale, false);
+    assert.equal(brief.legality.flyPath, "/fly/xx");
+  }
+  assert.ok(brief.light.sunrise && brief.light.sunset);
+  assert.ok(!("unavailable" in brief.wind) && brief.wind.hours.length === 24);
+  const calm = calmWindows(windHours);
+  assert.deepEqual(calm.map((c) => c.hours), [4]);
+});
+
+test("an uncovered country is reported as such — never guessed", async () => {
+  const brief = await assembleBrief(
+    { lat: 1, lng: 1, date: "2026-07-01", countryCode: "ZZ" },
+    { rulesFor: () => null, fetchWind: async () => ({ unavailable: true, reason: "mocked" }) }
+  );
+  assert.deepEqual(brief.legality, { covered: false, countryCode: "ZZ" });
+  assert.ok("unavailable" in brief.wind);
+});
+
+test("a stale record is flagged, not hidden", async () => {
+  const brief = await assembleBrief(
+    { lat: 1, lng: 1, date: "2026-07-01", countryCode: "XX" },
+    { rulesFor: () => rules, fetchWind: async () => ({ unavailable: true, reason: "mocked" }), now: () => new Date("2027-03-01T00:00:00Z") }
+  );
+  assert.ok(brief.legality.covered && brief.legality.stale);
+});
+
+test("the narrative path is skipped without a key and never called", async () => {
+  const brief = await assembleBrief(
+    { lat: 1, lng: 1, date: "2026-07-01", countryCode: "XX" },
+    { rulesFor: () => rules, fetchWind: async () => ({ unavailable: true, reason: "mocked" }) }
+  );
+  let called = false;
+  const text = await narrativeFor(brief, { apiKey: undefined, complete: async () => { called = true; return "x"; } });
+  assert.equal(text, undefined);
+  assert.equal(called, false);
+});
+
+test("with a key the narrative only ever sees the assembled JSON", async () => {
+  const brief = await assembleBrief(
+    { lat: 1, lng: 1, date: "2026-07-01", countryCode: "XX" },
+    { rulesFor: () => rules, fetchWind: async () => ({ unavailable: true, reason: "mocked" }) }
+  );
+  let userPayload = "";
+  const text = await narrativeFor(brief, { apiKey: "k", complete: async (_s, u) => { userPayload = u; return "  A short brief.  "; } });
+  assert.equal(text, "A short brief.");
+  const parsed = JSON.parse(userPayload);
+  assert.equal(parsed.legality.asOf, "as of 2026-06-01, per caa.test");
+  assert.equal(parsed.wind.unavailable, true);
+});
+
+test("wind: timeouts and errors degrade to unavailable, successes are cached", async () => {
+  _clearWindCache();
+  let calls = 0;
+  const ok = async () => {
+    calls++;
+    return { ok: true, status: 200, json: async () => ({ hourly: { time: ["2026-07-01T00:00"], wind_speed_10m: [5], wind_speed_120m: [9], wind_gusts_10m: [11] } }) };
+  };
+  const a = await fetchWind(38.72, -9.14, "2026-07-01", { fetchImpl: ok });
+  const b = await fetchWind(38.72, -9.14, "2026-07-01", { fetchImpl: ok });
+  assert.ok(!("unavailable" in a) && a.hours[0].time === "2026-07-01T00:00:00Z");
+  assert.deepEqual(a, b);
+  assert.equal(calls, 1, "second call served from cache");
+  const bad = await fetchWind(0, 0, "2026-07-01", { fetchImpl: async () => { const e = new Error("t"); e.name = "TimeoutError"; throw e; } });
+  assert.ok("unavailable" in bad && /timed out/.test(bad.reason));
+  const four = await fetchWind(2, 2, "2026-07-01", { fetchImpl: async () => ({ ok: false, status: 400, json: async () => ({}) }) });
+  assert.ok("unavailable" in four && /no forecast/.test(four.reason));
+});
+
+test("nearby summaries are clipped to shape and size", () => {
+  const n = sanitizeNearby({
+    scoutPins: Array.from({ length: 20 }, (_, i) => ({ pinId: `p${i}`, placeName: "x".repeat(500), ownerName: "o", distanceKm: 1.23456, note: "n" })),
+    reports: [{ id: "r", ownerHandle: "h", outcome: "flew", flownOn: "2026-01-01", droneClass: "", quote: "q".repeat(5000) }],
+  });
+  assert.equal(n.scoutPins.length, 12);
+  assert.equal(n.scoutPins[0].placeName.length, 120);
+  assert.equal(n.scoutPins[0].distanceKm, 1.2);
+  assert.equal(n.reports[0].quote.length, 1000);
+});

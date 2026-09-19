@@ -19,6 +19,8 @@ export default function BasemapToggle() {
   const setAccent = useStore((s) => s.setAccent);
   const showLandmarks = useStore((s) => s.showLandmarks);
   const setShowLandmarks = useStore((s) => s.setShowLandmarks);
+  const showScout = useStore((s) => s.showScout);
+  const setShowScout = useStore((s) => s.setShowScout);
   const showAirports = useStore((s) => s.showAirports);
   const setShowAirports = useStore((s) => s.setShowAirports);
   const showStations = useStore((s) => s.showStations);
@@ -94,6 +96,14 @@ export default function BasemapToggle() {
                 label={`Saved${savedCount > 0 ? ` · ${savedCount}` : ""}`}
                 active={showWishlist}
                 onClick={() => setShowWishlist(!showWishlist)}
+              />
+              {/* Scout: only pins that carry scouting details (bearing, lens,
+                  time of day) — the photographer's layer over the map. */}
+              <RowToggle
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.8" /><circle cx="12" cy="12" r="2.2" fill="currentColor" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>}
+                label="Scout pins"
+                active={showScout}
+                onClick={() => setShowScout(!showScout)}
               />
 
               {/* Extras — the reference overlays, folded away so the card stays

@@ -25,7 +25,7 @@ begin
     'users', 'pins', 'pin_photos', 'pin_likes', 'pin_saves', 'top_places',
     'follows', 'friendships', 'creator_applications', 'notifications',
     'trips', 'trip_stops', 'trip_reflections', 'reflection_answers',
-    'reflection_citations'
+    'reflection_citations', 'scout_notes', 'field_reports'
   ] loop
     perform ok(
       exists (select 1 from pg_tables where schemaname = 'public' and tablename = t),

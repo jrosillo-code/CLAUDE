@@ -14,6 +14,8 @@ import type {
   User,
   UserSocials,
   Visibility,
+  ScoutNote,
+  FieldReport,
 } from "./types";
 import type { ThemeId } from "./themes";
 import { THEMES } from "./themes";
@@ -26,6 +28,8 @@ import {
   seedLikeCounts,
   seedNotifications,
   seedReflections,
+  seedScoutNotes,
+  seedFieldReports,
   seedTrips,
   topPlaces as seedTopPlaces,
   users as seedUsers,
@@ -141,7 +145,7 @@ interface WaypointState {
   selectOverlay: (v: WaypointState["selectedOverlay"]) => void;
   /** The place from the last search pick — powers the "who you trust has been
    *  here" trust-graph card. */
-  searchedPlace: { name: string; lat: number; lng: number } | null;
+  searchedPlace: { name: string; lat: number; lng: number; countryCode?: string } | null;
   setSearchedPlace: (v: WaypointState["searchedPlace"]) => void;
   setTerrain3d: (v: boolean) => void;
 
@@ -184,6 +188,28 @@ interface WaypointState {
     ownerId: string,
     surface: "ask" | "place" | "dontmiss" | "clone"
   ) => void;
+
+  // ── Field brief: scout notes, field reports, the brief panel ──
+  scoutNotes: ScoutNote[];
+  fieldReports: FieldReport[];
+  /** Layers card: show only pins that carry scout details. */
+  showScout: boolean;
+  setShowScout: (v: boolean) => void;
+  briefTarget: {
+    lat: number;
+    lng: number;
+    placeName: string;
+    countryCode?: string;
+    pinId?: string;
+    origin: "search" | "pin" | "fly";
+  } | null;
+  openBrief: (t: NonNullable<WaypointState["briefTarget"]>) => void;
+  closeBrief: () => void;
+  /** Set (or clear with null) the scout details on your own pin. */
+  setScoutNote: (pinId: string, note: Omit<ScoutNote, "pinId"> | null) => void;
+  /** File a first-hand report; the quote is stored verbatim. */
+  addFieldReport: (input: Omit<FieldReport, "id" | "userId" | "createdAt">) => FieldReport | null;
+  deleteFieldReport: (id: string) => void;
 
   // ── Post-trip debriefs (reflections) ──
   reflections: TripReflection[];
@@ -366,6 +392,8 @@ export const useStore = create<WaypointState>((set, get) => ({
           friendships: world?.friendships ?? [],
           trips: world?.trips ?? [],
           reflections: world?.reflections ?? [],
+          scoutNotes: world?.scoutNotes ?? [],
+          fieldReports: world?.fieldReports ?? [],
           citationCounts: counts,
           topPlaces: world?.topPlaces ?? [],
           likeCounts: world?.likeCounts ?? {},
@@ -401,6 +429,8 @@ export const useStore = create<WaypointState>((set, get) => ({
               friendships: w.friendships,
               trips: w.trips,
               reflections: w.reflections,
+              scoutNotes: w.scoutNotes,
+              fieldReports: w.fieldReports,
               topPlaces: w.topPlaces,
               likeCounts: w.likeCounts,
               likedPinIds: w.likedPinIds,
@@ -446,6 +476,8 @@ export const useStore = create<WaypointState>((set, get) => ({
             pins: [],
             trips: [],
             reflections: [],
+            scoutNotes: [],
+            fieldReports: [],
             friendships: [],
             topPlaces: [],
           });
@@ -804,6 +836,46 @@ export const useStore = create<WaypointState>((set, get) => ({
     }),
 
   reflections: [...seedReflections],
+  scoutNotes: [...seedScoutNotes],
+  fieldReports: [...seedFieldReports],
+  showScout: false,
+  setShowScout: (v) => set({ showScout: v }),
+  briefTarget: null,
+  openBrief: (t) => set({ briefTarget: t }),
+  closeBrief: () => set({ briefTarget: null }),
+  setScoutNote: (pinId, note) =>
+    set((s) => {
+      if (!s.pins.some((p) => p.id === pinId && p.userId === s.viewerId)) return {};
+      const others = s.scoutNotes.filter((n) => n.pinId !== pinId);
+      if (!note) {
+        if (backendEnabled) backend.syncDeleteScoutNote(pinId);
+        return { scoutNotes: others };
+      }
+      const full: ScoutNote = { ...note, pinId };
+      if (backendEnabled) backend.syncSaveScoutNote(full, s.viewerId);
+      return { scoutNotes: [...others, full] };
+    }),
+  addFieldReport: (input) => {
+    const s = get();
+    if (input.pinId && !s.pins.some((p) => p.id === input.pinId && p.userId === s.viewerId)) return null;
+    if (!input.quote.trim()) return null;
+    const report: FieldReport = {
+      ...input,
+      quote: input.quote.trim(),
+      id: backendEnabled ? crypto.randomUUID() : `fr-${Date.now()}-${Math.round(Math.random() * 1e6)}`,
+      userId: s.viewerId,
+      createdAt: new Date().toISOString(),
+    };
+    if (backendEnabled) backend.syncSaveFieldReport(report);
+    set({ fieldReports: [...s.fieldReports, report] });
+    return report;
+  },
+  deleteFieldReport: (id) =>
+    set((s) => {
+      if (!s.fieldReports.some((r) => r.id === id && r.userId === s.viewerId)) return {};
+      if (backendEnabled) backend.syncDeleteFieldReport(id);
+      return { fieldReports: s.fieldReports.filter((r) => r.id !== id) };
+    }),
   citationCounts: {},
   startReflection: (tripId) => {
     const s = get();
@@ -1026,6 +1098,9 @@ export const useStore = create<WaypointState>((set, get) => ({
       return {
         pins: s.pins.filter((p) => p.id !== pinId),
         topPlaces: s.topPlaces.filter((t) => t.pinId !== pinId),
+        // Same as the database: the note cascades, the report keeps its words.
+        scoutNotes: s.scoutNotes.filter((n) => n.pinId !== pinId),
+        fieldReports: s.fieldReports.map((r) => (r.pinId === pinId ? { ...r, pinId: undefined } : r)),
         selectedPinId: s.selectedPinId === pinId ? null : s.selectedPinId,
       };
     }),

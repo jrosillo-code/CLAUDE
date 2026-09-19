@@ -100,7 +100,7 @@ export default function TopBar({
     // goes to street level, a city frames the city, a country the country.
     requestFlyTo(r.lng, r.lat, r.zoom, { flat: true });
     // Surface the trust-graph card: who you trust has been here.
-    setSearchedPlace({ name: r.placeName, lat: r.lat, lng: r.lng });
+    setSearchedPlace({ name: r.placeName, lat: r.lat, lng: r.lng, countryCode: r.countryCode || undefined });
   }
 
   return (
