@@ -11,6 +11,7 @@ import {
   bundledWorldStyle,
   satelliteStyle,
   satelliteLabelLayers,
+  SATELLITE_SKY,
   VECTOR_TILES_URL,
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
@@ -62,6 +63,24 @@ function landmarkIconImage(glyph: string, color: string): ImageData {
   ctx.lineWidth = 4;
   ctx.strokeStyle = color;
   ctx.stroke();
+  if (glyph.startsWith("\u{1F3DB}")) {
+    // 🏛 is a text-presentation emoji: canvas fillText draws it as a thin
+    // outline or nothing at all on iOS and Android, so the UNESCO marker
+    // showed an empty disc. Draw a small temple instead.
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.beginPath(); // pediment
+    ctx.moveTo(15, 24); ctx.lineTo(28, 15); ctx.lineTo(41, 24); ctx.closePath();
+    ctx.fill();
+    ctx.fillRect(15, 25, 26, 3); // architrave
+    for (const x of [18, 24, 30, 36]) { // columns
+      ctx.beginPath(); ctx.moveTo(x + 1, 30); ctx.lineTo(x + 1, 38); ctx.stroke();
+    }
+    ctx.fillRect(14, 39, 28, 3); // stylobate
+    return ctx.getImageData(0, 0, s, s);
+  }
   ctx.font = "26px sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -423,7 +442,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
       /* older maplibre → mercator */
     }
     try {
-      map.setSky(themeRef.current.sky);
+      // Imagery keeps its own clear sky whatever the theme (see SATELLITE_SKY).
+      map.setSky(map.getSource("esri-imagery") ? SATELLITE_SKY : themeRef.current.sky);
     } catch {
       /* sky unsupported */
     }
@@ -1055,6 +1075,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
     map.on("move", renderThrottled);
 
     map.on("click", (e) => {
+      // A tap on the bare map dismisses the searched place (and the brief
+      // button's glow with it).
+      if (useStore.getState().searchedPlace) useStore.getState().setSearchedPlace(null);
       if (placingRef.current) onPickRef.current(e.lngLat.lng, e.lngLat.lat);
     });
 
@@ -1311,12 +1334,20 @@ export default function MapCanvas({ placing, onPick }: Props) {
     const own = pinsRef.current.filter((p) => p.userId === viewerId);
     const pts = own.length ? own : pinsRef.current;
     if (!pts.length) return;
+    // The opening move keeps the PLANET in frame — centred on where your pins
+    // are, upright, no tilt — instead of fitting the pins' bounding box, which
+    // under the globe projection dived to zoom 5.5 with an odd heading and
+    // left no space (and no stars) around the Earth.
     const b = new maplibregl.LngLatBounds();
     pts.forEach((p) => b.extend([p.lng, p.lat]));
-    mapRef.current?.fitBounds(b, {
-      padding: { top: 120, bottom: 140, left: 80, right: 80 },
-      maxZoom: 5.5,
-      duration: 2800,
+    const c = b.getCenter();
+    mapRef.current?.flyTo({
+      center: [c.lng, Math.max(-50, Math.min(60, c.lat))],
+      zoom: 2.2,
+      pitch: 0,
+      bearing: 0,
+      duration: 2600,
+      essential: true,
     });
     didFitViewerOnce = true;
   }

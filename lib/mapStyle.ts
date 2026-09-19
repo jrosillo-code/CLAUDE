@@ -1,4 +1,4 @@
-import type { LayerSpecification, StyleSpecification } from "maplibre-gl";
+import type { LayerSpecification, SkySpecification, StyleSpecification } from "maplibre-gl";
 import type { MapTheme } from "./themes";
 
 // ── Keyless elevation for real 3D terrain ──
@@ -19,6 +19,21 @@ export const TERRAIN_ATTRIBUTION = "Elevation: Mapzen / AWS Terrain Tiles";
 // full-resolution layer. Zooming out fast shows those coarse tiles until the
 // sharp ones land, instead of the background colour.
 export const VECTOR_TILES_URL = "https://tiles.openfreemap.org/planet";
+
+// The sky over satellite imagery is the same in every theme: a bright blue
+// atmosphere rim over black space and next to no fog. The Midnight theme's
+// own sky (dark navy rim, heavy dark ground fog) is right for its street
+// map but smothered the imagery — switching to a light theme "fixed" it
+// because the light themes carry a clear sky.
+export const SATELLITE_SKY: SkySpecification = {
+  "sky-color": "#0b1a2b",
+  "sky-horizon-blend": 0.5,
+  "horizon-color": "#8ec2ee",
+  "horizon-fog-blend": 0.15,
+  "fog-color": "#0b1a2b",
+  "fog-ground-blend": 0.15,
+  "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.6, 4, 0.3, 7, 0],
+};
 const ESRI_IMAGERY = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
 const ESRI_REFERENCE = "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";
 const ESRI_ATTRIBUTION = "Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community";

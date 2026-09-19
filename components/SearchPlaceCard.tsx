@@ -13,7 +13,6 @@ import {
 } from "@/lib/interview";
 import { track, trackOnce } from "@/lib/analytics";
 import type { PinWithOwner } from "@/lib/types";
-import { BriefIcon } from "./BriefIcon";
 
 // The trust graph, at the moment of intent: right after you search a place,
 // show which people you actually know have been there — with their pin as the
@@ -38,7 +37,6 @@ export default function SearchPlaceCard() {
   const shownTripIds = useStore((s) => s.shownTripIds);
   const toggleTripShown = useStore((s) => s.toggleTripShown);
   const requestFitBounds = useStore((s) => s.requestFitBounds);
-  const openBrief = useStore((s) => s.openBrief);
 
   const topPlaces = useStore((s) => s.topPlaces);
   const reflections = useStore((s) => s.reflections);
@@ -134,35 +132,10 @@ export default function SearchPlaceCard() {
 
   if (!place) return null;
   const hasEvidence = tips.length > 0 || dontMiss.picks.length > 0 || voicesShown > 0;
-  const briefButton = (
-    <button
-      onClick={() =>
-        openBrief({ lat: place.lat, lng: place.lng, placeName: place.name, countryCode: place.countryCode, origin: "search" })
-      }
-      className="flex w-full items-center justify-center gap-1.5 rounded-full border border-line py-2 text-xs font-semibold text-ink-2 transition-colors hover:bg-paper-2"
-      data-testid="button-field-brief"
-    >
-      <BriefIcon size={13} className="text-accent" />
-      Field brief — drone rules, light, wind
-    </button>
-  );
-  // Nothing from the trust graph here: the card still offers the brief,
-  // which works for any place on the map.
-  if (!hasEvidence) {
-    return (
-      <div className="fixed bottom-24 left-1/2 z-30 w-[min(92vw,420px)] -translate-x-1/2 sm:bottom-8">
-        <div className="animate-sheet rounded-3xl bg-paper/95 p-4 shadow-float backdrop-blur">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="min-w-0 truncate font-display text-lg leading-tight">{place.name}</h3>
-            <button onClick={() => setSearchedPlace(null)} aria-label="Close" className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-ink-3 hover:bg-paper-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-            </button>
-          </div>
-          <div className="mt-2.5">{briefButton}</div>
-        </div>
-      </div>
-    );
-  }
+  // Nothing from the trust graph here: no card. The brief button in the
+  // top bar glows while a place is searched, so the field brief is still
+  // one tap away without a popup in the middle of the map.
+  if (!hasEvidence) return null;
 
   function openQuote(q: QuoteWithContext) {
     if (q.pin) {
@@ -310,8 +283,6 @@ export default function SearchPlaceCard() {
             regret skipping.
           </p>
         )}
-
-        <div className="mt-2.5">{briefButton}</div>
 
         {tripDraft && (
           <button

@@ -139,7 +139,7 @@ export default function TopBar({
             className="w-full bg-transparent text-sm outline-none placeholder:text-ink-3"
           />
           {q && (
-            <button onClick={() => { setQ(""); setResults([]); }} className="text-ink-3 hover:text-ink">
+            <button onClick={() => { setQ(""); setResults([]); setSearchedPlace(null); }} className="text-ink-3 hover:text-ink">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
             </button>
           )}

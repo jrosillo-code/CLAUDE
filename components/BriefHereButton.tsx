@@ -13,10 +13,18 @@ export function BriefHereButton({ bubbleLeft = false }: { bubbleLeft?: boolean }
   const viewBounds = useStore((s) => s.viewBounds);
   const userLocation = useStore((s) => s.userLocation);
   const openBrief = useStore((s) => s.openBrief);
+  // A searched place makes this button the next step: it glows, and briefs
+  // that place rather than the map centre. Clearing the search (the ✕ in
+  // the box, or a tap on the bare map) stops the glow.
+  const searched = useStore((s) => s.searchedPlace);
   const [busy, setBusy] = useState(false);
 
   async function go() {
     if (busy) return;
+    if (searched) {
+      openBrief({ lat: searched.lat, lng: searched.lng, placeName: searched.name, countryCode: searched.countryCode, origin: "search" });
+      return;
+    }
     const centre = viewBounds
       ? { lng: (viewBounds.w + viewBounds.e) / 2, lat: (viewBounds.s + viewBounds.n) / 2 }
       : userLocation;
@@ -43,10 +51,13 @@ export function BriefHereButton({ bubbleLeft = false }: { bubbleLeft?: boolean }
     <button
       onClick={go}
       disabled={busy}
-      title="Field brief for this spot"
-      aria-label="Field brief for this spot"
-      className={`group relative grid h-11 w-11 place-items-center rounded-full bg-paper/90 text-accent shadow-float backdrop-blur transition-colors hover:bg-paper ${busy ? "opacity-70" : ""}`}
+      title={searched ? `Field brief for ${searched.name}` : "Field brief for this spot"}
+      aria-label={searched ? `Field brief for ${searched.name}` : "Field brief for this spot"}
+      className={`group relative grid h-11 w-11 place-items-center rounded-full shadow-float backdrop-blur transition-colors ${
+        searched ? "wp-brief-glow bg-accent text-paper" : "bg-paper/90 text-accent hover:bg-paper"
+      } ${busy ? "opacity-70" : ""}`}
       data-testid="button-brief-here"
+      data-glow={searched ? "1" : undefined}
     >
       <BriefIcon size={20} className={busy ? "animate-pulse" : ""} />
       <span
@@ -54,7 +65,7 @@ export function BriefHereButton({ bubbleLeft = false }: { bubbleLeft?: boolean }
           bubbleLeft ? "right-full mr-2" : "left-full ml-2"
         }`}
       >
-        Field brief here
+        {searched ? `Brief ${searched.name}` : "Field brief here"}
       </span>
     </button>
   );

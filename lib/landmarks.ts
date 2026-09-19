@@ -18,7 +18,7 @@ export const LANDMARK_CATEGORY_META: Record<
   LandmarkCategory,
   { label: string; color: string; glyph: string }
 > = {
-  unesco: { label: "UNESCO World Heritage", color: "#b3862d", glyph: "🏛" },
+  unesco: { label: "UNESCO World Heritage", color: "#b3862d", glyph: "🏛️" },
   monument: { label: "Monument", color: "#7a5ea8", glyph: "🗽" },
   park: { label: "National park", color: "#2e8f57", glyph: "🌲" },
   culture: { label: "Cultural site", color: "#c65d3b", glyph: "🎭" },
