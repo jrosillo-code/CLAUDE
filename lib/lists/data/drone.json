@@ -1,0 +1,4304 @@
+{
+  "id": "drone",
+  "label": "Drone landscapes",
+  "blurb": "Landscapes that read from the air — always with the field brief first.",
+  "sources": [
+    "Dronestagram",
+    "SkyPixel",
+    "Drone Photo Awards",
+    "Lonely Planet",
+    "National Geographic Travel",
+    "Condé Nast Traveler",
+    "Atlas Obscura"
+  ],
+  "compiledOn": "2026-09-19",
+  "places": [
+    {
+      "id": "drone-m-lafossur-waterfall",
+      "name": "Múlafossur Waterfall",
+      "lat": 62.0975,
+      "lng": -7.6136,
+      "countryCode": "FO",
+      "region": "Gásadalur, Faroe Islands",
+      "why": "A waterfall drops straight off a sea cliff behind a village of a few houses; the classic Faroese drone shot.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "waterfall",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-tr-lan-pa-s-rv-gsvatn",
+      "name": "Trælanípa & Sørvágsvatn",
+      "lat": 62.0561,
+      "lng": -7.2967,
+      "countryCode": "FO",
+      "region": "Vágar, Faroe Islands",
+      "why": "An optical illusion makes this lake look suspended far above the ocean on a sheer cliff edge.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-mykines-bird-cliffs",
+      "name": "Mykines bird cliffs",
+      "lat": 62.105,
+      "lng": -7.6417,
+      "countryCode": "FO",
+      "region": "Mykines, Faroe Islands",
+      "why": "Puffin-covered cliffs on the westernmost Faroese island; a bird colony with seasonal nesting closures.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-nazar-praia-do-norte",
+      "name": "Nazaré (Praia do Norte)",
+      "lat": 39.6019,
+      "lng": -9.0705,
+      "countryCode": "PT",
+      "region": "Nazaré",
+      "why": "An underwater canyon funnels the Atlantic into the biggest rideable waves on record beneath the lighthouse cliff.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "coast",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Drone Photo Awards"
+    },
+    {
+      "id": "drone-ponta-da-piedade",
+      "name": "Ponta da Piedade",
+      "lat": 37.0827,
+      "lng": -8.6704,
+      "countryCode": "PT",
+      "region": "Lagos, Algarve",
+      "why": "Ochre sandstone arches, sea stacks and grottoes off Lagos read as a maze of shapes from directly above.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-tretat-cliffs",
+      "name": "Étretat cliffs",
+      "lat": 49.7075,
+      "lng": 0.2035,
+      "countryCode": "FR",
+      "region": "Étretat, Normandy",
+      "why": "Chalk cliffs with a natural arch and a needle of rock, painted by Monet and now a drone-photo staple.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-calanque-d-en-vau",
+      "name": "Calanque d'En-Vau",
+      "lat": 43.2081,
+      "lng": 5.5237,
+      "countryCode": "FR",
+      "region": "Calanques National Park, near Cassis",
+      "why": "A narrow turquoise fjord cut into white limestone; it sits inside a national park where France restricts drones.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coast",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-valensole-lavender-fields",
+      "name": "Valensole lavender fields",
+      "lat": 43.8377,
+      "lng": 5.993,
+      "countryCode": "FR",
+      "region": "Valensole, Provence",
+      "why": "Purple rows run to the horizon in July; the geometry only really shows from height.",
+      "bestMonths": [
+        6,
+        7
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-cliffs-of-moher",
+      "name": "Cliffs of Moher",
+      "lat": 52.9715,
+      "lng": -9.4309,
+      "countryCode": "IE",
+      "region": "County Clare",
+      "why": "Eight kilometres of Atlantic cliffs rising 200m; drone launches near the visitor centre are locally restricted.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-giant-s-causeway",
+      "name": "Giant's Causeway",
+      "lat": 55.2408,
+      "lng": -6.5116,
+      "countryCode": "GB",
+      "region": "County Antrim, Northern Ireland",
+      "why": "Forty thousand interlocking basalt columns meet the sea in a pattern that reads as pure geometry from above.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-seven-sisters-cliffs",
+      "name": "Seven Sisters cliffs",
+      "lat": 50.7597,
+      "lng": 0.1544,
+      "countryCode": "GB",
+      "region": "East Sussex",
+      "why": "A rolling line of chalk cliffs and dry valleys along the English Channel, best lit in low morning sun.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-durdle-door",
+      "name": "Durdle Door",
+      "lat": 50.6215,
+      "lng": -2.2764,
+      "countryCode": "GB",
+      "region": "Jurassic Coast, Dorset",
+      "why": "A limestone arch stands alone in the surf on England's Jurassic Coast.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-old-man-of-storr-quiraing",
+      "name": "Old Man of Storr & Quiraing",
+      "lat": 57.6394,
+      "lng": -6.2617,
+      "countryCode": "GB",
+      "region": "Trotternish, Isle of Skye",
+      "why": "Landslipped pinnacles and terraces along a ridge above the sea, one of Skye's most-photographed skylines.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-fairy-pools",
+      "name": "Fairy Pools",
+      "lat": 57.204,
+      "lng": -6.2593,
+      "countryCode": "GB",
+      "region": "Glen Brittle, Isle of Skye",
+      "why": "A chain of clear cascades and plunge pools below the Black Cuillin, small but graphic from directly overhead.",
+      "bestMonths": [],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-glencoe",
+      "name": "Glencoe",
+      "lat": 56.6875,
+      "lng": -5.1,
+      "countryCode": "GB",
+      "region": "Scottish Highlands",
+      "why": "A glaciated valley of steep glens and ridgelines; a favourite for low, valley-length drone passes.",
+      "bestMonths": [],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-preikestolen-pulpit-rock",
+      "name": "Preikestolen (Pulpit Rock)",
+      "lat": 58.9866,
+      "lng": 6.1903,
+      "countryCode": "NO",
+      "region": "Lysefjord, Rogaland",
+      "why": "A flat granite platform juts 600m straight over Lysefjord with no railing at the edge.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-kjeragbolten",
+      "name": "Kjeragbolten",
+      "lat": 59.0392,
+      "lng": 6.7627,
+      "countryCode": "NO",
+      "region": "Lysefjord, Rogaland",
+      "why": "A boulder wedged in a crevasse a kilometre above the same fjord as Pulpit Rock, with climbers for scale.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-trolltunga",
+      "name": "Trolltunga",
+      "lat": 60.1242,
+      "lng": 6.74,
+      "countryCode": "NO",
+      "region": "Odda, Vestland",
+      "why": "A tongue of rock juts horizontally over a lake 700m below; queues for the photo can be long in summer.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Drone Photo Awards"
+    },
+    {
+      "id": "drone-geirangerfjord-rnesvingen",
+      "name": "Geirangerfjord (Ørnesvingen)",
+      "lat": 62.1049,
+      "lng": 7.2062,
+      "countryCode": "NO",
+      "region": "Geiranger, Møre og Romsdal",
+      "why": "Switchback road views over a narrow UNESCO fjord lined with waterfalls and abandoned farms.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-reine-lofoten",
+      "name": "Reine, Lofoten",
+      "lat": 67.9349,
+      "lng": 13.0961,
+      "countryCode": "NO",
+      "region": "Moskenesøya, Lofoten Islands",
+      "why": "Red fishing cabins on stilts sit between jagged peaks and the Norwegian Sea; midnight sun in summer.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-segla-senja",
+      "name": "Segla, Senja",
+      "lat": 69.2967,
+      "lng": 17.4667,
+      "countryCode": "NO",
+      "region": "Senja Island",
+      "why": "A knife-edge peak drops straight into a fjord on Norway's second-largest island.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-svalbard-glacier-front",
+      "name": "Svalbard glacier front",
+      "lat": 78.2,
+      "lng": 15.6,
+      "countryCode": "NO",
+      "region": "Isfjorden, near Longyearbyen",
+      "why": "Calving glacier fronts meet the Arctic Ocean at 78°N; polar bear country, so travel is guided.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "ice",
+        "coast",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-sk-gafoss",
+      "name": "Skógafoss",
+      "lat": 63.5321,
+      "lng": -19.5114,
+      "countryCode": "IS",
+      "region": "South Iceland",
+      "why": "A 60m curtain waterfall on the former sea cliff line, wide enough to fill a wide-angle frame from above.",
+      "bestMonths": [],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-seljalandsfoss",
+      "name": "Seljalandsfoss",
+      "lat": 63.6156,
+      "lng": -19.9885,
+      "countryCode": "IS",
+      "region": "South Iceland",
+      "why": "A waterfall you can walk behind, on a cliff that was once Iceland's coastline.",
+      "bestMonths": [],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-gullfoss",
+      "name": "Gullfoss",
+      "lat": 64.3271,
+      "lng": -20.1199,
+      "countryCode": "IS",
+      "region": "Golden Circle, South Iceland",
+      "why": "The Hvítá river drops in two stages into a canyon; spray and rainbows are near-constant in summer.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "waterfall",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-dyrh-laey",
+      "name": "Dyrhólaey",
+      "lat": 63.4029,
+      "lng": -19.1265,
+      "countryCode": "IS",
+      "region": "South Iceland",
+      "why": "A basalt arch and headland with black-sand beaches on both sides; part is a bird reserve closed in nesting season.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Drone Photo Awards"
+    },
+    {
+      "id": "drone-reynisfjara",
+      "name": "Reynisfjara",
+      "lat": 63.4039,
+      "lng": -19.0459,
+      "countryCode": "IS",
+      "region": "Vík, South Iceland",
+      "why": "Black volcanic sand with hexagonal basalt columns and sea stacks just offshore.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-j-kuls-rl-n-glacier-lagoon",
+      "name": "Jökulsárlón Glacier Lagoon",
+      "lat": 64.0784,
+      "lng": -16.23,
+      "countryCode": "IS",
+      "region": "South Iceland",
+      "why": "Icebergs calved from Breiðamerkurjökull drift out to sea past seals hauled out on the ice.",
+      "bestMonths": [],
+      "tags": [
+        "ice",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-diamond-beach",
+      "name": "Diamond Beach",
+      "lat": 64.0459,
+      "lng": -16.1793,
+      "countryCode": "IS",
+      "region": "South Iceland",
+      "why": "Clear ice chunks from the lagoon wash up and melt on black sand right at the surf line.",
+      "bestMonths": [],
+      "tags": [
+        "ice",
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-fja-r-rglj-fur-canyon",
+      "name": "Fjaðrárgljúfur Canyon",
+      "lat": 63.7714,
+      "lng": -18.173,
+      "countryCode": "IS",
+      "region": "South Iceland",
+      "why": "A serpentine, moss-lined canyon; fragile ground has forced seasonal closures and it sits in a protected reserve.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Drone Photo Awards"
+    },
+    {
+      "id": "drone-vestrahorn-stokksnes",
+      "name": "Vestrahorn (Stokksnes)",
+      "lat": 64.2464,
+      "lng": -14.9873,
+      "countryCode": "IS",
+      "region": "Höfn, Southeast Iceland",
+      "why": "A jagged basalt massif rises straight from black-sand tidal flats and dune grass.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-kirkjufell",
+      "name": "Kirkjufell",
+      "lat": 64.9394,
+      "lng": -23.3082,
+      "countryCode": "IS",
+      "region": "Grundarfjörður, Snæfellsnes",
+      "why": "A cone-shaped mountain by the sea with a small waterfall in front, often shot with the aurora overhead.",
+      "bestMonths": [
+        9,
+        10,
+        11,
+        2,
+        3
+      ],
+      "tags": [
+        "coast",
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-landmannalaugar",
+      "name": "Landmannalaugar",
+      "lat": 63.9938,
+      "lng": -19.0623,
+      "countryCode": "IS",
+      "region": "Fjallabak Nature Reserve, Highlands",
+      "why": "Rhyolite mountains banded in red, green and gold; the reserve restricts drones without a permit.",
+      "bestMonths": [
+        7,
+        8
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-skaftafell-vatnaj-kull-np",
+      "name": "Skaftafell, Vatnajökull NP",
+      "lat": 64.0165,
+      "lng": -16.966,
+      "countryCode": "IS",
+      "region": "Vatnajökull National Park",
+      "why": "Glacier tongues spill off Europe's largest ice cap; Vatnajökull National Park commonly restricts drone flights.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-sv-nafellsj-kull",
+      "name": "Svínafellsjökull",
+      "lat": 63.9667,
+      "lng": -16.8667,
+      "countryCode": "IS",
+      "region": "Vatnajökull National Park",
+      "why": "A crevassed glacier tongue used in Interstellar and Game of Thrones; inside a national park with drone limits.",
+      "bestMonths": [],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-rsm-rk-valley",
+      "name": "Þórsmörk valley",
+      "lat": 63.6833,
+      "lng": -19.5,
+      "countryCode": "IS",
+      "region": "Highlands, South Iceland",
+      "why": "A green valley wedged between three glaciers and reached mostly by river-fording 4x4; a protected nature reserve.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-aletsch-glacier",
+      "name": "Aletsch Glacier",
+      "lat": 46.45,
+      "lng": 8.0667,
+      "countryCode": "CH",
+      "region": "Eggishorn, Valais",
+      "why": "The longest glacier in the Alps, a slow river of ice inside a UNESCO World Heritage area.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-gornergrat-matterhorn",
+      "name": "Gornergrat (Matterhorn)",
+      "lat": 45.9838,
+      "lng": 7.7861,
+      "countryCode": "CH",
+      "region": "Zermatt, Valais",
+      "why": "A ridge-top railway station faces the Matterhorn's pyramid across a glacier valley.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-tre-cime-di-lavaredo",
+      "name": "Tre Cime di Lavaredo",
+      "lat": 46.6178,
+      "lng": 12.3033,
+      "countryCode": "IT",
+      "region": "Dolomites, South Tyrol",
+      "why": "Three sheer limestone towers rise from an alpine plateau inside a protected nature park.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Drone Photo Awards"
+    },
+    {
+      "id": "drone-seceda-ridge",
+      "name": "Seceda ridge",
+      "lat": 46.5745,
+      "lng": 11.7304,
+      "countryCode": "IT",
+      "region": "Val Gardena, Dolomites",
+      "why": "A jagged Dolomite ridgeline drops into green pasture, one of the most-shared alpine drone shots.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-positano-amalfi-coast",
+      "name": "Positano, Amalfi Coast",
+      "lat": 40.628,
+      "lng": 14.485,
+      "countryCode": "IT",
+      "region": "Amalfi Coast",
+      "why": "Pastel houses stack up a cliff straight from the Tyrrhenian Sea.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-manarola-cinque-terre",
+      "name": "Manarola, Cinque Terre",
+      "lat": 44.1069,
+      "lng": 9.713,
+      "countryCode": "IT",
+      "region": "Cinque Terre National Park, Liguria",
+      "why": "A fishing village clings to a cliff above the sea; the national park restricts drones without a permit.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-mount-etna-craters",
+      "name": "Mount Etna craters",
+      "lat": 37.751,
+      "lng": 14.9934,
+      "countryCode": "IT",
+      "region": "Sicily",
+      "why": "Europe's most active volcano; the park restricts drones near the summit craters, more so during eruptions.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-stromboli",
+      "name": "Stromboli",
+      "lat": 38.7891,
+      "lng": 15.2131,
+      "countryCode": "IT",
+      "region": "Aeolian Islands, Sicily",
+      "why": "A permanently erupting volcanic island, throwing incandescent bombs after dark most nights.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "island",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-santorini-caldera-oia",
+      "name": "Santorini caldera (Oia)",
+      "lat": 36.4614,
+      "lng": 25.3753,
+      "countryCode": "GR",
+      "region": "Cyclades",
+      "why": "White cube houses ring the rim of a collapsed volcanic caldera above the Aegean.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coast",
+        "volcano",
+        "island",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-navagio-shipwreck-beach",
+      "name": "Navagio (Shipwreck) Beach",
+      "lat": 37.8599,
+      "lng": 20.6242,
+      "countryCode": "GR",
+      "region": "Zakynthos",
+      "why": "A rusted shipwreck sits on a white-sand cove reachable only by boat, ringed by sheer limestone cliffs.",
+      "bestMonths": [
+        5,
+        6,
+        9
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-meteora",
+      "name": "Meteora",
+      "lat": 39.7217,
+      "lng": 21.6306,
+      "countryCode": "GR",
+      "region": "Kalabaka, Thessaly",
+      "why": "Monasteries balance atop sandstone pillars that rise straight out of the plain.",
+      "bestMonths": [],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-samaria-gorge",
+      "name": "Samaria Gorge",
+      "lat": 35.3167,
+      "lng": 23.95,
+      "countryCode": "GR",
+      "region": "Crete",
+      "why": "One of Europe's longest gorges, inside a national park where drone flights are commonly restricted.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-vikos-gorge",
+      "name": "Vikos Gorge",
+      "lat": 39.92,
+      "lng": 20.75,
+      "countryCode": "GR",
+      "region": "Zagori, Epirus",
+      "why": "One of the world's deepest gorges relative to width, seen from the Oxya viewpoint above Monodendri.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-plitvice-lakes",
+      "name": "Plitvice Lakes",
+      "lat": 44.8654,
+      "lng": 15.582,
+      "countryCode": "HR",
+      "region": "Plitvice Lakes National Park",
+      "why": "Sixteen terraced turquoise lakes connected by waterfalls; the national park bans drones without special permission.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-krka-waterfalls",
+      "name": "Krka Waterfalls",
+      "lat": 43.8608,
+      "lng": 15.9701,
+      "countryCode": "HR",
+      "region": "Krka National Park",
+      "why": "Travertine cascades step down through forest into the Krka river; the national park restricts drones.",
+      "bestMonths": [
+        5,
+        6,
+        9
+      ],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-tara-river-canyon",
+      "name": "Tara River Canyon",
+      "lat": 43.1667,
+      "lng": 19.3167,
+      "countryCode": "ME",
+      "region": "Đurđevića Tara, Žabljak",
+      "why": "Europe's deepest canyon, cut by a river popular with rafters, spanned by a single high bridge.",
+      "bestMonths": [
+        5,
+        6,
+        9
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-pamukkale",
+      "name": "Pamukkale",
+      "lat": 37.9142,
+      "lng": 29.1189,
+      "countryCode": "TR",
+      "region": "Denizli",
+      "why": "Blinding-white travertine terraces of mineral pools cascade down a hillside like frozen rice paddies.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-cappadocia-g-reme-valleys",
+      "name": "Cappadocia (Göreme valleys)",
+      "lat": 38.6431,
+      "lng": 34.8286,
+      "countryCode": "TR",
+      "region": "Nevşehir",
+      "why": "Wind-carved fairy chimneys and valleys fill with hundreds of balloons at sunrise; drone flights need a permit here.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-keukenhof-tulip-fields",
+      "name": "Keukenhof tulip fields",
+      "lat": 52.2693,
+      "lng": 4.547,
+      "countryCode": "NL",
+      "region": "Lisse",
+      "why": "Ruler-straight rows of tulips in primary colours, best read as pure pattern from directly overhead.",
+      "bestMonths": [
+        4
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-teide-national-park",
+      "name": "Teide National Park",
+      "lat": 28.2717,
+      "lng": -16.6423,
+      "countryCode": "ES",
+      "region": "Tenerife, Canary Islands",
+      "why": "Spain's highest peak sits in a volcanic caldera above a sea of clouds; the park restricts drones without a permit.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-caminito-del-rey-gorge",
+      "name": "Caminito del Rey gorge",
+      "lat": 36.9294,
+      "lng": -4.7597,
+      "countryCode": "ES",
+      "region": "El Chorro, Andalusia",
+      "why": "A walkway pinned to a limestone gorge wall above the Guadalhorce River.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-sete-cidades",
+      "name": "Sete Cidades",
+      "lat": 37.8608,
+      "lng": -25.7822,
+      "countryCode": "PT",
+      "region": "São Miguel, Azores",
+      "why": "Twin crater lakes, one blue and one green, fill an extinct volcano's caldera.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-ponta-de-s-o-louren-o",
+      "name": "Ponta de São Lourenço",
+      "lat": 32.75,
+      "lng": -16.6833,
+      "countryCode": "PT",
+      "region": "Madeira",
+      "why": "A narrow, wind-scoured peninsula of red and green volcanic rock reaching into the Atlantic.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "coast",
+        "volcano",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-sossusvlei-deadvlei",
+      "name": "Sossusvlei & Deadvlei",
+      "lat": -24.7592,
+      "lng": 15.2895,
+      "countryCode": "NA",
+      "region": "Namib-Naukluft National Park",
+      "why": "Deep-red dunes surround a dead clay pan of ancient blackened trees; the national park requires a drone permit.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-sesriem-canyon",
+      "name": "Sesriem Canyon",
+      "lat": -24.4833,
+      "lng": 15.7833,
+      "countryCode": "NA",
+      "region": "Namib-Naukluft National Park",
+      "why": "A narrow, deep slot canyon cut into conglomerate rock near the Sossusvlei dune field.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-skeleton-coast",
+      "name": "Skeleton Coast",
+      "lat": -20.0,
+      "lng": 13.0,
+      "countryCode": "NA",
+      "region": "Skeleton Coast National Park",
+      "why": "Fog-bound dunes meet a cold, wreck-strewn Atlantic shoreline; the park requires prior permission for drones.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "dunes",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-fish-river-canyon",
+      "name": "Fish River Canyon",
+      "lat": -27.5833,
+      "lng": 17.6167,
+      "countryCode": "NA",
+      "region": "Ai-Ais/Richtersveld Park",
+      "why": "Africa's largest canyon, a 160km gash carved by the Fish River through the southern Namibian plateau.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-okavango-delta",
+      "name": "Okavango Delta",
+      "lat": -19.2833,
+      "lng": 22.95,
+      "countryCode": "BW",
+      "region": "Ngamiland",
+      "why": "An inland river delta fans into thousands of channels and islets; concessions here require drone permits.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "island",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-victoria-falls-zimbabwe-side",
+      "name": "Victoria Falls (Zimbabwe side)",
+      "lat": -17.9243,
+      "lng": 25.8572,
+      "countryCode": "ZW",
+      "region": "Livingstone/Victoria Falls",
+      "why": "The Zambezi drops 108m in a sheet more than a kilometre wide; the national park restricts drones without a permit.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-batoka-gorge",
+      "name": "Batoka Gorge",
+      "lat": -17.9333,
+      "lng": 25.8333,
+      "countryCode": "ZM",
+      "region": "Below Victoria Falls",
+      "why": "A zig-zagging basalt gorge carries the Zambezi downstream of the falls; the same park drone rules apply nearby.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-danakil-depression-dallol",
+      "name": "Danakil Depression (Dallol)",
+      "lat": 14.2417,
+      "lng": 40.3,
+      "countryCode": "ET",
+      "region": "Afar Region",
+      "why": "Sulphur-yellow hydrothermal fields and salt flats sit below sea level in one of Earth's hottest places.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "salt-flat",
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-erta-ale-lava-lake",
+      "name": "Erta Ale lava lake",
+      "lat": 13.6011,
+      "lng": 40.6667,
+      "countryCode": "ET",
+      "region": "Afar Region",
+      "why": "One of the world's few persistent lava lakes glows inside a remote shield volcano's caldera.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Drone Photo Awards"
+    },
+    {
+      "id": "drone-mount-kilimanjaro-uhuru-peak",
+      "name": "Mount Kilimanjaro (Uhuru Peak)",
+      "lat": -3.0674,
+      "lng": 37.3556,
+      "countryCode": "TZ",
+      "region": "Kilimanjaro National Park",
+      "why": "Africa's highest summit still carries retreating glaciers; the national park requires a TANAPA drone permit.",
+      "bestMonths": [
+        1,
+        2,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "ice",
+        "volcano",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-ngorongoro-crater",
+      "name": "Ngorongoro Crater",
+      "lat": -3.1608,
+      "lng": 35.585,
+      "countryCode": "TZ",
+      "region": "Ngorongoro Conservation Area",
+      "why": "A vast, unbroken volcanic caldera holds its own resident wildlife population; drones require a conservation-area permit.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-nungwi-beach-zanzibar",
+      "name": "Nungwi Beach, Zanzibar",
+      "lat": -5.7273,
+      "lng": 39.2946,
+      "countryCode": "TZ",
+      "region": "Zanzibar (Unguja)",
+      "why": "Turquoise shallows and dhow sails off the northern tip of Zanzibar island.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-erg-chebbi-dunes",
+      "name": "Erg Chebbi dunes",
+      "lat": 31.15,
+      "lng": -3.9833,
+      "countryCode": "MA",
+      "region": "Merzouga",
+      "why": "Saharan dunes over 150m tall, close enough to Merzouga village for a sunrise flight.",
+      "bestMonths": [
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-erg-chigaga-dunes",
+      "name": "Erg Chigaga dunes",
+      "lat": 29.9,
+      "lng": -5.6167,
+      "countryCode": "MA",
+      "region": "M'Hamid, near the Algerian border",
+      "why": "A more remote, less-visited dune sea than Erg Chebbi, reached by 4x4 from M'Hamid.",
+      "bestMonths": [
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-chefchaouen",
+      "name": "Chefchaouen",
+      "lat": 35.1714,
+      "lng": -5.2696,
+      "countryCode": "MA",
+      "region": "Rif Mountains",
+      "why": "A hill town painted almost entirely blue, its rooftops reading as a single pattern from above.",
+      "bestMonths": [],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-blyde-river-canyon",
+      "name": "Blyde River Canyon",
+      "lat": -24.5809,
+      "lng": 30.7947,
+      "countryCode": "ZA",
+      "region": "Mpumalanga",
+      "why": "One of the largest green canyons on Earth, with the Three Rondavels and Bourke's Luck Potholes.",
+      "bestMonths": [],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-cape-point",
+      "name": "Cape Point",
+      "lat": -34.3568,
+      "lng": 18.474,
+      "countryCode": "ZA",
+      "region": "Table Mountain National Park",
+      "why": "Cliffs at the tip of the Cape Peninsula where two oceans are said to meet; the park requires a SANParks permit for drones.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-chott-el-djerid",
+      "name": "Chott el Djerid",
+      "lat": 33.7,
+      "lng": 8.4,
+      "countryCode": "TN",
+      "region": "Kebili, Sahara",
+      "why": "A vast, shimmering salt pan crossed by a single causeway road through the Tunisian Sahara.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-wadi-rum",
+      "name": "Wadi Rum",
+      "lat": 29.6,
+      "lng": 35.4206,
+      "countryCode": "JO",
+      "region": "Aqaba Governorate",
+      "why": "Red sand and towering sandstone jebels used as a stand-in for Mars on screen; the protected area requires a drone permit.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "dunes",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-jebel-shams-rim",
+      "name": "Jebel Shams rim",
+      "lat": 23.2233,
+      "lng": 57.2606,
+      "countryCode": "OM",
+      "region": "Al Hajar Mountains",
+      "why": "Called Arabia's Grand Canyon, a sheer 1000m drop off Oman's highest mountain.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-wahiba-sharqiya-sands",
+      "name": "Wahiba (Sharqiya) Sands",
+      "lat": 22.0833,
+      "lng": 58.6667,
+      "countryCode": "OM",
+      "region": "Sharqiya Region",
+      "why": "Rippled orange dunes run to the horizon a short drive from Oman's coast.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-palm-jumeirah",
+      "name": "Palm Jumeirah",
+      "lat": 25.1124,
+      "lng": 55.139,
+      "countryCode": "AE",
+      "region": "Dubai",
+      "why": "An artificial palm-shaped island visible only as a pattern from the air; UAE drone flights need a GCAA permit.",
+      "bestMonths": [],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-the-world-islands",
+      "name": "The World Islands",
+      "lat": 25.2167,
+      "lng": 55.3167,
+      "countryCode": "AE",
+      "region": "Dubai",
+      "why": "Hundreds of small artificial islands arranged into a rough world map off the Dubai coast.",
+      "bestMonths": [],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-liwa-dunes",
+      "name": "Liwa dunes",
+      "lat": 23.1167,
+      "lng": 53.6167,
+      "countryCode": "AE",
+      "region": "Al Dhafra, Abu Dhabi",
+      "why": "Some of the tallest dunes in Arabia, near the edge of the Empty Quarter.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-socotra-island",
+      "name": "Socotra Island",
+      "lat": 12.51,
+      "lng": 54.02,
+      "countryCode": "YE",
+      "region": "Socotra Archipelago",
+      "why": "Dragon's blood trees and endemic flora on an island so isolated it looks alien from above.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-zhangye-danxia",
+      "name": "Zhangye Danxia",
+      "lat": 38.9294,
+      "lng": 100.0244,
+      "countryCode": "CN",
+      "region": "Gansu",
+      "why": "Mineral-striped sandstone ridges in red, orange and gold, folded like a rainbow-coloured layer cake.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Drone Photo Awards"
+    },
+    {
+      "id": "drone-zhangjiajie-grand-canyon",
+      "name": "Zhangjiajie Grand Canyon",
+      "lat": 29.3505,
+      "lng": 110.436,
+      "countryCode": "CN",
+      "region": "Hunan",
+      "why": "A glass-bottomed bridge spans a forested sandstone canyon near the pillars that inspired Avatar.",
+      "bestMonths": [],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-yuanyang-rice-terraces",
+      "name": "Yuanyang Rice Terraces",
+      "lat": 23.1167,
+      "lng": 102.7667,
+      "countryCode": "CN",
+      "region": "Yunnan",
+      "why": "Terraces built by the Hani people over centuries flood and mirror the sky each winter.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-longji-rice-terraces",
+      "name": "Longji Rice Terraces",
+      "lat": 25.75,
+      "lng": 110.15,
+      "countryCode": "CN",
+      "region": "Longsheng, Guangxi",
+      "why": "Dragon's-backbone terraces wrap steep hillsides in curved contour lines.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-li-river-karst-guilin",
+      "name": "Li River karst (Guilin)",
+      "lat": 25.2342,
+      "lng": 110.4675,
+      "countryCode": "CN",
+      "region": "Guangxi",
+      "why": "Limestone karst peaks stand in rows along the river; China requires drone registration and often a local flight permit.",
+      "bestMonths": [
+        3,
+        4,
+        9,
+        10
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-ha-long-bay",
+      "name": "Ha Long Bay",
+      "lat": 20.9101,
+      "lng": 107.1839,
+      "countryCode": "VN",
+      "region": "Quang Ninh",
+      "why": "Thousands of limestone karst islands rise from emerald water; flights here require local authority approval.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-trang-an-landscape-complex",
+      "name": "Trang An Landscape Complex",
+      "lat": 20.2506,
+      "lng": 105.9122,
+      "countryCode": "VN",
+      "region": "Ninh Binh",
+      "why": "Limestone karst towers and caves thread through rice paddies and slow rivers south of Hanoi.",
+      "bestMonths": [
+        3,
+        4,
+        9,
+        10
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-mu-cang-chai-rice-terraces",
+      "name": "Mu Cang Chai Rice Terraces",
+      "lat": 21.8506,
+      "lng": 104.1,
+      "countryCode": "VN",
+      "region": "Yen Bai Province",
+      "why": "Contour terraces climb steep valley walls, turning gold at harvest.",
+      "bestMonths": [
+        9,
+        10
+      ],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-muong-hoa-valley-sa-pa",
+      "name": "Muong Hoa Valley (Sa Pa)",
+      "lat": 22.2833,
+      "lng": 103.9333,
+      "countryCode": "VN",
+      "region": "Sa Pa, Lao Cai",
+      "why": "Terraced rice fields fill a valley below Vietnam's highest mountain, farmed by Hmong and Dao communities.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-banaue-rice-terraces",
+      "name": "Banaue Rice Terraces",
+      "lat": 16.9167,
+      "lng": 121.0583,
+      "countryCode": "PH",
+      "region": "Ifugao, Luzon",
+      "why": "Two-thousand-year-old terraces climb the mountains of Ifugao, often called the eighth wonder of the world.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-batad-rice-terraces",
+      "name": "Batad Rice Terraces",
+      "lat": 16.85,
+      "lng": 121.1333,
+      "countryCode": "PH",
+      "region": "Ifugao, Luzon",
+      "why": "An amphitheatre of terraces around the village of Batad, reachable only on foot.",
+      "bestMonths": [
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-el-nido-lagoons",
+      "name": "El Nido lagoons",
+      "lat": 11.1949,
+      "lng": 119.4013,
+      "countryCode": "PH",
+      "region": "Palawan",
+      "why": "Limestone karst islets enclose hidden turquoise lagoons off Palawan's northern tip.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-mount-bromo",
+      "name": "Mount Bromo",
+      "lat": -7.9425,
+      "lng": 112.953,
+      "countryCode": "ID",
+      "region": "East Java",
+      "why": "An active cinder cone smokes inside a vast volcanic sea of sand at sunrise.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-kelimutu-crater-lakes",
+      "name": "Kelimutu crater lakes",
+      "lat": -8.7698,
+      "lng": 121.8171,
+      "countryCode": "ID",
+      "region": "Flores",
+      "why": "Three crater lakes on one volcano shift colour independently, from turquoise to black to rust.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-ijen-crater",
+      "name": "Ijen Crater",
+      "lat": -8.0581,
+      "lng": 114.2422,
+      "countryCode": "ID",
+      "region": "East Java",
+      "why": "Sulphur mining and electric-blue \"blue fire\" flames light an acid crater lake before dawn.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-tegallalang-rice-terraces",
+      "name": "Tegallalang Rice Terraces",
+      "lat": -8.4321,
+      "lng": 115.2792,
+      "countryCode": "ID",
+      "region": "Ubud, Bali",
+      "why": "Balinese subak-irrigated terraces step down a river valley just outside Ubud.",
+      "bestMonths": [],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-kelingking-beach",
+      "name": "Kelingking Beach",
+      "lat": -8.7503,
+      "lng": 115.4657,
+      "countryCode": "ID",
+      "region": "Nusa Penida",
+      "why": "A cliff shaped like a T-rex head frames a hidden white beach far below.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-wayag-islands-raja-ampat",
+      "name": "Wayag Islands, Raja Ampat",
+      "lat": -0.2167,
+      "lng": 130.1667,
+      "countryCode": "ID",
+      "region": "West Papua",
+      "why": "Karst islets scattered across a lagoon, the signature Raja Ampat view from a viewpoint climb.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-anak-krakatau",
+      "name": "Anak Krakatau",
+      "lat": -6.1022,
+      "lng": 105.423,
+      "countryCode": "ID",
+      "region": "Sunda Strait",
+      "why": "A young volcanic island rebuilding itself in the strait where its parent, Krakatoa, erupted catastrophically in 1883.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "island",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-railay-beach",
+      "name": "Railay Beach",
+      "lat": 8.0104,
+      "lng": 98.8372,
+      "countryCode": "TH",
+      "region": "Krabi",
+      "why": "Limestone karst towers wall off a beach reachable only by longtail boat.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "coast",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-maya-bay-phi-phi-leh",
+      "name": "Maya Bay, Phi Phi Leh",
+      "lat": 7.68,
+      "lng": 98.7639,
+      "countryCode": "TH",
+      "region": "Krabi",
+      "why": "A cliff-ringed cove made famous by film; Thailand restricts drones in this marine park without a permit.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-james-bond-island",
+      "name": "James Bond Island",
+      "lat": 8.2764,
+      "lng": 98.5464,
+      "countryCode": "TH",
+      "region": "Phang Nga Bay",
+      "why": "A limestone karst tower stands alone in a bay of similar islets north of Phuket.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-mount-fuji",
+      "name": "Mount Fuji",
+      "lat": 35.3606,
+      "lng": 138.7274,
+      "countryCode": "JP",
+      "region": "Shizuoka/Yamanashi",
+      "why": "Japan's iconic, near-symmetrical volcanic cone; drones are commonly restricted near the summit trails and shrines.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-baltoro-glacier-concordia",
+      "name": "Baltoro Glacier (Concordia)",
+      "lat": 35.75,
+      "lng": 76.5667,
+      "countryCode": "PK",
+      "region": "Karakoram, Gilgit-Baltistan",
+      "why": "Four of the world's fourteen 8000m peaks ring a glacier confluence reached only by multi-day trek; Pakistan requires a drone NOC.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-nubra-valley-dunes",
+      "name": "Nubra Valley dunes",
+      "lat": 34.6167,
+      "lng": 77.6167,
+      "countryCode": "IN",
+      "region": "Ladakh",
+      "why": "Cold-desert sand dunes sit at 3000m between snow peaks; this border region often denies Indian drone permits.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-great-rann-of-kutch",
+      "name": "Great Rann of Kutch",
+      "lat": 23.8398,
+      "lng": 69.8624,
+      "countryCode": "IN",
+      "region": "Gujarat",
+      "why": "A white salt desert stretches to the horizon, hosting a festival on full-moon nights; a border-zone drone permit is required.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-sam-sand-dunes",
+      "name": "Sam Sand Dunes",
+      "lat": 26.8833,
+      "lng": 70.6167,
+      "countryCode": "IN",
+      "region": "Jaisalmer, Rajasthan",
+      "why": "Thar Desert dunes near the Pakistan border, worked by camel safaris at sunset; drone flights here need an Indian permit.",
+      "bestMonths": [
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-everest-region-khumbu",
+      "name": "Everest region (Khumbu)",
+      "lat": 28.0025,
+      "lng": 86.8524,
+      "countryCode": "NP",
+      "region": "Sagarmatha National Park",
+      "why": "The world's highest icefall and glaciers surround Everest Base Camp; Nepal restricts drone flights near the mountain.",
+      "bestMonths": [
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-twelve-apostles",
+      "name": "Twelve Apostles",
+      "lat": -38.6662,
+      "lng": 143.1044,
+      "countryCode": "AU",
+      "region": "Great Ocean Road, Victoria",
+      "why": "Limestone sea stacks stand offshore along a coastline that is still actively collapsing.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-loch-ard-gorge",
+      "name": "Loch Ard Gorge",
+      "lat": -38.6349,
+      "lng": 143.1053,
+      "countryCode": "AU",
+      "region": "Great Ocean Road, Victoria",
+      "why": "A collapsed sea cave and gorge near the Twelve Apostles, with a dramatic wave-cut arch.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-whitehaven-beach",
+      "name": "Whitehaven Beach",
+      "lat": -20.2833,
+      "lng": 149.0333,
+      "countryCode": "AU",
+      "region": "Whitsunday Island",
+      "why": "Pure silica sand swirls with turquoise water at Hill Inlet; part of a marine park with zoned flight restrictions.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-heart-reef",
+      "name": "Heart Reef",
+      "lat": -20.1006,
+      "lng": 149.1517,
+      "countryCode": "AU",
+      "region": "Great Barrier Reef, Whitsundays",
+      "why": "A naturally heart-shaped coral formation, viewable only from the air inside a no-fly buffer over the reef.",
+      "bestMonths": [
+        8,
+        9,
+        10
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-uluru",
+      "name": "Uluru",
+      "lat": -25.3444,
+      "lng": 131.0369,
+      "countryCode": "AU",
+      "region": "Uluru-Kata Tjuta National Park",
+      "why": "The sandstone monolith at Australia's centre; Parks Australia bans all drone flights over Uluru itself.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-kata-tjuta",
+      "name": "Kata Tjuta",
+      "lat": -25.3,
+      "lng": 130.7333,
+      "countryCode": "AU",
+      "region": "Uluru-Kata Tjuta National Park",
+      "why": "Domed rock formations beside Uluru, under the same park-wide drone ban.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-kings-canyon",
+      "name": "Kings Canyon",
+      "lat": -24.2606,
+      "lng": 131.0961,
+      "countryCode": "AU",
+      "region": "Watarrka National Park",
+      "why": "Sheer sandstone walls drop 100m to a valley floor of ancient palms and cycads.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-bungle-bungle-range",
+      "name": "Bungle Bungle Range",
+      "lat": -17.4667,
+      "lng": 128.3667,
+      "countryCode": "AU",
+      "region": "Purnululu National Park",
+      "why": "Orange-and-black striped beehive domes rise from the Kimberley; the park requires a drone permit.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-pinnacles-desert",
+      "name": "Pinnacles Desert",
+      "lat": -30.5967,
+      "lng": 115.1614,
+      "countryCode": "AU",
+      "region": "Nambung National Park",
+      "why": "Thousands of limestone spires stand in yellow sand north of Perth.",
+      "bestMonths": [],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-lake-hillier",
+      "name": "Lake Hillier",
+      "lat": -34.0956,
+      "lng": 123.2022,
+      "countryCode": "AU",
+      "region": "Middle Island, Recherche Archipelago",
+      "why": "A permanently bubblegum-pink lake sits inside a nature reserve with restricted access.",
+      "bestMonths": [],
+      "tags": [
+        "island",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-shell-beach-shark-bay",
+      "name": "Shell Beach, Shark Bay",
+      "lat": -25.9333,
+      "lng": 113.7667,
+      "countryCode": "AU",
+      "region": "Shark Bay, Western Australia",
+      "why": "A beach made entirely of tiny white cockle shells, sometimes 10m deep, in a World Heritage bay.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-milford-sound",
+      "name": "Milford Sound",
+      "lat": -44.6414,
+      "lng": 167.8974,
+      "countryCode": "NZ",
+      "region": "Fiordland National Park",
+      "why": "Sheer glacier-carved walls drop straight into a fjord; the park requires a Department of Conservation concession for drones.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "coast",
+        "ice",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-franz-josef-glacier",
+      "name": "Franz Josef Glacier",
+      "lat": -43.4645,
+      "lng": 170.1811,
+      "countryCode": "NZ",
+      "region": "Westland Tai Poutini National Park",
+      "why": "A temperate glacier descends almost to sea level through rainforest; DOC restricts drones without a permit.",
+      "bestMonths": [],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-tongariro-alpine-crossing",
+      "name": "Tongariro Alpine Crossing",
+      "lat": -39.1319,
+      "lng": 175.6425,
+      "countryCode": "NZ",
+      "region": "Tongariro National Park",
+      "why": "Volcanic craters and the vivid Emerald Lakes along a one-day crossing on a mountain sacred to Māori.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-wai-o-tapu",
+      "name": "Wai-O-Tapu",
+      "lat": -38.355,
+      "lng": 176.3733,
+      "countryCode": "NZ",
+      "region": "Rotorua",
+      "why": "Geothermal terraces and craters in acid greens and oranges bubble across a volcanic field.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "terraces",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-pancake-rocks",
+      "name": "Pancake Rocks",
+      "lat": -42.1108,
+      "lng": 171.3167,
+      "countryCode": "NZ",
+      "region": "Punakaiki",
+      "why": "Layered limestone stacks that look like piled pancakes, with blowholes at high tide.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-bora-bora-lagoon",
+      "name": "Bora Bora lagoon",
+      "lat": -16.5004,
+      "lng": -151.7415,
+      "countryCode": "PF",
+      "region": "Society Islands",
+      "why": "An almost impossibly turquoise lagoon rings a volcanic island under a barrier reef.",
+      "bestMonths": [],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-yasawa-islands",
+      "name": "Yasawa Islands",
+      "lat": -16.7833,
+      "lng": 177.4667,
+      "countryCode": "FJ",
+      "region": "Yasawa Group",
+      "why": "A chain of volcanic islands strung along clear water northwest of Fiji's main island.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-mount-yasur",
+      "name": "Mount Yasur",
+      "lat": -19.5313,
+      "lng": 169.4457,
+      "countryCode": "VU",
+      "region": "Tanna Island",
+      "why": "One of the world's most accessible active volcanoes, throwing lava bombs visible after dark; local permits are required.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "island",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-rabaul-caldera",
+      "name": "Rabaul Caldera",
+      "lat": -4.2711,
+      "lng": 152.1741,
+      "countryCode": "PG",
+      "region": "East New Britain",
+      "why": "A drowned volcanic caldera with active cones still steaming beside the harbour town it half-destroyed in 1994.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-n-pali-coast",
+      "name": "Nā Pali Coast",
+      "lat": 22.1683,
+      "lng": -159.6543,
+      "countryCode": "US",
+      "region": "Kauai, Hawaii",
+      "why": "Fluted green cliffs drop straight into the Pacific with no road access; Hawaii state parks commonly restrict drone launches.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-waimea-canyon",
+      "name": "Waimea Canyon",
+      "lat": 22.081,
+      "lng": -159.6625,
+      "countryCode": "US",
+      "region": "Kauai, Hawaii",
+      "why": "Called the \"Grand Canyon of the Pacific\"; a Hawaii state park where drone launches are commonly restricted.",
+      "bestMonths": [],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-bixby-bridge-big-sur",
+      "name": "Bixby Bridge, Big Sur",
+      "lat": 36.3714,
+      "lng": -121.9014,
+      "countryCode": "US",
+      "region": "California",
+      "why": "A concrete arch bridge over a coastal canyon on Highway 1, one of the most-photographed spans in the US.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "coast",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-antelope-canyon",
+      "name": "Antelope Canyon",
+      "lat": 36.8619,
+      "lng": -111.3743,
+      "countryCode": "US",
+      "region": "Navajo Nation, Arizona",
+      "why": "Light beams pierce a sculpted sandstone slot canyon; the Navajo Nation bans drones here without a hard-to-get tribal permit.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-horseshoe-bend",
+      "name": "Horseshoe Bend",
+      "lat": 36.8791,
+      "lng": -111.5104,
+      "countryCode": "US",
+      "region": "Glen Canyon National Recreation Area, Arizona",
+      "why": "The Colorado River bends 270 degrees around a sandstone butte; this NPS unit bans drones without a permit.",
+      "bestMonths": [],
+      "tags": [
+        "canyon",
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-monument-valley",
+      "name": "Monument Valley",
+      "lat": 36.98,
+      "lng": -110.0989,
+      "countryCode": "US",
+      "region": "Navajo Nation, Arizona/Utah",
+      "why": "Sandstone buttes rise from the desert floor in the classic Western-movie skyline; the Navajo Nation restricts drone use.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-havasu-falls",
+      "name": "Havasu Falls",
+      "lat": 36.2551,
+      "lng": -112.6975,
+      "countryCode": "US",
+      "region": "Havasupai Reservation, Arizona",
+      "why": "Turquoise, travertine-lined falls deep in a side canyon of the Grand Canyon; the Havasupai Tribe does not permit visitor drones.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "waterfall",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-grand-canyon-mather-point",
+      "name": "Grand Canyon (Mather Point)",
+      "lat": 36.0708,
+      "lng": -112.1074,
+      "countryCode": "US",
+      "region": "Grand Canyon National Park, Arizona",
+      "why": "A mile-deep gorge cut by the Colorado River; the National Park Service bans drones inside all national parks.",
+      "bestMonths": [],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-bonneville-salt-flats",
+      "name": "Bonneville Salt Flats",
+      "lat": 40.7608,
+      "lng": -113.8886,
+      "countryCode": "US",
+      "region": "Utah",
+      "why": "A dead-flat salt pan used for land-speed records, mirror-like after rain.",
+      "bestMonths": [],
+      "tags": [
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-antelope-island",
+      "name": "Antelope Island",
+      "lat": 41.0444,
+      "lng": -112.2333,
+      "countryCode": "US",
+      "region": "Great Salt Lake, Utah",
+      "why": "An island of bison and salt-crusted shoreline in the middle of a shrinking inland sea.",
+      "bestMonths": [],
+      "tags": [
+        "island",
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-delicate-arch",
+      "name": "Delicate Arch",
+      "lat": 38.7436,
+      "lng": -109.4993,
+      "countryCode": "US",
+      "region": "Arches National Park, Utah",
+      "why": "A freestanding sandstone arch on a slickrock bowl; a national park where the NPS bans drones.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-the-wave",
+      "name": "The Wave",
+      "lat": 36.9967,
+      "lng": -112.0064,
+      "countryCode": "US",
+      "region": "Vermilion Cliffs, Arizona/Utah",
+      "why": "Undulating striped sandstone reached only by a lottery-issued BLM permit.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "dunes",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-bisti-de-na-zin-wilderness",
+      "name": "Bisti/De-Na-Zin Wilderness",
+      "lat": 36.2561,
+      "lng": -108.1067,
+      "countryCode": "US",
+      "region": "New Mexico",
+      "why": "Eroded hoodoos and badlands in a federally designated Wilderness, where rules commonly bar motorized equipment like drones.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-white-sands",
+      "name": "White Sands",
+      "lat": 32.7871,
+      "lng": -106.1719,
+      "countryCode": "US",
+      "region": "White Sands National Park, New Mexico",
+      "why": "Gypsum dunes so white they look like snow; the National Park Service bans drones here as in all national parks.",
+      "bestMonths": [
+        10,
+        11,
+        3,
+        4
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-great-sand-dunes",
+      "name": "Great Sand Dunes",
+      "lat": 37.7916,
+      "lng": -105.5943,
+      "countryCode": "US",
+      "region": "Colorado",
+      "why": "The tallest dunes in North America, backed by a 14,000ft mountain range; the NPS bans drones in this national park.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-mesquite-flat-dunes",
+      "name": "Mesquite Flat Dunes",
+      "lat": 36.6067,
+      "lng": -117.1004,
+      "countryCode": "US",
+      "region": "Death Valley National Park, California",
+      "why": "Rippled dunes in the hottest, driest US national park, where the NPS bans all drone flights.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-racetrack-playa",
+      "name": "Racetrack Playa",
+      "lat": 36.6789,
+      "lng": -117.5622,
+      "countryCode": "US",
+      "region": "Death Valley National Park, California",
+      "why": "Rocks leave long trails across a cracked dry lakebed; also inside a national park where drones are banned.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-zion-narrows",
+      "name": "Zion Narrows",
+      "lat": 37.2872,
+      "lng": -112.9481,
+      "countryCode": "US",
+      "region": "Zion National Park, Utah",
+      "why": "The Virgin River carves a slot canyon barely wider than the water itself; the NPS bans drones in this national park.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-bryce-canyon-amphitheater",
+      "name": "Bryce Canyon Amphitheater",
+      "lat": 37.593,
+      "lng": -112.1871,
+      "countryCode": "US",
+      "region": "Bryce Canyon National Park, Utah",
+      "why": "Thousands of red hoodoo spires fill a natural amphitheatre; another national park where the NPS bans drones.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-yosemite-falls",
+      "name": "Yosemite Falls",
+      "lat": 37.7566,
+      "lng": -119.5969,
+      "countryCode": "US",
+      "region": "Yosemite National Park, California",
+      "why": "North America's tallest waterfall drops in three tiers off a granite cliff; the NPS bans drones throughout the park.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "waterfall",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-crater-lake",
+      "name": "Crater Lake",
+      "lat": 42.9446,
+      "lng": -122.109,
+      "countryCode": "US",
+      "region": "Crater Lake National Park, Oregon",
+      "why": "The deepest lake in the US fills a collapsed volcano's caldera; the NPS bans drones in this national park.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-multnomah-falls",
+      "name": "Multnomah Falls",
+      "lat": 45.5762,
+      "lng": -122.1158,
+      "countryCode": "US",
+      "region": "Columbia River Gorge, Oregon",
+      "why": "A two-tiered waterfall with a footbridge partway up; the Gorge is a National Scenic Area with its own drone restrictions.",
+      "bestMonths": [],
+      "tags": [
+        "waterfall",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-grand-prismatic-spring",
+      "name": "Grand Prismatic Spring",
+      "lat": 44.5251,
+      "lng": -110.838,
+      "countryCode": "US",
+      "region": "Yellowstone National Park, Wyoming",
+      "why": "The largest hot spring in the US, its colour bands are best read from directly above; the NPS bans drones here.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-paradise-mount-rainier",
+      "name": "Paradise, Mount Rainier",
+      "lat": 46.7855,
+      "lng": -121.742,
+      "countryCode": "US",
+      "region": "Mount Rainier National Park, Washington",
+      "why": "Wildflower meadows below a glaciated volcano; the NPS bans drones throughout this national park.",
+      "bestMonths": [
+        7,
+        8
+      ],
+      "tags": [
+        "volcano",
+        "ice",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-steptoe-butte-palouse",
+      "name": "Steptoe Butte (Palouse)",
+      "lat": 46.9309,
+      "lng": -117.1814,
+      "countryCode": "US",
+      "region": "Washington",
+      "why": "Rolling wheat-farm hills form curved patterns of light and shadow, especially at harvest.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-coral-pink-sand-dunes",
+      "name": "Coral Pink Sand Dunes",
+      "lat": 37.0397,
+      "lng": -112.7368,
+      "countryCode": "US",
+      "region": "Utah",
+      "why": "Wind-blown coral-coloured dunes eroded from nearby sandstone cliffs, at a state park in southern Utah.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-matanuska-glacier",
+      "name": "Matanuska Glacier",
+      "lat": 61.7833,
+      "lng": -147.7167,
+      "countryCode": "US",
+      "region": "Alaska",
+      "why": "One of the few Alaskan glaciers reachable by road, riddled with blue crevasses and ice caves.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-mendenhall-glacier",
+      "name": "Mendenhall Glacier",
+      "lat": 58.4204,
+      "lng": -134.5427,
+      "countryCode": "US",
+      "region": "Tongass National Forest, Alaska",
+      "why": "A glacier and ice caves near Juneau, inside a national forest where the Forest Service restricts drones near the visitor centre.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-niagara-falls-table-rock",
+      "name": "Niagara Falls (Table Rock)",
+      "lat": 43.0827,
+      "lng": -79.0768,
+      "countryCode": "CA",
+      "region": "Ontario",
+      "why": "The Horseshoe Falls plunge in a curtain of mist; nearby airspace and Ontario Parks rules restrict drone flights.",
+      "bestMonths": [],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-moraine-lake",
+      "name": "Moraine Lake",
+      "lat": 51.3217,
+      "lng": -116.186,
+      "countryCode": "CA",
+      "region": "Banff National Park, Alberta",
+      "why": "Glacial silt turns this lake an impossible turquoise below the Valley of the Ten Peaks; Parks Canada requires a drone permit.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-peyto-lake",
+      "name": "Peyto Lake",
+      "lat": 51.7261,
+      "lng": -116.5266,
+      "countryCode": "CA",
+      "region": "Banff National Park, Alberta",
+      "why": "A wolf-head-shaped, glacier-fed lake seen from the Icefields Parkway; the same Parks Canada drone rules apply.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-athabasca-glacier",
+      "name": "Athabasca Glacier",
+      "lat": 52.2199,
+      "lng": -117.2397,
+      "countryCode": "CA",
+      "region": "Jasper National Park, Alberta",
+      "why": "A tongue of the Columbia Icefield reaches down to the Icefields Parkway; Parks Canada requires a permit for drones.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-copper-canyon-divisadero",
+      "name": "Copper Canyon (Divisadero)",
+      "lat": 27.5333,
+      "lng": -107.6564,
+      "countryCode": "MX",
+      "region": "Chihuahua",
+      "why": "A system of canyons larger and deeper than the Grand Canyon, crossed by a spectacular rail line.",
+      "bestMonths": [
+        3,
+        4,
+        5,
+        10,
+        11
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-arenal-volcano",
+      "name": "Arenal Volcano",
+      "lat": 10.463,
+      "lng": -84.7033,
+      "countryCode": "CR",
+      "region": "Arenal Volcano National Park",
+      "why": "A near-perfect volcanic cone above a lake and rainforest; the national park restricts drones without a SINAC permit.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-po-s-volcano",
+      "name": "Poás Volcano",
+      "lat": 10.2003,
+      "lng": -84.2331,
+      "countryCode": "CR",
+      "region": "Poás Volcano National Park",
+      "why": "One of the world's largest active craters, often filled with a turquoise acid lake; the same national-park drone rules apply.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-pacaya-volcano",
+      "name": "Pacaya Volcano",
+      "lat": 14.3815,
+      "lng": -90.6011,
+      "countryCode": "GT",
+      "region": "Escuintla",
+      "why": "An active volcano with fresh lava fields you can hike across from the crater rim.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-iguaz-falls-devil-s-throat",
+      "name": "Iguazú Falls (Devil's Throat)",
+      "lat": -25.6953,
+      "lng": -54.4367,
+      "countryCode": "AR",
+      "region": "Iguazú National Park, Misiones",
+      "why": "Nearly 300 cascades spread across two countries; the national parks on both sides commonly restrict drones.",
+      "bestMonths": [],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-perito-moreno-glacier",
+      "name": "Perito Moreno Glacier",
+      "lat": -50.4959,
+      "lng": -73.1382,
+      "countryCode": "AR",
+      "region": "Los Glaciares National Park, Santa Cruz",
+      "why": "One of the few advancing glaciers on Earth, regularly calving huge slabs into the lake; the park restricts drones.",
+      "bestMonths": [
+        3,
+        4,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-salinas-grandes",
+      "name": "Salinas Grandes",
+      "lat": -23.5667,
+      "lng": -65.5333,
+      "countryCode": "AR",
+      "region": "Jujuy/Salta border",
+      "why": "A blinding white salt flat high in the Andes, criss-crossed by hand-dug drainage lines.",
+      "bestMonths": [],
+      "tags": [
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-ischigualasto-valle-de-la-luna",
+      "name": "Ischigualasto (Valle de la Luna)",
+      "lat": -30.1667,
+      "lng": -68.0167,
+      "countryCode": "AR",
+      "region": "San Juan Province",
+      "why": "Wind-eroded rock formations in a lunar-looking desert valley, a UNESCO fossil site requiring flight authorization.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-torres-del-paine",
+      "name": "Torres del Paine",
+      "lat": -50.9423,
+      "lng": -73.0392,
+      "countryCode": "CL",
+      "region": "Patagonia",
+      "why": "Granite towers rise straight out of the Patagonian steppe above glacial lakes; the national park requires a CONAF drone permit.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-marble-caves",
+      "name": "Marble Caves",
+      "lat": -46.6167,
+      "lng": -72.4333,
+      "countryCode": "CL",
+      "region": "General Carrera Lake, Aysén",
+      "why": "Wave-carved marble caverns line the shore of a glacial lake, their colours shifting with the water level.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-valle-de-la-luna-atacama",
+      "name": "Valle de la Luna, Atacama",
+      "lat": -22.9147,
+      "lng": -68.2864,
+      "countryCode": "CL",
+      "region": "San Pedro de Atacama",
+      "why": "Salt-crusted dunes and eroded ridges in the driest desert on Earth; the reserve restricts drones without a CONAF permit.",
+      "bestMonths": [],
+      "tags": [
+        "dunes",
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-villarrica-volcano",
+      "name": "Villarrica Volcano",
+      "lat": -39.42,
+      "lng": -71.9393,
+      "countryCode": "CL",
+      "region": "Villarrica National Park",
+      "why": "A snow-capped, persistently active volcano with a glowing lava lake; the national park requires drone authorization.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "ice",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-salar-de-uyuni",
+      "name": "Salar de Uyuni",
+      "lat": -20.1338,
+      "lng": -67.4891,
+      "countryCode": "BO",
+      "region": "Potosí",
+      "why": "The world's largest salt flat turns into a mirror after rain, erasing the horizon.",
+      "bestMonths": [
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-rainbow-mountain-vinicunca",
+      "name": "Rainbow Mountain (Vinicunca)",
+      "lat": -13.8813,
+      "lng": -71.3086,
+      "countryCode": "PE",
+      "region": "Cusco Region",
+      "why": "Mineral bands paint a high-altitude ridge in stripes of red, gold and lavender.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-colca-canyon",
+      "name": "Colca Canyon",
+      "lat": -15.6019,
+      "lng": -71.9975,
+      "countryCode": "PE",
+      "region": "Arequipa Region",
+      "why": "One of the world's deepest canyons, where Andean condors ride the morning thermals over the Cruz del Cóndor.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-machu-picchu",
+      "name": "Machu Picchu",
+      "lat": -13.1631,
+      "lng": -72.545,
+      "countryCode": "PE",
+      "region": "Cusco Region",
+      "why": "Inca agricultural terraces wrap a mountaintop citadel; Peru's Ministry of Culture bans drone flights over the site.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "terraces",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-cotopaxi-volcano",
+      "name": "Cotopaxi Volcano",
+      "lat": -0.6774,
+      "lng": -78.4378,
+      "countryCode": "EC",
+      "region": "Cotopaxi National Park",
+      "why": "One of the world's highest active volcanoes, a near-perfect snow-capped cone; the national park restricts drones.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        12
+      ],
+      "tags": [
+        "volcano",
+        "ice",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-angel-falls",
+      "name": "Angel Falls",
+      "lat": 5.9701,
+      "lng": -62.5362,
+      "countryCode": "VE",
+      "region": "Canaima National Park",
+      "why": "The world's tallest uninterrupted waterfall drops off a tepui inside a remote national park with restricted airspace.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "tags": [
+        "waterfall",
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-kaieteur-falls",
+      "name": "Kaieteur Falls",
+      "lat": 5.1706,
+      "lng": -59.4877,
+      "countryCode": "GY",
+      "region": "Kaieteur National Park",
+      "why": "One of the most powerful single-drop waterfalls on Earth, deep in untouched rainforest; flights need government authorization.",
+      "bestMonths": [],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-chapada-diamantina",
+      "name": "Chapada Diamantina",
+      "lat": -12.5667,
+      "lng": -41.4667,
+      "countryCode": "BR",
+      "region": "Bahia",
+      "why": "Table-top mountains, canyons and waterfalls in Brazil's interior highlands; the national park restricts drones without a permit.",
+      "bestMonths": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "canyon",
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-fernando-de-noronha",
+      "name": "Fernando de Noronha",
+      "lat": -3.8536,
+      "lng": -32.4297,
+      "countryCode": "BR",
+      "region": "Pernambuco",
+      "why": "A volcanic archipelago with some of Brazil's clearest water; a marine national park that restricts drone flights.",
+      "bestMonths": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-len-is-maranhenses",
+      "name": "Lençóis Maranhenses",
+      "lat": -2.4934,
+      "lng": -43.1206,
+      "countryCode": "BR",
+      "region": "Maranhão",
+      "why": "White sand dunes fill with rainwater lagoons each year, forming thousands of turquoise pools; the park restricts drones.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-ilulissat-icefjord",
+      "name": "Ilulissat Icefjord",
+      "lat": 69.2198,
+      "lng": -51.1047,
+      "countryCode": "GL",
+      "region": "Disko Bay, Greenland",
+      "why": "Icebergs calved from one of the world's fastest glaciers drift down a fjord toward the open sea.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "ice",
+        "coast",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-lemaire-channel",
+      "name": "Lemaire Channel",
+      "lat": -65.0667,
+      "lng": -63.9667,
+      "countryCode": "AQ",
+      "region": "Antarctic Peninsula",
+      "why": "A narrow, iceberg-choked strait between cliffs; no single authority governs the airspace, and IAATO guidelines discourage drones near wildlife.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "ice",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-cabo-de-gata-volcanic-coast",
+      "name": "Cabo de Gata volcanic coast",
+      "lat": 36.8333,
+      "lng": -2.15,
+      "countryCode": "ES",
+      "region": "Almería, Andalusia",
+      "why": "Volcanic cliffs and hidden coves in Spain's driest region, inside a protected natural park.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-vestmannaeyjar-heimaey",
+      "name": "Vestmannaeyjar (Heimaey)",
+      "lat": 63.43,
+      "lng": -20.2726,
+      "countryCode": "IS",
+      "region": "Westman Islands, Iceland",
+      "why": "A volcanic archipelago where a 1973 eruption swallowed half the town; puffin cliffs and a fresh lava field surround it.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "volcano",
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-askja-caldera",
+      "name": "Askja Caldera",
+      "lat": 65.0333,
+      "lng": -16.75,
+      "countryCode": "IS",
+      "region": "Central Highlands, Iceland",
+      "why": "A remote volcanic caldera holding a milky geothermal crater lake, reached by rough highland tracks.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-fagradalsfjall-lava-field",
+      "name": "Fagradalsfjall lava field",
+      "lat": 63.8994,
+      "lng": -22.2734,
+      "countryCode": "IS",
+      "region": "Reykjanes Peninsula, Iceland",
+      "why": "Fresh black lava from a series of 2021-2024 eruptions spreads across a peninsula near Reykjavík.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-vatnaj-kull-ice-caves",
+      "name": "Vatnajökull ice caves",
+      "lat": 64.4147,
+      "lng": -16.97,
+      "countryCode": "IS",
+      "region": "Vatnajökull National Park, Iceland",
+      "why": "Blue glacier ice caves form each winter under Europe's largest ice cap, inside a national park with drone limits.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-ras-al-jinz-turtle-coast",
+      "name": "Ras al-Jinz turtle coast",
+      "lat": 22.4667,
+      "lng": 59.8167,
+      "countryCode": "OM",
+      "region": "Sharqiya, Oman",
+      "why": "A remote turtle-nesting beach where dunes meet the Arabian Sea at the edge of Oman's Empty Quarter.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "coast",
+        "dunes",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-empty-quarter-dunes-rub-al-khali",
+      "name": "Empty Quarter dunes (Rub' al Khali)",
+      "lat": 22.25,
+      "lng": 45.5,
+      "countryCode": "SA",
+      "region": "Najran/Eastern Province border, Saudi Arabia",
+      "why": "The world's largest contiguous sand desert, with dunes over 250m tall; Saudi Arabia requires a drone import and flight permit.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-alula-elephant-rock",
+      "name": "AlUla (Elephant Rock)",
+      "lat": 26.6333,
+      "lng": 37.9167,
+      "countryCode": "SA",
+      "region": "AlUla, Saudi Arabia",
+      "why": "Wind-sculpted sandstone monoliths rise from a desert valley beside ancient Nabatean tombs.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "canyon",
+        "dunes",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-deadvlei-clay-pan",
+      "name": "Deadvlei clay pan",
+      "lat": -24.7597,
+      "lng": 15.29,
+      "countryCode": "NA",
+      "region": "Namib-Naukluft National Park, Namibia",
+      "why": "Blackened camel-thorn skeletons stand in a white clay pan surrounded by the tallest dunes on Earth.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "dunes",
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "Drone Photo Awards"
+    },
+    {
+      "id": "drone-richtersveld",
+      "name": "Richtersveld",
+      "lat": -28.4167,
+      "lng": 17.1833,
+      "countryCode": "ZA",
+      "region": "Northern Cape, South Africa",
+      "why": "A mountainous desert of succulents and eroded rock along the lower Orange River.",
+      "bestMonths": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-como-sahel-dunes-termit",
+      "name": "Comoé/Sahel dunes (Termit)",
+      "lat": 16.0,
+      "lng": 11.0,
+      "countryCode": "NE",
+      "region": "Termit Massif, Niger",
+      "why": "Isolated sandstone massifs rise from Saharan dune fields in one of the least-visited desert landscapes on Earth.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "tags": [
+        "dunes",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-serengeti-kopjes",
+      "name": "Serengeti kopjes",
+      "lat": -2.3333,
+      "lng": 34.8333,
+      "countryCode": "TZ",
+      "region": "Serengeti National Park, Tanzania",
+      "why": "Granite outcrops break up an endless grass plain crossed each year by the wildebeest migration.",
+      "bestMonths": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-sahara-dunes-ubari",
+      "name": "Sahara dunes, Ubari",
+      "lat": 26.0333,
+      "lng": 12.7833,
+      "countryCode": "LY",
+      "region": "Fezzan, Libya",
+      "why": "Salt lakes sit between towering dunes deep in the Libyan Sahara, among the most remote in the world.",
+      "bestMonths": [],
+      "tags": [
+        "dunes",
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-pinnacle-point-coastal-caves",
+      "name": "Pinnacle Point coastal caves",
+      "lat": -34.21,
+      "lng": 22.13,
+      "countryCode": "ZA",
+      "region": "Mossel Bay, South Africa",
+      "why": "Sea cliffs and caves along the Garden Route coast, an early-human archaeological site above the surf.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-aogashima-caldera",
+      "name": "Aogashima Caldera",
+      "lat": 32.4572,
+      "lng": 139.7639,
+      "countryCode": "JP",
+      "region": "Izu Islands, Japan",
+      "why": "A village sits inside a volcano within a volcano, on a remote island reachable mostly by helicopter or ferry.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "island",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-jeju-island-lava-tubes-coast",
+      "name": "Jeju Island lava tubes & coast",
+      "lat": 33.3617,
+      "lng": 126.5292,
+      "countryCode": "KR",
+      "region": "Jeju, South Korea",
+      "why": "Volcanic cones (oreum) and black lava-rock coastline ring a shield volcano island; Jeju restricts drones near the crater and airport.",
+      "bestMonths": [],
+      "tags": [
+        "volcano",
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-guilin-yangshuo-karst",
+      "name": "Guilin Yangshuo karst",
+      "lat": 24.7778,
+      "lng": 110.49,
+      "countryCode": "CN",
+      "region": "Yangshuo, Guangxi",
+      "why": "Conical karst peaks along the Li and Yulong rivers, among the most-painted landscapes in Chinese art.",
+      "bestMonths": [
+        3,
+        4,
+        9,
+        10
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-detian-falls",
+      "name": "Detian Falls",
+      "lat": 22.8489,
+      "lng": 106.7122,
+      "countryCode": "CN",
+      "region": "Daxin County, Guangxi",
+      "why": "A wide, tiered transboundary waterfall on the China-Vietnam border, in a sensitive border zone requiring flight approval.",
+      "bestMonths": [
+        5,
+        6,
+        9,
+        10
+      ],
+      "tags": [
+        "waterfall",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-bali-sea-rice-terraces-jatiluwih",
+      "name": "Bali Sea rice terraces (Jatiluwih)",
+      "lat": -8.3717,
+      "lng": 115.1256,
+      "countryCode": "ID",
+      "region": "Tabanan, Bali",
+      "why": "A UNESCO subak-irrigated terrace system spreading down the slopes of a volcano.",
+      "bestMonths": [],
+      "tags": [
+        "terraces",
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-palawan-s-coron-lagoons",
+      "name": "Palawan's Coron lagoons",
+      "lat": 12.0067,
+      "lng": 120.2049,
+      "countryCode": "PH",
+      "region": "Coron, Palawan",
+      "why": "Limestone cliffs enclose hidden turquoise lakes and lagoons around sunken WWII wrecks.",
+      "bestMonths": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-boracay-s-white-beach",
+      "name": "Boracay's White Beach",
+      "lat": 11.9674,
+      "lng": 121.9248,
+      "countryCode": "PH",
+      "region": "Boracay, Philippines",
+      "why": "A four-kilometre arc of fine white sand on a small island, seen best from directly overhead at low tide.",
+      "bestMonths": [],
+      "tags": [
+        "coast",
+        "island",
+        "check-rules"
+      ],
+      "source": "Dronestagram winners"
+    },
+    {
+      "id": "drone-bai-tu-long-bay",
+      "name": "Bai Tu Long Bay",
+      "lat": 21.05,
+      "lng": 107.4,
+      "countryCode": "VN",
+      "region": "Quang Ninh, Vietnam",
+      "why": "A quieter neighbour to Ha Long Bay with the same limestone karst islands and far fewer boats.",
+      "bestMonths": [
+        3,
+        4,
+        10,
+        11
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-similan-islands",
+      "name": "Similan Islands",
+      "lat": 8.65,
+      "lng": 97.65,
+      "countryCode": "TH",
+      "region": "Andaman Sea, Thailand",
+      "why": "Granite boulder islands ring clear water inside a marine national park with seasonal closures and drone limits.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-ko-kradan-reef-flats",
+      "name": "Ko Kradan reef flats",
+      "lat": 7.3167,
+      "lng": 99.2667,
+      "countryCode": "TH",
+      "region": "Trang Province, Thailand",
+      "why": "Shallow reef flats and a sandbar shift shape with the tide off a small Andaman island.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-uyuni-train-cemetery-salt-hotel-margin",
+      "name": "Uyuni train cemetery & salt hotel margin",
+      "lat": -20.4833,
+      "lng": -66.8833,
+      "countryCode": "BO",
+      "region": "Near Uyuni town, Bolivia",
+      "why": "Rusting steam locomotives sit abandoned at the edge of the salt flat, a smaller companion shot to the salar itself.",
+      "bestMonths": [],
+      "tags": [
+        "salt-flat",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-pantanal-wetlands",
+      "name": "Pantanal wetlands",
+      "lat": -17.7,
+      "lng": -57.0,
+      "countryCode": "BR",
+      "region": "Mato Grosso, Brazil",
+      "why": "The world's largest tropical wetland floods into a maze of channels and lagoons each rainy season.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-uspallata-aconcagua-foothills",
+      "name": "Uspallata/Aconcagua foothills",
+      "lat": -32.6167,
+      "lng": -69.9167,
+      "countryCode": "AR",
+      "region": "Mendoza, Argentina",
+      "why": "Red and ochre eroded badlands below the highest peak in the Americas.",
+      "bestMonths": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-tepuis-of-canaima-roraima",
+      "name": "Tepuis of Canaima (Roraima)",
+      "lat": 5.1432,
+      "lng": -60.7625,
+      "countryCode": "VE",
+      "region": "Canaima National Park, Venezuela",
+      "why": "Flat-topped table mountains rise sheer from the jungle, inside a national park with restricted drone airspace.",
+      "bestMonths": [],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-great-blue-hole",
+      "name": "Great Blue Hole",
+      "lat": 17.316,
+      "lng": -87.535,
+      "countryCode": "BZ",
+      "region": "Lighthouse Reef, Belize",
+      "why": "A near-perfect circle of deep blue water inside a barrier reef, formed by a collapsed limestone cave.",
+      "bestMonths": [
+        4,
+        5,
+        6
+      ],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-bay-islands-reef-roat-n",
+      "name": "Bay Islands reef (Roatán)",
+      "lat": 16.32,
+      "lng": -86.53,
+      "countryCode": "HN",
+      "region": "Roatán, Honduras",
+      "why": "Coral reef patterns and cayes visible through clear Caribbean water off Honduras's largest bay island.",
+      "bestMonths": [],
+      "tags": [
+        "island",
+        "coast",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-cenotes-of-yucat-n-ik-kil",
+      "name": "Cenotes of Yucatán (Ik Kil)",
+      "lat": 20.6892,
+      "lng": -88.5556,
+      "countryCode": "MX",
+      "region": "Yucatán, Mexico",
+      "why": "A circular sinkhole cenote drops through jungle to a pool far below, one of thousands riddling the peninsula.",
+      "bestMonths": [],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-morning-glory-pool",
+      "name": "Morning Glory Pool",
+      "lat": 44.465,
+      "lng": -110.8378,
+      "countryCode": "US",
+      "region": "Yellowstone National Park, Wyoming",
+      "why": "A cluster of vividly coloured hot springs and geysers along the Firehole River; NPS bans drones park-wide.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "volcano",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-denali-the-alaska-range",
+      "name": "Denali & the Alaska Range",
+      "lat": 63.0695,
+      "lng": -151.0074,
+      "countryCode": "US",
+      "region": "Denali National Park, Alaska",
+      "why": "North America's tallest peak and its glaciers dominate a vast wilderness where the NPS bans drone flights.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    },
+    {
+      "id": "drone-glacier-national-park-grinnell-glacier",
+      "name": "Glacier National Park (Grinnell Glacier)",
+      "lat": 48.7596,
+      "lng": -113.787,
+      "countryCode": "US",
+      "region": "Montana",
+      "why": "Retreating glaciers and turquoise tarns along the Continental Divide, in a national park that bans drones.",
+      "bestMonths": [
+        7,
+        8,
+        9
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "Lonely Planet"
+    },
+    {
+      "id": "drone-badlands-national-park",
+      "name": "Badlands National Park",
+      "lat": 43.8554,
+      "lng": -102.3397,
+      "countryCode": "US",
+      "region": "South Dakota",
+      "why": "Layered, wind-carved buttes and spires stretch across the prairie; the NPS bans drones in this national park.",
+      "bestMonths": [
+        4,
+        5,
+        9,
+        10
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Condé Nast Traveler"
+    },
+    {
+      "id": "drone-hells-canyon",
+      "name": "Hells Canyon",
+      "lat": 45.2419,
+      "lng": -116.5253,
+      "countryCode": "US",
+      "region": "Idaho/Oregon border",
+      "why": "North America's deepest river gorge, cut by the Snake River between Idaho and Oregon.",
+      "bestMonths": [
+        5,
+        6,
+        9
+      ],
+      "tags": [
+        "canyon",
+        "check-rules"
+      ],
+      "source": "Atlas Obscura"
+    },
+    {
+      "id": "drone-columbia-icefield",
+      "name": "Columbia Icefield",
+      "lat": 52.1856,
+      "lng": -117.2436,
+      "countryCode": "CA",
+      "region": "Jasper National Park, Alberta",
+      "why": "A vast icefield feeding several major glaciers, crossed by a glacier-adapted vehicle tour; Parks Canada requires a drone permit.",
+      "bestMonths": [
+        6,
+        7,
+        8
+      ],
+      "tags": [
+        "ice",
+        "check-rules"
+      ],
+      "source": "SkyPixel winners"
+    },
+    {
+      "id": "drone-baffin-island-fjords",
+      "name": "Baffin Island fjords",
+      "lat": 68.5,
+      "lng": -66.0,
+      "countryCode": "CA",
+      "region": "Nunavut",
+      "why": "Arctic fjords and towering granite walls along one of the least-visited coastlines on Earth.",
+      "bestMonths": [
+        7,
+        8
+      ],
+      "tags": [
+        "ice",
+        "coast",
+        "check-rules"
+      ],
+      "source": "National Geographic Travel"
+    }
+  ]
+}
