@@ -105,6 +105,19 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
   const anchor: Anchor | null =
     mode === "near" ? geoAnchor : mode === "search" ? searchAnchor : null;
   const selectListPlace = useStore((s) => s.selectListPlace);
+  const activeLists = useStore((s) => s.activeLists);
+  const toggleList = useStore((s) => s.toggleList);
+  // Picking a list here also lights up all its places on the map — the
+  // panel is the index, the map is the view.
+  const showList = (id: WorldListId) => {
+    setListId(id);
+    setListFilter("");
+    if (!activeLists.includes(id)) toggleList(id);
+  };
+  useEffect(() => {
+    if (mode === "lists" && !activeLists.includes(listId)) toggleList(listId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
   const listNearby = useMemo(() => (anchor ? listPlacesNear(anchor.lat, anchor.lng, RADIUS_KM * 2, 6) : []), [anchor]);
 
   const ranked = useMemo(() => {
@@ -189,7 +202,7 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
                 return (
                   <button
                     key={id}
-                    onClick={() => { setListId(id); setListFilter(""); }}
+                    onClick={() => showList(id)}
                     aria-pressed={on}
                     className={`flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium ${on ? "text-paper" : "bg-paper-2 text-ink-2"}`}
                     style={on ? { background: mm.color } : undefined}
@@ -257,7 +270,17 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
       <div className="scroll-thin flex-1 space-y-2 overflow-y-auto px-4 py-4">
         {mode === "lists" && (
           <>
-            <p className="px-1 text-xs text-ink-3">{LIST_META[listId].blurb} {listPlaces.length} places{listFilter ? " match" : ""}.</p>
+            <div className="flex items-center justify-between gap-2 px-1">
+              <p className="text-xs text-ink-3">{LIST_META[listId].blurb} {listPlaces.length} places{listFilter ? " match" : ""}.</p>
+              <button
+                onClick={() => toggleList(listId)}
+                className={`shrink-0 rounded-full px-3 py-1 text-[11px] font-semibold ${activeLists.includes(listId) ? "bg-ink text-paper" : "bg-paper-2 text-ink-2"}`}
+                data-testid="list-on-map"
+                aria-pressed={activeLists.includes(listId)}
+              >
+                {activeLists.includes(listId) ? "On the map ✓" : "Show on map"}
+              </button>
+            </div>
             <ul className="space-y-1.5" data-testid="topspots-list-places">
               {listPlaces.map((p) => (
                 <li key={p.id}>
