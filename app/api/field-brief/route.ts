@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { assembleBrief, type NearbySummary } from "@/lib/fieldbrief/assemble";
 import { narrativeFor } from "@/lib/fieldbrief/narrative";
 import { fetchWind } from "@/lib/fieldbrief/wind";
+import { withinRateLimit } from "@/lib/rateLimit";
 
 // POST { lat, lng, date, countryCode?, nearby? } → the field brief.
 // Legality comes from curated country files, light from math, wind from
@@ -19,6 +20,11 @@ const PRIVATE = { "Cache-Control": "private, no-store" };
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 export async function POST(req: Request) {
+  // Every brief reaches Open-Meteo and Nominatim, and with a key, Claude.
+  // A generous per-IP budget: a person browsing never hits it, a script does.
+  if (!withinRateLimit(req, "field-brief", 40)) {
+    return NextResponse.json({ error: "Too many briefs from this address — try again in a minute." }, { status: 429, headers: { ...PRIVATE, "Retry-After": "60" } });
+  }
   let body: { lat?: number; lng?: number; date?: string; countryCode?: string; nearby?: NearbySummary };
   try {
     body = await req.json();

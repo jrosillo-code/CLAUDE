@@ -9,10 +9,13 @@ site is a PWA; phones install it from the browser).
 ## 1 · Supabase — the backend (~10 min)
 
 1. Create a project at [supabase.com](https://supabase.com) (free tier).
-2. Run the migrations, either way:
-   - **CLI**: `supabase link --project-ref <your-ref> && supabase db push`
-   - **Dashboard**: SQL Editor → paste each file in `supabase/migrations/`
-     **in order, 0001 through 0020** → Run.
+2. Run the migrations. Use the CLI — it applies every file in
+   `supabase/migrations/` in order and remembers which ones ran, so a new
+   migration can never be missed later:
+   - **CLI (preferred)**: `supabase link --project-ref <your-ref> && supabase db push`
+   - **Dashboard (fallback)**: SQL Editor → paste each file in
+     `supabase/migrations/` **in order, 0001 through 0022** → Run. If you go
+     this way, re-check the folder after every deploy for new files.
    This creates the schema, PostGIS, row-level security (privacy is enforced
    server-side), the auto-profile-on-signup trigger, and the `avatars` /
    `pin-media` storage buckets.

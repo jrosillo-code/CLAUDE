@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { withinRateLimit } from "@/lib/rateLimit";
+import { sessionFromRequest } from "@/lib/serverAuth";
 
 // AI route guide, grounded in real data. For every stop we first gather:
 //   - Wikipedia: the article about the place (history + overview) plus nearby
@@ -42,6 +44,14 @@ interface Grounding {
 }
 
 export async function POST(req: Request) {
+  // The costliest route in the app: up to twelve stops, each grounded in
+  // Wikipedia and OpenStreetMap, then a long Claude call. Only signed-in
+  // accounts may ask, and each address gets a handful per minute.
+  const session = await sessionFromRequest(req);
+  if (!session) return NextResponse.json({ error: "Sign in to open a route guide." }, { status: 401 });
+  if (!withinRateLimit(req, "trip-guide", 6)) {
+    return NextResponse.json({ error: "Too many route guides from this address — try again in a minute." }, { status: 429, headers: { "Retry-After": "60" } });
+  }
   let body: { title?: string; stops?: ReqStop[] };
   try {
     body = await req.json();

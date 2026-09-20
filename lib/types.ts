@@ -59,7 +59,12 @@ export type MediaKind = "photo" | "video";
 export interface PinMedia {
   id: string;
   kind: MediaKind;
+  /** What the browser shows: a signed Storage URL in live mode (short-lived,
+   *  refreshed on every load), a data/object URL or a seed photo otherwise. */
   url: string;
+  /** The object's path in the private pin-media bucket, when it lives there.
+   *  This is what the database stores; the URL above is derived from it. */
+  path?: string;
   width?: number;
   height?: number;
 }

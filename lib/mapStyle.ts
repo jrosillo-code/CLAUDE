@@ -174,6 +174,12 @@ export function bundledWorldStyle(theme: MapTheme): StyleSpecification {
         source: "countries",
         layout: {
           "text-field": ["get", "name"],
+          // The same face the online styles use, so the first paint and the
+          // upgraded street map set their labels in one and the same type.
+          // Without this MapLibre asks the glyph host for its own default
+          // stack, which reads as a different, rougher font until a theme
+          // switch swaps the style.
+          "text-font": LABEL_FONT_BOLD,
           "text-size": ["interpolate", ["linear"], ["zoom"], 1, 10, 4, 14],
           "text-letter-spacing": 0.08,
           "text-transform": "uppercase",

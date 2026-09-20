@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import ThemeManager from "@/components/ThemeManager";
 import PreviewBanner from "@/components/PreviewBanner";
+import Toaster from "@/components/Toaster";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -58,6 +59,7 @@ export default function RootLayout({
       <body>
         <ThemeManager />
         {children}
+        <Toaster />
         <PreviewBanner />
       </body>
     </html>

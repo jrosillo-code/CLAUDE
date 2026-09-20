@@ -12,7 +12,8 @@ import { appleMapsDirectionsUrl, googleMapsDirectionsUrl } from "@/lib/direction
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 import { RatingBadge, RatingScale } from "./RatingScale";
 import { backendEnabled } from "@/lib/supabase";
-import { uploadPinMedia } from "@/lib/backend";
+import { uploadPinMedia, MAX_MEDIA_BYTES } from "@/lib/backend";
+import { toast } from "@/lib/toast";
 import { downscaleImage } from "@/lib/image";
 import { useViewer } from "@/lib/hooks";
 import { SAMPLE_VIDEOS, photo } from "@/lib/seed";
@@ -69,19 +70,33 @@ export default function PinSheet() {
       setUploadingEdit((n) => n + 1);
       try {
         if (isVideo) {
-          const url = backendEnabled
-            ? await uploadPinMedia(viewer.id, file, file.name.split(".").pop() || "mp4")
-            : URL.createObjectURL(file);
-          if (url) setEditMedia((p) => [...p, { id: newMediaId(), kind: "video" as const, url }].slice(0, 8));
+          if (!/^video\/(mp4|quicktime|webm)$/.test(file.type)) {
+            toast("That video format isn't supported — MP4, MOV or WebM work.", { kind: "error" });
+            continue;
+          }
+          if (file.size > MAX_MEDIA_BYTES) {
+            toast(`That video is ${Math.round(file.size / 1048576)} MB; the limit is 100 MB.`, { kind: "error" });
+            continue;
+          }
+          const up = backendEnabled
+            ? await uploadPinMedia(viewer.id, file, file.name.split(".").pop()?.toLowerCase() || "mp4")
+            : { url: URL.createObjectURL(file), path: undefined };
+          if (up) setEditMedia((p) => [...p, { id: newMediaId(), kind: "video" as const, url: up.url, path: up.path }].slice(0, 8));
         } else {
           const dataUrl = await downscaleImage(file, 1600);
           let url: string | null = dataUrl;
+          let path: string | undefined;
           if (backendEnabled) {
             const blob = await (await fetch(dataUrl)).blob();
-            url = await uploadPinMedia(viewer.id, blob, "jpg");
+            const up = await uploadPinMedia(viewer.id, blob, "jpg");
+            url = up?.url ?? null;
+            path = up?.path;
           }
-          if (url) setEditMedia((p) => [...p, { id: newMediaId(), kind: "photo" as const, url }].slice(0, 8));
+          if (url) setEditMedia((p) => [...p, { id: newMediaId(), kind: "photo" as const, url, path }].slice(0, 8));
         }
+      } catch (e) {
+        console.error("[waypoint] media pick failed", e);
+        toast("That file couldn't be read. Try another photo or video.", { kind: "error" });
       } finally {
         setUploadingEdit((n) => n - 1);
       }

@@ -65,3 +65,16 @@ function build(): SupabaseClient | null {
 export const supabase: SupabaseClient | null = build();
 
 export const backendEnabled = !!supabase;
+
+/** Authorization header for API routes that only serve signed-in accounts.
+ *  Empty in the keyless demo, where the server accepts everyone. */
+export async function authHeaders(): Promise<Record<string, string>> {
+  if (!supabase) return {};
+  try {
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  } catch {
+    return {};
+  }
+}

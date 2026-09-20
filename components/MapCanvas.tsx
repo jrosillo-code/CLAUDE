@@ -922,11 +922,22 @@ export default function MapCanvas({ placing, onPick }: Props) {
             if (map.getSource("esri-reference")) map.removeSource("esri-reference");
             for (const layer of satelliteLabelLayers()) if (!map.getLayer(layer.id)) map.addLayer(layer);
           } catch {
-            /* style mid-swap — the next satellite style carries the labels */
+            /* style mid-swap — retried below, and the next satellite style carries the labels */
           }
         };
-        if (map.isStyleLoaded()) apply();
-        else map.once("style.load", apply);
+        // The probe usually answers while the first style is still loading
+        // tiles: isStyleLoaded() is false, yet style.load has already fired
+        // and never will again — so waiting for it left the blurry raster
+        // labels up until the next theme switch. Retry on idle, bounded.
+        let tries = 0;
+        const attempt = () => {
+          if (styleSeqRef.current !== seq || map.getSource("openmaptiles")) return;
+          if (map.isStyleLoaded()) apply();
+          if (map.getSource("openmaptiles") || ++tries > 8) return;
+          map.once("idle", attempt);
+          window.setTimeout(attempt, 700);
+        };
+        attempt();
       })
       .catch(() => styleProbeCache.set(VECTOR_TILES_URL, false));
   }

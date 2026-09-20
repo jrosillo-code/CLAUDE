@@ -7,6 +7,7 @@
 
 import { supabase } from "./supabase";
 import { debugLoggingEnabled } from "./env";
+import { toast } from "./toast";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import type {
   ActivitySlug,
@@ -24,8 +25,46 @@ import type {
   FieldReport,
 } from "./types";
 
-const log = (op: string) => (e: unknown) =>
+// What a failed write means to the person, in their words. Anything not
+// listed is a read or a background sync and stays in the console only.
+const USER_FACING: Record<string, string> = {
+  addPin: "Your pin didn't save. Check your connection and try again.",
+  "addPin media": "The pin saved, but its photos didn't. Open the pin and add them again.",
+  updatePin: "That edit didn't save. Try again in a moment.",
+  "updatePin media": "The photo change didn't save. Try again in a moment.",
+  deletePin: "The pin couldn't be deleted. Reload and try again.",
+  ratePin: "Your score didn't save.",
+  like: "That like didn't go through.",
+  save: "That save didn't go through.",
+  follow: "That follow didn't go through.",
+  sendFriendRequest: "The friend request didn't send. Try again.",
+  respondFriendRequest: "That reply didn't send. Try again.",
+  saveTrip: "The trip didn't save. Check your connection and try again.",
+  "saveTrip stops": "The trip saved without its stops. Open it and try again.",
+  renameTrip: "The new trip name didn't save.",
+  completeTrip: "Marking the trip complete didn't save.",
+  deleteTrip: "The trip couldn't be deleted. Reload and try again.",
+  saveReflection: "Your debrief didn't save. Your answers are still on this device — try again.",
+  "saveReflection answers": "Part of your debrief didn't save. Open it and try again.",
+  deleteReflection: "The debrief couldn't be deleted.",
+  uploadPinMedia: "That upload failed. Check the file is a photo or video under 100 MB and try again.",
+  uploadAvatar: "The new photo didn't upload. Try a smaller image.",
+  profile: "Profile changes didn't save.",
+  socials: "Your links didn't save.",
+  "handle claim": "That username couldn't be claimed. Pick another on your profile.",
+  "topPlaces insert": "Your Top 5 didn't save.",
+  saveScoutNote: "The scout details didn't save.",
+  deleteScoutNote: "The scout details couldn't be removed.",
+  saveFieldReport: "The field report didn't save.",
+  deleteFieldReport: "The field report couldn't be deleted.",
+  applyCreator: "Your application didn't send. Try again.",
+};
+
+const log = (op: string) => (e: unknown) => {
   console.error(`[backend] ${op} failed:`, e);
+  const said = USER_FACING[op] ?? (op.startsWith("loadWorld:") ? "Part of your map didn't load. Pull to refresh or reload the page." : null);
+  if (said) toast(said, { kind: "error" });
+};
 
 /**
  * Never let a backend call hold the UI open indefinitely.
@@ -191,6 +230,44 @@ function toReflection(r: ReflectionRow): TripReflection {
 
 // ── mappers ────────────────────────────────────────────────────────────────
 
+// ── media: private bucket, signed on read ──────────────────────────────────
+
+const PUBLIC_PREFIX = /^.*\/storage\/v1\/object\/public\/pin-media\//;
+/** Seven days: longer than any session, refreshed on every load anyway. */
+const SIGNED_TTL_S = 7 * 24 * 3600;
+
+/** The object path behind a stored value: rows written before migration 0022
+ *  hold the old public URL, rows after it hold the bare path. Anything else
+ *  (seed photos, data URLs) is not ours to sign. */
+export function storagePathOf(stored: string): string | null {
+  if (!stored) return null;
+  if (PUBLIC_PREFIX.test(stored)) return stored.replace(PUBLIC_PREFIX, "").split("?")[0];
+  if (/^(https?:|data:|blob:)/.test(stored)) return null;
+  return stored;
+}
+
+/** Replace every storage path in these pins with a signed URL, in one call
+ *  per hundred objects. A path Storage refuses to sign (a photo whose pin is
+ *  no longer visible) keeps the path, which simply fails to load. */
+export async function signPinMedia(pins: Pin[]): Promise<void> {
+  const sb = supabase!;
+  const paths = new Set<string>();
+  for (const p of pins) for (const m of p.media) if (m.path) paths.add(m.path);
+  if (!paths.size) return;
+  const signed = new Map<string, string>();
+  const all = [...paths];
+  for (let i = 0; i < all.length; i += 100) {
+    const chunk = all.slice(i, i + 100);
+    const { data, error } = await sb.storage.from("pin-media").createSignedUrls(chunk, SIGNED_TTL_S);
+    if (error) { log("signMedia")(error); continue; }
+    for (const row of data ?? []) if (row.signedUrl && row.path) signed.set(row.path, row.signedUrl);
+  }
+  for (const p of pins) for (const m of p.media) {
+    const u = m.path && signed.get(m.path);
+    if (u) m.url = u;
+  }
+}
+
 const FALLBACK_COLORS = ["#c65d3b", "#2f6b6b", "#3b5bc6", "#4c8c3a", "#8a4fc6", "#d99a2b", "#b0574f"];
 
 function toUser(r: UserRow): User {
@@ -229,7 +306,10 @@ function toPin(r: PinRow): Pin {
     hereNow: r.here_now ?? undefined,
     media: (r.pin_photos ?? [])
       .sort((a, b) => a.sort_order - b.sort_order)
-      .map((m) => ({ id: m.id, kind: m.kind, url: m.storage_path })),
+      .map((m) => {
+        const path = storagePathOf(m.storage_path);
+        return { id: m.id, kind: m.kind, url: m.storage_path, path: path ?? undefined };
+      }),
     createdAt: r.created_at,
   };
 }
@@ -321,6 +401,7 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
     if (usersQ.error && pinsQ.error) throw usersQ.error;
 
     const pins = ((pinsQ.data ?? []) as unknown as PinRow[]).map(toPin);
+    await withTimeout(signPinMedia(pins), 8_000, undefined, "signPinMedia");
     const likeCounts: Record<string, number> = {};
     for (const r of (pinsQ.data ?? []) as unknown as PinRow[]) {
       likeCounts[r.id] = r.pin_likes?.[0]?.count ?? 0;
@@ -525,7 +606,7 @@ export function syncAddPin(pin: Pin): void {
         pin.media.map((m, i) => ({
           id: m.id,
           pin_id: pin.id,
-          storage_path: m.url,
+          storage_path: m.path ?? m.url,
           kind: m.kind,
           sort_order: i,
         }))
@@ -558,7 +639,7 @@ export function syncReplacePinMedia(pinId: string, media: Pin["media"]): void {
         media.map((m, i) => ({
           id: m.id,
           pin_id: pinId,
-          storage_path: m.url,
+          storage_path: m.path ?? m.url,
           kind: m.kind,
           sort_order: i,
         }))
@@ -892,14 +973,30 @@ export async function uploadAvatar(userId: string, dataUrl: string): Promise<str
   }
 }
 
-/** Upload a pin photo/video file to Storage; returns its public URL. */
-export async function uploadPinMedia(userId: string, file: File | Blob, ext: string): Promise<string | null> {
+/** Largest file the pin-media bucket accepts (mirrors migration 0022). */
+export const MAX_MEDIA_BYTES = 100 * 1024 * 1024;
+
+export interface UploadedMedia {
+  /** A signed URL to show now. */
+  url: string;
+  /** The object path to store on the pin. */
+  path: string;
+}
+
+/** Upload a pin photo/video to the private bucket; returns a signed URL to
+ *  display plus the path the database keeps. Null on failure (the user is
+ *  told by log()). */
+export async function uploadPinMedia(userId: string, file: File | Blob, ext: string): Promise<UploadedMedia | null> {
   const sb = supabase!;
   try {
+    if (file.size > MAX_MEDIA_BYTES) throw new Error(`file is ${Math.round(file.size / 1048576)} MB; the limit is 100 MB`);
+    const contentType = file.type || (ext === "jpg" ? "image/jpeg" : ext === "mp4" ? "video/mp4" : ext === "mov" ? "video/quicktime" : ext === "webm" ? "video/webm" : "application/octet-stream");
     const path = `${userId}/${crypto.randomUUID()}.${ext}`;
-    const { error } = await sb.storage.from("pin-media").upload(path, file, { upsert: false });
+    const { error } = await sb.storage.from("pin-media").upload(path, file, { upsert: false, contentType });
     if (error) throw error;
-    return sb.storage.from("pin-media").getPublicUrl(path).data.publicUrl;
+    const { data, error: signErr } = await sb.storage.from("pin-media").createSignedUrl(path, SIGNED_TTL_S);
+    if (signErr || !data?.signedUrl) throw signErr ?? new Error("no signed url");
+    return { url: data.signedUrl, path };
   } catch (e) {
     log("uploadPinMedia")(e);
     return null;

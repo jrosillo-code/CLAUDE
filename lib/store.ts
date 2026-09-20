@@ -315,7 +315,7 @@ interface WaypointState {
     title: string;
     note: string;
     visibility: Visibility;
-    media: { kind: "photo" | "video"; url: string }[];
+    media: { kind: "photo" | "video"; url: string; path?: string }[];
     dates?: [string, string];
     rating?: number;
     /** Backdated posts (Takeout import) — keeps the feed and year tags honest. */
@@ -1165,6 +1165,7 @@ export const useStore = create<WaypointState>((set, get) => ({
         id: backendEnabled ? crypto.randomUUID() : `${id}-m${i + 1}`,
         kind: m.kind,
         url: m.url,
+        path: m.path,
       })),
       rating: input.rating,
       hereNow: input.hereNow || undefined,

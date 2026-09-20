@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Sheet from "./Sheet";
+import { authHeaders } from "@/lib/supabase";
 import type { Trip } from "@/lib/types";
 import {
   appleMapsDirectionsUrl,
@@ -42,9 +43,9 @@ export default function TripGuidePanel({
   useEffect(() => {
     let alive = true;
     setState({ status: "loading" });
-    fetch("/api/trip-guide", {
+    authHeaders().then((auth) => fetch("/api/trip-guide", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", ...auth },
       body: JSON.stringify({
         title: trip.title,
         stops: trip.stops.map((s) => ({
@@ -53,7 +54,7 @@ export default function TripGuidePanel({
           lng: s.lng,
         })),
       }),
-    })
+    }))
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((g) => {
         if (alive) setState({ status: "ready", source: g.source, stops: g.stops });

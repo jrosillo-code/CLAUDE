@@ -136,6 +136,20 @@ begin
   end if;
 end $$;
 
+-- storage: 0022 closes the pin-media bucket and caps both buckets.
+select ok(
+  (select not public from storage.buckets where id = 'pin-media'),
+  'pin-media bucket is private (0022)');
+select ok(
+  (select file_size_limit is not null and allowed_mime_types is not null from storage.buckets where id = 'pin-media'),
+  'pin-media bucket has size and type limits (0022)');
+select ok(
+  exists (select 1 from pg_policies where schemaname = 'storage' and tablename = 'objects' and policyname = 'pin_media_read'),
+  'pin_media_read policy exists (0022)');
+select ok(
+  not exists (select 1 from pg_policies where schemaname = 'storage' and tablename = 'objects' and policyname = 'pin_media_public_read'),
+  'pin_media_public_read policy is gone (0022)');
+
 -- pins: 0021 adds the dispatch flag.
 select ok(
   exists (select 1 from information_schema.columns where table_name = 'pins' and column_name = 'here_now'),

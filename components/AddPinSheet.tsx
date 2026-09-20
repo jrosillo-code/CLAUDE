@@ -11,7 +11,8 @@ import { visibilityLabel } from "@/lib/data";
 import { suggestHereNow } from "@/lib/dispatches";
 import { RatingScale } from "./RatingScale";
 import { backendEnabled } from "@/lib/supabase";
-import { uploadPinMedia } from "@/lib/backend";
+import { uploadPinMedia, MAX_MEDIA_BYTES } from "@/lib/backend";
+import { toast } from "@/lib/toast";
 import { downscaleImage } from "@/lib/image";
 import { EMPTY_SCOUT, ScoutDetailsFields, scoutToNote, type ScoutDraft } from "./ScoutDetails";
 import { track } from "@/lib/analytics";
@@ -33,7 +34,7 @@ export default function AddPinSheet() {
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [visibility, setVisibility] = useState<Visibility>(viewer.defaultPinVisibility);
-  const [mediaItems, setMediaItems] = useState<{ kind: MediaKind; url: string }[]>([]);
+  const [mediaItems, setMediaItems] = useState<{ kind: MediaKind; url: string; path?: string }[]>([]);
   const [rating, setRating] = useState<number | null>(null);
   // A dispatch: on by default when the device is at the place today.
   const userLocation = useStore((s) => s.userLocation);
@@ -49,19 +50,33 @@ export default function AddPinSheet() {
       setUploading((n) => n + 1);
       try {
         if (isVideo) {
-          const url = backendEnabled
-            ? await uploadPinMedia(viewer.id, file, file.name.split(".").pop() || "mp4")
-            : URL.createObjectURL(file);
-          if (url) setMediaItems((p) => [...p, { kind: "video" as const, url }].slice(0, 8));
+          if (!/^video\/(mp4|quicktime|webm)$/.test(file.type)) {
+            toast("That video format isn't supported — MP4, MOV or WebM work.", { kind: "error" });
+            continue;
+          }
+          if (file.size > MAX_MEDIA_BYTES) {
+            toast(`That video is ${Math.round(file.size / 1048576)} MB; the limit is 100 MB.`, { kind: "error" });
+            continue;
+          }
+          const up = backendEnabled
+            ? await uploadPinMedia(viewer.id, file, file.name.split(".").pop()?.toLowerCase() || "mp4")
+            : { url: URL.createObjectURL(file), path: undefined };
+          if (up) setMediaItems((p) => [...p, { kind: "video" as const, url: up.url, path: up.path }].slice(0, 8));
         } else {
           const dataUrl = await downscaleImage(file, 1600);
           let url: string | null = dataUrl;
+          let path: string | undefined;
           if (backendEnabled) {
             const blob = await (await fetch(dataUrl)).blob();
-            url = await uploadPinMedia(viewer.id, blob, "jpg");
+            const up = await uploadPinMedia(viewer.id, blob, "jpg");
+            url = up?.url ?? null;
+            path = up?.path;
           }
-          if (url) setMediaItems((p) => [...p, { kind: "photo" as const, url }].slice(0, 8));
+          if (url) setMediaItems((p) => [...p, { kind: "photo" as const, url, path }].slice(0, 8));
         }
+      } catch (e) {
+        console.error("[waypoint] media pick failed", e);
+        toast("That file couldn't be read. Try another photo or video.", { kind: "error" });
       } finally {
         setUploading((n) => n - 1);
       }
