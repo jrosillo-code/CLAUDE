@@ -284,9 +284,17 @@ body {
 .wp-loc-pulse {
   animation: wp-loc-pulse 2.4s ease-out infinite;
 }
-/* A live dispatch on the map: the same radar pulse, in the pin's ring colour. */
+/* A live dispatch on the map: a beacon — a breathing glow and radar rings
+   in the pin's ring colour, above every other marker. */
 .wp-live-pulse {
   animation: wp-loc-pulse 2.2s ease-out infinite;
+}
+@keyframes wp-live-glow {
+  0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.9); }
+  50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.15); }
+}
+.wp-live-glow {
+  animation: wp-live-glow 1.8s ease-in-out infinite;
 }
 
 /* Space around the globe (MapCanvas): stars that slowly twinkle, and a sun that

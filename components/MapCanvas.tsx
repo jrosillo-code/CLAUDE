@@ -45,6 +45,7 @@ type ClusterProps = {
   /** The pin carries scout details — worn as a reticle glyph. */
   scout?: boolean;
   live?: boolean;
+  liveCount?: number;
 };
 
 const DEM_SOURCE = "waypoint-dem";
@@ -1237,7 +1238,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
   }, [placing]);
 
   function rebuildIndex() {
-    const index = new Supercluster({ radius: 54, maxZoom: 16 });
+    // Clusters carry how many live dispatches they fold in, so the beacon
+    // survives zooming out: a cluster with one inside pulses like the pin.
+    const index = new Supercluster<{ live: boolean; liveCount?: number }, { liveCount: number }>({
+      radius: 54,
+      maxZoom: 16,
+      map: (props) => ({ liveCount: props.live ? 1 : 0 }),
+      reduce: (acc, props) => { acc.liveCount += props.liveCount; },
+    });
     index.load(
       pinsRef.current.map((p) => ({
         type: "Feature" as const,
@@ -1785,7 +1793,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           twinPhoto = duo.twin;
           headYear = duo.headYear;
         }
-        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${headYear ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}|${props.scout ? "sc" : ""}|${props.live ? "lv" : ""}`;
+        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${headYear ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}|${props.scout ? "sc" : ""}|${props.live || (props.liveCount ?? 0) > 0 ? "lv" : ""}`;
         upsert(
           key,
           lng,
@@ -1801,9 +1809,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
               twinPhoto,
               year: headYear,
               scout: !!props.scout,
-              live: !!props.live && !props.cluster,
+              live: !!props.live || (props.liveCount ?? 0) > 0,
             }),
-          selected ? "5" : "1",
+          selected ? "5" : props.live || (props.liveCount ?? 0) > 0 ? "3" : "1",
           (ev) => {
             ev.stopPropagation();
             if (placingRef.current) return;
@@ -1994,11 +2002,19 @@ function needleEl(opts: {
   };
 
   if (live) {
-    const pulse = document.createElement("div");
-    pulse.className = "wp-live-pulse";
-    pulse.title = "Here now";
-    pulse.style.cssText = `position:absolute;left:50%;top:${headSize / 2}px;width:${headSize * 2}px;height:${headSize * 2}px;border-radius:9999px;background:${ring};opacity:.5;pointer-events:none;`;
-    wrap.appendChild(pulse);
+    // The beacon: a steady glow plus two radar rings out of phase, big
+    // enough to read at planet scale where the head is a dot.
+    const glow = document.createElement("div");
+    glow.className = "wp-live-glow";
+    glow.title = "Here now";
+    glow.style.cssText = `position:absolute;left:50%;top:${headSize / 2}px;width:${headSize * 2.2}px;height:${headSize * 2.2}px;transform:translate(-50%,-50%);border-radius:9999px;background:radial-gradient(circle, ${ring} 0%, ${ring}99 35%, transparent 70%);pointer-events:none;`;
+    wrap.appendChild(glow);
+    for (const delay of ["0s", "-1.1s"]) {
+      const pulse = document.createElement("div");
+      pulse.className = "wp-live-pulse";
+      pulse.style.cssText = `position:absolute;left:50%;top:${headSize / 2}px;width:${headSize * 2.6}px;height:${headSize * 2.6}px;border-radius:9999px;border:2px solid ${ring};background:${ring}55;opacity:.6;pointer-events:none;animation-delay:${delay};`;
+      wrap.appendChild(pulse);
+    }
   }
   if (stacked) wrap.appendChild(needle(Math.round(headSize * 0.34), -2, 0.55, true));
   wrap.appendChild(needle(0, 0, 1, false));
