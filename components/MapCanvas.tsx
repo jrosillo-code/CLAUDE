@@ -1472,12 +1472,11 @@ export default function MapCanvas({ placing, onPick }: Props) {
     });
   }
 
-  // Which flavour of space suits the current look: dark themes and satellite
-  // read as night (stars); the light themes get a warm sun.
+  // Which flavour of space suits the current look: the dark themes read as
+  // night (stars, shooting stars); the light themes get the warm daylight
+  // sky — on the street map and on satellite alike.
   function spaceModeFor(): "stars" | "sun" | "none" {
-    if (themeRef.current.darkUI) return "stars";
-    if (useStore.getState().basemap === "satellite") return "stars";
-    return "sun";
+    return themeRef.current.darkUI ? "stars" : "sun";
   }
 
   // Time-of-day tint for the daylight sky: peach → pale → amber, written as
