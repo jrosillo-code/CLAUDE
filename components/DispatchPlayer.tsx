@@ -63,6 +63,8 @@ export default function DispatchPlayer({ userId, onClose }: { userId: string; on
   }
 
   const cover = coverUrl(pin);
+  // A video-only dispatch plays its clip instead of a blank cover.
+  const clip = cover ? undefined : pin.media.find((m) => m.kind === "video")?.url;
   const hhmm = (iso: string | null | undefined) => {
     if (!iso || !brief) return "—";
     const t = new Date(new Date(iso).getTime() + brief.clock.utcOffsetMinutes * 60_000);
@@ -103,6 +105,13 @@ export default function DispatchPlayer({ userId, onClose }: { userId: string; on
         <div className="relative aspect-[4/5] w-full bg-ink">
           {cover ? (
             <img src={cover} alt="" className="h-full w-full object-cover" />
+          ) : clip ? (
+            <>
+              <video key={clip} src={clip} autoPlay muted loop playsInline preload="auto" className="h-full w-full object-cover" data-testid="dispatch-video" />
+              <span className="absolute right-3 top-14 grid h-7 w-7 place-items-center rounded-full bg-ink/40 text-paper">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z" /></svg>
+              </span>
+            </>
           ) : (
             <div className="grid h-full w-full place-items-center bg-gradient-to-b from-ink to-paper-2 text-6xl">📍</div>
           )}
