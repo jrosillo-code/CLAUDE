@@ -34,6 +34,17 @@ export async function boot({ base = 3100 } = {}) {
     setTimeout(r, 15000);
   });
   const B = `http://127.0.0.1:${PORT}`;
+  // Warm the server: the first request after a build pays for chunk loading,
+  // and a suite that starts on a cold server sees a map with nothing on it.
+  for (let i = 0; i < 20; i++) {
+    try {
+      const r = await fetch(`${B}/`);
+      if (r.ok) break;
+    } catch {
+      /* not up yet */
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
   const out = [];
   const ok = (name, pass, detail = "") => {
     const line = `${pass ? "ok  " : "FAIL"} ${name}${detail ? " — " + detail : ""}`;

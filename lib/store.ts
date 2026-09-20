@@ -457,6 +457,8 @@ export const useStore = create<WaypointState>((set, get) => ({
         }));
 
         get().applyPendingInvite();
+        // Writes queued on this device while offline go out now.
+        backend.resumeOutbox();
 
         // Realtime: likes, friend requests, and fresh pins land without a
         // reload — any relevant server change reloads the world (debounced).

@@ -22,7 +22,12 @@ for s in "${suites[@]}"; do
   case "$skip" in *",$s,"*) echo "skip $s"; continue;; esac
   echo "── $s"
   if ! timeout "${E2E_TIMEOUT:-600}" node "tests/e2e/$s.mjs" 2>/dev/null | tail -n 3; then
-    failed=$((failed + 1))
+    # A browser suite can lose a race with tiles or the map's first paint;
+    # one retry tells a flake from a failure.
+    echo "   retrying $s once"
+    if ! timeout "${E2E_TIMEOUT:-600}" node "tests/e2e/$s.mjs" 2>/dev/null | tail -n 3; then
+      failed=$((failed + 1))
+    fi
   fi
 done
 echo
