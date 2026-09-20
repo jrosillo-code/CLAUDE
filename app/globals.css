@@ -342,29 +342,38 @@ body {
   left: 0;
   width: 200%;
   pointer-events: none;
-  filter: blur(22px);
+  filter: blur(10px);
   will-change: transform;
 }
+/* Each cloud is a bright top over a cool grey underside, so it reads as a
+   cloud against the cream sky instead of dissolving into it. */
 .wp-cloud-a {
-  opacity: 0.5;
+  opacity: 0.9;
   background:
-    radial-gradient(ellipse 18% 9% at 8% 22%, rgba(255,255,255,.95), transparent 70%),
-    radial-gradient(ellipse 26% 11% at 22% 30%, rgba(255,255,255,.85), transparent 70%),
-    radial-gradient(ellipse 20% 8% at 41% 18%, rgba(255,255,255,.9), transparent 70%),
-    radial-gradient(ellipse 30% 12% at 62% 26%, rgba(255,255,255,.8), transparent 70%),
-    radial-gradient(ellipse 18% 8% at 80% 16%, rgba(255,255,255,.9), transparent 70%),
-    radial-gradient(ellipse 24% 10% at 93% 28%, rgba(255,255,255,.85), transparent 70%);
-  animation: wp-cloud-drift 150s linear infinite;
+    radial-gradient(ellipse 30% 14% at 8% 20%, rgba(255,255,255,1) 0%, rgba(255,255,255,.75) 45%, transparent 72%),
+    radial-gradient(ellipse 34% 8% at 9% 27%, rgba(168,182,204,.42), transparent 70%),
+    radial-gradient(ellipse 38% 16% at 30% 30%, rgba(255,255,255,1) 0%, rgba(255,255,255,.7) 45%, transparent 72%),
+    radial-gradient(ellipse 40% 9% at 31% 38%, rgba(168,182,204,.42), transparent 70%),
+    radial-gradient(ellipse 28% 12% at 52% 16%, rgba(255,255,255,1) 0%, rgba(255,255,255,.7) 45%, transparent 72%),
+    radial-gradient(ellipse 30% 7% at 53% 22%, rgba(168,182,204,.4), transparent 70%),
+    radial-gradient(ellipse 42% 17% at 74% 26%, rgba(255,255,255,1) 0%, rgba(255,255,255,.7) 45%, transparent 72%),
+    radial-gradient(ellipse 44% 9% at 75% 35%, rgba(168,182,204,.42), transparent 70%),
+    radial-gradient(ellipse 26% 12% at 93% 14%, rgba(255,255,255,1) 0%, rgba(255,255,255,.7) 45%, transparent 72%),
+    radial-gradient(ellipse 28% 7% at 94% 20%, rgba(168,182,204,.4), transparent 70%);
+  animation: wp-cloud-drift 110s linear infinite;
 }
 .wp-cloud-b {
-  opacity: 0.35;
+  opacity: 0.7;
   background:
-    radial-gradient(ellipse 24% 10% at 14% 68%, rgba(255,255,255,.9), transparent 70%),
-    radial-gradient(ellipse 18% 8% at 33% 76%, rgba(255,255,255,.85), transparent 70%),
-    radial-gradient(ellipse 28% 11% at 55% 70%, rgba(255,255,255,.8), transparent 70%),
-    radial-gradient(ellipse 20% 9% at 74% 80%, rgba(255,255,255,.9), transparent 70%),
-    radial-gradient(ellipse 26% 10% at 90% 66%, rgba(255,255,255,.85), transparent 70%);
-  animation: wp-cloud-drift 230s linear infinite reverse;
+    radial-gradient(ellipse 36% 15% at 14% 70%, rgba(255,255,255,1) 0%, rgba(255,255,255,.7) 45%, transparent 72%),
+    radial-gradient(ellipse 38% 8% at 15% 78%, rgba(168,182,204,.4), transparent 70%),
+    radial-gradient(ellipse 30% 13% at 38% 82%, rgba(255,255,255,1) 0%, rgba(255,255,255,.7) 45%, transparent 72%),
+    radial-gradient(ellipse 32% 7% at 39% 89%, rgba(168,182,204,.38), transparent 70%),
+    radial-gradient(ellipse 44% 17% at 62% 72%, rgba(255,255,255,1) 0%, rgba(255,255,255,.7) 45%, transparent 72%),
+    radial-gradient(ellipse 46% 9% at 63% 81%, rgba(168,182,204,.4), transparent 70%),
+    radial-gradient(ellipse 30% 13% at 86% 84%, rgba(255,255,255,1) 0%, rgba(255,255,255,.7) 45%, transparent 72%),
+    radial-gradient(ellipse 32% 7% at 87% 91%, rgba(168,182,204,.38), transparent 70%);
+  animation: wp-cloud-drift 170s linear infinite reverse;
 }
 @keyframes wp-cloud-drift {
   from { transform: translateX(0); }
