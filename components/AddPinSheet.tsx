@@ -40,6 +40,9 @@ export default function AddPinSheet() {
   const userLocation = useStore((s) => s.userLocation);
   const [hereNow, setHereNow] = useState<boolean>(() => suggestHereNow(draft, userLocation, undefined));
   const [uploading, setUploading] = useState(0);
+  // A home, a friend's house, a place you would rather not pin exactly: the
+  // saved point is snapped to a ~5 km grid, and nothing finer is stored.
+  const [approximate, setApproximate] = useState(false);
 
   // Real uploads: photos are downscaled client-side; with the live backend
   // they go to Supabase Storage, in demo mode they live as data/object URLs.
@@ -100,9 +103,10 @@ export default function AddPinSheet() {
   }
 
   function submit() {
+    const snap = (v: number) => Math.round(v / 0.05) * 0.05;
     const pin = addPin({
-      lng: draft.lng,
-      lat: draft.lat,
+      lng: approximate ? snap(draft.lng) : draft.lng,
+      lat: approximate ? snap(draft.lat) : draft.lat,
       placeName: draft.placeName,
       countryCode: draft.countryCode,
       region: draft.region,
@@ -274,6 +278,22 @@ export default function AddPinSheet() {
           <span className="min-w-0 flex-1">
             <span className="block text-sm font-medium">I&apos;m here now</span>
             <span className="block text-[11px] text-ink-3">{hereNow ? "Shows as a live dispatch to your circle for 3 days." : "Off — a normal pin, dated whenever you like."}</span>
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setApproximate((v) => !v)}
+          aria-pressed={approximate}
+          data-testid="approximate-toggle"
+          className={`mt-2 flex w-full items-center gap-3 rounded-2xl px-3.5 py-2.5 text-left ring-1 ${approximate ? "bg-accent/10 ring-accent/50" : "bg-paper-2/60 ring-line"}`}
+        >
+          <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full ${approximate ? "bg-accent text-paper" : "bg-paper text-ink-3"}`}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.8" strokeDasharray="3 3" /><circle cx="12" cy="12" r="2.2" fill="currentColor" /></svg>
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-medium">Approximate location</span>
+            <span className="block text-[11px] text-ink-3">{approximate ? "Saved to within about 5 km — good for a home or a friend's place." : "Off — the exact spot is saved."}</span>
           </span>
         </button>
 

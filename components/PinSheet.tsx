@@ -12,7 +12,7 @@ import { appleMapsDirectionsUrl, googleMapsDirectionsUrl } from "@/lib/direction
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 import { RatingBadge, RatingScale } from "./RatingScale";
 import { backendEnabled } from "@/lib/supabase";
-import { uploadPinMedia, MAX_MEDIA_BYTES } from "@/lib/backend";
+import { uploadPinMedia, MAX_MEDIA_BYTES, type ReportReason } from "@/lib/backend";
 import { toast } from "@/lib/toast";
 import { downscaleImage } from "@/lib/image";
 import { useViewer } from "@/lib/hooks";
@@ -58,6 +58,11 @@ export default function PinSheet() {
   const [uploadingEdit, setUploadingEdit] = useState(0);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [confirmReportDelete, setConfirmReportDelete] = useState<string | null>(null);
+  // Flagging someone else's pin: reason first, an optional line, then it goes.
+  const [flagOpen, setFlagOpen] = useState(false);
+  const [flagReason, setFlagReason] = useState<ReportReason>("not_a_real_place");
+  const [flagNote, setFlagNote] = useState("");
+  const reportContent = useStore((s) => s.reportContent);
 
   const newMediaId = () =>
     typeof crypto !== "undefined" && crypto.randomUUID
@@ -481,6 +486,27 @@ export default function PinSheet() {
                   >
                     {confirmDelete ? "Really delete?" : "Delete"}
                   </button>
+                </div>
+              )}
+              {!isOwner && (
+                <div className="mt-6 text-right" data-testid="flag-pin">
+                  {!flagOpen ? (
+                    <button onClick={() => setFlagOpen(true)} className="text-xs text-ink-3 hover:text-accent">Report this pin</button>
+                  ) : (
+                    <div className="rounded-2xl border border-line bg-paper-2/60 p-3 text-left">
+                      <p className="text-xs font-semibold text-ink-2">What&apos;s wrong with it?</p>
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {([["not_a_real_place", "Not a real place"], ["private_info", "Someone's private info"], ["harassment", "Harassment"], ["explicit", "Explicit"], ["spam", "Spam"], ["other", "Other"]] as [ReportReason, string][]).map(([v, l]) => (
+                          <button key={v} onClick={() => setFlagReason(v)} className={`rounded-full px-3 py-1 text-xs ${flagReason === v ? "bg-ink text-paper" : "bg-paper text-ink-2 ring-1 ring-line"}`}>{l}</button>
+                        ))}
+                      </div>
+                      <input value={flagNote} onChange={(e) => setFlagNote(e.target.value)} maxLength={500} placeholder="Anything a person should know (optional)" className="mt-2 w-full rounded-xl bg-paper px-3 py-2 text-sm outline-none ring-1 ring-line" />
+                      <div className="mt-2 flex justify-end gap-2">
+                        <button onClick={() => setFlagOpen(false)} className="rounded-full px-3 py-1.5 text-xs text-ink-3">Cancel</button>
+                        <button onClick={() => { reportContent({ pinId: pin.id, userId: pin.userId }, flagReason, flagNote); setFlagOpen(false); setFlagNote(""); }} className="rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-paper">Send report</button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 

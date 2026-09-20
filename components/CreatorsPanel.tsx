@@ -151,7 +151,7 @@ function ApplyCard() {
         <div className="text-xl">🎉</div>
         <p className="mt-1 font-display text-lg">Application received</p>
         <p className="mt-1 text-sm text-ink-3">
-          We review creator applications weekly — you&apos;ll hear back by email.
+          Applications are read by a person, not on a schedule. If yours is approved, the creator badge appears on your profile — there is no email step.
         </p>
       </div>
     );

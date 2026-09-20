@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/lib/store";
 import { useFriends, useViewer } from "@/lib/hooks";
+import { countryCount } from "@/lib/data";
 
 // World coverage, together: how many of the world's countries you and your
 // friends have pinned between you. Reaching ALL of them triggers the
@@ -51,6 +52,17 @@ export default function WorldProgress() {
 
   const pct = Math.min(100, Math.round((covered.size / WORLD_TARGET) * 100));
 
+  // Who in the crew has been furthest: countries pinned, you included. A
+  // friendly ranking among people you know, never a global one.
+  const [boardOpen, setBoardOpen] = useState(false);
+  const board = useMemo(() => {
+    const crew = [viewer, ...friends];
+    return crew
+      .map((u) => ({ user: u, countries: countryCount(pins, u.id), pins: pins.filter((p) => p.userId === u.id).length }))
+      .sort((a, b) => b.countries - a.countries || b.pins - a.pins || a.user.displayName.localeCompare(b.user.displayName));
+  }, [pins, viewer, friends]);
+  const myRank = board.findIndex((b) => b.user.id === viewer.id) + 1;
+
   return (
     <>
       <button
@@ -78,6 +90,31 @@ export default function WorldProgress() {
           />
         </div>
       </button>
+
+      {friends.length > 0 && (
+        <div className="mt-1 px-1" data-testid="country-leaderboard">
+          <button
+            onClick={() => setBoardOpen((o) => !o)}
+            aria-expanded={boardOpen}
+            className="flex w-full items-center justify-between rounded-lg px-1 py-1 text-[11px] font-medium text-ink-3 hover:bg-paper-2"
+          >
+            <span>Most countries · you&apos;re #{myRank} of {board.length}</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" className={boardOpen ? "rotate-180 transition-transform" : "transition-transform"}><path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </button>
+          {boardOpen && (
+            <ol className="mt-1 space-y-0.5">
+              {board.slice(0, 8).map((b, i) => (
+                <li key={b.user.id} className={`flex items-center gap-2 rounded-lg px-1.5 py-1 text-xs ${b.user.id === viewer.id ? "bg-paper-2 font-semibold" : ""}`}>
+                  <span className="w-4 text-right text-[10px] text-ink-3">{i + 1}</span>
+                  <img src={b.user.avatarUrl} alt="" className="h-5 w-5 rounded-full object-cover ring-1" style={{ ["--tw-ring-color" as string]: b.user.color }} />
+                  <span className="min-w-0 flex-1 truncate">{b.user.id === viewer.id ? "You" : b.user.displayName}</span>
+                  <span className="text-ink-2">{b.countries} {b.countries === 1 ? "country" : "countries"}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      )}
 
       {celebrate && (
         <WorldCompleteOverlay

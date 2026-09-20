@@ -37,6 +37,8 @@ import {
 } from "./seed";
 import { arrivedForPasswordRecovery, backendEnabled, supabase } from "./supabase";
 import * as backend from "./backend";
+import type { ReportReason } from "./backend";
+import { toast } from "./toast";
 import { track } from "./analytics";
 
 // When the Supabase env is configured the store hydrates from the real
@@ -333,6 +335,20 @@ interface WaypointState {
   // ── Friends ──
   /** Send a friend request from the viewer to another traveler. */
   sendFriendRequest: (userId: string) => void;
+
+  // ── Trust ──
+  /** People you have blocked: their pins never show, they never see yours. */
+  blockedIds: Set<string>;
+  blockUser: (userId: string) => void;
+  unblockUser: (userId: string) => void;
+  reportContent: (target: { pinId?: string; userId?: string }, reason: ReportReason, note: string) => void;
+  /** Erase the account and everything in it. Resolves true when gone. */
+  deleteMyAccount: () => Promise<boolean>;
+  /** Everything you have made, as one JSON document. */
+  exportMyData: () => string;
+  /** Someone landed on a /join/{handle} link before signing up: send that
+   *  friend request now that the account exists. */
+  applyPendingInvite: () => void;
   /** Accept (true) or decline (false) a pending request involving this user. */
   respondFriendRequest: (userId: string, accept: boolean) => void;
   /** Withdraw a request the viewer sent. */
@@ -433,11 +449,14 @@ export const useStore = create<WaypointState>((set, get) => ({
           savedPinIds: world?.savedPinIds ?? new Set(),
           follows: world?.follows ?? new Set(),
           notifications: world?.notifications ?? [],
+          blockedIds: world?.blockedIds ?? new Set(),
           shownTripIds: new Set(
             (world?.trips ?? []).filter((t) => t.userId === userId).map((t) => t.id)
           ),
           activeUserIds: null,
         }));
+
+        get().applyPendingInvite();
 
         // Realtime: likes, friend requests, and fresh pins land without a
         // reload — any relevant server change reloads the world (debounced).
@@ -468,6 +487,7 @@ export const useStore = create<WaypointState>((set, get) => ({
               likedPinIds: w.likedPinIds,
               savedPinIds: w.savedPinIds,
               follows: w.follows,
+              blockedIds: w.blockedIds,
               notifications: w.notifications,
             });
           }, 700);
@@ -583,6 +603,7 @@ export const useStore = create<WaypointState>((set, get) => ({
             )
           : s.users,
     }));
+    if (session) get().applyPendingInvite();
   },
   signIn: (method) => {
     const session = { userId: CURRENT_USER_ID, method };
@@ -1218,6 +1239,85 @@ export const useStore = create<WaypointState>((set, get) => ({
         ),
       };
     }),
+
+  blockedIds: new Set(),
+  blockUser: (userId) => {
+    const s = get();
+    if (userId === s.viewerId) return;
+    if (backendEnabled) backend.syncBlock(s.viewerId, userId);
+    const blockedIds = new Set(s.blockedIds).add(userId);
+    // A block ends the friendship, both ways, and their pins leave the map.
+    const friendships = s.friendships.filter(
+      (f) => !((f.userA === s.viewerId && f.userB === userId) || (f.userA === userId && f.userB === s.viewerId))
+    );
+    // The database trigger drops the friendship on block; demo mode just did.
+    set({ blockedIds, friendships, selectedPinId: s.pins.find((p) => p.id === s.selectedPinId)?.userId === userId ? null : s.selectedPinId });
+    toast("Blocked. Their pins are gone from your map and yours from theirs.");
+  },
+  unblockUser: (userId) => {
+    const s = get();
+    if (backendEnabled) backend.syncUnblock(s.viewerId, userId);
+    const blockedIds = new Set(s.blockedIds);
+    blockedIds.delete(userId);
+    set({ blockedIds });
+  },
+  reportContent: (target, reason, note) => {
+    const s = get();
+    if (backendEnabled) backend.syncReport(s.viewerId, target, reason, note);
+    toast("Thanks — reported. A person will look at it.", { kind: "success" });
+  },
+  deleteMyAccount: async () => {
+    const s = get();
+    if (backendEnabled) {
+      const ok = await backend.deleteMyAccount(s.viewerId);
+      if (!ok) return false;
+    }
+    try {
+      for (const k of ["wp-session", "wp-socials", "wp-avatar", "wp-profile", "wp-creator-app", "wp-events", "wp-ref"]) window.localStorage.removeItem(k);
+    } catch {
+      /* private mode */
+    }
+    set({ session: null });
+    return true;
+  },
+  exportMyData: () => {
+    const s = get();
+    const me = s.users.find((u) => u.id === s.viewerId);
+    const mine = {
+      exportedAt: new Date().toISOString(),
+      profile: me ?? null,
+      pins: s.pins.filter((p) => p.userId === s.viewerId),
+      trips: s.trips.filter((t) => t.userId === s.viewerId),
+      reflections: s.reflections.filter((r) => r.userId === s.viewerId),
+      scoutNotes: s.scoutNotes.filter((n) => s.pins.some((p) => p.id === n.pinId && p.userId === s.viewerId)),
+      fieldReports: s.fieldReports.filter((r) => r.userId === s.viewerId),
+      topPlaces: s.topPlaces.filter((t) => t.userId === s.viewerId),
+      friends: s.friendships.filter((f) => f.status === "accepted" && (f.userA === s.viewerId || f.userB === s.viewerId)).map((f) => (f.userA === s.viewerId ? f.userB : f.userA)),
+    };
+    return JSON.stringify(mine, null, 2);
+  },
+  applyPendingInvite: () => {
+    let handle: string | null = null;
+    try {
+      handle = window.localStorage.getItem("wp-ref");
+    } catch {
+      return;
+    }
+    if (!handle) return;
+    const s = get();
+    const target = s.users.find((u) => u.handle.toLowerCase() === handle!.toLowerCase());
+    if (!target) return; // not loaded yet; the next hydrate tries again
+    try {
+      window.localStorage.removeItem("wp-ref");
+    } catch {
+      /* ignore */
+    }
+    if (target.id === s.viewerId) return;
+    const already = s.friendships.some((f) => (f.userA === s.viewerId && f.userB === target.id) || (f.userA === target.id && f.userB === s.viewerId));
+    if (already) return;
+    s.sendFriendRequest(target.id);
+    toast(`Friend request sent to ${target.displayName}. Their pins appear once they accept.`, { kind: "success" });
+  },
 
   sendFriendRequest: (userId) =>
     set((s) => {

@@ -4,12 +4,7 @@ import PreviewBanner from "@/components/PreviewBanner";
 import Toaster from "@/components/Toaster";
 import "./globals.css";
 
-// Where the site lives, for absolute Open Graph and sitemap URLs. Set
-// NEXT_PUBLIC_SITE_URL on the production project; previews fall back to
-// their own Vercel address.
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

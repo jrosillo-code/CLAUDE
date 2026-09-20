@@ -37,7 +37,15 @@ Mapped to the plan's build phases (§7):
 | 3 | Per-friend colors, **Everyone** overlay, layer rail (Me / friends / Everyone), visibility rules | ✅ (rules in `lib/data.ts`, mirrored by RLS) |
 | 4 | Profile with drag-to-rank **Top 5 destinations**, countries/pins stats | ✅ |
 | 5 | PWA manifest, empty-state escape hatches, seed/demo data | ✅ (public share-link SSR: designed, see below) |
-| 0 | Supabase auth + Postgres/PostGIS + Storage | ⏳ schema & RLS written; wiring needs a Supabase project |
+| 0 | Supabase auth + Postgres/PostGIS + Storage | ✅ live when `NEXT_PUBLIC_SUPABASE_*` is set; the seeded demo otherwise |
+| — | **Field brief** (`/fly`, `/fly/{cc}`, the brief panel): rules per country with source and date, light, weather, wind, nearest airfields, scout notes, field reports | ✅ 102 countries in three review tiers |
+| — | **World lists** (`/world`, `/world/{list}`, the Top spots browser, map layers): ten curated lists of ~200 places | ✅ fetched on demand, public pages indexable |
+| — | **Dispatches**: "I'm here now" pins as stories under the Me button, beacons at every zoom, a player that rolls from one traveler to the next | ✅ 72-hour TTL |
+| — | **Recap & share cards**: boarding pass, Constellation video, flight film | ✅ |
+| — | **Import**: photos (EXIF), typed places, Google Takeout | ✅ on device |
+| — | **Trust**: private media behind signed URLs, block, report, delete account, export | ✅ migrations 0022–0023 |
+| — | **Growth**: public profile preview, `/join/{handle}` invite links, share-card wordmark, sitemap | ✅ |
+| v2 | Creator accounts (the panel ships; approval is manual, no email) | ⏳ |
 
 **Try:** drop a pin with the **+** button (map tap → reverse-geocoded → form); toggle
 friends on the left rail; open a pin to see "who's also been here"; open a profile and drag
@@ -133,9 +141,10 @@ usable on its own, all working keyless like the rest of Waypoint:
   authority (no LAANC, UTM or geofence checks); every page links to the national tool.
   `/fly` lists covered countries and `/fly/{cc}` is a server-rendered, **indexable** page
   per country — the market test for the feature. A country with no file says *not yet
-  covered* and never fills the gap with model output. The rules folder ships **empty**:
-  the founder supplies the first countries from waters he has flown in himself, with the
-  sources (see `lib/fieldbrief/rules/README.md`).
+  covered* and never fills the gap with model output. The rules folder carries 102
+  countries in three review tiers — verified by a pilot, desk-reviewed from official
+  sources, or an unverified summary — and every page says which (see
+  `lib/fieldbrief/rules/README.md`).
 - **The brief panel** — a *Field brief* button on the search card and on every pin opens
   `components/FieldBriefPanel.tsx` with a date picker: Rules (with source and date), Light
   (sunrise, sunset, golden and blue hours and the evening sun's bearing, computed offline in

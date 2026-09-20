@@ -57,7 +57,15 @@ export default function ProfileView({ handle }: { handle: string }) {
   const [bioDraft, setBioDraft] = useState("");
   const [cityDraft, setCityDraft] = useState("");
   const [statView, setStatView] = useState<"pins" | "countries" | "friends" | null>(null);
-  const [recapOpen, setRecapOpen] = useState(false);
+  const [recapOpen, setRecapOpen] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("recap") === "1");
+  const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const blockedIds = useStore((s) => s.blockedIds);
+  const blockUser = useStore((s) => s.blockUser);
+  const unblockUser = useStore((s) => s.unblockUser);
+  const reportContent = useStore((s) => s.reportContent);
+  const exportMyData = useStore((s) => s.exportMyData);
+  const deleteMyAccount = useStore((s) => s.deleteMyAccount);
   const [importOpen, setImportOpen] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
 
@@ -586,15 +594,66 @@ export default function ProfileView({ handle }: { handle: string }) {
           </section>
         )}
 
-        {/* Sign out — deliberate, at the end of the page, out of the way of
-            everything you actually do daily. */}
+        {/* Your data and your account — deliberate, at the end of the page,
+            out of the way of everything you actually do daily. */}
         {isMe && (
-          <div className="mt-14 flex justify-center">
+          <div className="mt-14 flex flex-col items-center gap-3" data-testid="account-controls">
+            <div className="flex flex-wrap justify-center gap-2">
+              <button
+                onClick={() => {
+                  const blob = new Blob([exportMyData()], { type: "application/json" });
+                  const a = document.createElement("a");
+                  a.href = URL.createObjectURL(blob);
+                  a.download = `waypoint-${user.handle}-${new Date().toISOString().slice(0, 10)}.json`;
+                  a.click();
+                  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+                }}
+                className="rounded-full px-6 py-2.5 text-sm font-medium text-ink-3 ring-1 ring-line transition-colors hover:bg-paper-2 hover:text-ink"
+                data-testid="export-data"
+              >
+                Download my data
+              </button>
+              <button
+                onClick={() => signOut()}
+                className="rounded-full px-8 py-2.5 text-sm font-medium text-ink-3 ring-1 ring-line transition-colors hover:bg-paper-2 hover:text-accent"
+              >
+                Sign out
+              </button>
+            </div>
             <button
-              onClick={() => signOut()}
-              className="rounded-full px-8 py-2.5 text-sm font-medium text-ink-3 ring-1 ring-line transition-colors hover:bg-paper-2 hover:text-accent"
+              onClick={async () => {
+                if (!confirmDeleteAccount) { setConfirmDeleteAccount(true); return; }
+                setDeleting(true);
+                const gone = await deleteMyAccount();
+                setDeleting(false);
+                if (gone) router.push("/");
+              }}
+              onBlur={() => !deleting && setConfirmDeleteAccount(false)}
+              disabled={deleting}
+              className={`rounded-full px-5 py-2 text-xs font-medium transition-colors ${confirmDeleteAccount ? "bg-accent text-paper" : "text-ink-3 hover:text-accent"}`}
+              data-testid="delete-account"
             >
-              Sign out
+              {deleting ? "Deleting…" : confirmDeleteAccount ? "Really delete my account and every pin, photo and trip? Tap again." : "Delete my account"}
+            </button>
+          </div>
+        )}
+        {!isMe && (
+          <div className="mt-14 flex justify-center gap-2 text-xs" data-testid="person-controls">
+            {blockedIds.has(user.id) ? (
+              <button onClick={() => unblockUser(user.id)} className="rounded-full px-5 py-2 font-medium text-ink-3 ring-1 ring-line hover:bg-paper-2">Unblock {user.displayName.split(" ")[0]}</button>
+            ) : (
+              <button
+                onClick={() => { if (window.confirm(`Block ${user.displayName}? You won't see each other's pins, and the friendship ends.`)) blockUser(user.id); }}
+                className="rounded-full px-5 py-2 font-medium text-ink-3 ring-1 ring-line hover:bg-paper-2 hover:text-accent"
+              >
+                Block
+              </button>
+            )}
+            <button
+              onClick={() => { const note = window.prompt("What's wrong with this profile? (optional)") ?? ""; reportContent({ userId: user.id }, "other", note); }}
+              className="rounded-full px-5 py-2 font-medium text-ink-3 ring-1 ring-line hover:bg-paper-2 hover:text-accent"
+            >
+              Report
             </button>
           </div>
         )}

@@ -19,6 +19,7 @@ export function useVisiblePins(): PinWithOwner[] {
   const follows = useStore((s) => s.follows);
   const activeUserIds = useStore((s) => s.activeUserIds);
   const explore = useStore((s) => s.explore);
+  const blockedIds = useStore((s) => s.blockedIds);
 
   return useMemo(
     () =>
@@ -30,8 +31,8 @@ export function useVisiblePins(): PinWithOwner[] {
         follows,
         activeUserIds,
         explore,
-      }),
-    [pins, users, friendships, viewerId, follows, activeUserIds, explore]
+      }).filter((p) => !blockedIds.has(p.userId)),
+    [pins, users, friendships, viewerId, follows, activeUserIds, explore, blockedIds]
   );
 }
 
@@ -44,9 +45,10 @@ export function useDispatchPins(): PinWithOwner[] {
   const friendships = useStore((s) => s.friendships);
   const viewerId = useStore((s) => s.viewerId);
   const follows = useStore((s) => s.follows);
+  const blockedIds = useStore((s) => s.blockedIds);
   return useMemo(
-    () => computeVisible({ pins, users, friendships, viewerId, follows, activeUserIds: null, explore: false }),
-    [pins, users, friendships, viewerId, follows]
+    () => computeVisible({ pins, users, friendships, viewerId, follows, activeUserIds: null, explore: false }).filter((p) => !blockedIds.has(p.userId)),
+    [pins, users, friendships, viewerId, follows, blockedIds]
   );
 }
 

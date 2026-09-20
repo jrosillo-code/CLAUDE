@@ -150,6 +150,23 @@ select ok(
   not exists (select 1 from pg_policies where schemaname = 'storage' and tablename = 'objects' and policyname = 'pin_media_public_read'),
   'pin_media_public_read policy is gone (0022)');
 
+-- trust: 0023 adds leaving, reporting and blocking.
+select ok(
+  exists (select 1 from pg_proc where proname = 'delete_my_account'),
+  'delete_my_account() exists (0023)');
+select ok(
+  (select relrowsecurity from pg_class where relname = 'content_reports'),
+  'content_reports has RLS (0023)');
+select ok(
+  not exists (select 1 from pg_policies where tablename = 'content_reports' and cmd = 'SELECT'),
+  'content_reports has no select policy: write-only for app roles (0023)');
+select ok(
+  (select relrowsecurity from pg_class where relname = 'blocks'),
+  'blocks has RLS (0023)');
+select ok(
+  exists (select 1 from pg_policies where tablename = 'pins' and policyname = 'pins_select' and qual like '%blocked_either_way%'),
+  'pins_select honours blocks (0023)');
+
 -- pins: 0021 adds the dispatch flag.
 select ok(
   exists (select 1 from information_schema.columns where table_name = 'pins' and column_name = 'here_now'),

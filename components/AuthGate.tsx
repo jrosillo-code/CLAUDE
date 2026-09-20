@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+
+// A signed-out fallback (the public profile preview) asks for the login
+// screen through this, since a server page cannot hand a client component
+// a callback.
+const OpenLoginContext = createContext<() => void>(() => {});
+export function useOpenLogin(): () => void {
+  return useContext(OpenLoginContext);
+}
 import { useStore } from "@/lib/store";
 import LoginScreen from "./LoginScreen";
 import PasswordReset from "./PasswordReset";
@@ -8,8 +16,18 @@ import WaypointLogo from "./Logo";
 
 // Wraps a page: restores the persisted session, shows the login screen when
 // signed out, renders children when signed in.
-export default function AuthGate({ children }: { children: React.ReactNode }) {
+export default function AuthGate({
+  children,
+  fallback,
+}: {
+  children: React.ReactNode;
+  /** What a signed-out visitor sees instead of the login screen; it can
+   *  open the login with useOpenLogin(). Pages without one show the login
+   *  screen directly. */
+  fallback?: React.ReactNode;
+}) {
   const session = useStore((s) => s.session);
+  const [wantLogin, setWantLogin] = useState(false);
   const ready = useStore((s) => s.sessionReady);
   const recovering = useStore((s) => s.passwordRecovery);
   const hydrate = useStore((s) => s.hydrateSession);
@@ -50,6 +68,9 @@ export default function AuthGate({ children }: { children: React.ReactNode }) {
   // Above both branches below: a recovery link creates a real session, so this
   // has to win over the app as well as over the login screen.
   if (recovering) return <PasswordReset />;
-  if (!session) return <LoginScreen />;
+  if (!session) {
+    if (fallback && !wantLogin) return <OpenLoginContext.Provider value={() => setWantLogin(true)}>{fallback}</OpenLoginContext.Provider>;
+    return <LoginScreen />;
+  }
   return <>{children}</>;
 }

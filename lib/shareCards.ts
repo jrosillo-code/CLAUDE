@@ -4,6 +4,7 @@
 // your pins flicking on) as a short looping video — with a PNG still where
 // the browser cannot encode video.
 
+import { siteHost } from "./site";
 import { ArrayBufferTarget, Muxer } from "mp4-muxer";
 import { starsFromGeo, type Star } from "./constellation";
 import { computePassport, type PassportStats } from "./passport";
@@ -213,6 +214,9 @@ export function drawPassCard(d: ShareData): HTMLCanvasElement {
   ctx.fillStyle = faint; ctx.font = `400 22px ${CARD_MONO}`; ctx.letterSpacing = "3px";
   const segs = d.stops.map((s) => code3(s.name)).join(" · ");
   ctx.fillText(segs.length > 46 ? segs.slice(0, 44) + "…" : segs, 540, 1236);
+  // Where to find the app — the card travels further than the person who made it.
+  ctx.textAlign = "center"; ctx.fillStyle = "#8a8378"; ctx.font = `600 18px ${CARD_MONO}`; ctx.letterSpacing = "3px";
+  ctx.fillText(siteHost().toUpperCase(), 540, 1290); ctx.letterSpacing = "0px";
   ctx.letterSpacing = "0px";
   return c;
 }
@@ -341,6 +345,7 @@ export function constellationScene(d: ShareData): ConstellationScene {
     ctx.fillStyle = "#fbf6ee"; ctx.font = `500 52px ${CARD_SERIF}`;
     ctx.fillText(d.name, W / 2, 1090);
     if (d.handle) { ctx.fillStyle = "#8ea6c8"; ctx.font = `400 24px ${CARD_MONO}`; ctx.fillText(`@${d.handle}`, W / 2, 1130); }
+    ctx.fillStyle = "#5f7595"; ctx.font = `600 18px ${CARD_MONO}`; ctx.letterSpacing = "3px"; ctx.fillText(siteHost().toUpperCase(), W / 2 + 2, H - 44); ctx.letterSpacing = "0px";
     const cells: [string, string][] = [[String(d.places), "PLACES"], [String(d.countries), "COUNTRIES"], [d.km >= 1000 ? `${Math.round(d.km / 1000)}k` : String(d.km), "KM"]];
     const cxs = [233, 540, 847];
     cells.forEach((cell, i) => {

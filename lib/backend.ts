@@ -58,6 +58,10 @@ const USER_FACING: Record<string, string> = {
   saveFieldReport: "The field report didn't save.",
   deleteFieldReport: "The field report couldn't be deleted.",
   applyCreator: "Your application didn't send. Try again.",
+  block: "The block didn't save. Try again.",
+  unblock: "The unblock didn't save. Try again.",
+  report: "The report didn't send. Try again.",
+  deleteAccount: "Your account couldn't be deleted. Try again, or email support with your handle.",
 };
 
 const log = (op: string) => (e: unknown) => {
@@ -341,6 +345,8 @@ export interface World {
   follows: Set<string>;
   notifications: AppNotification[];
   topPlaces: { userId: string; rank: number; pinId: string; blurb: string }[];
+  /** People this viewer has blocked (the database already hides their pins). */
+  blockedIds: Set<string>;
 }
 
 /** Everything the store needs, in one parallel fetch. RLS scopes all of it. */
@@ -359,7 +365,7 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
       r.status === "fulfilled"
         ? r.value
         : (log(`loadWorld:${fallbackName}`)(r.reason), { data: null, error: r.reason } as T);
-    const [usersR, pinsR, friendsR, tripsR, reflR, likesR, savesR, followsR, notifR, topR, scoutR, reportR] = await Promise.allSettled([
+    const [usersR, pinsR, friendsR, tripsR, reflR, likesR, savesR, followsR, notifR, topR, scoutR, reportR, blocksR] = await Promise.allSettled([
       sb.from("users").select("*"),
       sb
         .from("pins")
@@ -380,6 +386,7 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
       sb.from("top_places").select("*"),
       sb.from("scout_notes").select("*"),
       sb.from("field_reports").select("*").order("flown_on", { ascending: false }).limit(500),
+      sb.from("blocks").select("blocked_id").eq("blocker_id", viewerId),
     ]);
     const usersQ = settle(usersR, "users");
     const pinsQ = settle(pinsR, "pins");
@@ -393,6 +400,8 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
     const topQ = settle(topR, "top_places");
     const scoutQ = settle(scoutR, "scout_notes");
     const reportQ = settle(reportR, "field_reports");
+    // Older projects (before 0023) have no blocks table: nobody is blocked.
+    const blocksQ = blocksR.status === "fulfilled" ? blocksR.value : { data: null };
 
     // Only the identity of the world is non-negotiable. If `users` and `pins`
     // both failed there is nothing worth rendering and the caller should fall
@@ -450,6 +459,7 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
         createdAt: r.created_at,
       })),
       likeCounts,
+      blockedIds: new Set(((blocksQ.data ?? []) as { blocked_id: string }[]).map((r) => r.blocked_id)),
       likedPinIds: new Set((likesQ.data ?? []).map((r) => r.pin_id as string)),
       savedPinIds: new Set((savesQ.data ?? []).map((r) => r.pin_id as string)),
       follows: new Set((followsQ.data ?? []).map((r) => r.creator_id as string)),
@@ -1047,4 +1057,51 @@ export function syncSaveFieldReport(r: FieldReport): void {
 
 export function syncDeleteFieldReport(id: string): void {
   void supabase!.from("field_reports").delete().eq("id", id).then(({ error }) => error && log("deleteFieldReport")(error));
+}
+
+// ── Trust: block, report, leave ─────────────────────────────────────────────
+
+export function syncBlock(viewerId: string, userId: string): void {
+  void supabase!
+    .from("blocks")
+    .upsert({ blocker_id: viewerId, blocked_id: userId })
+    .then(({ error }) => error && log("block")(error));
+}
+
+export function syncUnblock(viewerId: string, userId: string): void {
+  void supabase!
+    .from("blocks")
+    .delete()
+    .eq("blocker_id", viewerId)
+    .eq("blocked_id", userId)
+    .then(({ error }) => error && log("unblock")(error));
+}
+
+export type ReportReason = "not_a_real_place" | "harassment" | "private_info" | "explicit" | "spam" | "other";
+
+export function syncReport(viewerId: string, target: { pinId?: string; userId?: string }, reason: ReportReason, note: string): void {
+  void supabase!
+    .from("content_reports")
+    .insert({ reporter_id: viewerId, pin_id: target.pinId ?? null, user_id: target.userId ?? null, reason, note: note.slice(0, 500) })
+    .then(({ error }) => error && log("report")(error));
+}
+
+/** Erase the account: own files first, then the row (which cascades), then
+ *  the session. Resolves true when the account is gone. */
+export async function deleteMyAccount(viewerId: string): Promise<boolean> {
+  const sb = supabase!;
+  try {
+    for (const bucket of ["pin-media", "avatars"]) {
+      const { data } = await sb.storage.from(bucket).list(viewerId, { limit: 1000 });
+      const names = (data ?? []).map((o) => `${viewerId}/${o.name}`);
+      if (names.length) await sb.storage.from(bucket).remove(names);
+    }
+    const { error } = await sb.rpc("delete_my_account");
+    if (error) throw error;
+    await sb.auth.signOut();
+    return true;
+  } catch (e) {
+    log("deleteAccount")(e);
+    return false;
+  }
 }

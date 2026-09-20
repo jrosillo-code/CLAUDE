@@ -31,6 +31,9 @@ import DispatchStrip from "./DispatchStrip";
 import OverlayCard from "./OverlayCard";
 import SearchPlaceCard from "./SearchPlaceCard";
 import { searchPlaces } from "@/lib/geocode";
+import { loadWorldLists, listPlaceById, LIST_IDS, type WorldListId } from "@/lib/lists";
+import { toast } from "@/lib/toast";
+import { useViewer } from "@/lib/hooks";
 import GuidedStart from "./GuidedStart";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
@@ -133,6 +136,48 @@ export default function MapApp() {
     const cur = window.location.pathname + window.location.search + window.location.hash;
     if (next !== cur) window.history.replaceState(window.history.state, "", next);
   }, [selectedPinId, mapMode, activeTripId]);
+
+  // From a /world page: ?list=<id> switches that list on; ?place=<id> also
+  // selects the place and flies there. The places load first.
+  const toggleList = useStore((s) => s.toggleList);
+  const selectListPlace = useStore((s) => s.selectListPlace);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const list = params.get("list");
+    const place = params.get("place");
+    if (!list && !place) return;
+    window.history.replaceState(window.history.state, "", window.location.pathname);
+    void loadWorldLists().then(() => {
+      const p = place ? listPlaceById(place) : null;
+      const want = (p?.list ?? list) as WorldListId | null;
+      if (want && LIST_IDS.includes(want) && !useStore.getState().activeLists.includes(want)) toggleList(want);
+      if (p) {
+        selectListPlace(p.id);
+        requestFlyTo(p.lng, p.lat, 8, { flat: true });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // December: the year's recap is ready — say so once, with the way there.
+  const viewer = useViewer();
+  useEffect(() => {
+    const now = new Date();
+    if (now.getMonth() !== 11 || !viewer?.handle) return;
+    const key = `wp-recap-nudge-${now.getFullYear()}`;
+    try {
+      if (window.localStorage.getItem(key)) return;
+      window.localStorage.setItem(key, "1");
+    } catch {
+      return;
+    }
+    const year = now.getFullYear();
+    const t = window.setTimeout(
+      () => toast(`Your ${year} recap is ready — boarding pass, constellation, flight film.`, { kind: "info", ttlMs: 12000, action: { label: "Open", run: () => { window.location.href = `/u/${viewer.handle}?recap=1`; } } }),
+      6000
+    );
+    return () => window.clearTimeout(t);
+  }, [viewer?.handle]);
 
   // Arriving from a /fly/{cc} page ("add a field report on the map"): frame
   // the country, land its search card, and open the brief. The param is

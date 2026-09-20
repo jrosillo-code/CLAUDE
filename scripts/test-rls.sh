@@ -17,6 +17,8 @@ cd "$(dirname "$0")/.."
 PGVER_DIR=$(ls -d /usr/lib/postgresql/*/bin 2>/dev/null | sort -V | tail -1 || true)
 if [ -z "$PGVER_DIR" ]; then
   echo "SKIP: no local PostgreSQL found (install postgresql to run RLS tests)" >&2
+  # In CI the database must be there: a skip would pass a broken policy.
+  [ -n "${CI:-}" ] && exit 1
   exit 0
 fi
 export PATH="$PGVER_DIR:$PATH"
