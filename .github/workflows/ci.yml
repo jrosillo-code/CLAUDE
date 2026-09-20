@@ -23,6 +23,24 @@ jobs:
         env:
           NEXT_PUBLIC_PREVIEW: "1"
 
+  browser:
+    name: Browser suites (keyless demo)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright-core install --with-deps chromium
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_PREVIEW: "1"
+      - run: npm run test:e2e
+        env:
+          E2E_SKIP: recap
+
   database:
     name: Migrations and row-level security
     runs-on: ubuntu-latest

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import WaypointLogo from "@/components/Logo";
+import { reportError } from "@/lib/monitor";
 
 // A render error inside a page. Says what happened in plain words and offers
 // the two things that usually fix it; the detail goes to the console, where
@@ -9,6 +10,7 @@ import WaypointLogo from "@/components/Logo";
 export default function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error("[waypoint] page error", error);
+    reportError(error, { kind: "render", digest: error.digest });
   }, [error]);
   return (
     <main className="grid min-h-dvh place-items-center bg-paper px-6 text-center">

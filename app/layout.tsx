@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import ThemeManager from "@/components/ThemeManager";
 import PreviewBanner from "@/components/PreviewBanner";
 import Toaster from "@/components/Toaster";
+import ErrorReporter from "@/components/ErrorReporter";
 import "./globals.css";
 
 import { SITE_URL } from "@/lib/site";
@@ -61,6 +62,7 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeManager />
+        <ErrorReporter />
         {children}
         <Toaster />
         <PreviewBanner />

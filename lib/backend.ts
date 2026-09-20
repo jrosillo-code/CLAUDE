@@ -8,6 +8,7 @@
 import { supabase } from "./supabase";
 import { debugLoggingEnabled } from "./env";
 import { toast } from "./toast";
+import { reportError } from "./monitor";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import type {
   ActivitySlug,
@@ -66,6 +67,7 @@ const USER_FACING: Record<string, string> = {
 
 const log = (op: string) => (e: unknown) => {
   console.error(`[backend] ${op} failed:`, e);
+  reportError(e, { kind: "backend", op });
   const said = USER_FACING[op] ?? (op.startsWith("loadWorld:") ? "Part of your map didn't load. Pull to refresh or reload the page." : null);
   if (said) toast(said, { kind: "error" });
 };

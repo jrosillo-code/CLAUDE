@@ -26,7 +26,8 @@ const GuidePanel = dynamic(() => import("./GuidePanel"), { ssr: false });
 import ConstellationBackdrop from "./ConstellationBackdrop";
 import PassportCard from "./PassportCard";
 import { backendEnabled } from "@/lib/supabase";
-import { version as APP_VERSION } from "../package.json";
+import pkg from "../package.json";
+const APP_VERSION: string = (pkg as { version: string }).version;
 
 type Tab = "top" | "pins" | "saved";
 
