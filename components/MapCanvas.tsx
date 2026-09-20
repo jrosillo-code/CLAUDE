@@ -16,15 +16,13 @@ import {
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
-import { LIST_META, allListPlaces, listPlaceById } from "@/lib/lists";
+import { LIST_META, allListPlaces, listPlaceById, loadWorldLists, worldListsReady } from "@/lib/lists";
 import { ICON_MINZOOM, OVERLAYS, type OverlayId } from "@/lib/overlays";
 import { visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
-import { createFlightRecorder } from "@/lib/recordFlight";
 import { createMeteorField } from "@/lib/meteors";
 import { skyPalette, skyVars } from "@/lib/skyTint";
 import { isLiveDispatch } from "@/lib/dispatches";
-import { cancelFlightRender, renderFlightFilm } from "@/lib/renderFlight";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
 
@@ -397,7 +395,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
       meteorRafRef.current = requestAnimationFrame(tick);
       if (!cv.isConnected) { stopMeteorLoop(); return; }
       const host = spaceRef.current;
-      if (document.hidden || !host || host.style.opacity === "0") {
+      // Nothing to draw while hidden, and nothing while a film renders: the
+      // encoder needs the main thread more than the sky needs streaks.
+      const rendering = useStore.getState().flightProgress != null || useStore.getState().flightRecording;
+      if (document.hidden || rendering || !host || host.style.opacity === "0") {
         if (drewLast) { ctx.clearRect(0, 0, w, h); drewLast = false; }
         return;
       }
@@ -687,6 +688,19 @@ export default function MapCanvas({ placing, onPick }: Props) {
       const on = (active.length > 0 || (showSaved && saved.size > 0)) && modeRef.current === "pins";
       map.setLayoutProperty(WL_LAYER, "visibility", on ? "visible" : "none");
       if (!on) return;
+      // First time a list is switched on: fetch the places, then fill the
+      // source that was created empty and filter it again.
+      if (!worldListsReady()) {
+        void loadWorldLists().then(() => {
+          listsFCCache = null;
+          try {
+            (map.getSource(WL_SOURCE) as maplibregl.GeoJSONSource | undefined)?.setData(listsFC());
+          } catch {
+            /* style mid-swap: the next style.load rebuilds the source */
+          }
+          updateListsLayer(map);
+        });
+      }
       map.setFilter(WL_LAYER, [
         "any",
         ["in", ["get", "list"], ["literal", active]],
@@ -1384,6 +1398,9 @@ export default function MapCanvas({ placing, onPick }: Props) {
         // Preferred path: deterministic offline render — every frame waits
         // for its tiles, timestamps are exact, playback is butter.
         st.setFlightProgress(0);
+        // The renderer and its video muxers are a separate chunk: nobody
+        // pays for them until they ask for a film.
+        const { renderFlightFilm } = await import("@/lib/renderFlight");
         const result = await renderFlightFilm(map, maplibregl, stops, me.avatarUrl, accent, year, stats, (p) =>
           useStore.getState().setFlightProgress(p)
         );
@@ -1411,6 +1428,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
             });
           });
         }
+        const { createFlightRecorder } = await import("@/lib/recordFlight");
         const recorder = createFlightRecorder(map, me.avatarUrl, accent, year, () => {
           useStore.getState().setFlightRecording(false);
         });
@@ -1430,7 +1448,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       cancelled = true;
       clearTimeout(t0);
       cancelFlight?.();
-      cancelFlightRender(); // no-op unless an offline render is running
+      void import("@/lib/renderFlight").then((m) => m.cancelFlightRender()); // no-op unless an offline render is running
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recapFlightReq]);

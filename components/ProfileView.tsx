@@ -17,9 +17,12 @@ import { ACTIVITY_LABELS, type Pin, type UserSocials } from "@/lib/types";
 import TopFive from "./TopFive";
 import { CreatorBadge, formatFollowers } from "./CreatorsPanel";
 import SocialLinks, { SOCIAL_NETWORKS } from "./SocialLinks";
-import RecapSheet from "./RecapSheet";
-import ImportPanel from "./ImportPanel";
-import GuidePanel from "./GuidePanel";
+import dynamic from "next/dynamic";
+// Opened rarely and heavy (canvas, video encoding, EXIF parsing): these load
+// the first time they are opened, not with the profile.
+const RecapSheet = dynamic(() => import("./RecapSheet"), { ssr: false });
+const ImportPanel = dynamic(() => import("./ImportPanel"), { ssr: false });
+const GuidePanel = dynamic(() => import("./GuidePanel"), { ssr: false });
 import ConstellationBackdrop from "./ConstellationBackdrop";
 import PassportCard from "./PassportCard";
 import { backendEnabled } from "@/lib/supabase";
@@ -393,7 +396,7 @@ export default function ProfileView({ handle }: { handle: string }) {
               {friendUsers.map((f) => (
                 <li key={f.id} className="flex items-center gap-2.5 rounded-xl px-2 py-1.5 hover:bg-paper">
                   <Link href={`/u/${f.handle}`} className="flex min-w-0 flex-1 items-center gap-2.5">
-                    <img src={f.avatarUrl} alt="" className="h-9 w-9 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: f.color }} />
+                    <img loading="lazy" src={f.avatarUrl} alt="" className="h-9 w-9 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: f.color }} />
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-medium">{f.displayName}</span>
                       <span className="block truncate text-xs text-ink-3">@{f.handle} · {f.homeCity}</span>
@@ -445,7 +448,7 @@ export default function ProfileView({ handle }: { handle: string }) {
                     className="flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-left hover:bg-paper"
                   >
                     {coverUrl(p) ? (
-                      <img src={coverUrl(p)!} alt="" className="h-9 w-9 shrink-0 rounded-lg object-cover" />
+                      <img loading="lazy" src={coverUrl(p)!} alt="" className="h-9 w-9 shrink-0 rounded-lg object-cover" />
                     ) : (
                       <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-paper text-sm">📍</span>
                     )}

@@ -5,14 +5,17 @@ import { join } from "node:path";
 import { validateList, LIST_IDS, LIST_META, LIST_MIN_PLACES } from "../lib/lists/schema";
 import { geoProblems } from "../lib/lists/geo";
 import { LIST_FILES } from "../lib/lists/data/index";
-import { listPlacesNear, monthsLabel, allListPlaces, listPlaceById } from "../lib/lists";
+import { listPlacesNear, monthsLabel, allListPlaces, listPlaceById, primeWorldLists } from "../lib/lists";
+
+// The app fetches the lists on demand; the tests install them directly.
+primeWorldLists(LIST_FILES);
 
 // The bundled world lists: every file validates, is big enough, sits on the
 // right patch of the planet, is registered, and carries a source — the same
 // bar as the country rules. Ids are unique across all lists.
 
 const root = join(__dirname, "..");
-const dir = join(root, "lib", "lists", "data");
+const dir = join(root, "public", "lists");
 const files = readdirSync(dir).filter((f) => f.endsWith(".json"));
 
 for (const file of files) {

@@ -1,37 +1,39 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import MapCanvas from "./MapCanvas";
+// Panels that open on a tap, not on load: each arrives the first time it is
+// opened, so the map is interactive sooner on a phone.
+const CreatorsPanel = dynamic(() => import("./CreatorsPanel"), { ssr: false });
+const FriendsPanel = dynamic(() => import("./FriendsPanel"), { ssr: false });
+const TravelersSheet = dynamic(() => import("./TravelersSheet"), { ssr: false });
+const PinFeed = dynamic(() => import("./PinFeed"), { ssr: false });
+const ActivityPanel = dynamic(() => import("./ActivityPanel"), { ssr: false });
+const TripGuidePanel = dynamic(() => import("./TripGuidePanel"), { ssr: false });
+const TopSpotsPanel = dynamic(() => import("./TopSpotsPanel"), { ssr: false });
+const DispatchPlayer = dynamic(() => import("./DispatchPlayer"), { ssr: false });
+const CrossingsPanel = dynamic(() => import("./CrossingsPanel"), { ssr: false });
+const FieldBriefPanel = dynamic(() => import("./FieldBriefPanel"), { ssr: false });
+const AskPanel = dynamic(() => import("./AskPanel"), { ssr: false });
+const ReflectionSheet = dynamic(() => import("./ReflectionSheet"), { ssr: false });
 import { preloadStars } from "./ConstellationBackdrop";
 import TopBar from "./TopBar";
 import LayerRail from "./LayerRail";
 import BasemapToggle from "./BasemapToggle";
 import PinSheet from "./PinSheet";
 import AddPinSheet from "./AddPinSheet";
-import CreatorsPanel from "./CreatorsPanel";
-import FriendsPanel from "./FriendsPanel";
-import TravelersSheet from "./TravelersSheet";
-import PinFeed from "./PinFeed";
-import ActivityPanel from "./ActivityPanel";
 import TripsPanel from "./TripsPanel";
-import TripGuidePanel from "./TripGuidePanel";
 import TripDraftBar from "./TripDraftBar";
-import TopSpotsPanel from "./TopSpotsPanel";
 import LandmarkCard from "./LandmarkCard";
 import ListPlaceCard from "./ListPlaceCard";
 import DispatchStrip from "./DispatchStrip";
-import DispatchPlayer from "./DispatchPlayer";
 import OverlayCard from "./OverlayCard";
-import CrossingsPanel from "./CrossingsPanel";
 import SearchPlaceCard from "./SearchPlaceCard";
-import FieldBriefPanel from "./FieldBriefPanel";
 import { searchPlaces } from "@/lib/geocode";
-import AskPanel from "./AskPanel";
-import ReflectionSheet from "./ReflectionSheet";
 import GuidedStart from "./GuidedStart";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
-import { cancelFlightRender } from "@/lib/renderFlight";
 
 export default function MapApp() {
   const [placing, setPlacing] = useState(false);
@@ -299,7 +301,7 @@ export default function MapApp() {
           </div>
           <div className="tnum text-sm text-ink-3">{Math.round(flightProgress * 100)}%</div>
           <button
-            onClick={() => cancelFlightRender()}
+            onClick={() => void import("@/lib/renderFlight").then((m) => m.cancelFlightRender())}
             className="rounded-full bg-paper-2 px-5 py-2 text-sm font-medium text-ink-2 ring-1 ring-line"
           >
             Cancel

@@ -7,7 +7,7 @@ import { validateList, LIST_MIN_PLACES, type WorldList } from "../../lib/lists/s
 import { geoProblems } from "../../lib/lists/geo";
 
 const root = join(__dirname, "..", "..");
-const dir = join(root, "lib", "lists", "data");
+const dir = join(root, "public", "lists");
 const files = process.argv.slice(2).length ? process.argv.slice(2) : readdirSync(dir).filter((f) => f.endsWith(".json")).map((f) => join(dir, f));
 let bad = 0;
 for (const f of files) {

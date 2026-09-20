@@ -7,7 +7,7 @@ import { acceptedFriendIds, canView, coverUrl, distanceKm } from "@/lib/data";
 import { googleMapsDirectionsUrl } from "@/lib/directions";
 import { reverseGeocode, searchPlaces, type GeoResult } from "@/lib/geocode";
 import type { Pin, User } from "@/lib/types";
-import { LIST_META, LIST_HONESTY, LIST_IDS, WORLD_LISTS, listPlacesNear, type WorldListId } from "@/lib/lists";
+import { LIST_META, LIST_HONESTY, LIST_IDS, useWorldLists, listPlacesNear, type WorldListId } from "@/lib/lists";
 
 // "Top spots": the most-liked places near a real location — your current one
 // (browser geolocation, asked politely) or any region you search (a province,
@@ -43,6 +43,8 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
   // Browse a whole world list, anywhere on Earth — not only what is near.
   const [listId, setListId] = useState<WorldListId>("beaches");
   const [listFilter, setListFilter] = useState("");
+  // The list files arrive on first use; this re-renders when they do.
+  const WORLD_LISTS = useWorldLists();
   const listPlaces = useMemo(() => {
     const l = WORLD_LISTS.find((x) => x.id === listId);
     const q = listFilter.trim().toLowerCase();
@@ -118,7 +120,7 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
     if (mode === "lists" && !activeLists.includes(listId)) toggleList(listId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
-  const listNearby = useMemo(() => (anchor ? listPlacesNear(anchor.lat, anchor.lng, RADIUS_KM * 2, 6) : []), [anchor]);
+  const listNearby = useMemo(() => (anchor ? listPlacesNear(anchor.lat, anchor.lng, RADIUS_KM * 2, 6) : []), [anchor, WORLD_LISTS]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const ranked = useMemo(() => {
     const friendIds = acceptedFriendIds(friendships, viewerId);
@@ -358,13 +360,13 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
             <span className="w-6 shrink-0 text-center font-display text-xl text-ink-3">{i + 1}</span>
             <button onClick={() => open(r.pin)} className="h-14 w-16 shrink-0 overflow-hidden rounded-xl bg-line">
               {coverUrl(r.pin) && (
-                <img src={coverUrl(r.pin)} alt="" className="h-full w-full object-cover" />
+                <img loading="lazy" src={coverUrl(r.pin)} alt="" className="h-full w-full object-cover" />
               )}
             </button>
             <button onClick={() => open(r.pin)} className="min-w-0 flex-1 text-left">
               <div className="truncate text-sm font-medium">{r.pin.title}</div>
               <div className="mt-0.5 flex items-center gap-1.5 text-xs text-ink-3">
-                <img src={r.owner.avatarUrl} alt="" className="h-4 w-4 rounded-full object-cover" />
+                <img loading="lazy" src={r.owner.avatarUrl} alt="" className="h-4 w-4 rounded-full object-cover" />
                 <span className="truncate">{r.pin.placeName}</span>
                 {r.dist !== null && (
                   <span className="tnum shrink-0">

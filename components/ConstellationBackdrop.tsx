@@ -306,13 +306,20 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
 
       ctx.globalAlpha = 1;
       if (dark && !reduced) meteors.draw(ctx, w, h, ms);
-      if (!disposed && !reduced) raf = requestAnimationFrame(draw);
+      if (!disposed && !reduced) raf = requestAnimationFrame(drawVisible);
+    };
+    // A hidden tab draws nothing: the frame callback stays parked until the
+    // page is visible again, the same guard the map's meteor loop uses.
+    const drawVisible = (ms: number) => {
+      if (disposed) return;
+      if (document.hidden) { raf = requestAnimationFrame(drawVisible); return; }
+      draw(ms);
     };
 
     void loadStars().then((s) => {
       if (disposed) return;
       stars = s;
-      raf = requestAnimationFrame(draw);
+      raf = requestAnimationFrame(drawVisible);
     });
 
     return () => {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useStore } from "@/lib/store";
 import { THEMES, THEME_ORDER } from "@/lib/themes";
 import { BriefIcon } from "./BriefIcon";
-import { LIST_IDS, LIST_META, WORLD_LISTS } from "@/lib/lists";
+import { LIST_IDS, LIST_META, worldLists } from "@/lib/lists";
 
 // Bottom-left map controls: ONE Layers button on every screen size, opening a
 // single glass card — Map/Satellite, 3D, Landmarks, Saved, themes, and the
@@ -42,7 +42,9 @@ export default function BasemapToggle() {
   const toggleList = useStore((s) => s.toggleList);
   const clearLists = useStore((s) => s.clearLists);
   const [listsOpen, setListsOpen] = useState(activeLists.length > 0);
-  const availableLists = LIST_IDS.filter((id) => WORLD_LISTS.some((l) => l.id === id && l.places.length > 0));
+  // Every registered list is offered; the places themselves load when one
+  // is switched on (or if they are already here, any empty file is skipped).
+  const availableLists = LIST_IDS.filter((id) => !worldLists().length || worldLists().some((l) => l.id === id && l.places.length > 0));
   const [open, setOpen] = useState(false);
   const extrasCount = [showLandmarks, showAirports, showStations, showStadiums].filter(Boolean).length;
   const [extrasOpen, setExtrasOpen] = useState(extrasCount > 0);

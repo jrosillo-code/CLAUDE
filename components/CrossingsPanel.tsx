@@ -153,7 +153,7 @@ function PlanningCard({ c, onFly }: { c: Crossing; onFly: () => void }) {
             href={`/u/${p.user.handle}`}
             className="flex items-center gap-2.5 rounded-xl px-1.5 py-1 hover:bg-paper-2"
           >
-            <img src={p.user.avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: p.user.color }} />
+            <img loading="lazy" src={p.user.avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover ring-2" style={{ ["--tw-ring-color" as string]: p.user.color }} />
             <div className="min-w-0">
               <div className="truncate text-sm font-medium">{p.user.displayName}</div>
               <div className="truncate text-xs text-accent">planning · {p.tripTitle}</div>
@@ -192,13 +192,13 @@ function IntelCard({
               className="flex w-full items-center gap-3 rounded-xl bg-paper p-2 text-left ring-1 ring-line transition-colors hover:bg-paper-2"
             >
               {cover ? (
-                <img src={cover} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
+                <img loading="lazy" src={cover} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
               ) : (
-                <img src={p.user.avatarUrl} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
+                <img loading="lazy" src={p.user.avatarUrl} alt="" className="h-12 w-12 shrink-0 rounded-lg object-cover" />
               )}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <img src={p.user.avatarUrl} alt="" className="h-4 w-4 rounded-full object-cover" />
+                  <img loading="lazy" src={p.user.avatarUrl} alt="" className="h-4 w-4 rounded-full object-cover" />
                   <span className="truncate text-sm font-medium">{p.user.displayName}</span>
                   {pin.rating != null && (
                     <span className="ml-auto shrink-0 rounded-full bg-ink px-1.5 py-0.5 text-[10px] font-bold text-paper">
