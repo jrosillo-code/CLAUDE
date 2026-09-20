@@ -58,7 +58,7 @@ export default function PassportCard({ pins }: { pins: Pin[] }) {
       const css = getComputedStyle(document.documentElement);
       const accent = css.getPropertyValue("--color-accent").trim() || "#c65d3b";
       const ink = css.getPropertyValue("--color-ink").trim() || "#0b1220";
-      const paper = css.getPropertyValue("--color-paper").trim() || "#f3f5f8";
+      const paper = css.getPropertyValue("--color-paper").trim() || "#f1ece2";
 
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       const w = canvas.clientWidth;

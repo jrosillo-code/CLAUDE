@@ -36,7 +36,14 @@ export default function ThemeManager() {
   // Follow the sun: re-checked every minute and whenever the location lands.
   useEffect(() => {
     if (!autoTheme) return;
-    const tick = () => applyAutoTheme(autoThemeFor(new Date(), userLocation));
+    // Read the live flag at tick time: on first load the restore effect above
+    // may have just switched auto OFF (a saved manual pick), and this effect
+    // still holds the initial "on" — ticking then would flip a chosen
+    // Daylight to Midnight at night.
+    const tick = () => {
+      if (!useStore.getState().autoTheme) return;
+      applyAutoTheme(autoThemeFor(new Date(), userLocation));
+    };
     tick();
     const id = window.setInterval(tick, 60_000);
     return () => window.clearInterval(id);

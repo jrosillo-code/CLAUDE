@@ -9,12 +9,14 @@
 @theme {
   /* Glass design system: cool light base, frosted floating chrome, a single
      confident blue. Sans throughout — headlines are the same voice, bolder. */
-  --color-paper: #f3f5f8;
-  --color-paper-2: #e8ecf2;
-  --color-ink: #0b1220;
-  --color-ink-2: #3d4759;
-  --color-ink-3: #8a94a6;
-  --color-line: #dde3ec;
+  /* A warm off-white ground, not near-white: the imagery and the cards
+     have something to sit on, and the sky wash reads as light on paper. */
+  --color-paper: #f1ece2;
+  --color-paper-2: #e6dfd1;
+  --color-ink: #141a26;
+  --color-ink-2: #3f4655;
+  --color-ink-3: #8a8d95;
+  --color-line: #d9d1c2;
   --color-accent: #c65d3b; /* Waymark terracotta (default) */
   --color-accent-2: #d98e3f; /* warm amber companion */
 
@@ -299,28 +301,41 @@ body {
   will-change: opacity;
 }
 
-/* The sun is a soft glow centred on its own origin (negative margins), sized to
-   a fixed 520px reference; MapCanvas drives its position + scale each frame so
-   it rises on the globe's left, passes behind the planet, and sets on the
-   right — anchored to the globe, so it reads the same on phone and desktop. */
-.wp-sun {
-  --sun-d: 520px;
+/* Daylight sky: instead of a sun orbiting the planet, the whole sky around
+   the globe breathes — a slow swell of warm gold rising from behind the
+   globe's rim into a pale cream, over about twenty seconds. MapCanvas keeps
+   --sx/--sy/--sr on the host at the globe's silhouette each frame, so the
+   glow stays anchored to the planet on every screen. */
+.wp-sky {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--sun-d);
-  height: var(--sun-d);
-  margin-left: calc(var(--sun-d) / -2);
-  margin-top: calc(var(--sun-d) / -2);
-  opacity: 0;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(255, 247, 218, 0.98) 0%,
-    rgba(255, 232, 178, 0.7) 20%,
-    rgba(255, 214, 150, 0.24) 40%,
-    rgba(255, 214, 150, 0) 62%
-  );
-  will-change: transform, opacity;
+  inset: 0;
+  background:
+    radial-gradient(circle at var(--sx, 50%) var(--sy, 50%),
+      rgba(255, 214, 140, 0.75) calc(var(--sr, 300px) * 1.0),
+      rgba(255, 228, 176, 0.42) calc(var(--sr, 300px) * 1.35),
+      rgba(255, 240, 210, 0.16) calc(var(--sr, 300px) * 1.9),
+      rgba(255, 244, 224, 0) calc(var(--sr, 300px) * 2.6)),
+    linear-gradient(180deg, #f7f1e4 0%, #f1ece2 55%, #ecdfc9 100%);
+  animation: wp-sky-breathe 20s ease-in-out infinite;
+  will-change: opacity;
+}
+/* A second, softer layer that swells out of phase, so the rise never reads
+   as a single pulse. */
+.wp-sky-2 {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--sx, 50%) calc(var(--sy, 50%) + var(--sr, 300px) * 0.35),
+    rgba(255, 196, 110, 0.5) calc(var(--sr, 300px) * 1.05),
+    rgba(255, 196, 110, 0) calc(var(--sr, 300px) * 2.1));
+  animation: wp-sky-breathe 20s ease-in-out -9s infinite;
+  mix-blend-mode: multiply;
+}
+@keyframes wp-sky-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-sky, .wp-sky-2 { animation: none; opacity: 0.8; }
 }
 
 /* The field-brief button after a search: a quick accent pulse — a bright

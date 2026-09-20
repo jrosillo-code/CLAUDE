@@ -1485,15 +1485,18 @@ export default function MapCanvas({ placing, onPick }: Props) {
     const mode = spaceModeFor();
     spaceModeRef.current = mode;
     if (mode === "sun") {
+      stopSunLoop();
+      stopMeteorLoop();
+      sunElRef.current = null;
       host.style.background = "transparent";
-      // A sun anchored to the globe: startSunLoop() moves it each frame so it
-      // rises on the planet's left, passes behind it (hidden by the space mask),
-      // and sets on the right — the same on phone and desktop.
-      const sun = document.createElement("div");
-      sun.className = "wp-sun";
-      host.replaceChildren(sun);
-      sunElRef.current = sun;
-      startSunLoop();
+      // Daylight: the sky around the globe breathes with a warm gold that
+      // rises from behind the rim (CSS-animated; updateSpace anchors it to
+      // the silhouette each frame). No orbiting sun any more.
+      const sky = document.createElement("div");
+      sky.className = "wp-sky";
+      const sky2 = document.createElement("div");
+      sky2.className = "wp-sky-2";
+      host.replaceChildren(sky, sky2);
       return;
     }
     stopSunLoop();
@@ -1577,38 +1580,6 @@ export default function MapCanvas({ placing, onPick }: Props) {
       sunRafRef.current = null;
     }
   }
-  function startSunLoop() {
-    stopSunLoop();
-    const PERIOD = 46000; // one full left→right pass
-    const BASE = 260; // half of the .wp-sun reference size (520px)
-    const tick = (now: number) => {
-      sunRafRef.current = requestAnimationFrame(tick);
-      const sun = sunElRef.current;
-      const host = spaceRef.current;
-      if (!sun || !host) return;
-      const sil = lastSilRef.current;
-      // Nothing to show when the planet fills the frame (host faded) or there's
-      // no visible space.
-      if (!sil || (parseFloat(host.style.opacity) || 0) <= 0.01) {
-        sun.style.opacity = "0";
-        return;
-      }
-      const p = (now % PERIOD) / PERIOD;
-      const s = 2 * p - 1; // -1 (left) … +1 (right)
-      const dx = s * 1.55 * sil.r;
-      const arc = 0.12 + 0.16 * (1 - s * s); // a touch higher through the middle
-      const x = sil.cx + dx;
-      const y = sil.cy - sil.r * arc;
-      const scale = sil.r / BASE;
-      // Fade in/out at the far edges so the wrap from right back to left is
-      // invisible.
-      const edge = Math.min(1, (1 - Math.abs(s)) / 0.1);
-      sun.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${scale.toFixed(3)})`;
-      sun.style.opacity = Math.max(0, edge).toFixed(3);
-    };
-    sunRafRef.current = requestAnimationFrame(tick);
-  }
-
   // Per-frame: clip the overlay to true space (just outside the globe edge, past
   // the atmosphere halo) and fade it out as the planet fills the frame.
   function updateSpace(sil: { cx: number; cy: number; r: number } | null, zoom: number) {
@@ -1624,6 +1595,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
     const mask = `radial-gradient(circle at ${sil.cx.toFixed(1)}px ${sil.cy.toFixed(1)}px, transparent ${inner.toFixed(1)}px, black ${outer.toFixed(1)}px)`;
     host.style.setProperty("-webkit-mask-image", mask);
     host.style.setProperty("mask-image", mask);
+    // The daylight sky wash is anchored to the planet through these.
+    host.style.setProperty("--sx", `${sil.cx.toFixed(1)}px`);
+    host.style.setProperty("--sy", `${sil.cy.toFixed(1)}px`);
+    host.style.setProperty("--sr", `${sil.r.toFixed(1)}px`);
     const op = zoom >= 4.8 ? 0 : zoom <= 3 ? 1 : (4.8 - zoom) / 1.8;
     host.style.opacity = op.toFixed(3);
   }
