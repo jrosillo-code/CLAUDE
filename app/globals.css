@@ -311,10 +311,10 @@ body {
   inset: 0;
   background:
     radial-gradient(circle at var(--sx, 50%) var(--sy, 50%),
-      rgba(var(--sky-glow, 255, 214, 140), 0.75) calc(var(--sr, 300px) * 1.0),
-      rgba(var(--sky-glow, 255, 214, 140), 0.42) calc(var(--sr, 300px) * 1.35),
-      rgba(var(--sky-glow, 255, 214, 140), 0.16) calc(var(--sr, 300px) * 1.9),
-      rgba(var(--sky-glow, 255, 214, 140), 0) calc(var(--sr, 300px) * 2.6)),
+      rgba(var(--sky-glow, 255, 214, 140), 0.42) calc(var(--sr, 300px) * 1.0),
+      rgba(var(--sky-glow, 255, 214, 140), 0.22) calc(var(--sr, 300px) * 1.3),
+      rgba(var(--sky-glow, 255, 214, 140), 0.08) calc(var(--sr, 300px) * 1.8),
+      rgba(var(--sky-glow, 255, 214, 140), 0) calc(var(--sr, 300px) * 2.4)),
     linear-gradient(180deg, var(--sky-top, #f7f1e4) 0%, var(--sky-mid, #f1ece2) 55%, var(--sky-bottom, #ecdfc9) 100%);
   animation: wp-sky-breathe 20s ease-in-out infinite;
   transition: background 2s linear;
@@ -327,8 +327,8 @@ body {
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at var(--sx, 50%) calc(var(--sy, 50%) + var(--sr, 300px) * 0.35),
-    rgba(var(--sky-glow2, 255, 196, 110), 0.5) calc(var(--sr, 300px) * 1.05),
-    rgba(var(--sky-glow2, 255, 196, 110), 0) calc(var(--sr, 300px) * 2.1));
+    rgba(var(--sky-glow2, 255, 196, 110), 0.26) calc(var(--sr, 300px) * 1.05),
+    rgba(var(--sky-glow2, 255, 196, 110), 0) calc(var(--sr, 300px) * 2.0));
   animation: wp-sky-breathe 20s ease-in-out -9s infinite;
   mix-blend-mode: multiply;
 }
@@ -384,8 +384,8 @@ body {
 }
 
 @keyframes wp-sky-breathe {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wp-sky, .wp-sky-2 { animation: none; opacity: 0.8; }
