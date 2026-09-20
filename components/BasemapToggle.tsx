@@ -99,7 +99,14 @@ export default function BasemapToggle() {
             onClick={() => setOpen(false)}
             className="fixed inset-0 cursor-default"
           />
-          <div className="animate-sheet absolute bottom-14 left-0 w-[236px] rounded-3xl bg-paper/90 p-3 shadow-float backdrop-blur">
+          {/* Taller than a short phone once the lists fold and the theme rows
+              are open: the card scrolls inside itself (a finger drag scrolls
+              the card, not the map) and never grows past the top bar. */}
+          <div
+            className="animate-sheet scroll-thin absolute bottom-14 left-0 max-h-[calc(100dvh-8.5rem-env(safe-area-inset-bottom))] w-[236px] overflow-y-auto overscroll-contain rounded-3xl bg-paper/90 p-3 shadow-float backdrop-blur"
+            style={{ touchAction: "pan-y", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+            data-testid="layers-card"
+          >
             <div className="flex rounded-full bg-paper-2 p-1">
               <Tab active={basemap === "satellite"} onClick={() => setBasemap("satellite")}>Satellite</Tab>
               <Tab active={basemap === "map"} onClick={() => setBasemap("map")}>Map</Tab>
