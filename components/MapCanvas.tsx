@@ -1197,8 +1197,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [basemap, themeId]);
 
-  // Repaint the space overlay (stars vs. sun) when the theme or basemap changes,
-  // and regenerate the starfield on resize so it always covers the viewport.
+  // Repaint the space overlay (stars vs. sun) when the theme, basemap or the
+  // living-sky switch changes, and regenerate the starfield on resize so it
+  // always covers the viewport.
+  const skyEffects = useStore((s) => s.skyEffects);
   useEffect(() => {
     buildSpace();
     if (readyRef.current) render();
@@ -1214,7 +1216,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       stopMeteorLoop();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [basemap, themeId]);
+  }, [basemap, themeId, skyEffects]);
 
   // ---- Toggle terrain relief ----
   useEffect(() => {
@@ -1479,7 +1481,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
   // night (stars, shooting stars); the light themes get the warm daylight
   // sky — on the street map and on satellite alike.
   function spaceModeFor(): "stars" | "sun" | "none" {
-    return themeRef.current.darkUI ? "stars" : "sun";
+    if (themeRef.current.darkUI) return "stars";
+    return useStore.getState().skyEffects ? "sun" : "none";
   }
 
   // Time-of-day tint for the daylight sky: peach → pale → amber, written as

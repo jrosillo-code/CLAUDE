@@ -170,6 +170,11 @@ interface WaypointState {
   setAutoTheme: (v: boolean) => void;
   /** Applied by the day/night clock — never turns auto off. */
   applyAutoTheme: (t: ThemeId) => void;
+  /** The living daylight sky (warm wash, time-of-day tint, clouds) around
+   *  the globe on the light themes. Off by default — an option, not the
+   *  default view. Persisted on this device. */
+  skyEffects: boolean;
+  setSkyEffects: (v: boolean) => void;
   /** UI accent: Waymark terracotta (default) or glass blue. */
   accent: "blue" | "warm";
   setAccent: (a: "blue" | "warm") => void;
@@ -695,6 +700,21 @@ export const useStore = create<WaypointState>((set, get) => ({
   applyAutoTheme: (t) => {
     if (!THEMES[t] || get().theme === t) return;
     set({ theme: t });
+  },
+  skyEffects: (() => {
+    try {
+      return typeof window !== "undefined" && window.localStorage.getItem("wp-sky-fx") === "1";
+    } catch {
+      return false;
+    }
+  })(),
+  setSkyEffects: (v) => {
+    set({ skyEffects: v });
+    try {
+      window.localStorage.setItem("wp-sky-fx", v ? "1" : "0");
+    } catch {
+      /* private mode */
+    }
   },
 
   accent: "warm",

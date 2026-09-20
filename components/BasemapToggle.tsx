@@ -19,6 +19,8 @@ export default function BasemapToggle() {
   const setTheme = useStore((s) => s.setTheme);
   const autoTheme = useStore((s) => s.autoTheme);
   const setAutoTheme = useStore((s) => s.setAutoTheme);
+  const skyEffects = useStore((s) => s.skyEffects);
+  const setSkyEffects = useStore((s) => s.setSkyEffects);
   const accent = useStore((s) => s.accent);
   const setAccent = useStore((s) => s.setAccent);
   const showLandmarks = useStore((s) => s.showLandmarks);
@@ -265,6 +267,19 @@ export default function BasemapToggle() {
                   style={{ background: a.color, boxShadow: "inset 0 0 0 1px rgba(0,0,0,.12)" }}
                 />
               ))}
+            </div>
+
+            {/* Living sky: the daylight wash, its time-of-day tint and the
+                clouds around the globe on the light themes. Opt-in, so the
+                map stays calm unless you want the weather. */}
+            <div className="mt-1.5">
+              <RowToggle
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="9" r="3.5" stroke="currentColor" strokeWidth="1.8" /><path d="M9 2.5v1.6M9 13.9v1.6M2.5 9h1.6M13.9 9h1.6M4.4 4.4l1.1 1.1M12.5 12.5l1.1 1.1M4.4 13.6l1.1-1.1M12.5 5.5l1.1-1.1" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /><path d="M13 20.5h6.5a2.5 2.5 0 0 0 .3-5 3.5 3.5 0 0 0-6.6-1.3A2.8 2.8 0 0 0 13 20.5z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" /></svg>}
+                label="Living sky"
+                active={skyEffects}
+                onClick={() => setSkyEffects(!skyEffects)}
+              />
+              <p className="px-2 pb-1 text-[10px] leading-snug text-ink-3">Sun, clouds and the time of day around the globe on light themes.</p>
             </div>
 
             <a
