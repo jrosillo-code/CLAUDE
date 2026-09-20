@@ -3,7 +3,7 @@ import {
   ArrayBufferTarget as WebMTarget,
   Muxer as WebMMuxer,
 } from "webm-muxer";
-import type maplibregl from "maplibre-gl";
+import type * as maplibregl from "maplibre-gl";
 import { HOLD0_MS, buildFlightPlan } from "./flightPlan";
 import { CRUISE_ZOOM, arcDeg, type Stop } from "./flyover";
 import {

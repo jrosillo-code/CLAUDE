@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import Supercluster from "supercluster";
 import { useStore } from "@/lib/store";
 import { useVisiblePins } from "@/lib/hooks";
@@ -618,7 +618,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
             "icon-padding": 2,
           },
         });
-        map.on("click", LM_LAYER, (e) => {
+        map.on("click", LM_LAYER, (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
           const f = e.features?.[0];
           const id = f?.properties?.id as string | undefined;
           if (!id || placingRef.current) return;
@@ -664,7 +664,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           },
           paint: { "text-color": themeRef.current.labelColor, "text-halo-color": themeRef.current.labelHalo, "text-halo-width": 1.2 },
         });
-        map.on("click", WL_LAYER, (e) => {
+        map.on("click", WL_LAYER, (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
           const f = e.features?.[0];
           const id = f?.properties?.id as string | undefined;
           if (!id || placingRef.current) return;
@@ -781,7 +781,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
               "text-halo-width": 1.5,
             },
           });
-          map.on("click", dotLyr, (e) => {
+          map.on("click", dotLyr, (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
             const f = e.features?.[0];
             if (!f || placingRef.current) return;
             const props = (f.properties ?? {}) as Record<string, unknown>;
@@ -1110,7 +1110,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       }
     }
 
-    map.on("error", (e) => {
+    map.on("error", (e: { error?: { message?: string } }) => {
       const msg = String(e?.error?.message ?? "");
       // Elevation source unreachable → drop terrain so fills keep rendering.
       if (/elevation|terrarium|terrain|raster-dem/i.test(msg) && !terrainBrokenRef.current) {
@@ -1200,7 +1200,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
     map.once("load", publishBounds);
     map.on("move", renderThrottled);
 
-    map.on("click", (e) => {
+    map.on("click", (e: maplibregl.MapMouseEvent) => {
       // A tap on the bare map dismisses the searched place (and the brief
       // button's glow with it).
       if (useStore.getState().searchedPlace) useStore.getState().setSearchedPlace(null);

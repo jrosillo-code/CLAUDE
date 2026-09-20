@@ -1,4 +1,4 @@
-import type maplibregl from "maplibre-gl";
+import type * as maplibregl from "maplibre-gl";
 
 // Journey flyover: tapping the Waypoint logo replays your travels — your
 // avatar rides a little plane from pin to pin along a great-circle thread

@@ -1,4 +1,4 @@
-import type maplibregl from "maplibre-gl";
+import type * as maplibregl from "maplibre-gl";
 import { jetSvgMarkup, type FlyoverFrame } from "./flyover";
 
 // Realtime flight recorder — the FALLBACK path for browsers without WebCodecs
