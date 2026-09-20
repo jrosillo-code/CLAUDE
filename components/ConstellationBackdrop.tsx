@@ -136,13 +136,13 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
       pScale = mobile ? (w / 360) * 1.06 : Math.max(w / 360, h / 150) * 1.08;
       const sz = mobile ? 1 : Math.min(1.5, Math.max(1, pScale / 4.5));
       if (mobile) {
-        // A whole globe, snug above the profile card: the card starts 12 px
-        // under its rim (ProfileView pads the top to match), so neither a gap
-        // nor a globe cut in half.
-        const r = Math.min(w * 0.31, 130);
+        // A big globe behind the hero card (which starts at 5 rem), showing
+        // through its glass and around its edges — the desktop composition,
+        // in portrait.
+        const r = w * 0.55;
         globe = { r, lam0: reduced ? 10 : 10 + (t * 3) % 360, tilt: 18 };
         pCx = w / 2;
-        pCy = 30 + r;
+        pCy = 80 + r * 0.55;
       } else {
         globe = null;
         pCx = w / 2 + drift;

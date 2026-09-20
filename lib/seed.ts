@@ -334,6 +334,21 @@ export const pins: Pin[] = rows.map((r, i) => {
   };
 });
 
+// Live dispatches for the demo: two friends are on the road right now, so
+// the strip is never empty on first open. Their latest pin becomes today's.
+{
+  const hoursAgo = (h: number) => new Date(Date.now() - h * 3600_000).toISOString();
+  for (const [userId, h] of [["u-maria", 3], ["u-leo", 21]] as [string, number][]) {
+    const mine = pins.filter((p) => p.userId === userId);
+    const last = mine[mine.length - 1];
+    if (!last) continue;
+    last.hereNow = true;
+    last.createdAt = hoursAgo(h);
+    last.startedOn = last.createdAt.slice(0, 10);
+    last.endedOn = undefined;
+  }
+}
+
 // Planned trips: ordered stops stitched together by a thread on the map.
 // Visibility is friends-or-private only — routes are never world-public.
 // A little activity so the bell has something to show in the demo.

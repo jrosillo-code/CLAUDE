@@ -84,6 +84,9 @@ export interface Pin {
   activities?: ActivitySlug[];
   /** The owner's own score for the place, 1–10. Only the owner sets it. */
   rating?: number;
+  /** A dispatch: dropped while the author was actually there. Live in the
+   *  strip for 72 hours after createdAt; the pin itself never expires. */
+  hereNow?: boolean;
   createdAt: string;
 }
 

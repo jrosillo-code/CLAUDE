@@ -19,6 +19,8 @@ import TripDraftBar from "./TripDraftBar";
 import TopSpotsPanel from "./TopSpotsPanel";
 import LandmarkCard from "./LandmarkCard";
 import ListPlaceCard from "./ListPlaceCard";
+import DispatchStrip from "./DispatchStrip";
+import DispatchPlayer from "./DispatchPlayer";
 import OverlayCard from "./OverlayCard";
 import CrossingsPanel from "./CrossingsPanel";
 import SearchPlaceCard from "./SearchPlaceCard";
@@ -68,6 +70,7 @@ export default function MapApp() {
   const selectedPinId = useStore((s) => s.selectedPinId);
   const flightRecording = useStore((s) => s.flightRecording);
   const flightProgress = useStore((s) => s.flightProgress);
+  const [dispatchUser, setDispatchUser] = useState<string | null>(null);
   const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
 
   // When a trip draft ends, land somewhere sensible: saving reopens the
@@ -272,6 +275,9 @@ export default function MapApp() {
         </div>
       )}
 
+      {/* Dispatches: who in your circle is on the road right now */}
+      {mapMode === "pins" && !tripDraft && !selectedPinId && <DispatchStrip onOpen={(id) => setDispatchUser(id)} />}
+      {dispatchUser && <DispatchPlayer userId={dispatchUser} onClose={() => setDispatchUser(null)} />}
       {mapMode === "pins" && !selectedPinId && <LandmarkCard />}
       {mapMode === "pins" && !selectedPinId && <ListPlaceCard />}
       {mapMode === "pins" && !selectedPinId && <OverlayCard />}

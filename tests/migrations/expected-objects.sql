@@ -135,3 +135,8 @@ begin
     raise exception '% migration assertion(s) failed', failed;
   end if;
 end $$;
+
+-- pins: 0021 adds the dispatch flag.
+select ok(
+  exists (select 1 from information_schema.columns where table_name = 'pins' and column_name = 'here_now'),
+  'pins.here_now exists (0021)');

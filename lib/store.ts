@@ -315,6 +315,8 @@ interface WaypointState {
     rating?: number;
     /** Backdated posts (Takeout import) — keeps the feed and year tags honest. */
     createdAt?: string;
+    /** A dispatch: the author is there right now. */
+    hereNow?: boolean;
   }) => Pin;
   /** Edit your own pin (title, note, visibility, rating). */
   updatePin: (pinId: string, patch: Partial<Pick<Pin, "title" | "note" | "visibility" | "rating" | "media">>) => void;
@@ -1145,6 +1147,7 @@ export const useStore = create<WaypointState>((set, get) => ({
         url: m.url,
       })),
       rating: input.rating,
+      hereNow: input.hereNow || undefined,
       createdAt: input.createdAt ?? new Date().toISOString(),
     };
     if (backendEnabled) backend.syncAddPin(pin);

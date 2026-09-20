@@ -103,6 +103,7 @@ interface PinRow {
   visibility: Visibility;
   rating: number | null;
   activities: string[] | null;
+  here_now?: boolean | null;
   created_at: string;
   pin_photos: { id: string; storage_path: string; kind: "photo" | "video"; sort_order: number }[];
   pin_likes: { count: number }[];
@@ -225,6 +226,7 @@ function toPin(r: PinRow): Pin {
     visibility: r.visibility,
     rating: r.rating ?? undefined,
     activities: (r.activities ?? undefined) as ActivitySlug[] | undefined,
+    hereNow: r.here_now ?? undefined,
     media: (r.pin_photos ?? [])
       .sort((a, b) => a.sort_order - b.sort_order)
       .map((m) => ({ id: m.id, kind: m.kind, url: m.storage_path })),
@@ -505,6 +507,7 @@ export function syncAddPin(pin: Pin): void {
       visibility: pin.visibility,
       rating: pin.rating ?? null,
       activities: pin.activities ?? [],
+      here_now: pin.hereNow ?? false,
       created_at: pin.createdAt, // honors backdated imports
     });
     if (error) return log("addPin")(error);

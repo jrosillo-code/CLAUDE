@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useStore } from "@/lib/store";
+import { isLiveDispatch, agoLabel } from "@/lib/dispatches";
 import { friendsWhoVisited, visibilityLabel } from "@/lib/data";
 import { formatDates } from "@/lib/format";
 import { ACTIVITY_LABELS } from "@/lib/types";
@@ -156,6 +157,11 @@ export default function PinSheet() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5 text-sm text-ink-3">
                     <span>{pin.placeName}</span>
+                    {isLiveDispatch(pin) && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent" data-testid="pin-live">
+                        <span className="h-1.5 w-1.5 rounded-full bg-accent" /> Here now · {agoLabel(pin.createdAt)}
+                      </span>
+                    )}
                     {pin.countryCode && <span>· {pin.countryCode}</span>}
                     {(pin.startedOn || pin.endedOn) && (
                       <span>· {formatDates(pin.startedOn, pin.endedOn)}</span>

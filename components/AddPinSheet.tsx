@@ -8,6 +8,7 @@ import { SAMPLE_VIDEOS, photo } from "@/lib/seed";
 import type { MediaKind } from "@/lib/types";
 import type { Visibility } from "@/lib/types";
 import { visibilityLabel } from "@/lib/data";
+import { suggestHereNow } from "@/lib/dispatches";
 import { RatingScale } from "./RatingScale";
 import { backendEnabled } from "@/lib/supabase";
 import { uploadPinMedia } from "@/lib/backend";
@@ -34,6 +35,9 @@ export default function AddPinSheet() {
   const [visibility, setVisibility] = useState<Visibility>(viewer.defaultPinVisibility);
   const [mediaItems, setMediaItems] = useState<{ kind: MediaKind; url: string }[]>([]);
   const [rating, setRating] = useState<number | null>(null);
+  // A dispatch: on by default when the device is at the place today.
+  const userLocation = useStore((s) => s.userLocation);
+  const [hereNow, setHereNow] = useState<boolean>(() => suggestHereNow(draft, userLocation, undefined));
   const [uploading, setUploading] = useState(0);
 
   // Real uploads: photos are downscaled client-side; with the live backend
@@ -92,6 +96,7 @@ export default function AddPinSheet() {
       visibility,
       media: mediaItems,
       rating: rating ?? undefined,
+      hereNow,
     });
     const scoutNote = scoutToNote(scout);
     if (scoutNote) {
@@ -236,6 +241,26 @@ export default function AddPinSheet() {
             </div>
           )}
         </div>
+
+        {/* Here now: the pin becomes a dispatch — a glowing ring on the map
+            and a bubble in friends' strip for three days. The pin itself
+            stays forever like any other. */}
+        <button
+          type="button"
+          onClick={() => setHereNow((v) => !v)}
+          aria-pressed={hereNow}
+          data-testid="here-now-toggle"
+          className={`mt-3 flex w-full items-center gap-3 rounded-2xl px-3.5 py-2.5 text-left ring-1 ${hereNow ? "bg-accent/10 ring-accent/50" : "bg-paper-2/60 ring-line"}`}
+        >
+          <span className={`relative grid h-8 w-8 shrink-0 place-items-center rounded-full ${hereNow ? "bg-accent text-paper" : "bg-paper text-ink-3"}`}>
+            {hereNow && <span className="wp-live-pulse absolute left-1/2 top-1/2 h-8 w-8 rounded-full bg-accent opacity-50" />}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="relative"><circle cx="12" cy="12" r="3.2" fill="currentColor" /><circle cx="12" cy="12" r="7.5" stroke="currentColor" strokeWidth="1.8" /></svg>
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-medium">I&apos;m here now</span>
+            <span className="block text-[11px] text-ink-3">{hereNow ? "Shows as a live dispatch to your circle for 3 days." : "Off — a normal pin, dated whenever you like."}</span>
+          </span>
+        </button>
 
         {/* Visibility */}
         <div className="mt-3">

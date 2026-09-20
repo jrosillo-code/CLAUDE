@@ -284,6 +284,10 @@ body {
 .wp-loc-pulse {
   animation: wp-loc-pulse 2.4s ease-out infinite;
 }
+/* A live dispatch on the map: the same radar pulse, in the pin's ring colour. */
+.wp-live-pulse {
+  animation: wp-loc-pulse 2.2s ease-out infinite;
+}
 
 /* Space around the globe (MapCanvas): stars that slowly twinkle, and a sun that
    arcs from the upper-left to the upper-right. Both live inside an overlay that
@@ -403,3 +407,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .wp-brief-glow { animation: none; box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-accent) 40%, transparent); }
 }
+
+/* Dispatch playback: the active segment fills over the step. */
+@keyframes wp-dispatch-fill { from { width: 0; } to { width: 100%; } }
+.wp-dispatch-fill { animation: wp-dispatch-fill 6s linear forwards; }

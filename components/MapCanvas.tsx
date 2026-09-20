@@ -23,6 +23,7 @@ import { startFlyover } from "@/lib/flyover";
 import { createFlightRecorder } from "@/lib/recordFlight";
 import { createMeteorField } from "@/lib/meteors";
 import { skyPalette, skyVars } from "@/lib/skyTint";
+import { isLiveDispatch } from "@/lib/dispatches";
 import { cancelFlightRender, renderFlightFilm } from "@/lib/renderFlight";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
@@ -43,6 +44,7 @@ type ClusterProps = {
   year?: string;
   /** The pin carries scout details — worn as a reticle glyph. */
   scout?: boolean;
+  live?: boolean;
 };
 
 const DEM_SOURCE = "waypoint-dem";
@@ -1241,6 +1243,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           pinId: p.id,
           ownerId: p.userId,
           scout: scoutPinIds.has(p.id),
+          live: isLiveDispatch(p),
           color: p.owner.color,
           // The needle head wears the owner's face, not the pin's photo — the
           // map reads as WHO at a glance; photos live in the pin sheet.
@@ -1779,7 +1782,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
           twinPhoto = duo.twin;
           headYear = duo.headYear;
         }
-        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${headYear ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}|${props.scout ? "sc" : ""}`;
+        const contentKey = `${headPhoto}|${twinPhoto ?? ""}|${headYear ?? ""}|${ringColor}|${props.cluster ? "s" : ""}|${selected ? "sel" : ""}|${props.scout ? "sc" : ""}|${props.live ? "lv" : ""}`;
         upsert(
           key,
           lng,
@@ -1795,6 +1798,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
               twinPhoto,
               year: headYear,
               scout: !!props.scout,
+              live: !!props.live && !props.cluster,
             }),
           selected ? "5" : "1",
           (ev) => {
@@ -1956,8 +1960,10 @@ function needleEl(opts: {
   year?: string;
   /** Scout details on the pin: a small reticle at the head's shoulder. */
   scout?: boolean;
+  /** A live dispatch: a soft accent pulse behind the head. */
+  live?: boolean;
 }): HTMLDivElement {
-  const { photo, ring, scale, stacked, ghost, twinPhoto, year, scout } = opts;
+  const { photo, ring, scale, stacked, ghost, twinPhoto, year, scout, live } = opts;
   const headSize = Math.round(26 * scale);
   const stickHeight = Math.round(20 * scale);
   const width = headSize + 14; // room for the stacked twin
@@ -1984,6 +1990,13 @@ function needleEl(opts: {
     return group;
   };
 
+  if (live) {
+    const pulse = document.createElement("div");
+    pulse.className = "wp-live-pulse";
+    pulse.title = "Here now";
+    pulse.style.cssText = `position:absolute;left:50%;top:${headSize / 2}px;width:${headSize * 2}px;height:${headSize * 2}px;border-radius:9999px;background:${ring};opacity:.5;pointer-events:none;`;
+    wrap.appendChild(pulse);
+  }
   if (stacked) wrap.appendChild(needle(Math.round(headSize * 0.34), -2, 0.55, true));
   wrap.appendChild(needle(0, 0, 1, false));
 

@@ -58,7 +58,7 @@ export default function LayerRail({
             window.innerWidth < 640 ? onOpenTravelers() : setOpen((o) => !o)
           }
           title="Travelers"
-          className="flex items-center text-left max-sm:relative max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:rounded-full max-sm:bg-paper/85 max-sm:shadow-float max-sm:backdrop-blur sm:w-full sm:justify-between sm:rounded-2xl sm:px-3 sm:py-2"
+          className="flex items-center text-left max-sm:relative max-sm:isolate max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:rounded-full max-sm:bg-paper/95 max-sm:shadow-float sm:w-full sm:justify-between sm:rounded-2xl sm:px-3 sm:py-2"
         >
           <span className="flex items-center gap-2 font-display text-base">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="text-accent">

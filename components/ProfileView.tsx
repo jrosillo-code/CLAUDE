@@ -142,12 +142,12 @@ export default function ProfileView({ handle }: { handle: string }) {
         Map
       </Link>
 
-      {/* Phones: the whole constellation globe sits above the card (30 px +
-          2 × its radius of min(31 vw, 130 px)); the card starts 12 px below
-          its rim. On a 390 px phone that is 284 px. */}
-      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-[calc(42px+min(62vw,260px))] sm:px-6 sm:pt-24">
+      {/* The hero starts at the top on every screen; on phones the
+          constellation globe turns BEHIND it, showing through the card's
+          glass and around it as the page scrolls. */}
+      <div className="animate-fade relative z-10 mx-auto max-w-2xl px-5 pt-20 sm:px-6 sm:pt-24">
         {/* Identity card — frosted glass floating over the constellation. */}
-        <div className="relative rounded-3xl bg-paper/85 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:px-8">
+        <div className="relative rounded-3xl bg-paper/70 px-6 pb-6 pt-7 shadow-float backdrop-blur sm:bg-paper/85 sm:px-8">
         <div className="flex flex-col items-center text-center">
           {isMe ? (
             /* Your own avatar is an upload button — new photo shows everywhere. */
