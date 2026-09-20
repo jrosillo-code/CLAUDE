@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useStore } from "@/lib/store";
-import { useVisiblePins } from "@/lib/hooks";
+import { useDispatchPins } from "@/lib/hooks";
 import { coverUrl } from "@/lib/data";
 import { liveDispatchesByUser, agoLabel } from "@/lib/dispatches";
 import { weatherSummary } from "@/lib/fieldbrief/weather";
@@ -14,7 +14,7 @@ import type { FieldBrief } from "@/lib/fieldbrief/assemble";
 const STEP_MS = 6000;
 
 export default function DispatchPlayer({ userId, onClose }: { userId: string; onClose: () => void }) {
-  const pins = useVisiblePins();
+  const pins = useDispatchPins();
   const viewerId = useStore((s) => s.viewerId);
   const requestFlyTo = useStore((s) => s.requestFlyTo);
   const selectPin = useStore((s) => s.selectPin);

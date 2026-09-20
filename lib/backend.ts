@@ -492,7 +492,7 @@ export function subscribeRealtime(viewerId: string, onWorldChange: () => void): 
 export function syncAddPin(pin: Pin): void {
   const sb = supabase!;
   void (async () => {
-    const { error } = await sb.from("pins").insert({
+    const row = {
       id: pin.id,
       user_id: pin.userId,
       lng: pin.lng,
@@ -509,7 +509,16 @@ export function syncAddPin(pin: Pin): void {
       activities: pin.activities ?? [],
       here_now: pin.hereNow ?? false,
       created_at: pin.createdAt, // honors backdated imports
-    });
+    };
+    let { error } = await sb.from("pins").insert(row);
+    // A project that has not run migration 0021 yet has no here_now column:
+    // save the pin as a normal pin rather than losing it, and say why.
+    if (error && /here_now/.test(`${error.message} ${error.details ?? ""}`)) {
+      console.warn("[waypoint] pins.here_now is missing — apply supabase/migrations/0021_pins_here_now.sql; saving without the dispatch flag.");
+      const { here_now: _omit, ...withoutFlag } = row;
+      void _omit;
+      ({ error } = await sb.from("pins").insert(withoutFlag));
+    }
     if (error) return log("addPin")(error);
     if (pin.media.length) {
       const { error: mediaErr } = await sb.from("pin_photos").insert(

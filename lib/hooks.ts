@@ -35,6 +35,21 @@ export function useVisiblePins(): PinWithOwner[] {
   );
 }
 
+/** Pins for the dispatch strip: everything the viewer may see, ignoring the
+ *  Travelers layer filter — a friend on the road shows even if their layer
+ *  is switched off (visibility rules still apply, exactly as on the map). */
+export function useDispatchPins(): PinWithOwner[] {
+  const pins = useStore((s) => s.pins);
+  const users = useStore((s) => s.users);
+  const friendships = useStore((s) => s.friendships);
+  const viewerId = useStore((s) => s.viewerId);
+  const follows = useStore((s) => s.follows);
+  return useMemo(
+    () => computeVisible({ pins, users, friendships, viewerId, follows, activeUserIds: null, explore: false }),
+    [pins, users, friendships, viewerId, follows]
+  );
+}
+
 /** All creator accounts (for the Creators tab). */
 export function useCreators(): User[] {
   const users = useStore((s) => s.users);

@@ -2,14 +2,14 @@
 
 import { useMemo } from "react";
 import { useStore } from "@/lib/store";
-import { useVisiblePins } from "@/lib/hooks";
+import { useDispatchPins } from "@/lib/hooks";
 import { liveDispatchesByUser, agoLabel } from "@/lib/dispatches";
 
 // The strip: one bubble per traveler in your circle who dropped a pin while
 // they were there in the last three days. Tap one and the map flies to them
 // and plays their dispatches. Only pins you may already see are in it.
 export default function DispatchStrip({ onOpen }: { onOpen: (userId: string) => void }) {
-  const pins = useVisiblePins();
+  const pins = useDispatchPins();
   const viewerId = useStore((s) => s.viewerId);
   const groups = useMemo(() => liveDispatchesByUser(pins, viewerId), [pins, viewerId]);
   if (groups.length === 0) return null;

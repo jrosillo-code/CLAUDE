@@ -411,3 +411,13 @@ body {
 /* Dispatch playback: the active segment fills over the step. */
 @keyframes wp-dispatch-fill { from { width: 0; } to { width: 100%; } }
 .wp-dispatch-fill { animation: wp-dispatch-fill 6s linear forwards; }
+
+/* Tapping a round button on iOS left a square around it: Safari before 16.4
+   draws the focus outline as a rectangle, ignoring border-radius, and a
+   tapped button keeps focus after its sheet closes. Pointer focus gets no
+   outline; keyboard focus gets a ring that follows the shape. */
+button:focus:not(:focus-visible), a:focus:not(:focus-visible) { outline: none; }
+button:focus-visible, a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-accent);
+}
