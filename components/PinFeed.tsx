@@ -6,6 +6,8 @@ import { useStore } from "@/lib/store";
 import { visiblePins, coverUrl } from "@/lib/data";
 import { flagEmoji } from "@/lib/passport";
 import type { PinWithOwner } from "@/lib/types";
+import { useDigest } from "./DigestSheet";
+import { digestTitle } from "@/lib/digest";
 
 // The pin feed: the latest drops from you, your friends, and creators you
 // follow — newest first, opened from the Waypoint logo. "Take me there" flies
@@ -21,6 +23,7 @@ export default function PinFeed({ onClose }: { onClose: () => void }) {
   const setMapMode = useStore((s) => s.setMapMode);
   const requestFlyTo = useStore((s) => s.requestFlyTo);
 
+  const digest = useDigest(true);
   const feed = useMemo(
     () =>
       visiblePins({
@@ -66,6 +69,26 @@ export default function PinFeed({ onClose }: { onClose: () => void }) {
           <p className="px-2 py-10 text-center text-sm text-ink-3">
             Nothing yet — add friends or follow creators and their pins land here.
           </p>
+        )}
+        {digest.picks.length > 0 && (
+          <div className="mb-3 rounded-2xl bg-paper-2/60 p-2" data-testid="feed-digest">
+            <div className="flex items-center justify-between px-2 pb-1 pt-1">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-3">✦ {digestTitle(digest.window)}</span>
+            </div>
+            <ol className="space-y-0.5">
+              {digest.picks.map((p, i) => (
+                <li key={p.pin.id}>
+                  <button onClick={() => takeMeThere(p.pin)} className="flex w-full items-center gap-2.5 rounded-xl px-2 py-1.5 text-left hover:bg-paper">
+                    <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-ink text-[10px] font-bold text-paper">{i + 1}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm">{p.pin.countryCode ? `${flagEmoji(p.pin.countryCode)} ` : ""}{p.pin.placeName} <span className="text-ink-3">· {p.pin.owner.displayName.split(" ")[0]}</span></span>
+                      <span className="block truncate text-[11px] text-accent">{p.reasons[0] ?? ""}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </div>
         )}
         <ul className="space-y-1">
           {feed.map((p) => (

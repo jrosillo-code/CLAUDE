@@ -17,6 +17,7 @@ const CrossingsPanel = dynamic(() => import("./CrossingsPanel"), { ssr: false })
 const FieldBriefPanel = dynamic(() => import("./FieldBriefPanel"), { ssr: false });
 const AskPanel = dynamic(() => import("./AskPanel"), { ssr: false });
 const ReflectionSheet = dynamic(() => import("./ReflectionSheet"), { ssr: false });
+const DigestSheet = dynamic(() => import("./DigestSheet"), { ssr: false });
 import { preloadStars } from "./ConstellationBackdrop";
 import TopBar from "./TopBar";
 import LayerRail from "./LayerRail";
@@ -34,6 +35,7 @@ import { searchPlaces } from "@/lib/geocode";
 import { loadWorldLists, listPlaceById, LIST_IDS, type WorldListId } from "@/lib/lists";
 import { toast } from "@/lib/toast";
 import { useViewer } from "@/lib/hooks";
+import { useDigest, useDigestDue } from "./DigestSheet";
 import GuidedStart from "./GuidedStart";
 import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
@@ -76,6 +78,13 @@ export default function MapApp() {
   const flightRecording = useStore((s) => s.flightRecording);
   const flightProgress = useStore((s) => s.flightProgress);
   const [dispatchUser, setDispatchUser] = useState<string | null>(null);
+  // Tonight's picks: computed cheaply here (no world lists) to know whether
+  // the evening bubble is due; the sheet itself scores with the lists.
+  const [digestOpen, setDigestOpen] = useState(false);
+  // Opening it once puts the bubble away for the evening.
+  const [digestSeen, setDigestSeen] = useState(false);
+  const digest = useDigest(false);
+  const digestDue = useDigestDue(digest.picks.length) && !digestSeen;
   const guideTrip = guideTripId ? trips.find((t) => t.id === guideTripId) ?? null : null;
 
   // When a trip draft ends, land somewhere sensible: saving reopens the
@@ -375,7 +384,13 @@ export default function MapApp() {
       )}
 
       {/* Dispatches: who in your circle is on the road right now */}
-      {mapMode === "pins" && !tripDraft && !selectedPinId && <DispatchStrip onOpen={(id) => setDispatchUser(id)} />}
+      {mapMode === "pins" && !tripDraft && !selectedPinId && (
+        <DispatchStrip
+          onOpen={(id) => setDispatchUser(id)}
+          digest={digestDue && !digestOpen ? { count: digest.picks.length, onOpen: () => { setDigestSeen(true); setDigestOpen(true); } } : null}
+        />
+      )}
+      {digestOpen && <DigestSheet onClose={() => setDigestOpen(false)} />}
       {dispatchUser && <DispatchPlayer userId={dispatchUser} onClose={() => setDispatchUser(null)} />}
       {mapMode === "pins" && !selectedPinId && <LandmarkCard />}
       {mapMode === "pins" && !selectedPinId && <ListPlaceCard />}

@@ -57,8 +57,22 @@ export default function WorldProgress() {
   const [boardOpen, setBoardOpen] = useState(false);
   const board = useMemo(() => {
     const crew = [viewer, ...friends];
+    const crewIds = new Set(crew.map((u) => u.id));
+    // countries → who in the crew has pinned them, for the "only you" tag
+    const pinners = new Map<string, Set<string>>();
+    for (const p of pins) {
+      if (!crewIds.has(p.userId) || !p.countryCode) continue;
+      const cc = p.countryCode.toUpperCase();
+      if (!pinners.has(cc)) pinners.set(cc, new Set());
+      pinners.get(cc)!.add(p.userId);
+    }
     return crew
-      .map((u) => ({ user: u, countries: countryCount(pins, u.id), pins: pins.filter((p) => p.userId === u.id).length }))
+      .map((u) => ({
+        user: u,
+        countries: countryCount(pins, u.id),
+        pins: pins.filter((p) => p.userId === u.id).length,
+        onlyThem: [...pinners.entries()].filter(([, who]) => who.size === 1 && who.has(u.id)).length,
+      }))
       .sort((a, b) => b.countries - a.countries || b.pins - a.pins || a.user.displayName.localeCompare(b.user.displayName));
   }, [pins, viewer, friends]);
   const myRank = board.findIndex((b) => b.user.id === viewer.id) + 1;
@@ -109,6 +123,7 @@ export default function WorldProgress() {
                   <img src={b.user.avatarUrl} alt="" className="h-5 w-5 rounded-full object-cover ring-1" style={{ ["--tw-ring-color" as string]: b.user.color }} />
                   <span className="min-w-0 flex-1 truncate">{b.user.id === viewer.id ? "You" : b.user.displayName}</span>
                   <span className="text-ink-2">{b.countries} {b.countries === 1 ? "country" : "countries"}</span>
+                  {b.onlyThem > 0 && <span className="rounded-full bg-accent/10 px-1.5 py-0.5 text-[10px] font-semibold text-accent" title={`${b.onlyThem} ${b.onlyThem === 1 ? "country" : "countries"} nobody else in the crew has pinned`}>{b.onlyThem} only</span>}
                 </li>
               ))}
             </ol>

@@ -9,19 +9,52 @@ import { liveDispatchesByUser, agoLabel } from "@/lib/dispatches";
 // a profile: one bubble per traveler in your circle who dropped a pin while
 // they were there in the last three days. Tap one and the map flies to them
 // and plays their dispatches. Only pins you may already see are in it.
-export default function DispatchStrip({ onOpen }: { onOpen: (userId: string) => void }) {
+export default function DispatchStrip({
+  onOpen,
+  digest,
+}: {
+  onOpen: (userId: string) => void;
+  /** Tonight's digest, when it is due: a sparkle bubble at the head of the row. */
+  digest?: { count: number; onOpen: () => void } | null;
+}) {
   const pins = useDispatchPins();
   const viewerId = useStore((s) => s.viewerId);
   const groups = useMemo(() => liveDispatchesByUser(pins, viewerId), [pins, viewerId]);
   const [expanded, setExpanded] = useState(false);
-  if (groups.length === 0) return null;
+  if (groups.length === 0 && !digest) return null;
+  const digestBubble = digest ? (
+    <button
+      onClick={digest.onOpen}
+      title={`Tonight's picks · ${digest.count} places your friends pinned`}
+      className="group relative flex shrink-0 flex-col items-center gap-0.5"
+      data-testid="digest-bubble"
+    >
+      <span className="relative grid h-11 w-11 place-items-center">
+        <span className="wp-brief-glow absolute inset-0 rounded-full" />
+        <span className="relative grid h-10 w-10 place-items-center rounded-full bg-ink text-paper ring-2 ring-accent ring-offset-2 ring-offset-paper">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6-5.6-1.9 5.6-1.9zM19 15l.9 2.6 2.6.9-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9zM5 15l.9 2.6 2.6.9-2.6.9L5 22l-.9-2.6-2.6-.9 2.6-.9z" /></svg>
+        </span>
+        <span className="absolute -right-0.5 -top-0.5 grid h-4.5 min-w-4.5 place-items-center rounded-full bg-accent px-1 text-[9px] font-bold text-paper" style={{ height: 18, minWidth: 18 }}>{digest.count}</span>
+      </span>
+      <span className="max-w-[56px] truncate text-[10px] font-medium text-ink-2">Tonight</span>
+    </button>
+  ) : null;
+  if (groups.length === 0) {
+    return (
+      <div className="wp-chrome fixed right-2 top-[60px] z-20 flex items-center gap-2 rounded-full bg-paper/80 px-2.5 py-1.5 shadow-float backdrop-blur sm:right-4 sm:top-[80px]" data-testid="dispatch-strip" aria-label="Tonight's picks">
+        {digestBubble}
+      </div>
+    );
+  }
   // More than three people live: one stacked bubble with the count; a tap
   // unfolds the full row.
   if (groups.length > 3 && !expanded) {
     return (
+      <div className="wp-chrome fixed right-2 top-[60px] z-20 flex items-center gap-2 sm:right-4 sm:top-[80px]">
+      {digestBubble && <div className="rounded-full bg-paper/80 px-2 py-1 shadow-float backdrop-blur">{digestBubble}</div>}
       <button
         onClick={() => setExpanded(true)}
-        className="wp-chrome fixed right-2 top-[60px] z-20 flex items-center gap-2 rounded-full bg-paper/80 py-1.5 pl-2 pr-3.5 shadow-float backdrop-blur sm:right-4 sm:top-[80px]"
+        className="flex items-center gap-2 rounded-full bg-paper/80 py-1.5 pl-2 pr-3.5 shadow-float backdrop-blur"
         data-testid="dispatch-strip-collapsed"
         aria-label={`${groups.length} people are here now — show them`}
       >
@@ -35,6 +68,7 @@ export default function DispatchStrip({ onOpen }: { onOpen: (userId: string) => 
         </span>
         <span className="text-xs font-semibold text-ink-2">{groups.length} here now</span>
       </button>
+      </div>
     );
   }
   return (
@@ -48,6 +82,7 @@ export default function DispatchStrip({ onOpen }: { onOpen: (userId: string) => 
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </button>
       )}
+      {digestBubble}
       {groups.map((g) => (
         <button
           key={g.owner.id}
