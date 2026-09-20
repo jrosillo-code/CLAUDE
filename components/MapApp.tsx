@@ -89,6 +89,49 @@ export default function MapApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tripDraft, trips.length]);
 
+  // Deep links. ?pin=<id> opens that pin and flies to it; ?trip=<id> shows
+  // that route. The URL follows the open pin so a refresh keeps it and the
+  // address bar can be shared; closing the pin clears it.
+  const selectPin = useStore((s) => s.selectPin);
+  const pins = useStore((s) => s.pins);
+  const linkedRef = useRef<{ pin: string | null; trip: string | null } | null>(null);
+  if (linkedRef.current === null && typeof window !== "undefined") {
+    const params = new URLSearchParams(window.location.search);
+    linkedRef.current = { pin: params.get("pin"), trip: params.get("trip") };
+  }
+  useEffect(() => {
+    const linked = linkedRef.current;
+    if (!linked?.pin) return;
+    const pin = pins.find((p) => p.id === linked.pin);
+    if (!pin) return;
+    linked.pin = null;
+    requestFlyTo(pin.lng, pin.lat, 9, { flat: true });
+    selectPin(pin.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pins.length]);
+  useEffect(() => {
+    const linked = linkedRef.current;
+    if (!linked?.trip) return;
+    const trip = trips.find((t) => t.id === linked.trip);
+    if (!trip) return;
+    linked.trip = null;
+    setMapMode("trips");
+    setActiveTripId(trip.id);
+    setTripsOpen(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trips.length]);
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (url.searchParams.get("fly")) return; // consumed by the effect below
+    if (selectedPinId) url.searchParams.set("pin", selectedPinId);
+    else url.searchParams.delete("pin");
+    if (mapMode === "trips" && activeTripId) url.searchParams.set("trip", activeTripId);
+    else url.searchParams.delete("trip");
+    const next = url.pathname + (url.search ? url.search : "") + url.hash;
+    const cur = window.location.pathname + window.location.search + window.location.hash;
+    if (next !== cur) window.history.replaceState(window.history.state, "", next);
+  }, [selectedPinId, mapMode, activeTripId]);
+
   // Arriving from a /fly/{cc} page ("add a field report on the map"): frame
   // the country, land its search card, and open the brief. The param is
   // consumed once and dropped from the URL.
@@ -136,19 +179,21 @@ export default function MapApp() {
     return () => clearTimeout(t);
   }, []);
 
-  // Declutter: after five seconds without a pointer, touch or key, the map's
-  // chrome dims to a whisper; any movement brings it straight back. Sheets
-  // and cards are not chrome, so whatever is open stays fully visible.
+  // Declutter: after twelve seconds without a pointer, touch or key, the
+  // map's chrome dims to a whisper; any movement brings it straight back.
+  // The clock only starts after the first interaction — someone who has
+  // just arrived and is looking at the map keeps the search bar and their
+  // avatar at full strength until they touch something. Sheets and cards are
+  // not chrome, so whatever is open stays fully visible.
   useEffect(() => {
     let timer: number | null = null;
     const wake = () => {
       document.body.removeAttribute("data-idle");
       if (timer) window.clearTimeout(timer);
-      timer = window.setTimeout(() => document.body.setAttribute("data-idle", "1"), 5000);
+      timer = window.setTimeout(() => document.body.setAttribute("data-idle", "1"), 12000);
     };
     const events: (keyof WindowEventMap)[] = ["pointermove", "pointerdown", "touchstart", "keydown", "wheel"];
     events.forEach((e) => window.addEventListener(e, wake, { passive: true }));
-    wake();
     return () => {
       events.forEach((e) => window.removeEventListener(e, wake));
       if (timer) window.clearTimeout(timer);

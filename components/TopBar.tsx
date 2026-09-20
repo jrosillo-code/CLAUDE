@@ -238,6 +238,7 @@ export default function TopBar({
           prefetch
           className="relative flex items-center gap-2 rounded-full bg-paper/85 shadow-float backdrop-blur max-sm:h-9 max-sm:w-9 max-sm:justify-center sm:py-1.5 sm:pl-1.5 sm:pr-3"
           data-testid="me-link"
+          aria-label={unread > 0 ? `Me, ${unread} unread` : "Me"}
         >
           {unread > 0 && (
             <span className="absolute -right-0.5 -top-0.5 z-10 grid place-items-center rounded-full bg-accent px-1 text-[9px] font-bold text-paper" style={{ height: 18, minWidth: 18 }} data-testid="me-unread">

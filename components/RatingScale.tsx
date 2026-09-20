@@ -17,14 +17,14 @@ export function RatingScale({
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex gap-1" onMouseLeave={() => setHover(null)}>
+      <div className="flex gap-1.5" onMouseLeave={() => setHover(null)}>
         {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
           <button
             key={n}
             onClick={() => onChange(value === n ? null : n)}
             onMouseEnter={() => setHover(n)}
             aria-label={`Rate ${n} out of 10`}
-            className={`h-7 w-5 rounded-md text-[10px] font-semibold transition-colors sm:w-6 ${
+            className={`h-9 min-w-0 flex-1 rounded-md text-[11px] font-semibold transition-colors sm:h-8 sm:flex-none sm:w-7 ${
               shown !== null && n <= shown
                 ? "bg-accent text-paper"
                 : "bg-paper-2 text-ink-3 hover:bg-line"

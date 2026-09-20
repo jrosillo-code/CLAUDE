@@ -360,8 +360,15 @@ export function drawConstellationStill(d: ShareData, tSeconds = 2.4): HTMLCanvas
 
 /** An 8-second H.264 mp4 of the turning globe, or null where WebCodecs is
  *  missing (the caller downloads the still instead). */
+let videoCancelled = false;
+/** Stop a constellation render in progress; the promise resolves null. */
+export function cancelConstellationVideo(): void {
+  videoCancelled = true;
+}
+
 export async function renderConstellationVideo(d: ShareData, onProgress: (f: number) => void, seconds = 8): Promise<Blob | null> {
   if (typeof VideoEncoder === "undefined") return null;
+  videoCancelled = false;
   const FPS = 30;
   const W = CARD_W, H = CARD_H;
   const codecs = ["avc1.640028", "avc1.4d0028", "avc1.42E01E"];
@@ -388,6 +395,7 @@ export async function renderConstellationVideo(d: ShareData, onProgress: (f: num
     frame.close();
     if (encoder.encodeQueueSize > 6) await new Promise<void>((r) => encoder.addEventListener("dequeue", () => r(), { once: true }));
     if (i % 6 === 0) { onProgress(i / frames); await new Promise((r) => setTimeout(r, 0)); }
+    if (videoCancelled) failed = true;
   }
   if (failed) { try { encoder.close(); } catch { /* ignore */ } return null; }
   await encoder.flush();

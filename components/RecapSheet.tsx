@@ -7,7 +7,7 @@ import { useState } from "react";
 import { LANDMARKS } from "@/lib/landmarks";
 import { coverUrl } from "@/lib/data";
 import type { Pin } from "@/lib/types";
-import { buildShareData, drawPassCard, drawConstellationStill, renderConstellationVideo, downloadCanvas } from "@/lib/shareCards";
+import { buildShareData, drawPassCard, drawConstellationStill, renderConstellationVideo, cancelConstellationVideo, downloadCanvas } from "@/lib/shareCards";
 import { downloadBlob } from "@/lib/recordFlight";
 
 // Year in travel: a Wrapped-style recap computed from your own pins, with a
@@ -160,9 +160,18 @@ export default function RecapSheet({ onClose }: { onClose: () => void }) {
                     ? "Saved — download again ↓"
                     : "Download share cards ↓"}
             </button>
-            <p className="mt-1.5 text-center text-xs text-ink-3">
-              Two cards — your boarding pass, and the Constellation: your globe turning, pins flicking on, as a short video.
-            </p>
+            {cardState.phase === "video" ? (
+              <button
+                onClick={() => { cancelConstellationVideo(); setCardState({ phase: "idle", progress: 0 }); }}
+                className="mt-2 w-full rounded-full bg-paper-2 py-2 text-xs font-semibold text-ink-2 hover:bg-line"
+              >
+                Cancel
+              </button>
+            ) : (
+              <p className="mt-1.5 text-center text-xs text-ink-3">
+                Two cards — your boarding pass, and the Constellation: your globe turning, pins flicking on, as a short video.
+              </p>
+            )}
           </>
         )}
 

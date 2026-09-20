@@ -32,6 +32,8 @@ export default function TripsPanel({
   const shownTripIds = useStore((s) => s.shownTripIds);
   const toggleTripShown = useStore((s) => s.toggleTripShown);
   const deleteTrip = useStore((s) => s.deleteTrip);
+  // Deleting a whole route is one tap from Clone; ask twice.
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const renameTrip = useStore((s) => s.renameTrip);
   const startTripDraft = useStore((s) => s.startTripDraft);
   const [newTitle, setNewTitle] = useState("");
@@ -227,10 +229,17 @@ export default function TripsPanel({
                 )}
                 {mine && (
                   <button
-                    onClick={() => deleteTrip(t.id)}
-                    className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-accent ring-1 ring-line"
+                    onClick={() => {
+                      if (confirmDeleteId === t.id) { deleteTrip(t.id); setConfirmDeleteId(null); }
+                      else setConfirmDeleteId(t.id);
+                    }}
+                    onBlur={() => setConfirmDeleteId(null)}
+                    className={`rounded-full px-4 py-2 text-xs font-semibold transition-colors ${
+                      confirmDeleteId === t.id ? "bg-accent text-paper" : "bg-paper text-accent ring-1 ring-line"
+                    }`}
+                    data-testid={`trip-delete-${t.id}`}
                   >
-                    Delete
+                    {confirmDeleteId === t.id ? "Really delete?" : "Delete"}
                   </button>
                 )}
               </div>
@@ -313,6 +322,9 @@ export default function TripsPanel({
                   Apple Maps ↗
                 </a>
               </div>
+              <p className="mt-1.5 hidden text-[11px] text-ink-3 sm:block">
+                On a desktop browser Apple Maps previews only the first stop — the route guide has per-stop links.
+              </p>
             </div>
           );
         })}

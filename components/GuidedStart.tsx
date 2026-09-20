@@ -18,6 +18,16 @@ interface Step {
 
 const STEPS: Step[] = [
   {
+    label: "Drop your first pin",
+    hint: "The + button, then tap the map where you were.",
+    events: ["pin_created", "scout_pin_create"],
+  },
+  {
+    label: "Add a friend",
+    hint: "Left rail → Travelers → Find. Their pins appear on your map.",
+    events: ["friend_request_sent"],
+  },
+  {
     label: "See a friend's trip",
     hint: "Left rail → Trips. Finished trips carry their debrief.",
     events: ["reflection_viewed"],

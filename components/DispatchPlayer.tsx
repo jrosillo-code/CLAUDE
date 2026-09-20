@@ -19,7 +19,10 @@ export default function DispatchPlayer({ userId, onClose }: { userId: string; on
   const requestFlyTo = useStore((s) => s.requestFlyTo);
   const selectPin = useStore((s) => s.selectPin);
   const groups = useMemo(() => liveDispatchesByUser(pins, viewerId), [pins, viewerId]);
-  const gi = Math.max(0, groups.findIndex((g) => g.owner.id === userId));
+  // Whose story is playing: starts with the bubble that was tapped and moves
+  // on to the next traveler when theirs ends, like stories do.
+  const [activeUser, setActiveUser] = useState(userId);
+  const gi = Math.max(0, groups.findIndex((g) => g.owner.id === activeUser));
   const group = groups[gi];
   const [idx, setIdx] = useState(0);
   const [brief, setBrief] = useState<FieldBrief | null>(null);
@@ -44,7 +47,7 @@ export default function DispatchPlayer({ userId, onClose }: { userId: string; on
     return () => { cancelled = true; };
   }, [pin?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Auto-advance; the last dispatch closes the player.
+  // Auto-advance; the last dispatch of the last traveler closes the player.
   useEffect(() => {
     if (paused || !group) return;
     const t = window.setTimeout(() => next(), STEP_MS);
@@ -56,10 +59,12 @@ export default function DispatchPlayer({ userId, onClose }: { userId: string; on
   function next() {
     if (!group) return;
     if (idx < group.pins.length - 1) setIdx(idx + 1);
+    else if (gi < groups.length - 1) { setActiveUser(groups[gi + 1].owner.id); setIdx(0); }
     else onClose();
   }
   function prev() {
     if (idx > 0) setIdx(idx - 1);
+    else if (gi > 0) { const g = groups[gi - 1]; setActiveUser(g.owner.id); setIdx(g.pins.length - 1); }
   }
 
   const cover = coverUrl(pin);

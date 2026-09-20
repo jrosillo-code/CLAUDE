@@ -1172,6 +1172,7 @@ export const useStore = create<WaypointState>((set, get) => ({
       createdAt: input.createdAt ?? new Date().toISOString(),
     };
     if (backendEnabled) backend.syncAddPin(pin);
+    track("pin_created", { pinId: id, viewerId: pin.userId, visibility: pin.visibility });
     set((s) => ({ pins: [...s.pins, pin], addDraft: null, selectedPinId: id }));
     return pin;
   },
@@ -1221,6 +1222,7 @@ export const useStore = create<WaypointState>((set, get) => ({
   sendFriendRequest: (userId) =>
     set((s) => {
       if (userId === s.viewerId) return {};
+      track("friend_request_sent", { viewerId: s.viewerId });
       const edge = s.friendships.find(
         (f) =>
           (f.userA === s.viewerId && f.userB === userId) ||

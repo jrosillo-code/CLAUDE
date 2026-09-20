@@ -27,7 +27,9 @@ export type ProductEventName =
   // Field brief (drone legality / light / wind / nearby scouting)
   | "fly_page_view" // a /fly/{cc} country page rendered
   | "brief_open" // the field brief panel opened (from a search or a pin)
-  | "scout_pin_create"; // a pin was saved with scout details
+  | "scout_pin_create" // a pin was saved with scout details
+  | "pin_created" // any pin saved (the first one completes the first step)
+  | "friend_request_sent"; // a friend request went out
 
 /** IDs, enums and counts only — no free text, by type. */
 export interface ProductEventMeta {

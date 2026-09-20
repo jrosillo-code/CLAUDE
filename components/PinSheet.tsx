@@ -57,6 +57,7 @@ export default function PinSheet() {
   const [editMedia, setEditMedia] = useState<PinMedia[]>([]);
   const [uploadingEdit, setUploadingEdit] = useState(0);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmReportDelete, setConfirmReportDelete] = useState<string | null>(null);
 
   const newMediaId = () =>
     typeof crypto !== "undefined" && crypto.randomUUID
@@ -149,7 +150,7 @@ export default function PinSheet() {
 
       {/* Modal */}
       <div className="pointer-events-none fixed inset-0 z-40 flex items-end justify-center sm:items-center sm:p-6">
-        <div className="animate-sheet pointer-events-auto flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[22px] bg-paper shadow-float sm:max-h-[88dvh] sm:max-w-4xl sm:rounded-[22px]">
+        <div role="dialog" aria-modal="true" aria-label={pin.title} className="animate-sheet pointer-events-auto flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[22px] bg-paper shadow-float sm:max-h-[88dvh] sm:max-w-4xl sm:rounded-[22px]">
           <div className="scroll-thin overflow-y-auto">
             {/* Collage */}
             <div className="relative">
@@ -309,7 +310,16 @@ export default function PinSheet() {
                               <button onClick={() => publishFieldReport(r.id)} className="ml-auto font-semibold text-accent" data-testid={`report-publish-${r.id}`}>Publish</button>
                             )}
                             {r.userId === viewerId && (
-                              <button onClick={() => deleteFieldReport(r.id)} className={r.status === "draft" ? "text-accent" : "ml-auto text-accent"}>Delete</button>
+                              <button
+                                onClick={() => {
+                                  if (confirmReportDelete === r.id) { deleteFieldReport(r.id); setConfirmReportDelete(null); }
+                                  else setConfirmReportDelete(r.id);
+                                }}
+                                onBlur={() => setConfirmReportDelete(null)}
+                                className={`${r.status === "draft" ? "" : "ml-auto "}${confirmReportDelete === r.id ? "rounded-full bg-accent px-2 text-paper" : "text-accent"}`}
+                              >
+                                {confirmReportDelete === r.id ? "Really delete?" : "Delete"}
+                              </button>
                             )}
                           </p>
                         </li>
