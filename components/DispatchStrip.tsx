@@ -5,7 +5,8 @@ import { useStore } from "@/lib/store";
 import { useDispatchPins } from "@/lib/hooks";
 import { liveDispatchesByUser, agoLabel } from "@/lib/dispatches";
 
-// The strip: one bubble per traveler in your circle who dropped a pin while
+// The strip hangs under the Me button at the top right, like stories under
+// a profile: one bubble per traveler in your circle who dropped a pin while
 // they were there in the last three days. Tap one and the map flies to them
 // and plays their dispatches. Only pins you may already see are in it.
 export default function DispatchStrip({ onOpen }: { onOpen: (userId: string) => void }) {
@@ -20,7 +21,7 @@ export default function DispatchStrip({ onOpen }: { onOpen: (userId: string) => 
     return (
       <button
         onClick={() => setExpanded(true)}
-        className="wp-chrome fixed left-1/2 top-[60px] z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-paper/80 py-1.5 pl-2 pr-3.5 shadow-float backdrop-blur sm:top-[80px]"
+        className="wp-chrome fixed right-2 top-[60px] z-20 flex items-center gap-2 rounded-full bg-paper/80 py-1.5 pl-2 pr-3.5 shadow-float backdrop-blur sm:right-4 sm:top-[80px]"
         data-testid="dispatch-strip-collapsed"
         aria-label={`${groups.length} people are here now — show them`}
       >
@@ -38,7 +39,7 @@ export default function DispatchStrip({ onOpen }: { onOpen: (userId: string) => 
   }
   return (
     <div
-      className="wp-chrome fixed left-1/2 top-[60px] z-20 flex max-w-[92vw] -translate-x-1/2 items-center gap-2 overflow-x-auto rounded-full bg-paper/80 px-2.5 py-1.5 shadow-float backdrop-blur no-scrollbar sm:top-[80px]"
+      className="wp-chrome fixed right-2 top-[60px] z-20 flex max-w-[calc(100vw-16px)] items-center gap-2 overflow-x-auto rounded-full bg-paper/80 px-2.5 py-1.5 shadow-float backdrop-blur no-scrollbar sm:right-4 sm:top-[80px] sm:max-w-[60vw]"
       data-testid="dispatch-strip"
       aria-label="Live dispatches"
     >
