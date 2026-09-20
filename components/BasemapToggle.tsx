@@ -85,8 +85,9 @@ export default function BasemapToggle() {
 
   return (
     <div
-      className={`wp-chrome fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-3 sm:bottom-6 ${
-        open ? "z-40" : "z-30"
+      className={`fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-3 sm:bottom-6 ${
+        // Open, the card is a sheet: above the first-use pill and never idle-dimmed.
+        open ? "z-50" : "wp-chrome z-30"
       }`}
     >
       {open && (

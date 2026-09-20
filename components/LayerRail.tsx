@@ -54,7 +54,7 @@ export default function LayerRail({
     [...follows].every((id) => activeUserIds!.has(id));
 
   return (
-    <div className={`wp-chrome fixed flex flex-col gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:left-[18px] sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-40" : "z-30"}`}>
+    <div className={`fixed flex flex-col gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:left-[18px] sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-50" : "wp-chrome z-30"}`}>
       <div className="max-sm:relative sm:w-[220px] sm:rounded-3xl sm:bg-paper/90 sm:p-2 sm:shadow-float sm:backdrop-blur">
         <button
           onClick={() =>
