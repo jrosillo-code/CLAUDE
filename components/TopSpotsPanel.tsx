@@ -7,14 +7,14 @@ import { acceptedFriendIds, canView, coverUrl, distanceKm } from "@/lib/data";
 import { googleMapsDirectionsUrl } from "@/lib/directions";
 import { reverseGeocode, searchPlaces, type GeoResult } from "@/lib/geocode";
 import type { Pin, User } from "@/lib/types";
-import { LIST_META, LIST_HONESTY, listPlacesNear } from "@/lib/lists";
+import { LIST_META, LIST_HONESTY, LIST_IDS, WORLD_LISTS, listPlacesNear, type WorldListId } from "@/lib/lists";
 
 // "Top spots": the most-liked places near a real location — your current one
 // (browser geolocation, asked politely) or any region you search (a province,
 // a city). Built for "what's actually good around here?" while traveling.
 // A map-view mode remains as the fallback when location is unavailable.
 
-type Mode = "near" | "search" | "view";
+type Mode = "near" | "search" | "view" | "lists";
 type GeoStatus = "idle" | "asking" | "ok" | "denied";
 const RADIUS_KM = 250; // roughly a province / day-trip range
 
@@ -40,6 +40,15 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GeoResult[]>([]);
   const [searchAnchor, setSearchAnchor] = useState<Anchor | null>(null);
+  // Browse a whole world list, anywhere on Earth — not only what is near.
+  const [listId, setListId] = useState<WorldListId>("beaches");
+  const [listFilter, setListFilter] = useState("");
+  const listPlaces = useMemo(() => {
+    const l = WORLD_LISTS.find((x) => x.id === listId);
+    const q = listFilter.trim().toLowerCase();
+    const all = (l?.places ?? []).slice().sort((a, b) => a.countryCode.localeCompare(b.countryCode) || a.name.localeCompare(b.name));
+    return q ? all.filter((p) => `${p.name} ${p.region} ${p.countryCode} ${p.why}`.toLowerCase().includes(q)) : all;
+  }, [listId, listFilter]);
   const searchAbort = useRef<AbortController | null>(null);
 
   // Ask for the user's location when the panel opens in "Near me" (the browser
@@ -139,7 +148,9 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
   }
 
   const title =
-    mode === "near"
+    mode === "lists"
+      ? "World lists"
+      : mode === "near"
       ? geoAnchor
         ? `Top spots near ${geoAnchor.label}`
         : "Top spots near you"
@@ -159,13 +170,44 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
           </button>
         </div>
         <p className="mt-1 text-sm text-ink-3">
-          The most-liked places within {RADIUS_KM} km, from all travelers.
+          {mode === "lists" ? LIST_HONESTY : `The most-liked places within ${RADIUS_KM} km, from all travelers.`}
         </p>
-        <div className="mt-3 flex gap-1.5">
+        <div className="mt-3 flex flex-wrap gap-1.5">
           <Chip active={mode === "near"} onClick={() => setMode("near")}>Near me</Chip>
           <Chip active={mode === "search"} onClick={() => setMode("search")}>Search region</Chip>
           <Chip active={mode === "view"} onClick={() => setMode("view")}>Map view</Chip>
+          <Chip active={mode === "lists"} onClick={() => setMode("lists")}>World lists</Chip>
         </div>
+
+        {/* World lists: every list, every place — pick one, filter, tap to fly. */}
+        {mode === "lists" && (
+          <div className="mt-3" data-testid="topspots-lists-browser">
+            <div className="scroll-thin -mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1">
+              {LIST_IDS.filter((id) => WORLD_LISTS.some((l) => l.id === id)).map((id) => {
+                const mm = LIST_META[id];
+                const on = id === listId;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => { setListId(id); setListFilter(""); }}
+                    aria-pressed={on}
+                    className={`flex shrink-0 items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium ${on ? "text-paper" : "bg-paper-2 text-ink-2"}`}
+                    style={on ? { background: mm.color } : undefined}
+                  >
+                    <span aria-hidden>{mm.glyph}</span>
+                    {mm.label}
+                  </button>
+                );
+              })}
+            </div>
+            <input
+              value={listFilter}
+              onChange={(e) => setListFilter(e.target.value)}
+              placeholder={`Filter ${LIST_META[listId].label.toLowerCase()} by name or country…`}
+              className="mt-2 w-full rounded-full bg-paper-2 px-4 py-2.5 text-sm outline-none placeholder:text-ink-3 focus:ring-2 focus:ring-ink/15"
+            />
+          </div>
+        )}
 
         {/* Region search box */}
         {mode === "search" && (
@@ -213,8 +255,29 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="scroll-thin flex-1 space-y-2 overflow-y-auto px-4 py-4">
+        {mode === "lists" && (
+          <>
+            <p className="px-1 text-xs text-ink-3">{LIST_META[listId].blurb} {listPlaces.length} places{listFilter ? " match" : ""}.</p>
+            <ul className="space-y-1.5" data-testid="topspots-list-places">
+              {listPlaces.map((p) => (
+                <li key={p.id}>
+                  <button
+                    onClick={() => { selectListPlace(p.id); requestFlyTo(p.lng, p.lat, 7, { flat: true }); onClose(); }}
+                    className="flex w-full items-center gap-2.5 rounded-xl bg-paper-2/60 px-2.5 py-2 text-left hover:bg-paper-2"
+                  >
+                    <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-base" style={{ background: `${LIST_META[listId].color}1f`, boxShadow: `inset 0 0 0 1.5px ${LIST_META[listId].color}` }}>{LIST_META[listId].glyph}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium">{p.name}</span>
+                      <span className="block truncate text-[11px] text-ink-3">{p.region} · {p.countryCode}</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
         {/* Location permission states */}
-        {mode === "near" && geoStatus === "asking" && (
+        {mode !== "lists" && mode === "near" && geoStatus === "asking" && (
           <StatusCard emoji="📍" title="Requesting your location…">
             Allow location access in the browser prompt so we can rank what&apos;s around you.
           </StatusCard>
@@ -234,7 +297,7 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
           </StatusCard>
         )}
 
-        {(anchor || mode === "view") && ranked.length === 0 && !(mode === "near" && geoStatus !== "ok") && (
+        {mode !== "lists" && (anchor || mode === "view") && ranked.length === 0 && !(mode === "near" && geoStatus !== "ok") && (
           <>
             <StatusCard emoji="🧭" title="No pins around here yet">
               Nothing within {RADIUS_KM} km — try a bigger region, or be the first to drop a pin.
@@ -264,7 +327,7 @@ export default function TopSpotsPanel({ onClose }: { onClose: () => void }) {
           </>
         )}
 
-        {ranked.map((r, i) => (
+        {mode !== "lists" && ranked.map((r, i) => (
           <div
             key={r.pin.id}
             className="flex items-center gap-3 rounded-2xl border border-line bg-paper-2/60 p-2.5"

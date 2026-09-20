@@ -1,11 +1,9 @@
 import {
   CRUISE_ZOOM,
-  PAUSE_MS,
   SAMPLES_PER_LEG,
   SPEED_DEG_PER_S,
   type Stop,
   arcDeg,
-  easeInOut,
   mercY,
   slerp,
 } from "./flyover";
@@ -19,6 +17,8 @@ export interface FlightState {
   lng: number;
   lat: number;
   zoom: number;
+  /** Camera tilt in degrees: flat on the holds, a cinematic lean in flight. */
+  pitch: number;
   heading: number;
   altitude: number;
   /** Trail reveal head, 0..1 in projected-length space. */
@@ -42,6 +42,17 @@ export interface FlightPlan {
 /** Opening hold — long enough for the film's title card to breathe. */
 export const HOLD0_MS = 1400;
 const SETTLE_MS = 900;
+/** Hover at each pin between legs: shorter than the live flyover's pause,
+ *  so the film keeps moving; the marker pop and the label land in it. */
+export const HOVER_MS = 320;
+/** Camera lean while flying. */
+export const FLIGHT_PITCH = 28;
+
+/** Zero velocity AND zero acceleration at both ends — no visible kick when
+ *  a leg starts or lands, unlike smoothstep. */
+const smoother = (f: number) => f * f * f * (f * (f * 6 - 15) + 10);
+const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);
+const rampS = (t: number, a: number, b: number) => smoother(clamp01((t - a) / (b - a)));
 
 function bearing(a: [number, number], b: [number, number]): number {
   const dx = ((b[0] - a[0]) * Math.PI) / 180;
@@ -90,21 +101,26 @@ export function buildFlightPlan(stops: Stop[]): FlightPlan {
     cumFrac[Math.min(cumFrac.length - 1, i * SAMPLES_PER_LEG)]
   );
 
+  // Leg time from arc length, a touch quicker than the live flyover and
+  // clamped so short hops still read and long hauls don't drag.
   const legMs = path
     .slice(1)
-    .map((b, i) => Math.min(3400, Math.max(1100, (arcDeg(path[i], b) / SPEED_DEG_PER_S) * 1000)));
+    .map((b, i) => Math.min(3000, Math.max(1000, (arcDeg(path[i], b) / (SPEED_DEG_PER_S * 1.15)) * 1000)));
 
-  // Absolute start time of each leg (pauses between, none after the last).
+  // Absolute start time of each leg (hovers between, none after the last).
   const legStart: number[] = [];
   {
     let t = HOLD0_MS;
     for (let i = 0; i < legMs.length; i++) {
       legStart.push(t);
-      t += legMs[i] + (i < legMs.length - 1 ? PAUSE_MS : 0);
+      t += legMs[i] + (i < legMs.length - 1 ? HOVER_MS : 0);
     }
   }
   const landMs = legStart[legStart.length - 1] + legMs[legMs.length - 1];
   const totalMs = landMs + SETTLE_MS;
+  // The lean: eases in over the first second of flight, holds, and eases
+  // out through the final approach so the landing hold is flat.
+  const pitchAt = (t: number) => FLIGHT_PITCH * rampS(t, HOLD0_MS, HOLD0_MS + 1000) * (1 - rampS(t, landMs - 900, landMs));
 
   const posAt = (leg: number, eased: number): [number, number] =>
     slerp(path[leg], path[leg + 1], eased, path[leg].lng);
@@ -116,6 +132,7 @@ export function buildFlightPlan(stops: Stop[]): FlightPlan {
         lng: path[0].lng,
         lat: path[0].lat,
         zoom: CRUISE_ZOOM,
+        pitch: 0,
         heading: head,
         altitude: 1,
         frac: 0,
@@ -133,6 +150,7 @@ export function buildFlightPlan(stops: Stop[]): FlightPlan {
             lng: path[i].lng,
             lat: path[i].lat,
             zoom: CRUISE_ZOOM,
+            pitch: pitchAt(t),
             heading: head,
             altitude: 1,
             frac: fracAt(i, 0),
@@ -140,16 +158,20 @@ export function buildFlightPlan(stops: Stop[]): FlightPlan {
           };
         }
         const f = (t - start) / legMs[i];
-        const eased = easeInOut(f);
+        const eased = smoother(f);
         const [lng, lat] = posAt(i, eased);
         const ahead = posAt(i, Math.min(1, eased + 0.015));
-        const zoomOut = legMs[i] > 1800 ? 0.45 : 0.15;
+        // Breathe out in proportion to the leg: a hop barely lifts, an ocean
+        // crossing pulls back to show the whole arc.
+        const zoomOut = Math.min(0.9, 0.12 + arcDeg(path[i], path[i + 1]) / 60);
+        const bell = Math.sin(f * Math.PI);
         return {
           lng,
           lat,
-          zoom: CRUISE_ZOOM - zoomOut * Math.sin(f * Math.PI),
+          zoom: CRUISE_ZOOM - zoomOut * bell,
+          pitch: pitchAt(t),
           heading: bearing([lng, lat], ahead),
-          altitude: 1 + 0.22 * Math.sin(f * Math.PI),
+          altitude: 1 + 0.22 * bell,
           frac: fracAt(i, eased),
           phase: "fly",
         };
@@ -161,6 +183,7 @@ export function buildFlightPlan(stops: Stop[]): FlightPlan {
       lng: last.lng,
       lat: last.lat,
       zoom: CRUISE_ZOOM,
+      pitch: 0,
       heading: bearing(posAt(legMs.length - 1, 0.985), posAt(legMs.length - 1, 1)),
       altitude: 1,
       frac: 1,

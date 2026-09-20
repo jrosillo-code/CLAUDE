@@ -37,18 +37,20 @@ export function cancelFlightRender(): void {
 }
 
 /** Resolves once the current camera's tiles are loaded and drawn at least
- *  once. One render tick when the cache is warm; idle-wait only on misses. */
-function settleFrame(map: maplibregl.Map, timeoutMs: number): Promise<void> {
+ *  once — true — or when the wait runs out — false. One render tick when the
+ *  cache is warm; idle-wait only on misses, and never longer than `timeoutMs`. */
+function settleFrame(map: maplibregl.Map, timeoutMs: number): Promise<boolean> {
   return new Promise((resolve) => {
     let done = false;
-    const finish = () => {
+    const finish = (loaded: boolean) => {
       if (done) return;
       done = true;
       clearTimeout(to);
-      map.off("idle", finish);
-      resolve();
+      map.off("idle", onIdle);
+      resolve(loaded);
     };
-    const to = setTimeout(finish, timeoutMs);
+    const onIdle = () => finish(true);
+    const to = setTimeout(() => finish(false), timeoutMs);
     map.once("render", () => {
       let ready = false;
       try {
@@ -56,12 +58,20 @@ function settleFrame(map: maplibregl.Map, timeoutMs: number): Promise<void> {
       } catch {
         ready = false;
       }
-      if (ready) finish();
-      else map.once("idle", finish);
+      if (ready) finish(true);
+      else map.once("idle", onIdle);
     });
     map.triggerRepaint();
   });
 }
+
+/** Per-frame tile wait after the warm-up. The route's tiles are already
+ *  cached, so a frame normally settles in one render tick; this only bounds
+ *  the odd late tile so the film never stalls on the network. */
+const FRAME_SETTLE_MS = 320;
+/** After this many frames in a row with no tiles arriving, the network is
+ *  treated as gone and frames stop waiting for it at all. */
+const OFFLINE_AFTER_MISSES = 8;
 
 interface CodecChoice {
   codec: string;
@@ -105,6 +115,19 @@ const ramp = (t: number, a: number, b: number) => {
   return f * f * (3 - 2 * f);
 };
 
+export interface FilmStop extends Stop {
+  /** Shown beside the pin as the plane arrives. */
+  name?: string;
+}
+
+export interface FilmCredits {
+  places: number;
+  countries: number;
+  /** The traveler, for the title and end cards. */
+  name?: string;
+  handle?: string;
+}
+
 export async function renderFlightFilm(
   map: maplibregl.Map,
   // The maplibre module itself — its setNow/restoreNow drive the library's
@@ -112,17 +135,31 @@ export async function renderFlightFilm(
   // morph) advance with OUR frame clock instead of wall time. Without this the
   // zoom-out frames capture mid-morph states that look like the map bulging.
   ml: { setNow: (n: number) => void; restoreNow: () => void },
-  stops: Stop[],
+  stops: FilmStop[],
   avatarUrl: string,
   accent: string,
   year: number,
-  stats: { places: number; countries: number },
+  stats: FilmCredits,
   onProgress: (fraction: number) => void
 ): Promise<RenderResult> {
   if (stops.length < 2) return "failed";
 
   const mapCanvas = map.getCanvas();
-  // Target dimensions: cap the long edge at 1280, keep aspect, force even.
+  // Speed: render the map at exactly the film's resolution. Phones run the
+  // GL canvas at 3× — nine times the pixels of the 1280-long-edge film that
+  // was then downscaled anyway. Matching the pixel ratio to the film cuts
+  // most of the per-frame GPU work; it is restored afterwards.
+  const cssW = mapCanvas.clientWidth || 1;
+  const cssH = mapCanvas.clientHeight || 1;
+  const savedRatio = map.getPixelRatio();
+  const filmRatio = Math.min(savedRatio, 1280 / Math.max(cssW, cssH));
+  if (Math.abs(filmRatio - savedRatio) > 0.01) {
+    try {
+      map.setPixelRatio(filmRatio);
+    } catch {
+      /* older maplibre: render at the native ratio */
+    }
+  }
   const srcW = mapCanvas.width;
   const srcH = mapCanvas.height;
   const scale = Math.min(1, 1280 / Math.max(srcW, srcH));
@@ -130,7 +167,16 @@ export async function renderFlightFilm(
   const H = Math.round((srcH * scale) / 2) * 2;
 
   const choice = await pickCodec(W, H);
-  if (!choice) return "unsupported";
+  if (!choice) {
+    if (Math.abs(filmRatio - savedRatio) > 0.01) {
+      try {
+        map.setPixelRatio(savedRatio);
+      } catch {
+        /* ignore */
+      }
+    }
+    return "unsupported";
+  }
 
   const plan = buildFlightPlan(stops);
   const assets = loadFlightAssets(accent, avatarUrl);
@@ -346,20 +392,21 @@ export async function renderFlightFilm(
     // frames almost never stop for the network.
     const s0 = plan.stateAt(0);
     map.jumpTo({ center: [s0.lng, s0.lat], zoom: s0.zoom, bearing: 0, pitch: 0 });
-    await settleFrame(map, 4000);
-    for (let wt = 0; wt <= plan.totalMs && !cancelled; wt += 600) {
+    let warmMisses = (await settleFrame(map, 3000)) ? 0 : 1;
+    for (let wt = 0; wt <= plan.totalMs && !cancelled && warmMisses < 4; wt += 500) {
       const s = plan.stateAt(wt);
-      map.jumpTo({ center: [s.lng, s.lat], zoom: s.zoom, bearing: 0, pitch: 0 });
-      await settleFrame(map, 700);
+      map.jumpTo({ center: [s.lng, s.lat], zoom: s.zoom, bearing: 0, pitch: s.pitch });
+      warmMisses = (await settleFrame(map, 600)) ? 0 : warmMisses + 1;
       onProgress(0.05 * (wt / plan.totalMs));
     }
-    if (!cancelled) {
+    if (!cancelled && warmMisses < 4) {
       map.jumpTo({ center: [endCenter.lng, endCenter.lat], zoom: endZoom, bearing: 0, pitch: 0 });
-      await settleFrame(map, 900);
+      await settleFrame(map, 800);
     }
 
     const easeInOutQ = (f: number) => f * f * (3 - 2 * f);
     let lastCamKey = "";
+    let misses = 0;
 
     for (let i = 0; i < frames; i++) {
       if (cancelled || encodeFailed) break;
@@ -372,12 +419,14 @@ export async function renderFlightFilm(
       let settled = 0;
       let px = 0, py = 0, heading = 0, altitude = 1;
       let camLng: number, camLat: number, camZoom: number;
+      let camPitch = 0;
 
       if (t <= plan.totalMs) {
         const s = plan.stateAt(t);
         camLng = s.lng;
         camLat = s.lat;
         camZoom = s.zoom;
+        camPitch = s.pitch;
         planeVisible = s.phase !== "settle";
         settled = s.phase === "settle" ? 1 : 0;
         fracNow = s.frac;
@@ -391,15 +440,17 @@ export async function renderFlightFilm(
         camLng = last.lng + (endCenter.lng - last.lng) * e;
         camLat = last.lat + (endCenter.lat - last.lat) * e;
         camZoom = CRUISE_ZOOM + (endZoom - CRUISE_ZOOM) * e;
+        camPitch = 0;
         settled = 1;
       }
 
       // Holds and pauses repeat the same camera — reuse the last snapshot
       // instead of forcing a repaint + settle for an identical view.
-      const camKey = `${camLng.toFixed(6)},${camLat.toFixed(6)},${camZoom.toFixed(4)}`;
+      const camKey = `${camLng.toFixed(6)},${camLat.toFixed(6)},${camZoom.toFixed(4)},${camPitch.toFixed(2)}`;
       if (camKey !== lastCamKey) {
-        map.jumpTo({ center: [camLng, camLat], zoom: camZoom, bearing: 0, pitch: 0 });
-        await settleFrame(map, 2000);
+        map.jumpTo({ center: [camLng, camLat], zoom: camZoom, bearing: 0, pitch: camPitch });
+        const loaded = await settleFrame(map, misses >= OFFLINE_AFTER_MISSES ? 40 : FRAME_SETTLE_MS);
+        misses = loaded ? 0 : misses + 1;
         lastCamKey = camKey;
       }
       if (cancelled) break;
@@ -452,6 +503,37 @@ export async function renderFlightFilm(
         ctx.lineWidth = 2 * k;
         ctx.strokeStyle = visited ? "#ffffff" : accent;
         ctx.stroke();
+        // The place's name slides in beside the pin as the plane arrives and
+        // stays through the hover, then fades as the next leg begins.
+        const label = stops[si]?.name;
+        if (visited && label && settled < 1) {
+          const inA = ramp(age, 120, 420);
+          const nextLeg = si < plan.path.length - 1 ? stopArriveMs[si + 1] - 200 : Infinity;
+          const outA = si < plan.path.length - 1 ? 1 - ramp(t, Math.max(arrive + 700, nextLeg - 700), nextLeg) : 1;
+          const a = inA * outA;
+          if (a > 0.01) {
+            ctx.globalAlpha = a;
+            ctx.font = `600 ${Math.round(13 * k)}px ${fontStack}`;
+            ctx.textAlign = "left";
+            ctx.textBaseline = "middle";
+            const text = label.length > 28 ? label.slice(0, 26) + "…" : label;
+            const tw = ctx.measureText(text).width;
+            const lx = sx + 14 * k + (1 - inA) * 8 * k;
+            const ly = sy - 14 * k;
+            ctx.fillStyle = "rgba(255,255,255,.92)";
+            ctx.shadowColor = "rgba(0,0,0,.18)";
+            ctx.shadowBlur = 8 * k;
+            const padX = 9 * k, ph = 24 * k;
+            ctx.beginPath();
+            ctx.roundRect(lx - padX, ly - ph / 2, tw + padX * 2, ph, ph / 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = inkText;
+            ctx.fillText(text, lx, ly + 0.5 * k);
+            ctx.textBaseline = "alphabetic";
+            ctx.globalAlpha = 1;
+          }
+        }
       }
 
       if (planeVisible) {
@@ -486,6 +568,14 @@ export async function renderFlightFilm(
         // accent tick
         ctx.fillStyle = accent;
         ctx.fillRect(W / 2 - 28 * k, midY + 46 * k, 56 * k, 4 * k);
+        if (stats.name) {
+          ctx.shadowColor = "rgba(255,255,255,.9)";
+          ctx.shadowBlur = 12 * k;
+          ctx.fillStyle = inkText;
+          ctx.font = `500 ${Math.round(18 * k)}px ${fontStack}`;
+          ctx.fillText(stats.name, W / 2, midY + 80 * k);
+          ctx.shadowBlur = 0;
+        }
         ctx.globalAlpha = 1;
       }
 
@@ -547,6 +637,12 @@ export async function renderFlightFilm(
         ctx.letterSpacing = `${5 * k}px`;
         ctx.fillText(`WAYPOINT ${year}`, W / 2 + 2.5 * k, midY + 76 * k);
         ctx.letterSpacing = "0px";
+        if (stats.name) {
+          ctx.shadowBlur = 10 * k;
+          ctx.fillStyle = "rgba(24,26,32,.75)";
+          ctx.font = `500 ${Math.round(14 * k)}px ${fontStack}`;
+          ctx.fillText(stats.handle ? `${stats.name} · @${stats.handle}` : stats.name, W / 2, midY + 100 * k);
+        }
         ctx.shadowBlur = 0;
         ctx.globalAlpha = 1;
       } else {
@@ -600,6 +696,13 @@ export async function renderFlightFilm(
     }
     window.removeEventListener(CANCEL_EVENT, onCancel);
     map.off("render", snapshot);
+    if (Math.abs(filmRatio - savedRatio) > 0.01) {
+      try {
+        map.setPixelRatio(savedRatio);
+      } catch {
+        /* ignore */
+      }
+    }
     map.jumpTo({
       center: saved.center,
       zoom: saved.zoom,

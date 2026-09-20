@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import { createMeteorField } from "@/lib/meteors";
+import { loadStars, preloadStars, type AmbientStar, type Star } from "@/lib/constellation";
+export { preloadStars };
 
 // The Me page backdrop: the world's continents as a living constellation.
 // Real coastline vertices (from the bundled world atlas) become stars that
@@ -16,66 +18,6 @@ import { createMeteorField } from "@/lib/meteors";
 //  · Phones — cover-scaling only ever showed a smeared crop, so instead the
 //    WHOLE world renders as a fitted constellation band in the upper middle,
 //    floating in a sparse ambient starfield that fills the rest of the sky.
-
-interface Star {
-  lng: number;
-  lat: number;
-  phase: number;
-  bright: boolean;
-  ring: number; // ring id — segments only connect within a ring
-  idx: number;
-}
-
-interface AmbientStar {
-  x: number; // 0..1 of canvas
-  y: number;
-  phase: number;
-  r: number;
-}
-
-let starCache: Star[] | null = null;
-
-/** Warm the geo fetch + star sampling ahead of time (called from the map page
- *  during idle) so the Me page paints its backdrop instantly. */
-export function preloadStars(): void {
-  void loadStars().catch(() => {});
-}
-
-async function loadStars(): Promise<Star[]> {
-  if (starCache) return starCache;
-  const res = await fetch("/geo/countries-110m.json");
-  const geo = await res.json();
-  const stars: Star[] = [];
-  let ring = 0;
-  for (const f of geo.features ?? []) {
-    const polys =
-      f.geometry?.type === "MultiPolygon"
-        ? f.geometry.coordinates
-        : f.geometry?.type === "Polygon"
-          ? [f.geometry.coordinates]
-          : [];
-    for (const poly of polys) {
-      const outer: [number, number][] = poly[0] ?? [];
-      ring++;
-      // Sample density tuned for ~1400 stars worldwide.
-      const step = Math.max(1, Math.round(outer.length / Math.max(6, outer.length / 7)));
-      let idx = 0;
-      for (let i = 0; i < outer.length; i += step) {
-        const [lng, lat] = outer[i];
-        stars.push({
-          lng,
-          lat,
-          phase: ((lng * 7919 + lat * 104729) % 6.28318 + 6.28318) % 6.28318,
-          bright: stars.length % 23 === 0, // slightly larger, still ink
-          ring,
-          idx: idx++,
-        });
-      }
-    }
-  }
-  starCache = stars;
-  return stars;
-}
 
 const fract = (x: number) => x - Math.floor(x);
 
@@ -194,12 +136,13 @@ export default function ConstellationBackdrop({ pins = [] }: { pins?: BackdropPi
       pScale = mobile ? (w / 360) * 1.06 : Math.max(w / 360, h / 150) * 1.08;
       const sz = mobile ? 1 : Math.min(1.5, Math.max(1, pScale / 4.5));
       if (mobile) {
-        // The globe rises behind the top of the profile card (which starts
-        // at ~13 rem on phones), like a moon behind a window — no gap.
-        const r = Math.min(w * 0.4, 170);
+        // A whole globe, snug above the profile card: the card starts 12 px
+        // under its rim (ProfileView pads the top to match), so neither a gap
+        // nor a globe cut in half.
+        const r = Math.min(w * 0.31, 130);
         globe = { r, lam0: reduced ? 10 : 10 + (t * 3) % 360, tilt: 18 };
         pCx = w / 2;
-        pCy = 28 + r;
+        pCy = 30 + r;
       } else {
         globe = null;
         pCx = w / 2 + drift;

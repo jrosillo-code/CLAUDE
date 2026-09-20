@@ -1346,10 +1346,12 @@ export default function MapCanvas({ placing, onPick }: Props) {
       const accent =
         getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
         "#c65d3b";
-      const stops = route.map((p) => ({ lng: p.lng, lat: p.lat }));
+      const stops = route.map((p) => ({ lng: p.lng, lat: p.lat, name: p.placeName }));
       const stats = {
         places: route.length,
         countries: new Set(route.map((p) => p.countryCode).filter(Boolean)).size,
+        name: me.displayName,
+        handle: me.handle,
       };
       void (async () => {
         // Preferred path: deterministic offline render — every frame waits

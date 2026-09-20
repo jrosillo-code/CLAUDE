@@ -96,8 +96,8 @@ export default function BasemapToggle() {
           />
           <div className="animate-sheet absolute bottom-14 left-0 w-[236px] rounded-3xl bg-paper/90 p-3 shadow-float backdrop-blur">
             <div className="flex rounded-full bg-paper-2 p-1">
-              <Tab active={basemap === "map"} onClick={() => setBasemap("map")}>Map</Tab>
               <Tab active={basemap === "satellite"} onClick={() => setBasemap("satellite")}>Satellite</Tab>
+              <Tab active={basemap === "map"} onClick={() => setBasemap("map")}>Map</Tab>
             </div>
 
             <div className="mt-2 space-y-0.5">
