@@ -136,6 +136,26 @@ export default function MapApp() {
     return () => clearTimeout(t);
   }, []);
 
+  // Declutter: after five seconds without a pointer, touch or key, the map's
+  // chrome dims to a whisper; any movement brings it straight back. Sheets
+  // and cards are not chrome, so whatever is open stays fully visible.
+  useEffect(() => {
+    let timer: number | null = null;
+    const wake = () => {
+      document.body.removeAttribute("data-idle");
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(() => document.body.setAttribute("data-idle", "1"), 5000);
+    };
+    const events: (keyof WindowEventMap)[] = ["pointermove", "pointerdown", "touchstart", "keydown", "wheel"];
+    events.forEach((e) => window.addEventListener(e, wake, { passive: true }));
+    wake();
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, wake));
+      if (timer) window.clearTimeout(timer);
+      document.body.removeAttribute("data-idle");
+    };
+  }, []);
+
   async function handlePick(lng: number, lat: number) {
     // Trip-planning mode: every map tap is a new stop on the thread.
     if (tripDraft) {
@@ -178,6 +198,7 @@ export default function MapApp() {
             setMapMode("trips");
             setTripsOpen(true);
           }}
+          onOpenTopSpots={() => setTopSpotsOpen(true)}
         />
       )}
 
@@ -196,20 +217,6 @@ export default function MapApp() {
         </div>
       )}
       <BasemapToggle />
-
-      {/* Top spots in this area */}
-      {!tripDraft && mapMode === "pins" && (
-      <button
-        onClick={() => setTopSpotsOpen(true)}
-        className="fixed z-30 flex items-center gap-1.5 rounded-full bg-paper/90 px-4 py-2.5 text-sm font-medium shadow-float backdrop-blur transition-colors hover:bg-paper max-sm:bottom-[calc(1rem+env(safe-area-inset-bottom))] max-sm:left-1/2 max-sm:-translate-x-1/2 max-sm:px-3 max-sm:py-2 sm:bottom-6 sm:left-1/2 sm:-translate-x-1/2"
-      >
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="text-accent">
-          <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
-          <path d="M18.5 13c.6 2 1.3 2.9 3 3.2-1.7.3-2.4 1.2-3 3.2-.6-2-1.3-2.9-3-3.2 1.7-.3 2.4-1.2 3-3.2z" fill="currentColor" opacity=".7" />
-        </svg>
-        Top spots
-      </button>
-      )}
 
       {tripDraft && <TripDraftBar />}
 

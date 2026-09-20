@@ -106,7 +106,7 @@ export default function TopBar({
 
   return (
     <>
-    <header className="fixed inset-x-0 top-0 z-30 flex items-start gap-1.5 p-2 sm:gap-3 sm:p-4">
+    <header className="wp-chrome fixed inset-x-0 top-0 z-30 flex items-start gap-1.5 p-2 sm:gap-3 sm:p-4">
       {/* Brand — on desktop the side groups share flex-1/basis-0 so the search
           stays truly centered; on phones they collapse so search gets the room */}
       <div className="flex min-w-0 shrink-0 justify-start sm:flex-1 sm:basis-0">
@@ -249,7 +249,7 @@ export default function TopBar({
 
     {/* Focus floats above the add-pin FAB on every breakpoint — Trips lives
         with Travelers in the left column now. */}
-    <div className="fixed z-30 flex flex-col items-center gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:right-[18px] sm:bottom-24 sm:right-4 sm:w-14">
+    <div className="wp-chrome fixed z-30 flex flex-col items-center gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:right-[18px] sm:bottom-24 sm:right-4 sm:w-14">
       <BriefHereButton bubbleLeft />
       <FocusButton bubbleLeft />
     </div>

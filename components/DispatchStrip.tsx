@@ -15,7 +15,7 @@ export default function DispatchStrip({ onOpen }: { onOpen: (userId: string) => 
   if (groups.length === 0) return null;
   return (
     <div
-      className="fixed left-1/2 top-[60px] z-20 flex max-w-[92vw] -translate-x-1/2 items-center gap-2 overflow-x-auto rounded-full bg-paper/80 px-2.5 py-1.5 shadow-float backdrop-blur no-scrollbar sm:top-[80px]"
+      className="wp-chrome fixed left-1/2 top-[60px] z-20 flex max-w-[92vw] -translate-x-1/2 items-center gap-2 overflow-x-auto rounded-full bg-paper/80 px-2.5 py-1.5 shadow-float backdrop-blur no-scrollbar sm:top-[80px]"
       data-testid="dispatch-strip"
       aria-label="Live dispatches"
     >

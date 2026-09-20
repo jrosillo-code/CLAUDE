@@ -60,7 +60,11 @@ export default function GuidedStart() {
 
   useEffect(() => {
     try {
-      setDismissed(window.localStorage.getItem(DISMISS_KEY) === "1");
+      // Three sessions is plenty for a first-use checklist; after that it
+      // stays out of the way (the steps still complete themselves).
+      const sessions = Number(window.localStorage.getItem("wp-sessions") ?? "0") + 1;
+      window.localStorage.setItem("wp-sessions", String(sessions));
+      setDismissed(window.localStorage.getItem(DISMISS_KEY) === "1" || sessions > 3);
     } catch {
       setDismissed(false);
     }
@@ -96,7 +100,7 @@ export default function GuidedStart() {
         onClick={() => setOpen(true)}
         // Phones: centred, clear of the left rail (which step 1 tells you to use)
         // and of the right-hand FAB. Desktop keeps the left margin.
-        className="fixed z-40 flex items-center gap-2 rounded-full bg-paper/95 px-3.5 py-2 text-xs font-semibold shadow-float backdrop-blur max-sm:bottom-[calc(3.9rem+env(safe-area-inset-bottom))] max-sm:left-1/2 max-sm:-translate-x-1/2 sm:bottom-20 sm:left-3"
+        className="wp-chrome fixed z-40 flex items-center gap-2 rounded-full bg-paper/95 px-3.5 py-2 text-xs font-semibold shadow-float backdrop-blur max-sm:bottom-[calc(3.9rem+env(safe-area-inset-bottom))] max-sm:left-1/2 max-sm:-translate-x-1/2 sm:bottom-20 sm:left-3"
       >
         <span className="grid h-4.5 min-w-4.5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-paper" style={{ height: 18, minWidth: 18 }}>
           {completed}
@@ -107,7 +111,7 @@ export default function GuidedStart() {
   }
 
   return (
-    <div className="fixed z-40 w-[min(88vw,320px)] rounded-3xl bg-paper/95 p-4 shadow-float backdrop-blur max-sm:bottom-[calc(3.9rem+env(safe-area-inset-bottom))] max-sm:left-1/2 max-sm:-translate-x-1/2 sm:bottom-20 sm:left-3">
+    <div className="wp-chrome fixed z-40 w-[min(88vw,320px)] rounded-3xl bg-paper/95 p-4 shadow-float backdrop-blur max-sm:bottom-[calc(3.9rem+env(safe-area-inset-bottom))] max-sm:left-1/2 max-sm:-translate-x-1/2 sm:bottom-20 sm:left-3">
       <div className="flex items-center justify-between gap-2">
         <h3 className="font-display text-lg">Getting started</h3>
         <div className="flex items-center gap-1">

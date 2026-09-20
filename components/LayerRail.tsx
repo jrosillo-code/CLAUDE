@@ -14,6 +14,7 @@ export default function LayerRail({
   onOpenCreators,
   onOpenTravelers,
   onOpenTrips,
+  onOpenTopSpots,
 }: {
   onOpenFriends: () => void;
   onOpenCreators: () => void;
@@ -21,6 +22,8 @@ export default function LayerRail({
   onOpenTravelers: () => void;
   /** Desktop: Trips sits right under the Travelers card. */
   onOpenTrips: () => void;
+  /** Top spots — the discovery sheet, in the rail instead of a floating pill. */
+  onOpenTopSpots: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const viewer = useViewer();
@@ -51,7 +54,7 @@ export default function LayerRail({
     [...follows].every((id) => activeUserIds!.has(id));
 
   return (
-    <div className={`fixed flex flex-col gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:left-[18px] sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-40" : "z-30"}`}>
+    <div className={`wp-chrome fixed flex flex-col gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:left-[18px] sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-40" : "z-30"}`}>
       <div className="max-sm:relative sm:w-[220px] sm:rounded-3xl sm:bg-paper/90 sm:p-2 sm:shadow-float sm:backdrop-blur">
         <button
           onClick={() =>
@@ -181,6 +184,21 @@ export default function LayerRail({
         </svg>
         {/* Same type treatment as the Travelers row above */}
         <span className="hidden font-display text-base text-ink sm:block">Trips</span>
+      </button>
+
+      {/* Top spots — third row of the same rail, so the bottom of the map
+          stays clear. */}
+      <button
+        onClick={onOpenTopSpots}
+        title="Top spots"
+        aria-label="Top spots"
+        className="flex items-center text-left rounded-full shadow-float backdrop-blur transition-colors max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:bg-paper/85 sm:w-[220px] sm:gap-2 sm:bg-paper/90 sm:py-2.5 sm:pl-5 sm:pr-4 sm:hover:bg-paper"
+      >
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="shrink-0 text-accent">
+          <path d="M12 2.5c1 3.4 2.2 5 5.5 5.5-3.3.5-4.5 2.1-5.5 5.5-1-3.4-2.2-5-5.5-5.5 3.3-.5 4.5-2.1 5.5-5.5z" fill="currentColor" />
+          <path d="M18.5 13c.6 2 1.3 2.9 3 3.2-1.7.3-2.4 1.2-3 3.2-.6-2-1.3-2.9-3-3.2 1.7-.3 2.4-1.2 3-3.2z" fill="currentColor" opacity=".7" />
+        </svg>
+        <span className="hidden font-display text-base text-ink sm:block">Top spots</span>
       </button>
     </div>
   );
