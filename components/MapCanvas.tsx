@@ -22,6 +22,7 @@ import { visibleTrips } from "@/lib/data";
 import { startFlyover } from "@/lib/flyover";
 import { createFlightRecorder } from "@/lib/recordFlight";
 import { createMeteorField } from "@/lib/meteors";
+import { skyPalette, skyVars } from "@/lib/skyTint";
 import { cancelFlightRender, renderFlightFilm } from "@/lib/renderFlight";
 import type { PinWithOwner, Trip, TripStop } from "@/lib/types";
 import { useMemo } from "react";
@@ -1203,8 +1204,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
       if (spaceModeRef.current === "stars") buildSpace();
     };
     window.addEventListener("resize", onResize);
+    const tint = window.setInterval(() => { if (spaceModeRef.current === "sun") applySkyTint(); }, 60_000);
     return () => {
       window.removeEventListener("resize", onResize);
+      window.clearInterval(tint);
       stopSunLoop();
       stopMeteorLoop();
     };
@@ -1477,6 +1480,14 @@ export default function MapCanvas({ placing, onPick }: Props) {
     return "sun";
   }
 
+  // Time-of-day tint for the daylight sky: peach → pale → amber, written as
+  // CSS variables on the host; refreshed every minute while the wash shows.
+  function applySkyTint() {
+    const host = spaceRef.current;
+    if (!host) return;
+    for (const [k, v] of Object.entries(skyVars(skyPalette(new Date())))) host.style.setProperty(k, v);
+  }
+
   // (Re)paint the overlay's content for the current mode. Cheap — runs only on
   // theme/basemap changes and on resize, never per frame.
   function buildSpace() {
@@ -1497,6 +1508,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       const sky2 = document.createElement("div");
       sky2.className = "wp-sky-2";
       host.replaceChildren(sky, sky2);
+      applySkyTint();
       return;
     }
     stopSunLoop();

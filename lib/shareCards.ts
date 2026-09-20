@@ -1,6 +1,6 @@
 // Share cards for the year recap, drawn entirely in canvas so they render
-// the same on every device: the Passport (a flat world with your countries
-// lit) as a PNG, and the Constellation (the profile's turning globe with
+// the same on every device: the Boarding Pass (your year as one travel
+// document) as a PNG, and the Constellation (the profile's turning globe with
 // your pins flicking on) as a short looping video — with a PNG still where
 // the browser cannot encode video.
 
@@ -40,6 +40,11 @@ export interface ShareData {
   visitedNames: Set<string>;
   features: GeoFeature[];
   stars: Star[];
+  /** The year's route in order, for the boarding pass. */
+  stops: { lat: number; lng: number; name: string }[];
+  landmarks: number;
+  topRated: string;
+  season: string;
 }
 
 let geoCache: { features: GeoFeature[] } | null = null;
@@ -56,9 +61,12 @@ export async function buildShareData(input: {
   name: string;
   handle: string;
   pins: { lat: number; lng: number; countryCode?: string; region?: string; placeName?: string; startedOn?: string; createdAt: string }[];
-  yearPins: { lat: number; lng: number }[];
+  yearPins: { lat: number; lng: number; placeName?: string }[];
   km: number;
   accent: string;
+  landmarks: number;
+  topRated: string;
+  season: string;
 }): Promise<ShareData> {
   const geo = await loadGeo();
   // one representative pin per country keeps the polygon lookups cheap
@@ -83,7 +91,16 @@ export async function buildShareData(input: {
     visitedNames: new Set(names.filter((n): n is string => !!n)),
     features: geo.features,
     stars: starsFromGeo(geo),
+    stops: input.yearPins.map((p) => ({ lat: p.lat, lng: p.lng, name: p.placeName ?? "" })),
+    landmarks: input.landmarks,
+    topRated: input.topRated,
+    season: input.season,
   };
+}
+
+function code3(name: string): string {
+  const s = (name || "").replace(/[^a-zA-Z]/g, "").toUpperCase();
+  return (s.slice(0, 3) || "···").padEnd(3, "·");
 }
 
 function hexA(hex: string, a: number): string {
@@ -109,138 +126,97 @@ export function downloadCanvas(c: HTMLCanvasElement, filename: string): void {
   a.click();
 }
 
-// ── 1 · Passport ───────────────────────────────────────────────────────────
-export function drawPassportCard(d: ShareData): HTMLCanvasElement {
+// ── 1 · Boarding Pass — your year as one travel document ──
+export function drawPassCard(d: ShareData): HTMLCanvasElement {
   const W = CARD_W, H = CARD_H;
   const c = document.createElement("canvas");
   c.width = W; c.height = H;
   const ctx = c.getContext("2d")!;
   const accent = d.accent;
-  const paper = "#efe9dc", card = "#f9f5ec", ink = "#17202e", faint = "#8f8672", line = "#d9d0bd";
+  const ink = "#17202e", faint = "#a99c82", paper = "#e9e2d3", card = "#f7f2e8";
+  const origin = d.stops[0]?.name ?? "";
+  const dest = d.stops[d.stops.length - 1]?.name ?? origin;
 
   ctx.fillStyle = paper; ctx.fillRect(0, 0, W, H);
+  // Ticket.
   ctx.save();
-  ctx.shadowColor = "rgba(40,30,10,.28)"; ctx.shadowBlur = 50; ctx.shadowOffsetY = 22;
-  roundRect(ctx, 56, 64, W - 112, H - 128, 36); ctx.fillStyle = card; ctx.fill();
+  ctx.shadowColor = "rgba(40,30,10,.35)"; ctx.shadowBlur = 50; ctx.shadowOffsetY = 24;
+  roundRect(ctx, 60, 70, 960, 1210, 34); ctx.fillStyle = card; ctx.fill();
   ctx.restore();
 
-  // Header
   ctx.textAlign = "left";
-  ctx.fillStyle = accent; ctx.font = `600 22px ${CARD_MONO}`; ctx.letterSpacing = "8px";
-  ctx.fillText("PASSPORT", 120, 152); ctx.letterSpacing = "0px";
+  ctx.fillStyle = ink; ctx.font = `600 40px ${CARD_SERIF}`;
+  ctx.fillText("Waypoint", 126, 190);
   ctx.textAlign = "right";
-  ctx.fillStyle = faint; ctx.font = `500 22px ${CARD_MONO}`; ctx.letterSpacing = "3px";
-  ctx.fillText(`WAYPOINT · ${d.year}`, W - 120, 152); ctx.letterSpacing = "0px";
+  ctx.fillStyle = accent; ctx.font = `500 22px ${CARD_MONO}`; ctx.letterSpacing = "3px";
+  ctx.fillText(`${d.year} · YEAR PASS`, 954, 188); ctx.letterSpacing = "0px";
+
+  // Route: origin ✈ destination.
   ctx.textAlign = "left";
-  ctx.fillStyle = ink; ctx.font = `600 64px ${CARD_SERIF}`;
-  ctx.fillText(d.name, 118, 236);
-  if (d.handle) { ctx.fillStyle = faint; ctx.font = `400 24px ${CARD_MONO}`; ctx.fillText(`@${d.handle}`, 120, 276); }
-
-  // The world: equirectangular, 85°N..57°S, visited countries in accent.
-  const mx = 120, my = 316, mw = W - 240, mh = Math.round((mw * 142) / 360);
-  ctx.save();
-  roundRect(ctx, mx, my, mw, mh, 18); ctx.clip();
-  ctx.fillStyle = "#e6dfcf"; ctx.fillRect(mx, my, mw, mh);
-  const px = (lng: number) => mx + ((lng + 180) / 360) * mw;
-  const py = (lat: number) => my + ((85 - lat) / 142) * mh;
-  for (const f of d.features) {
-    const name = f.properties?.name ?? "";
-    if (name === "Antarctica") continue;
-    const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates as number[][][]] : (f.geometry.coordinates as number[][][][]);
-    const hit = d.visitedNames.has(name);
-    ctx.beginPath();
-    for (const poly of polys) {
-      const ring = poly[0] ?? [];
-      if (!ring.length) continue;
-      const lngs: number[] = [ring[0][0]];
-      for (let i = 1; i < ring.length; i++) {
-        let l = ring[i][0];
-        while (l - lngs[i - 1] > 180) l -= 360;
-        while (l - lngs[i - 1] < -180) l += 360;
-        lngs.push(l);
-      }
-      const offsets = [0];
-      if (Math.max(...lngs) > 180) offsets.push(-360);
-      if (Math.min(...lngs) < -180) offsets.push(360);
-      for (const off of offsets) {
-        for (let i = 0; i < ring.length; i++) {
-          const x = px(lngs[i] + off), y = py(ring[i][1]);
-          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-      }
-    }
-    ctx.fillStyle = hit ? accent : "#c9c0ab";
-    ctx.globalAlpha = hit ? 0.95 : 0.55;
-    ctx.fill();
-    ctx.globalAlpha = 1;
-    ctx.strokeStyle = card; ctx.lineWidth = 0.8; ctx.stroke();
-  }
-  // pins as small stamps
-  for (const p of d.pins) {
-    const x = px(p.lng), y = py(p.lat);
-    ctx.beginPath(); ctx.arc(x, y, 5.5, 0, Math.PI * 2); ctx.fillStyle = card; ctx.fill();
-    ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2); ctx.fillStyle = ink; ctx.fill();
-  }
-  ctx.restore();
-  ctx.strokeStyle = line; ctx.lineWidth = 2; roundRect(ctx, mx, my, mw, mh, 18); ctx.stroke();
-
-  // Tally strip
-  const ps = d.passport;
-  const cells: [string, string][] = [
-    [`${ps.continentsVisited}/${ps.continentsTotal}`, "CONTINENTS"],
-    [`${ps.codes.length}/${ps.countriesTotal}`, "COUNTRIES"],
-    [String(ps.regions), "REGIONS"],
-    [String(ps.cities), "CITIES"],
-  ];
-  const ty = my + mh + 96;
-  const cw = mw / cells.length;
+  ctx.fillStyle = ink; ctx.font = `700 116px ${CARD_SERIF}`;
+  ctx.fillText(code3(origin), 126, 410);
+  ctx.font = `400 22px ${CARD_MONO}`; ctx.fillStyle = faint;
+  ctx.fillText(origin, 128, 456);
+  ctx.textAlign = "right";
+  ctx.fillStyle = ink; ctx.font = `700 116px ${CARD_SERIF}`;
+  ctx.fillText(code3(dest), 954, 410);
+  ctx.font = `400 22px ${CARD_MONO}`; ctx.fillStyle = faint;
+  ctx.fillText(dest, 952, 456);
   ctx.textAlign = "center";
-  cells.forEach((cell, i) => {
-    const cx = mx + cw * i + cw / 2;
-    ctx.fillStyle = ink; ctx.font = `700 54px ${CARD_SERIF}`;
-    ctx.fillText(cell[0], cx, ty);
-    ctx.fillStyle = faint; ctx.font = `500 18px ${CARD_MONO}`; ctx.letterSpacing = "3px";
-    ctx.fillText(cell[1], cx + 1.5, ty + 36); ctx.letterSpacing = "0px";
-    if (i > 0) { ctx.strokeStyle = line; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(mx + cw * i, ty - 50); ctx.lineTo(mx + cw * i, ty + 44); ctx.stroke(); }
-  });
+  ctx.fillStyle = accent; ctx.font = "64px serif";
+  ctx.fillText("✈", 540, 392);
 
-  // World coverage ring + continent bars
-  const ry = ty + 140;
-  const pct = ps.coveragePct;
-  ctx.beginPath(); ctx.arc(190, ry + 40, 52, 0, Math.PI * 2); ctx.strokeStyle = line; ctx.lineWidth = 12; ctx.stroke();
-  ctx.beginPath(); ctx.arc(190, ry + 40, 52, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct); ctx.strokeStyle = accent; ctx.lineCap = "round"; ctx.stroke();
-  ctx.textAlign = "center"; ctx.fillStyle = ink; ctx.font = `700 26px ${CARD_SANS}`;
-  ctx.fillText(`${Math.round(pct * 1000) / 10}%`, 190, ry + 49);
+  // Field grid.
+  const field = (label: string, value: string, x: number, y: number) => {
+    ctx.textAlign = "left";
+    ctx.fillStyle = faint; ctx.font = `400 19px ${CARD_MONO}`; ctx.letterSpacing = "2px";
+    ctx.fillText(label, x, y); ctx.letterSpacing = "0px";
+    ctx.fillStyle = ink; ctx.font = `600 42px ${CARD_SERIF}`;
+    ctx.fillText(value, x, y + 56);
+  };
+  field("PLACES", String(d.places), 126, 588);
+  field("COUNTRIES", String(d.countries).padStart(2, "0"), 470, 588);
+  field("DISTANCE", d.km.toLocaleString(), 814, 588);
+  field("LANDMARKS", String(d.landmarks), 126, 728);
+  field("TOP RATED", d.topRated, 470, 728);
+  field("SEASON", d.season, 814, 728);
+
+  // Traveler.
   ctx.textAlign = "left";
-  ctx.fillStyle = ink; ctx.font = `500 34px ${CARD_SERIF}`; ctx.fillText("World coverage", 270, ry + 30);
-  ctx.fillStyle = faint; ctx.font = `400 22px ${CARD_MONO}`; ctx.fillText(`${ps.codes.length} of ${ps.countriesTotal} countries`, 270, ry + 66);
+  ctx.fillStyle = faint; ctx.font = `400 19px ${CARD_MONO}`; ctx.letterSpacing = "2px";
+  ctx.fillText("TRAVELER", 126, 862); ctx.letterSpacing = "0px";
+  ctx.fillStyle = ink; ctx.font = `500 56px ${CARD_SERIF}`;
+  ctx.fillText(d.name, 126, 922);
 
-  let by = ry + 150;
-  const rows = ps.perContinent.slice(0, 4);
-  for (const r of rows) {
-    ctx.fillStyle = r.visited > 0 ? ink : faint; ctx.font = `500 24px ${CARD_SANS}`; ctx.textAlign = "left";
-    ctx.fillText(r.label, 120, by);
-    ctx.textAlign = "right"; ctx.fillStyle = faint; ctx.font = `500 20px ${CARD_MONO}`;
-    ctx.fillText(`${r.visited}/${r.total}`, W - 120, by);
-    roundRect(ctx, 120, by + 14, mw, 10, 5); ctx.fillStyle = line; ctx.fill();
-    const wpct = Math.max(r.visited > 0 ? 0.02 : 0, r.pct);
-    if (wpct > 0) { roundRect(ctx, 120, by + 14, mw * wpct, 10, 5); ctx.fillStyle = accent; ctx.fill(); }
-    by += 62;
+  // Perforated stub edge.
+  ctx.strokeStyle = "#cdbfa4"; ctx.lineWidth = 3; ctx.setLineDash([16, 14]);
+  ctx.beginPath(); ctx.moveTo(90, 1000); ctx.lineTo(990, 1000); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = paper;
+  ctx.beginPath(); ctx.arc(60, 1000, 28, 0, 7); ctx.fill();
+  ctx.beginPath(); ctx.arc(1020, 1000, 28, 0, 7); ctx.fill();
+
+  // Barcode.
+  let bx = 126;
+  const widths = [4, 3, 6, 2, 5, 3, 4, 2, 6, 3, 5, 2, 4, 3, 5, 6, 2, 4];
+  let wi = 0;
+  while (bx < 954) {
+    const w = widths[wi % widths.length];
+    ctx.fillStyle = ink;
+    ctx.fillRect(bx, 1050, w, 120);
+    bx += w + (widths[(wi + 3) % widths.length]);
+    wi++;
   }
 
-  // Footer: first / latest stamps
-  ctx.textAlign = "left";
-  if (ps.first) {
-    const fmt = (iso: string) => new Date(iso).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" });
-    ctx.fillStyle = faint; ctx.font = `500 18px ${CARD_MONO}`; ctx.letterSpacing = "3px";
-    ctx.fillText("FIRST STAMP", 120, H - 150); ctx.fillText("LATEST STAMP", 560, H - 150); ctx.letterSpacing = "0px";
-    ctx.fillStyle = ink; ctx.font = `600 30px ${CARD_SERIF}`;
-    ctx.fillText(fmt(ps.first.date), 120, H - 108);
-    ctx.fillText(ps.latest ? fmt(ps.latest.date) : "—", 560, H - 108);
-  }
+  // Segment list.
+  ctx.textAlign = "center";
+  ctx.fillStyle = faint; ctx.font = `400 22px ${CARD_MONO}`; ctx.letterSpacing = "3px";
+  const segs = d.stops.map((s) => code3(s.name)).join(" · ");
+  ctx.fillText(segs.length > 46 ? segs.slice(0, 44) + "…" : segs, 540, 1236);
+  ctx.letterSpacing = "0px";
   return c;
 }
+
 
 // ── 2 · Constellation ──────────────────────────────────────────────────────
 // The profile's globe, as it turns: coast stars in white on deep space,

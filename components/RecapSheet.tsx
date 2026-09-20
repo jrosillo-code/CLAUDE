@@ -7,7 +7,7 @@ import { useState } from "react";
 import { LANDMARKS } from "@/lib/landmarks";
 import { coverUrl } from "@/lib/data";
 import type { Pin } from "@/lib/types";
-import { buildShareData, drawPassportCard, drawConstellationStill, renderConstellationVideo, downloadCanvas } from "@/lib/shareCards";
+import { buildShareData, drawPassCard, drawConstellationStill, renderConstellationVideo, downloadCanvas } from "@/lib/shareCards";
 import { downloadBlob } from "@/lib/recordFlight";
 
 // Year in travel: a Wrapped-style recap computed from your own pins, with a
@@ -55,6 +55,10 @@ export default function RecapSheet({ onClose }: { onClose: () => void }) {
     const accentRaw = getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim();
     const accent = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(accentRaw) ? accentRaw : "#c65d3b";
     setCardState({ phase: "building", progress: 0 });
+    const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const season = scope.length > 0
+      ? `${MONTHS[new Date(scope[0].startedOn ?? scope[0].createdAt).getMonth()]}–${MONTHS[new Date(scope[scope.length - 1].startedOn ?? scope[scope.length - 1].createdAt).getMonth()]}`
+      : "—";
     try {
       const data = await buildShareData({
         year,
@@ -64,8 +68,11 @@ export default function RecapSheet({ onClose }: { onClose: () => void }) {
         yearPins: scope,
         km,
         accent,
+        landmarks: landmarksVisited.length,
+        topRated: topRated?.placeName ?? "—",
+        season,
       });
-      downloadCanvas(drawPassportCard(data), `waypoint-${year}-passport.png`);
+      downloadCanvas(drawPassCard(data), `waypoint-${year}-boarding-pass.png`);
       setCardState({ phase: "video", progress: 0 });
       const video = await renderConstellationVideo(data, (f) => setCardState({ phase: "video", progress: f }));
       // Stagger the second save: some browsers drop back-to-back downloads.
@@ -146,7 +153,7 @@ export default function RecapSheet({ onClose }: { onClose: () => void }) {
               data-testid="download-cards"
             >
               {cardState.phase === "building"
-                ? "Drawing your passport…"
+                ? "Printing your boarding pass…"
                 : cardState.phase === "video"
                   ? `Filming the constellation… ${Math.round(cardState.progress * 100)}%`
                   : cardState.phase === "done"
@@ -154,7 +161,7 @@ export default function RecapSheet({ onClose }: { onClose: () => void }) {
                     : "Download share cards ↓"}
             </button>
             <p className="mt-1.5 text-center text-xs text-ink-3">
-              Two cards — your Passport, and the Constellation: your globe turning, pins flicking on, as a short video.
+              Two cards — your boarding pass, and the Constellation: your globe turning, pins flicking on, as a short video.
             </p>
           </>
         )}
