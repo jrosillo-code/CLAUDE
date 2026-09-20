@@ -12,7 +12,7 @@ g.window = {
   addEventListener: () => {},
   setTimeout: (fn: () => void, ms: number) => setTimeout(fn, ms),
   clearTimeout: (t: NodeJS.Timeout) => clearTimeout(t),
-  location: { pathname: "/test" },
+  location: { pathname: "/test", hash: "", search: "", href: "http://localhost/test", origin: "http://localhost", host: "localhost" },
 };
 // Node has a read-only navigator getter; define over it.
 Object.defineProperty(globalThis, "navigator", { value: { onLine: true, userAgent: "test" }, configurable: true, writable: true });

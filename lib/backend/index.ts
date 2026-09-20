@@ -18,3 +18,5 @@ export * from "./trips";
 export * from "./profile";
 export * from "./fieldbrief";
 export { resumeOutbox, pendingWrites, drain as drainOutbox } from "./outbox";
+export { patchFor, fetchPin } from "./live";
+export type { LiveChange, LivePatch } from "./live";

@@ -335,6 +335,8 @@ interface WaypointState {
   // ── Friends ──
   /** Send a friend request from the viewer to another traveler. */
   sendFriendRequest: (userId: string) => void;
+  /** Apply a realtime patch (see lib/backend/live.ts). */
+  applyLivePatch: (patch: backend.LivePatch) => void;
 
   // ── Trust ──
   /** People you have blocked: their pins never show, they never see yours. */
@@ -461,38 +463,57 @@ export const useStore = create<WaypointState>((set, get) => ({
         backend.resumeOutbox();
 
         // Realtime: likes, friend requests, and fresh pins land without a
-        // reload — any relevant server change reloads the world (debounced).
+        // reload. Events are collected for a moment, then turned into one
+        // patch (a pin refetched as the viewer, a like count, the
+        // friendships, a notification); only a change the patch cannot
+        // express falls back to reloading the world.
+        const fullReload = async () => {
+          const w = await backend.loadWorld(userId);
+          if (!w || get().viewerId !== userId) return;
+          const counts = await backend.withTimeout(
+            backend.loadCitationCounts(),
+            backend.LOAD_TIMEOUT_MS,
+            {} as Record<string, number>,
+            "loadCitationCounts"
+          );
+          set({
+            citationCounts: counts,
+            users: w.users,
+            pins: w.pins,
+            friendships: w.friendships,
+            trips: w.trips,
+            reflections: w.reflections,
+            scoutNotes: w.scoutNotes,
+            fieldReports: w.fieldReports,
+            topPlaces: w.topPlaces,
+            likeCounts: w.likeCounts,
+            likedPinIds: w.likedPinIds,
+            savedPinIds: w.savedPinIds,
+            follows: w.follows,
+            blockedIds: w.blockedIds,
+            notifications: w.notifications,
+          });
+        };
+        let pending: backend.LiveChange[] = [];
         unsubscribeRealtime?.();
-        unsubscribeRealtime = backend.subscribeRealtime(userId, () => {
+        unsubscribeRealtime = backend.subscribeRealtime(userId, (change) => {
+          pending.push(change);
           if (realtimeTimer) clearTimeout(realtimeTimer);
           realtimeTimer = setTimeout(async () => {
             realtimeTimer = null;
-            const w = await backend.loadWorld(userId);
-            if (!w || get().viewerId !== userId) return;
-            const counts = await backend.withTimeout(
-              backend.loadCitationCounts(),
-              backend.LOAD_TIMEOUT_MS,
-              {} as Record<string, number>,
-              "loadCitationCounts"
-            );
-            set({
-              citationCounts: counts,
-              users: w.users,
-              pins: w.pins,
-              friendships: w.friendships,
-              trips: w.trips,
-              reflections: w.reflections,
-              scoutNotes: w.scoutNotes,
-              fieldReports: w.fieldReports,
-              topPlaces: w.topPlaces,
-              likeCounts: w.likeCounts,
-              likedPinIds: w.likedPinIds,
-              savedPinIds: w.savedPinIds,
-              follows: w.follows,
-              blockedIds: w.blockedIds,
-              notifications: w.notifications,
-            });
-          }, 700);
+            const batch = pending;
+            pending = [];
+            let patch: backend.LivePatch | "reload";
+            try {
+              patch = await backend.patchFor(batch, userId);
+            } catch (e) {
+              console.warn("[waypoint] realtime patch failed; reloading the world", e);
+              patch = "reload";
+            }
+            if (get().viewerId !== userId) return;
+            if (patch === "reload") return fullReload();
+            get().applyLivePatch(patch);
+          }, 300);
         });
       };
       // The loading screen is shown until sessionReady flips, so EVERY path
@@ -1240,6 +1261,29 @@ export const useStore = create<WaypointState>((set, get) => ({
             : p
         ),
       };
+    }),
+
+  applyLivePatch: (patch) =>
+    set((s) => {
+      const next: Partial<WaypointState> = {};
+      if (patch.upsertPins || patch.removePinIds) {
+        const remove = new Set(patch.removePinIds ?? []);
+        const byId = new Map((patch.upsertPins ?? []).map((p) => [p.id, p]));
+        const pins = s.pins.filter((p) => !remove.has(p.id)).map((p) => byId.get(p.id) ?? p);
+        for (const p of byId.values()) if (!pins.some((x) => x.id === p.id)) pins.push(p);
+        next.pins = pins;
+        if (s.selectedPinId && remove.has(s.selectedPinId)) next.selectedPinId = null;
+      }
+      if (patch.likeCounts) next.likeCounts = { ...s.likeCounts, ...patch.likeCounts };
+      if (patch.friendships) next.friendships = patch.friendships;
+      if (patch.trips) next.trips = patch.trips;
+      if (patch.reflections) next.reflections = patch.reflections;
+      if (patch.notifications?.length) {
+        const known = new Map(s.notifications.map((n) => [n.id, n]));
+        for (const n of patch.notifications) known.set(n.id, n);
+        next.notifications = [...known.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 50);
+      }
+      return next;
     }),
 
   blockedIds: new Set(),

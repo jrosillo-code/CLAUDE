@@ -101,7 +101,8 @@ declare t text;
 begin
   foreach t in array array[
     'notifications', 'friendships', 'pins', 'pin_likes',
-    'trips', 'trip_reflections', 'reflection_answers'
+    'trips', 'trip_reflections', 'reflection_answers',
+    'pin_photos', 'blocks' -- 0024
   ] loop
     perform ok(
       exists (select 1 from pg_publication_tables

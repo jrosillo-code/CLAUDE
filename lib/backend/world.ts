@@ -6,8 +6,9 @@
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { debugLoggingEnabled } from "../env";
 import { sb, log, withTimeout, LOAD_TIMEOUT_MS } from "./core";
-import { toUser, toPin, toReflection, signPinMedia, hash, FALLBACK_COLORS, type UserRow, type PinRow, type FriendshipRow, type TripRow, type ReflectionRow, type ScoutNoteRow, type FieldReportRow } from "./rows";
-import type { AppNotification, FieldReport, Friendship, Pin, ScoutNote, Trip, TripReflection, TripStop, User } from "../types";
+import { toUser, toPin, toReflection, toTrip, toFriendship, toNotification, signPinMedia, hash, FALLBACK_COLORS, type UserRow, type PinRow, type FriendshipRow, type TripRow, type ReflectionRow, type ScoutNoteRow, type FieldReportRow, type NotificationRow } from "./rows";
+import type { AppNotification, FieldReport, Friendship, Pin, ScoutNote, Trip, TripReflection, User } from "../types";
+import type { LiveChange } from "./live";
 
 // ── world load ─────────────────────────────────────────────────────────────
 
@@ -98,23 +99,8 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
     return {
       users: ((usersQ.data ?? []) as unknown as UserRow[]).map(toUser),
       pins,
-      friendships: ((friendsQ.data ?? []) as unknown as FriendshipRow[]).map((f) => ({
-        userA: f.user_a,
-        userB: f.user_b,
-        status: f.status,
-        requestedBy: f.requested_by,
-      })),
-      trips: ((tripsQ.data ?? []) as unknown as TripRow[]).map((t) => ({
-        id: t.id,
-        userId: t.user_id,
-        title: t.title,
-        visibility: t.visibility,
-        createdAt: t.created_at ?? new Date().toISOString(),
-        completedOn: t.completed_on ?? undefined,
-        stops: (t.trip_stops ?? [])
-          .sort((a, b) => a.sort_order - b.sort_order)
-          .map((s): TripStop => ({ id: s.id, lng: s.lng ?? 0, lat: s.lat ?? 0, placeName: s.place_name ?? "" })),
-      })),
+      friendships: ((friendsQ.data ?? []) as unknown as FriendshipRow[]).map(toFriendship),
+      trips: ((tripsQ.data ?? []) as unknown as TripRow[]).map(toTrip),
       reflections: ((reflQ.data ?? []) as unknown as ReflectionRow[]).map(toReflection),
       scoutNotes: ((scoutQ.data ?? []) as unknown as ScoutNoteRow[]).map((n) => ({
         pinId: n.pin_id,
@@ -143,16 +129,7 @@ async function loadWorldInner(viewerId: string): Promise<World | null> {
       likedPinIds: new Set((likesQ.data ?? []).map((r) => r.pin_id as string)),
       savedPinIds: new Set((savesQ.data ?? []).map((r) => r.pin_id as string)),
       follows: new Set((followsQ.data ?? []).map((r) => r.creator_id as string)),
-      notifications: ((notifQ.data ?? []) as { id: string; type: AppNotification["type"]; actor_id: string; pin_id: string | null; read: boolean; created_at: string }[]).map(
-        (n) => ({
-          id: n.id,
-          type: n.type,
-          actorId: n.actor_id,
-          pinId: n.pin_id ?? undefined,
-          read: n.read,
-          createdAt: n.created_at,
-        })
-      ),
+      notifications: ((notifQ.data ?? []) as unknown as NotificationRow[]).map(toNotification),
       topPlaces: ((topQ.data ?? []) as { user_id: string; rank: number; pin_id: string; blurb: string | null }[]).map((t) => ({
         userId: t.user_id,
         rank: t.rank,
@@ -189,7 +166,7 @@ export async function ensureProfile(userId: string, email: string | undefined): 
 }
 
 
-export function subscribeRealtime(viewerId: string, onWorldChange: () => void): () => void {
+export function subscribeRealtime(viewerId: string, onChange: (change: LiveChange) => void): () => void {
   const sbc = sb();
   // Order matters: realtime binds each postgres_changes listener with the
   // claims the socket holds AT SUBSCRIBE TIME. Joining as anon and calling
@@ -203,20 +180,16 @@ export function subscribeRealtime(viewerId: string, onWorldChange: () => void): 
     const token = data.session?.access_token;
     if (token) sbc.realtime.setAuth(token);
     const tap = (label: string) => (payload: unknown) => {
-      if (debugLoggingEnabled)
-        console.info(`[waypoint] realtime event: ${label}`, payload && (payload as { eventType?: string }).eventType);
-      onWorldChange();
+      const p = payload as { eventType?: LiveChange["type"]; new?: Record<string, unknown>; old?: Record<string, unknown> };
+      if (debugLoggingEnabled) console.info(`[waypoint] realtime event: ${label}`, p?.eventType);
+      onChange({ table: label, type: p?.eventType ?? "UPDATE", new: p?.new && Object.keys(p.new).length ? p.new : null, old: p?.old && Object.keys(p.old).length ? p.old : null });
     };
-    // Reflections ride the same coarse-but-correct pattern as everything
-    // else: the payload is never rendered — any event triggers a debounced
-    // world reload AS THE VIEWER, so restrictions apply on arrival exactly
-    // like on a fresh load. Supabase filters events per-subscriber through
-    // RLS, so a draft or a stranger's private debrief never even emits to
-    // us; and because the reload recomputes every trust surface from
-    // scratch, tightened visibility / unfriending / deletions REMOVE
-    // evidence as promptly as additions appear. The debounce (700 ms in
-    // store.ts) collapses event bursts into one fetch — no duplicate rows,
-    // and analytics stay deduped by trackOnce independent of reloads.
+    // The payload is never rendered as-is: the store turns each event into a
+    // refetch AS THE VIEWER (see live.ts), so row-level security applies on
+    // arrival exactly like on a fresh load — a tightened visibility or an
+    // unfriending removes a pin as promptly as a new one appears. Supabase
+    // already filters events per subscriber through RLS, so a stranger's
+    // private row never even emits to us.
     ch = sbc
       .channel(`wp-live-${viewerId}`)
       .on(
@@ -227,6 +200,8 @@ export function subscribeRealtime(viewerId: string, onWorldChange: () => void): 
       .on("postgres_changes", { event: "*", schema: "public", table: "friendships" }, tap("friendships"))
       .on("postgres_changes", { event: "*", schema: "public", table: "pins" }, tap("pins"))
       .on("postgres_changes", { event: "*", schema: "public", table: "pin_likes" }, tap("pin_likes"))
+      .on("postgres_changes", { event: "*", schema: "public", table: "pin_photos" }, tap("pin_photos"))
+      .on("postgres_changes", { event: "*", schema: "public", table: "blocks" }, tap("blocks"))
       .on("postgres_changes", { event: "*", schema: "public", table: "trips" }, tap("trips"))
       .on(
         "postgres_changes",

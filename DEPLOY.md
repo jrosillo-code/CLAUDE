@@ -14,7 +14,7 @@ site is a PWA; phones install it from the browser).
    migration can never be missed later:
    - **CLI (preferred)**: `supabase link --project-ref <your-ref> && supabase db push`
    - **Dashboard (fallback)**: SQL Editor → paste each file in
-     `supabase/migrations/` **in order, 0001 through 0023** → Run. If you go
+     `supabase/migrations/` **in order, 0001 through 0024** → Run. If you go
      this way, re-check the folder after every deploy for new files.
    This creates the schema, PostGIS, row-level security (privacy is enforced
    server-side), the auto-profile-on-signup trigger, and the `avatars` /

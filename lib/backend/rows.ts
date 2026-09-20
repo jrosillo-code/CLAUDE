@@ -4,7 +4,7 @@
 // private-media helpers that turn stored paths into signed URLs.
 
 import { sb, log } from "./core";
-import type { ActivitySlug, FieldReport, Pin, ScoutNote, TripReflection, User, UserSocials, Visibility, InterviewQuestionId } from "../types";
+import type { ActivitySlug, AppNotification, FieldReport, Friendship, Pin, ScoutNote, Trip, TripReflection, TripStop, User, UserSocials, Visibility, InterviewQuestionId } from "../types";
 
 // ── row shapes ─────────────────────────────────────────────────────────────
 
@@ -221,3 +221,35 @@ export function pair(a: string, b: string): { user_a: string; user_b: string } {
   return a < b ? { user_a: a, user_b: b } : { user_a: b, user_b: a };
 }
 
+
+export interface NotificationRow {
+  id: string;
+  user_id: string;
+  type: AppNotification["type"];
+  actor_id: string;
+  pin_id: string | null;
+  read: boolean;
+  created_at: string;
+}
+
+export function toFriendship(f: FriendshipRow): Friendship {
+  return { userA: f.user_a, userB: f.user_b, status: f.status, requestedBy: f.requested_by };
+}
+
+export function toTrip(t: TripRow): Trip {
+  return {
+    id: t.id,
+    userId: t.user_id,
+    title: t.title,
+    visibility: t.visibility,
+    createdAt: t.created_at ?? new Date().toISOString(),
+    completedOn: t.completed_on ?? undefined,
+    stops: (t.trip_stops ?? [])
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map((s): TripStop => ({ id: s.id, lng: s.lng ?? 0, lat: s.lat ?? 0, placeName: s.place_name ?? "" })),
+  };
+}
+
+export function toNotification(n: NotificationRow): AppNotification {
+  return { id: n.id, type: n.type, actorId: n.actor_id, pinId: n.pin_id ?? undefined, read: n.read, createdAt: n.created_at };
+}
