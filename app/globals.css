@@ -332,6 +332,48 @@ body {
   animation: wp-sky-breathe 20s ease-in-out -9s infinite;
   mix-blend-mode: multiply;
 }
+/* Cloud drift: two very faint, blurred bands of cloud crossing the daylight
+   sky behind the globe at different speeds. Each band is a row of soft
+   white blobs twice the viewport wide, so the loop never shows a seam. */
+.wp-cloud {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  pointer-events: none;
+  filter: blur(22px);
+  will-change: transform;
+}
+.wp-cloud-a {
+  opacity: 0.5;
+  background:
+    radial-gradient(ellipse 18% 9% at 8% 22%, rgba(255,255,255,.95), transparent 70%),
+    radial-gradient(ellipse 26% 11% at 22% 30%, rgba(255,255,255,.85), transparent 70%),
+    radial-gradient(ellipse 20% 8% at 41% 18%, rgba(255,255,255,.9), transparent 70%),
+    radial-gradient(ellipse 30% 12% at 62% 26%, rgba(255,255,255,.8), transparent 70%),
+    radial-gradient(ellipse 18% 8% at 80% 16%, rgba(255,255,255,.9), transparent 70%),
+    radial-gradient(ellipse 24% 10% at 93% 28%, rgba(255,255,255,.85), transparent 70%);
+  animation: wp-cloud-drift 150s linear infinite;
+}
+.wp-cloud-b {
+  opacity: 0.35;
+  background:
+    radial-gradient(ellipse 24% 10% at 14% 68%, rgba(255,255,255,.9), transparent 70%),
+    radial-gradient(ellipse 18% 8% at 33% 76%, rgba(255,255,255,.85), transparent 70%),
+    radial-gradient(ellipse 28% 11% at 55% 70%, rgba(255,255,255,.8), transparent 70%),
+    radial-gradient(ellipse 20% 9% at 74% 80%, rgba(255,255,255,.9), transparent 70%),
+    radial-gradient(ellipse 26% 10% at 90% 66%, rgba(255,255,255,.85), transparent 70%);
+  animation: wp-cloud-drift 230s linear infinite reverse;
+}
+@keyframes wp-cloud-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp-cloud { animation: none; }
+}
+
 @keyframes wp-sky-breathe {
   0%, 100% { opacity: 0.55; }
   50% { opacity: 1; }

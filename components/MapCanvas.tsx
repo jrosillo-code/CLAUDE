@@ -1506,7 +1506,11 @@ export default function MapCanvas({ placing, onPick }: Props) {
       sky.className = "wp-sky";
       const sky2 = document.createElement("div");
       sky2.className = "wp-sky-2";
-      host.replaceChildren(sky, sky2);
+      const cloudA = document.createElement("div");
+      cloudA.className = "wp-cloud wp-cloud-a";
+      const cloudB = document.createElement("div");
+      cloudB.className = "wp-cloud wp-cloud-b";
+      host.replaceChildren(sky, cloudB, sky2, cloudA);
       applySkyTint();
       return;
     }
