@@ -143,6 +143,9 @@ export default function TopBar({
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
             </button>
           )}
+          {/* The field brief lives at the right end of the search: it glows
+              after a search, so this is where the next tap is. */}
+          <BriefHereButton compact />
         </div>
         {open && q.trim().length >= 2 && (
           <ul className="absolute z-10 mt-2 max-h-[55dvh] w-full overflow-y-auto rounded-2xl bg-paper shadow-float max-sm:fixed max-sm:inset-x-2 max-sm:top-[52px] max-sm:mt-0 max-sm:w-auto">
@@ -213,29 +216,34 @@ export default function TopBar({
           )}
         </button>
 
-        {/* Activity bell */}
-        <button
-          onClick={onOpenActivity}
-          className="relative grid h-9 w-9 place-items-center rounded-full bg-paper/85 shadow-float backdrop-blur"
-          title="Activity"
-          aria-label="Activity"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M12 3.5a6 6 0 0 0-6 6v3.2l-1.6 2.9a.8.8 0 0 0 .7 1.2h13.8a.8.8 0 0 0 .7-1.2L18 12.7V9.5a6 6 0 0 0-6-6zM10 19.5a2 2 0 0 0 4 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          {unread > 0 && (
-            <span className="absolute -right-0.5 -top-0.5 grid h-4.5 min-w-4.5 place-items-center rounded-full bg-accent px-1 text-[9px] font-bold text-paper" style={{ height: 18, minWidth: 18 }}>
-              {unread}
-            </span>
-          )}
-        </button>
+        {/* Activity bell — only while something is unread; the count sits on
+            the avatar so the bar stays quiet the rest of the time. */}
+        {unread > 0 && (
+          <button
+            onClick={onOpenActivity}
+            className="relative grid h-9 w-9 place-items-center rounded-full bg-paper/85 shadow-float backdrop-blur"
+            title="Activity"
+            aria-label="Activity"
+            data-testid="activity-bell"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3.5a6 6 0 0 0-6 6v3.2l-1.6 2.9a.8.8 0 0 0 .7 1.2h13.8a.8.8 0 0 0 .7-1.2L18 12.7V9.5a6 6 0 0 0-6-6zM10 19.5a2 2 0 0 0 4 0" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        )}
 
-        {/* Viewer / profile */}
+        {/* Viewer / profile — wears the unread count */}
         <Link
           href={`/u/${viewer.handle}`}
           prefetch
-          className="flex items-center gap-2 rounded-full bg-paper/85 shadow-float backdrop-blur max-sm:h-9 max-sm:w-9 max-sm:justify-center sm:py-1.5 sm:pl-1.5 sm:pr-3"
+          className="relative flex items-center gap-2 rounded-full bg-paper/85 shadow-float backdrop-blur max-sm:h-9 max-sm:w-9 max-sm:justify-center sm:py-1.5 sm:pl-1.5 sm:pr-3"
+          data-testid="me-link"
         >
+          {unread > 0 && (
+            <span className="absolute -right-0.5 -top-0.5 z-10 grid place-items-center rounded-full bg-accent px-1 text-[9px] font-bold text-paper" style={{ height: 18, minWidth: 18 }} data-testid="me-unread">
+              {unread}
+            </span>
+          )}
           <img
             src={viewer.avatarUrl}
             alt=""
@@ -247,10 +255,8 @@ export default function TopBar({
       </div>
     </header>
 
-    {/* Focus floats above the add-pin FAB on every breakpoint — Trips lives
-        with Travelers in the left column now. */}
+    {/* Focus floats above the add-pin FAB on every breakpoint. */}
     <div className="wp-chrome fixed z-30 flex flex-col items-center gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:right-[18px] sm:bottom-24 sm:right-4 sm:w-14">
-      <BriefHereButton bubbleLeft />
       <FocusButton bubbleLeft />
     </div>
     </>

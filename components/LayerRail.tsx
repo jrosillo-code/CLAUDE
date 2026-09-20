@@ -26,6 +26,7 @@ export default function LayerRail({
   onOpenTopSpots: () => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [peopleOpen, setPeopleOpen] = useState(false);
   const viewer = useViewer();
   const friends = useFriends();
   const creators = useFollowedCreators();
@@ -55,7 +56,49 @@ export default function LayerRail({
 
   return (
     <div className={`fixed flex flex-col gap-2 max-sm:bottom-[calc(72px+env(safe-area-inset-bottom))] max-sm:left-[18px] sm:left-3 sm:top-1/2 sm:-translate-y-1/2 ${open ? "z-50" : "wp-chrome z-30"}`}>
-      <div className="max-sm:relative sm:w-[220px] sm:rounded-3xl sm:bg-paper/90 sm:p-2 sm:shadow-float sm:backdrop-blur">
+      {/* Phones: Travelers and Trips fold into one "People" entry — both
+          open sheets anyway — with a two-row chooser above it. */}
+      <div className="relative sm:hidden">
+        {peopleOpen && (
+          <>
+            <button aria-label="Close" onClick={() => setPeopleOpen(false)} className="fixed inset-0 cursor-default" />
+            <div className="animate-sheet absolute bottom-11 left-0 w-[188px] rounded-2xl bg-paper/95 p-1.5 shadow-float backdrop-blur" data-testid="people-menu">
+              <button onClick={() => { setPeopleOpen(false); onOpenTravelers(); }} className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm hover:bg-paper-2">
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-paper-2 text-accent">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7.2" r="3.2" stroke="currentColor" strokeWidth="1.8" /><path d="M3.2 19.5c.6-3.4 2.9-5.3 5.8-5.3s5.2 1.9 5.8 5.3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /><circle cx="17.5" cy="8.6" r="2.4" stroke="currentColor" strokeWidth="1.6" opacity=".55" /></svg>
+                </span>
+                <span className="flex-1 font-display">Travelers</span>
+                {pendingIncoming > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-paper">{pendingIncoming}</span>}
+              </button>
+              <button onClick={() => { setPeopleOpen(false); onOpenTrips(); }} className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm hover:bg-paper-2">
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-paper-2 text-accent">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="19" r="2.4" fill="currentColor" /><circle cx="19" cy="5" r="2.4" fill="currentColor" /><path d="M6.8 17.2C10 14 8.5 11 12 8.5c2.4-1.7 4-1.5 5.4-2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="0.5 3.4" /></svg>
+                </span>
+                <span className="flex-1 font-display">Trips</span>
+              </button>
+            </div>
+          </>
+        )}
+        <button
+          onClick={() => setPeopleOpen((o) => !o)}
+          title="People"
+          aria-label="People"
+          aria-expanded={peopleOpen}
+          className="relative isolate grid h-9 w-9 place-items-center rounded-full bg-paper/95 shadow-float"
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="text-accent">
+            <circle cx="9" cy="7.2" r="3.2" stroke="currentColor" strokeWidth="1.8" />
+            <path d="M3.2 19.5c.6-3.4 2.9-5.3 5.8-5.3s5.2 1.9 5.8 5.3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="17.5" cy="8.6" r="2.4" stroke="currentColor" strokeWidth="1.6" opacity=".55" />
+            <path d="M15.4 14.9c1.6-.8 3.9-.4 5.2 1.6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity=".55" />
+          </svg>
+          {pendingIncoming > 0 && (
+            <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[9px] font-bold text-paper">{pendingIncoming}</span>
+          )}
+        </button>
+      </div>
+
+      <div className="max-sm:hidden sm:w-[220px] sm:rounded-3xl sm:bg-paper/90 sm:p-2 sm:shadow-float sm:backdrop-blur">
         <button
           onClick={() =>
             window.innerWidth < 640 ? onOpenTravelers() : setOpen((o) => !o)
@@ -175,7 +218,7 @@ export default function LayerRail({
       <button
         onClick={onOpenTrips}
         title="Trips"
-        className="flex items-center text-left rounded-full shadow-float backdrop-blur transition-colors max-sm:h-9 max-sm:w-9 max-sm:justify-center max-sm:bg-paper/85 sm:w-[220px] sm:gap-2 sm:bg-paper/90 sm:py-2.5 sm:pl-5 sm:pr-4 sm:hover:bg-paper"
+        className="flex items-center text-left rounded-full shadow-float backdrop-blur transition-colors max-sm:hidden sm:w-[220px] sm:gap-2 sm:bg-paper/90 sm:py-2.5 sm:pl-5 sm:pr-4 sm:hover:bg-paper"
       >
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="shrink-0 text-accent">
           <circle cx="5" cy="19" r="2.4" fill="currentColor" />
