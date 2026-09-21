@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import WaypointLogo from "@/components/Logo";
 import { reportError } from "@/lib/monitor";
 
@@ -23,7 +24,7 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
         {error.digest && <p className="mt-2 text-[11px] text-ink-3">Reference {error.digest}</p>}
         <div className="mt-6 flex justify-center gap-2">
           <button onClick={reset} className="rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-paper">Try again</button>
-          <a href="/" className="rounded-full px-5 py-2.5 text-sm font-medium text-ink-2 ring-1 ring-line hover:bg-paper-2">Back to the map</a>
+          <Link href="/" className="rounded-full px-5 py-2.5 text-sm font-medium text-ink-2 ring-1 ring-line hover:bg-paper-2">Back to the map</Link>
         </div>
       </div>
     </main>

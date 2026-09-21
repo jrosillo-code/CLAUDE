@@ -45,7 +45,7 @@ test("debrief lifecycle: create → partial → resume → complete → edit →
     pinId: null,
     source: "text",
   });
-  let r = s().reflections.find((x) => x.id === id)!;
+  const r = s().reflections.find((x) => x.id === id)!;
   assert.equal(r.status, "draft");
   assert.equal(r.answers.length, 1);
 

@@ -1,5 +1,5 @@
 import { boot } from "./_lib.mjs";
-const { B, browser, server, ok, out, finish } = await boot({ base: 3200 });
+const { B, browser, ok, finish } = await boot({ base: 3200 });
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, geolocation: { latitude: 38.72, longitude: -9.14 }, permissions: ["geolocation"] });
 const page = await ctx.newPage();
 const errors = []; page.on("pageerror", (e) => errors.push(e.message));

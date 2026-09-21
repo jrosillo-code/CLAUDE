@@ -1309,7 +1309,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
   useEffect(() => {
     const map = mapRef.current;
     if (map && readyRef.current) updateLandmarksLayer(map);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [showLandmarks, selectedLandmarkId, mapMode]);
 
   useEffect(() => {
@@ -1450,7 +1450,7 @@ export default function MapCanvas({ placing, onPick }: Props) {
       cancelFlight?.();
       void import("@/lib/renderFlight").then((m) => m.cancelFlightRender()); // no-op unless an offline render is running
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [recapFlightReq]);
 
   // ---- Fit-bounds intent (country Focus) ----

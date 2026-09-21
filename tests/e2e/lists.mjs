@@ -1,5 +1,5 @@
 import { boot } from "./_lib.mjs";
-const { B, browser, server, ok, out, finish } = await boot({ base: 3500 });
+const { B, browser, ok, finish } = await boot({ base: 3500 });
 const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 const errors = []; page.on("pageerror", (e) => errors.push(e.message));
 await page.goto(`${B}/`); await page.waitForTimeout(1200);

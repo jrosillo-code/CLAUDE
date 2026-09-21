@@ -1,5 +1,5 @@
 import { boot } from "./_lib.mjs";
-const { B, browser, server, ok, out, finish } = await boot({ base: 3600 });
+const { B, browser, ok, finish } = await boot({ base: 3600 });
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 }, acceptDownloads: true });
 const page = await ctx.newPage();
 const errors = []; page.on("pageerror", (e) => errors.push(e.message));

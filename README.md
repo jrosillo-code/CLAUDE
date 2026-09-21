@@ -24,6 +24,8 @@ free OpenFreeMap tiles. Open the app and you're on a globe that zooms to fit you
 ```bash
 npm run build      # production build
 npm run typecheck  # tsc --noEmit
+npm run lint       # eslint (the rule set next lint used to apply)
+npm run test:e2e   # browser suites against a production build (needs Chromium)
 ```
 
 ## What's in this build

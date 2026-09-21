@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { authLinkError, backendEnabled, supabase } from "@/lib/supabase";
 import PasswordReset from "@/components/PasswordReset";
+import Link from "next/link";
 import WaypointLogo from "@/components/Logo";
 
 // Where password-reset emails land.
@@ -144,9 +145,9 @@ export default function ResetPage() {
           </>
         )}
         <p className="mt-6">
-          <a href="/" className="text-xs text-ink-3 underline-offset-2 hover:underline">
+          <Link href="/" className="text-xs text-ink-3 underline-offset-2 hover:underline">
             Back to sign in
-          </a>
+          </Link>
         </p>
         {error && (
           <p className="mt-4 rounded-xl bg-accent/10 px-4 py-2.5 text-xs text-accent">{error}</p>
