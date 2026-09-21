@@ -16,7 +16,7 @@ import {
 } from "@/lib/mapStyle";
 import { THEMES } from "@/lib/themes";
 import { LANDMARKS, LANDMARK_CATEGORY_META } from "@/lib/landmarks";
-import { LIST_META, listPlaceById, loadWorldLists, worldListsReady } from "@/lib/lists";
+import { LIST_META, listPlaceById, loadWorldLists, worldListsReady, subscribeWorldLists, worldLists } from "@/lib/lists";
 import { landmarkIconImage, overlayIconImage } from "@/lib/map/icons";
 import { listsFC, invalidateListsFC, landmarksFC } from "@/lib/map/sources";
 import { needleEl, flightEl, locationDotEl } from "@/lib/map/markers";
@@ -492,7 +492,10 @@ export default function MapCanvas({ placing, onPick }: Props) {
         const name = `wl-${id}`;
         if (!map.hasImage(name)) map.addImage(name, landmarkIconImage(meta.glyph, meta.color), { pixelRatio: 2 });
       }
-      if (!map.getSource(WL_SOURCE)) map.addSource(WL_SOURCE, { type: "geojson", data: listsFC() });
+      if (!map.getSource(WL_SOURCE)) {
+        map.addSource(WL_SOURCE, { type: "geojson", data: listsFC() });
+        listsFilledForRef.current = worldLists();
+      }
       if (!map.getLayer(WL_LAYER)) {
         map.addLayer({
           id: WL_LAYER,
@@ -530,6 +533,25 @@ export default function MapCanvas({ placing, onPick }: Props) {
     }
   }
 
+  // Which lists snapshot the map's source currently holds; a newer one
+  // (the files just arrived, or were replaced) is pushed into the source.
+  const listsFilledForRef = useRef<unknown>(null);
+  const listsUnsubRef = useRef<(() => void) | null>(null);
+  useEffect(() => () => { listsUnsubRef.current?.(); listsUnsubRef.current = null; }, []);
+  function refillListsSource(map: maplibregl.Map) {
+    const current = worldLists();
+    if (!current.length || listsFilledForRef.current === current) return;
+    try {
+      const src = map.getSource(WL_SOURCE) as maplibregl.GeoJSONSource | undefined;
+      if (!src) return;
+      invalidateListsFC();
+      src.setData(listsFC());
+      listsFilledForRef.current = current;
+    } catch {
+      /* style mid-swap: the next style.load rebuilds the source */
+    }
+  }
+
   function updateListsLayer(map: maplibregl.Map) {
     try {
       if (!map.getLayer(WL_LAYER)) return;
@@ -537,19 +559,11 @@ export default function MapCanvas({ placing, onPick }: Props) {
       const on = (active.length > 0 || (showSaved && saved.size > 0)) && modeRef.current === "pins";
       map.setLayoutProperty(WL_LAYER, "visibility", on ? "visible" : "none");
       if (!on) return;
-      // First time a list is switched on: fetch the places, then fill the
-      // source that was created empty and filter it again.
-      if (!worldListsReady()) {
-        void loadWorldLists().then(() => {
-          invalidateListsFC();
-          try {
-            (map.getSource(WL_SOURCE) as maplibregl.GeoJSONSource | undefined)?.setData(listsFC());
-          } catch {
-            /* style mid-swap: the next style.load rebuilds the source */
-          }
-          updateListsLayer(map);
-        });
-      }
+      // First time a list is switched on: fetch the places. The source was
+      // created empty; refillListsSource() fills it once they land — also
+      // when Top spots, the feed or the digest fetched them first.
+      if (!worldListsReady()) void loadWorldLists();
+      else refillListsSource(map);
       map.setFilter(WL_LAYER, [
         "any",
         ["in", ["get", "list"], ["literal", active]],
@@ -870,6 +884,8 @@ export default function MapCanvas({ placing, onPick }: Props) {
       maxTileCacheSize: 1024,
     });
     mapRef.current = map;
+    // For the browser suites: the live map, to query sources and layers.
+    (window as unknown as { __wpMap?: maplibregl.Map }).__wpMap = map;
     // Sixteen concurrent tile images is MapLibre's default; the ESRI CDN
     // happily serves more, and a fast pan across satellite is bounded by
     // how many tiles are in flight at once.
@@ -932,6 +948,13 @@ export default function MapCanvas({ placing, onPick }: Props) {
     };
     map.on("style.load", initOnce);
     map.on("load", initOnce);
+    // The list files may be fetched by any surface; when they land, the
+    // map's source takes them and the active lists show at once.
+    listsUnsubRef.current?.();
+    listsUnsubRef.current = subscribeWorldLists(() => {
+      refillListsSource(map);
+      updateListsLayer(map);
+    });
     requestAnimationFrame(() => map.resize());
 
     // Kick the online-style upgrade probe for the initial theme — but ONLY when

@@ -53,6 +53,14 @@ export function loadWorldLists(): Promise<WorldList[]> {
   return loading;
 }
 
+/** Hear about the lists landing (or being replaced). Returns unsubscribe. */
+export function subscribeWorldLists(cb: () => void): () => void {
+  listeners.add(cb);
+  return () => {
+    listeners.delete(cb);
+  };
+}
+
 /** Whether the lists are on this device yet. */
 export function worldListsReady(): boolean {
   return lists.length > 0;

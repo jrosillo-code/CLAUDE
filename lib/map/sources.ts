@@ -2,14 +2,19 @@
 // lazily from whatever lists are on the device, invalidated when they
 // arrive) and the landmarks (static).
 
-import { allListPlaces } from "@/lib/lists";
+import { allListPlaces, worldLists } from "@/lib/lists";
 import { LANDMARKS } from "@/lib/landmarks";
 
 // Every world-list place in one source; the layer's filter picks the lists
 // that are switched on (plus anything saved, when Saved is on).
+// Cached per lists snapshot: primeWorldLists() installs a new array, so a
+// collection built while the lists were still empty is never served again.
 let listsFCCache: GeoJSON.FeatureCollection | null = null;
+let listsFCFor: unknown = null;
 export function listsFC(): GeoJSON.FeatureCollection {
-  if (!listsFCCache) {
+  const current = worldLists();
+  if (!listsFCCache || listsFCFor !== current) {
+    listsFCFor = current;
     listsFCCache = {
       type: "FeatureCollection",
       features: allListPlaces().map((p) => ({
