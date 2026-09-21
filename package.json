@@ -2,7 +2,7 @@
   "name": "waypoint",
   "version": "0.9.0",
   "private": true,
-  "description": "Waypoint \u2014 a map-first travel social app. Friends appear as photo-pins on the places they've been.",
+  "description": "Waypoint — a map-first travel social app. Friends appear as photo-pins on the places they've been.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -18,7 +18,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.113.0",
     "@supabase/supabase-js": "^2.116.0",
-    "maplibre-gl": "^6.10.0",
+    "maplibre-gl": "^5.24.0",
     "mp4-muxer": "^5.2.2",
     "next": "^16.3.5",
     "react": "^19.0.0",
