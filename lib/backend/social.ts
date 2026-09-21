@@ -36,26 +36,25 @@ export function syncFollow(creatorId: string, followerId: string, following: boo
   follow({ creatorId, followerId, following });
 }
 
+// The notification is sent once, outside the retried unit: a retry after a
+// request that did land would otherwise hit the unique constraint and take
+// the "crossed" branch below. That branch only notifies when it actually
+// changed a row.
 const sendFriendRequest = op<{ viewerId: string; userId: string }>("sendFriendRequest", async ({ viewerId, userId }) => {
   const p = pair(viewerId, userId);
-  const { error } = await sb().from("friendships").insert({ ...p, status: "pending", requested_by: viewerId });
-  if (!error) {
-    notify(userId, viewerId, "friend_request");
-    return;
-  }
-  if (error.code === "23505") {
-    // Requests crossed in the air: their row landed first. Both sides want
-    // in — upgrade THEIR pending request to accepted (guards keep this a
-    // no-op if the row is ours or already accepted).
-    const { error: e2 } = await sb().from("friendships").update({ status: "accepted" }).match(p).eq("status", "pending").neq("requested_by", viewerId);
-    if (e2) log("sendFriendRequest/crossed")(e2);
-    else notify(userId, viewerId, "friend_accept");
-    return;
-  }
-  throw error;
+  const { error } = await sb().from("friendships").upsert({ ...p, status: "pending", requested_by: viewerId }, { onConflict: "user_a,user_b", ignoreDuplicates: true });
+  if (error) throw error;
+  // Requests crossed in the air: their pending row landed first. Both sides
+  // want in — upgrade THEIR request to accepted. The guards make this a
+  // no-op when the row is ours or already accepted, and only a changed row
+  // earns the "accepted" notification.
+  const { data, error: e2 } = await sb().from("friendships").update({ status: "accepted" }).match(p).eq("status", "pending").neq("requested_by", viewerId).select("user_a");
+  if (e2) { log("sendFriendRequest/crossed")(e2); return; }
+  if (data && data.length) notify(userId, viewerId, "friend_accept");
 });
 export function syncSendFriendRequest(viewerId: string, userId: string): void {
   sendFriendRequest({ viewerId, userId });
+  notify(userId, viewerId, "friend_request");
 }
 
 const respondFriendRequest = op<{ viewerId: string; userId: string; accept: boolean }>("respondFriendRequest", async ({ viewerId, userId, accept }) => {

@@ -20,6 +20,12 @@ export default function Sheet({
   const panelRef = useRef<HTMLDivElement>(null);
   const tokenRef = useRef<symbol | null>(null);
   if (!tokenRef.current) tokenRef.current = Symbol("sheet");
+  // The latest onClose, read at keypress time, so the stack effect below can
+  // run once per mount: parents pass inline closures that change on every
+  // render, and re-pushing tokens on each render would reorder the stack
+  // into JSX order instead of open order.
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     const token = tokenRef.current!;
@@ -27,7 +33,7 @@ export default function Sheet({
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
       if (openSheets[openSheets.length - 1] !== token) return;
-      onClose();
+      onCloseRef.current();
     };
     window.addEventListener("keydown", onKey);
     return () => {
@@ -35,7 +41,7 @@ export default function Sheet({
       const i = openSheets.indexOf(token);
       if (i >= 0) openSheets.splice(i, 1);
     };
-  }, [onClose]);
+  }, []);
 
   // Move focus into the sheet on open (so Tab starts inside it and a screen
   // reader announces the dialog), and hand it back to the opener on close.

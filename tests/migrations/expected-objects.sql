@@ -165,6 +165,9 @@ select ok(
   (select relrowsecurity from pg_class where relname = 'blocks'),
   'blocks has RLS (0023)');
 select ok(
+  exists (select 1 from pg_policies where tablename = 'blocks' and policyname = 'blocks_read_either' and qual like '%blocked_id%'),
+  'the blocked party can read the block row (0025)');
+select ok(
   exists (select 1 from pg_policies where tablename = 'pins' and policyname = 'pins_select' and qual like '%blocked_either_way%'),
   'pins_select honours blocks (0023)');
 

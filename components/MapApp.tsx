@@ -135,6 +135,8 @@ export default function MapApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trips.length]);
   useEffect(() => {
+    // A linked pin or trip that has not been opened yet keeps its param.
+    if (linkedRef.current?.pin || linkedRef.current?.trip) return;
     const url = new URL(window.location.href);
     if (url.searchParams.get("fly")) return; // consumed by the effect below
     if (selectedPinId) url.searchParams.set("pin", selectedPinId);
@@ -155,7 +157,10 @@ export default function MapApp() {
     const list = params.get("list");
     const place = params.get("place");
     if (!list && !place) return;
-    window.history.replaceState(window.history.state, "", window.location.pathname);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("list");
+    url.searchParams.delete("place");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
     void loadWorldLists().then(() => {
       const p = place ? listPlaceById(place) : null;
       const want = (p?.list ?? list) as WorldListId | null;
@@ -196,7 +201,9 @@ export default function MapApp() {
     const cc = params.get("fly");
     if (!cc || !/^[A-Za-z]{2}$/.test(cc)) return;
     const code = cc.toUpperCase();
-    window.history.replaceState(window.history.state, "", window.location.pathname);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("fly");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
     let name = code;
     try {
       name = new Intl.DisplayNames(["en"], { type: "region" }).of(code) ?? code;
@@ -391,7 +398,7 @@ export default function MapApp() {
         />
       )}
       {digestOpen && <DigestSheet onClose={() => setDigestOpen(false)} />}
-      {dispatchUser && <DispatchPlayer userId={dispatchUser} onClose={() => setDispatchUser(null)} />}
+      {dispatchUser && <DispatchPlayer key={dispatchUser} userId={dispatchUser} onClose={() => setDispatchUser(null)} />}
       {mapMode === "pins" && !selectedPinId && <LandmarkCard />}
       {mapMode === "pins" && !selectedPinId && <ListPlaceCard />}
       {mapMode === "pins" && !selectedPinId && <OverlayCard />}
