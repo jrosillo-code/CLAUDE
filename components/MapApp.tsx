@@ -41,6 +41,10 @@ import { useStore } from "@/lib/store";
 import { reverseGeocode } from "@/lib/geocode";
 
 export default function MapApp() {
+  // For the browser suites: the store, to seed a scenario without the UI.
+  useEffect(() => {
+    (window as unknown as { __wpStore?: typeof useStore }).__wpStore = useStore;
+  }, []);
   const [placing, setPlacing] = useState(false);
   const [resolving, setResolving] = useState(false);
   const [creatorsOpen, setCreatorsOpen] = useState(false);

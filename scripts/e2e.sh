@@ -14,7 +14,7 @@ if [ ! -f .next/BUILD_ID ]; then
   NEXT_PUBLIC_SUPABASE_URL= NEXT_PUBLIC_SUPABASE_ANON_KEY= npm run build >/dev/null
 fi
 
-suites=(desktop phone lists ui growth digest recap)
+suites=(desktop phone lists ui growth digest stories recap)
 if [ $# -gt 0 ]; then suites=("$@"); fi
 skip=",${E2E_SKIP:-},"
 failed=0
